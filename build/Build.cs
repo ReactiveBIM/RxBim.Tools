@@ -3,6 +3,7 @@ using System.Linq;
 using Bimlab.Nuke.Nuget;
 using Nuke.Common;
 using Nuke.Common.CI;
+using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Execution;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
@@ -15,6 +16,11 @@ using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 
 [CheckBuildProjectConfigurations]
+[GitHubActions("CI",
+    GitHubActionsImage.WindowsLatest,
+    OnPushBranches = new[] { "master" },
+    InvokedTargets = new[] { nameof(Publish) },
+    ImportSecrets = new[] { "NUGET_API_KEY" })]
 partial class Build : NukeBuild
 {
     private string _project;
