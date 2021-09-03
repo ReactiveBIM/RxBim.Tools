@@ -1,8 +1,11 @@
 ﻿namespace RxBim.Tools.Autocad
 {
     using Abstractions;
+    using Autodesk.AutoCAD.DatabaseServices;
     using Di;
+    using Serializers;
     using Services;
+    using TableBuilder.Abstractions;
 
     /// <summary>
     /// Расширения для контейнера
@@ -17,6 +20,16 @@
         {
             container.AddSingleton<IObjectsSelectionService, ObjectsSelectionService>();
             container.AddSingleton<ICommandLineService, CommandLineService>();
+        }
+
+        /// <summary>
+        /// Добавляет сериализатор таблицы в автокад
+        /// </summary>
+        /// <param name="container">Контейнер</param>
+        public static IContainer AddTableSerializer(this IContainer container)
+        {
+            container.AddSingleton<ITableSerializer<Table>, TableSerializer>();
+            return container;
         }
     }
 }
