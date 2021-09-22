@@ -8,25 +8,22 @@ using Nuke.Common.Tools.DotNet;
 
 partial class Build
 {
-    /// <summary>
-    /// NuGet source URL
-    /// </summary>
-    [Parameter("NuGet source URL")]
-    public readonly string NugetSource = "https://api.nuget.org/v3/index.json";
-
-    /// <summary>
-    /// NuGet symbol source URL
-    /// </summary>
-    [Parameter("NuGet symbol source URL")]
-    public readonly string NugetSymbolSource = "https://nuget.smbsrc.net/";
-
-    AbsolutePath OutputDirectory => RootDirectory / "out";
-
+    Target List => _ => _
+        .Executes(() =>
+        {
+            var projects = _packageInfoProvider.Projects;
+            Console.WriteLine("\nPackage list:");
+            foreach (var projectInfo in projects)
+            {
+                Console.WriteLine(projectInfo.MenuItem);
+            }
+        });
+    
     Target Pack => _ => _
         .DependsOn(Compile)
         .Executes(() =>
         {
-            PackageInfoProvider.GetSelectedProjects(Solution.AllProjects.Select(x => x.Name).ToArray())
+            _packageInfoProvider.GetSelectedProjects(Solution.AllProjects.Select(x => x.Name).ToArray())
                 .ForEach(x => PackInternal(Solution, x, OutputDirectory, Configuration));
         });
 
@@ -64,6 +61,7 @@ partial class Build
         });
 
     Target Push => _ => _
+        .Requires(() => NugetApiKey)
         .Unlisted()
         .DependsOn(Pack, CheckUncommitted)
         .Executes(() =>
@@ -74,7 +72,7 @@ partial class Build
                 throw new ArgumentException("NUGET_API_KEY variable is not setted");
             }
 
-            PackageInfoProvider.GetSelectedProjects(Solution.AllProjects.Select(x => x.Name).ToArray())
+            _packageInfoProvider.GetSelectedProjects(Solution.AllProjects.Select(x => x.Name).ToArray())
                 .ForEach(x => PackageExtensions.PushPackage(Solution, x, OutputDirectory, nugetApiKey, NugetSource));
         });
 
@@ -82,7 +80,7 @@ partial class Build
         .DependsOn(Push)
         .Executes(() =>
         {
-            PackageInfoProvider.GetSelectedProjects()
+            _packageInfoProvider.GetSelectedProjects()
                 .ForEach(x => PackageExtensions.TagPackage(Solution, x));
         });
 

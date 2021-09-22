@@ -8,13 +8,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoCAD2019.Base" Version="1.0.3" ExcludeAssets="build; runtime"/>
-        <PackageReference Include="RxBim.Di" Version="1.0.0-dev001"/>
+        <PackageReference Include="AutoCAD2019.Base" Version="1.0.3" ExcludeAssets="build; runtime" />
+        <PackageReference Include="RxBim.Di" Version="1.0.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <Reference Include="PresentationFramework"/>
-        <Reference Include="WindowsBase"/>
+        <Reference Include="PresentationFramework" />
+        <Reference Include="WindowsBase" />
     </ItemGroup>
 
     <PropertyGroup>

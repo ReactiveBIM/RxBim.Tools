@@ -6,6 +6,10 @@
     "build": {
       "type": "object",
       "properties": {
+        "AllProjects": {
+          "type": "boolean",
+          "description": "Select all projects"
+        },
         "Configuration": {
           "type": "string",
           "description": "Configuration to build - Default is 'Debug' (local) or 'Release' (server)",
@@ -46,6 +50,10 @@
           "type": "boolean",
           "description": "Disables displaying the NUKE logo"
         },
+        "NugetApiKey": {
+          "type": "string",
+          "description": "NuGet API key"
+        },
         "NugetSource": {
           "type": "string",
           "description": "NuGet source URL"
@@ -69,9 +77,12 @@
             "type": "string"
           }
         },
-        "Project": {
-          "type": "string",
-          "description": "Select project"
+        "Projects": {
+          "type": "array",
+          "description": "Project name list",
+          "items": {
+            "type": "string"
+          }
         },
         "Root": {
           "type": "string",
@@ -86,11 +97,13 @@
               "CheckUncommitted",
               "Clean",
               "Compile",
+              "List",
               "Pack",
               "Publish",
               "Push",
               "Restore",
-              "Tag"
+              "Tag",
+              "Test"
             ]
           }
         },
@@ -107,11 +120,13 @@
               "CheckUncommitted",
               "Clean",
               "Compile",
+              "List",
               "Pack",
               "Publish",
               "Push",
               "Restore",
-              "Tag"
+              "Tag",
+              "Test"
             ]
           }
         },
