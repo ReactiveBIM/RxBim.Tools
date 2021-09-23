@@ -27,27 +27,5 @@ namespace RxBim.Tools.Autocad.Serializers
         /// Поворот радиан
         /// </summary>
         public double Rotation { get; set; }
-
-        /// <summary>
-        /// Установка блока в ячейку
-        /// </summary>
-        /// <param name="cell">Ячейка</param>
-        /// <param name="blockData">Данные блока</param>
-        public static Cell SetBlock(Cell cell, BlockCellData blockData)
-        {
-            if (blockData.BtrId.IsNull)
-                return cell;
-
-            cell.BlockTableRecordId = blockData.BtrId;
-
-            var blockContent = cell.Contents[0];
-            blockContent.IsAutoScale = blockData.AutoScale;
-
-            if (!blockData.AutoScale)
-                blockContent.Scale = blockData.Scale;
-
-            blockContent.Rotation = blockData.Rotation;
-            return cell;
-        }
     }
 }

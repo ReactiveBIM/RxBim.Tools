@@ -84,7 +84,7 @@
                             acadCell.Value = valueData.Value;
                             break;
                         case BlockCellData blockData:
-                            BlockCellData.SetBlock(acadCell, blockData);
+                            SetBlock(acadCell, blockData);
                             break;
                         default:
                             throw new ArgumentOutOfRangeException($"Неопределенный тип данных ячейки '{cell.Data}'.");
@@ -96,14 +96,30 @@
             return acadTable;
         }
 
-        private static void SetText(Cell cell, string text)
+        private void SetText(Cell cell, string text)
         {
             if (string.IsNullOrEmpty(text))
                 return;
             cell.TextString = text;
         }
 
-        private static void CheckTitleRow(Table acadTable, TableSerializerParameters parameters, out int headerRow)
+        private void SetBlock(Cell cell, BlockCellData blockData)
+        {
+            if (blockData.BtrId.IsNull)
+                return;
+
+            cell.BlockTableRecordId = blockData.BtrId;
+
+            var blockContent = cell.Contents[0];
+            blockContent.IsAutoScale = blockData.AutoScale;
+
+            if (!blockData.AutoScale)
+                blockContent.Scale = blockData.Scale;
+
+            blockContent.Rotation = blockData.Rotation;
+        }
+
+        private void CheckTitleRow(Table acadTable, TableSerializerParameters parameters, out int headerRow)
         {
             var rowTitle = acadTable.Rows[0];
             if (parameters.HasTitle)
@@ -126,7 +142,7 @@
             }
         }
 
-        private static void CheckHeaderRow(Table acadTable, TableSerializerParameters parameters, int firstHeaderRowIndex)
+        private void CheckHeaderRow(Table acadTable, TableSerializerParameters parameters, int firstHeaderRowIndex)
         {
             if (parameters.RowHeadersCount <= 1)
                 return;
@@ -138,7 +154,7 @@
             }
         }
 
-        private static void SetCellStyle(Cell cell, CellFormatStyle? format, TableSerializerParameters parameters)
+        private void SetCellStyle(Cell cell, CellFormatStyle? format, TableSerializerParameters parameters)
         {
             if (format == null)
                 return;
@@ -165,7 +181,7 @@
             }
         }
 
-        private static void SetBorder(
+        private void SetBorder(
             CellBorder cellBorder,
             CellBorderType borderType,
             TableSerializerParameters parameters)
@@ -186,7 +202,7 @@
             }
         }
 
-        private static CellAlignment? GetAlignment(CellFormatStyle format)
+        private CellAlignment? GetAlignment(CellFormatStyle format)
         {
             return format switch
             {
