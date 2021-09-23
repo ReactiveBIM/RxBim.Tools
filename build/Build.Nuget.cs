@@ -5,6 +5,7 @@ using Nuke.Common;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
+using Nuke.Common.Tools.Git;
 
 partial class Build
 {
@@ -66,14 +67,8 @@ partial class Build
         .DependsOn(Pack, CheckUncommitted)
         .Executes(() =>
         {
-            var nugetApiKey = Environment.GetEnvironmentVariable("NUGET_API_KEY");
-            if (string.IsNullOrWhiteSpace(nugetApiKey))
-            {
-                throw new ArgumentException("NUGET_API_KEY variable is not setted");
-            }
-
-            _packageInfoProvider.GetSelectedProjects(Solution.AllProjects.Select(x => x.Name).ToArray())
-                .ForEach(x => PackageExtensions.PushPackage(Solution, x, OutputDirectory, nugetApiKey, NugetSource));
+            _packageInfoProvider.GetSelectedProjects(Projects)
+                .ForEach(x => PackageExtensions.PushPackage(Solution, x, OutputDirectory, NugetApiKey, NugetSource));
         });
 
     Target Tag => _ => _
@@ -83,8 +78,15 @@ partial class Build
             _packageInfoProvider.GetSelectedProjects()
                 .ForEach(x => PackageExtensions.TagPackage(Solution, x));
         });
+    
+    Target PushGit => _ => _
+        .After(Tag)
+        .Executes(() =>
+        {
+            GitTasks.Git("push --tags");
+        });
 
     Target Publish => _ => _
-        .Description("Публикует Nuget-пакеты")
-        .DependsOn(Tag);
+        .Description("Publish nuget packages")
+        .DependsOn(Tag, PushGit);
 }
