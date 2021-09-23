@@ -4,7 +4,7 @@ namespace RxBim.Tools.Autocad.Serializers
     using TableBuilder.Abstractions;
 
     /// <summary>
-    /// Данные для вставка блока в ячейку
+    /// Данные для вставки блока в ячейку
     /// </summary>
     public class BlockCellData : ICellData
     {
