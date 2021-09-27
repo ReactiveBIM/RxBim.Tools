@@ -22,9 +22,10 @@ partial class Build
     
     Target Pack => _ => _
         .DependsOn(Compile)
+        .Requires(() => Projects)
         .Executes(() =>
         {
-            _packageInfoProvider.GetSelectedProjects(Solution.AllProjects.Select(x => x.Name).ToArray())
+            _packageInfoProvider.GetSelectedProjects(Projects)
                 .ForEach(x => PackInternal(Solution, x, OutputDirectory, Configuration));
         });
 
