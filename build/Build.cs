@@ -17,7 +17,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
     GitHubActionsImage.WindowsLatest,
     OnPushBranches = new[] { DevelopBranch },
     OnPullRequestBranches = new[] { DevelopBranch },
-    InvokedTargets = new[] { nameof(Test), nameof(Pack) },
+    InvokedTargets = new[] { nameof(Test), nameof(Compile) },
     ImportSecrets = new[] { "NUGET_API_KEY", "ALL_PROJECTS" })]
 [GitHubActions("Publish",
     GitHubActionsImage.WindowsLatest,
