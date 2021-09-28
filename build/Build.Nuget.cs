@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Bimlab.Nuke.Nuget;
 using Nuke.Common;
 using Nuke.Common.IO;
@@ -50,8 +49,7 @@ partial class Build
                 .SetProject(path)
                 .SetOutputDirectory(outDir)
                 .SetConfiguration(configuration)
-                .EnableNoBuild()
-                .EnableNoRestore());
+                .EnableNoBuild());
         }
     }
 
