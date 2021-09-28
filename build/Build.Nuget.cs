@@ -74,7 +74,7 @@ partial class Build
         .DependsOn(Push)
         .Executes(() =>
         {
-            _packageInfoProvider.GetSelectedProjects()
+            _packageInfoProvider.GetSelectedProjects(Projects)
                 .ForEach(x => PackageExtensions.TagPackage(Solution, x));
         });
     
