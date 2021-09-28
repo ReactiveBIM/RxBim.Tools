@@ -37,13 +37,10 @@
             "GitHubActions",
             "GitLab",
             "Jenkins",
-            "Rider",
             "SpaceAutomation",
             "TeamCity",
             "Terminal",
-            "TravisCI",
-            "VisualStudio",
-            "VSCode"
+            "TravisCI"
           ]
         },
         "NoLogo": {
@@ -61,10 +58,6 @@
         "NugetSymbolSource": {
           "type": "string",
           "description": "NuGet symbol source URL"
-        },
-        "Partition": {
-          "type": "string",
-          "description": "Partition to use on CI"
         },
         "Plan": {
           "type": "boolean",
