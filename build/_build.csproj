@@ -12,13 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BimLab.Nuke.Nuget" Version="2021.7.2" />
-    <PackageReference Include="Nuke.Common" Version="5.3.0" />
     <PackageReference Include="RxBim.Nuke" Version="1.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageDownload Include="NuGet.CommandLine" Version="[5.10.0]" />
   </ItemGroup>
 
 </Project>
