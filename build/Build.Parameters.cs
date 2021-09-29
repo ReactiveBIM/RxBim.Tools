@@ -37,7 +37,7 @@ partial class Build
     }
 
     [Parameter("Select all projects")]
-    public bool AllProjects { get; set; } = false;
+    public bool AllProjects { get; set; } = !IsLocalBuild;
 
     /// <summary>
     /// Configuration to build - Default is 'Debug' (local) or 'Release' (server)

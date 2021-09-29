@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Bimlab.Nuke.Nuget;
 using Nuke.Common;
 using Nuke.Common.IO;
@@ -22,9 +21,10 @@ partial class Build
     
     Target Pack => _ => _
         .DependsOn(Compile)
+        .Requires(() => Projects)
         .Executes(() =>
         {
-            _packageInfoProvider.GetSelectedProjects(Solution.AllProjects.Select(x => x.Name).ToArray())
+            _packageInfoProvider.GetSelectedProjects(Projects)
                 .ForEach(x => PackInternal(Solution, x, OutputDirectory, Configuration));
         });
 
@@ -49,8 +49,7 @@ partial class Build
                 .SetProject(path)
                 .SetOutputDirectory(outDir)
                 .SetConfiguration(configuration)
-                .EnableNoBuild()
-                .EnableNoRestore());
+                .EnableNoBuild());
         }
     }
 
@@ -75,18 +74,11 @@ partial class Build
         .DependsOn(Push)
         .Executes(() =>
         {
-            _packageInfoProvider.GetSelectedProjects()
+            _packageInfoProvider.GetSelectedProjects(Projects)
                 .ForEach(x => PackageExtensions.TagPackage(Solution, x));
         });
     
-    Target PushGit => _ => _
-        .After(Tag)
-        .Executes(() =>
-        {
-            GitTasks.Git("push --tags");
-        });
-
     Target Publish => _ => _
         .Description("Publish nuget packages")
-        .DependsOn(Tag, PushGit);
+        .DependsOn(Tag);
 }

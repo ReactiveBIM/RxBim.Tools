@@ -17,7 +17,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
     GitHubActionsImage.WindowsLatest,
     OnPushBranches = new[] { DevelopBranch },
     OnPullRequestBranches = new[] { DevelopBranch },
-    InvokedTargets = new[] { nameof(Test), nameof(Pack) },
+    InvokedTargets = new[] { nameof(Test), nameof(Compile) },
     ImportSecrets = new[] { "NUGET_API_KEY", "ALL_PROJECTS" })]
 [GitHubActions("Publish",
     GitHubActionsImage.WindowsLatest,
@@ -35,7 +35,6 @@ partial class Build : NukeBuild
     public static int Main() => Execute<Build>(x => x.List);
 
     Target Clean => _ => _
-        .Before(Restore)
         .Executes(() =>
         {
             GlobDirectories(Solution.Directory, "**/bin", "**/obj")
@@ -48,7 +47,7 @@ partial class Build : NukeBuild
         .Executes(() =>
         {
             DotNetRestore(settings => settings
-                .SetProjectFile(Solution));
+                .SetProjectFile(Solution.Path));
         });
 
     Target Compile => _ => _
@@ -56,9 +55,8 @@ partial class Build : NukeBuild
         .Executes(() =>
         {
             DotNetBuild(settings => settings
-                .SetProjectFile(Solution)
-                .SetConfiguration(Configuration)
-                .EnableNoRestore());
+                .SetProjectFile(Solution.Path)
+                .SetConfiguration(Configuration));
         });
     
     public Target Test => _ => _
