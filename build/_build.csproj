@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="RxBim.Nuke" Version="1.0.3-rc-1" />
+    <PackageReference Include="RxBim.Nuke" Version="1.0.3" />
     <PackageReference Include="NuGet.CommandLine" Version="5.9.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

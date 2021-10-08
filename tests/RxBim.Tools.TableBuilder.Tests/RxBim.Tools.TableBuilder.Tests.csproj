@@ -17,7 +17,7 @@
     <ItemGroup>
         <PackageReference Include="FluentAssertions" Version="5.10.3" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.0" />
-        <PackageReference Include="RxBim.Di" Version="1.0.3-rc1" />
+        <PackageReference Include="RxBim.Di" Version="1.0.3" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

@@ -4,7 +4,6 @@ using Nuke.Common;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
-using Nuke.Common.Tools.Git;
 
 partial class Build
 {
