@@ -58,15 +58,19 @@
         /// <inheritdoc />
         public override bool Equals(object obj)
         {
-            if (obj == null)
-                return false;
-            if (!(obj is TableMergedArea other))
+            if (obj is not TableMergedArea other)
                 return false;
 
             return TopRow == other.TopRow &&
                    BottomRow == other.BottomRow &&
                    LeftColumn == other.LeftColumn &&
                    RightColumn == other.RightColumn;
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            return 0;
         }
     }
 }

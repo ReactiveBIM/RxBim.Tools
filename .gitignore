@@ -250,7 +250,8 @@ paket-files/
 .fake/
 
 # JetBrains Rider
-.idea/
+.idea
+
 *.sln.iml
 
 # CodeRush
