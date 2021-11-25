@@ -19,6 +19,11 @@ namespace RxBim.Tools.Autocad.Serializers
         public int RowHeadersCount { get; set; } = 1;
 
         /// <summary>
+        /// Высота строк по умолчанию
+        /// </summary>
+        public double RowHeightDefault { get; set; } = 8;
+
+        /// <summary>
         /// Стиль таблицы
         /// </summary>
         public ObjectId TableStyleId { get; set; }

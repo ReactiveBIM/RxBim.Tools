@@ -32,7 +32,7 @@
             var rowCount = tableData.Rows.Count;
             acadTable.SetSize(rowCount, tableData.Columns.Count);
 
-            CheckTitleRow(acadTable, parameters, out var headerRow);
+            CheckTitleRow(tableData, acadTable, parameters, out var headerRow);
             CheckHeaderRow(acadTable, parameters, headerRow);
 
             var mergedCells = new List<TableMergedArea>();
@@ -55,7 +55,7 @@
                     var cell = tableData[row, col];
 
                     var rowHeight = tableData.Rows[row].Height;
-                    rowHeight = rowHeight > 0 ? rowHeight : 8;
+                    rowHeight = rowHeight > 0 ? rowHeight : parameters.RowHeightDefault;
                     acadRow.Height = rowHeight;
 
                     // Merge logic
@@ -113,13 +113,17 @@
             var blockContent = cell.Contents[0];
             blockContent.IsAutoScale = blockData.AutoScale;
 
-            if (!blockData.AutoScale)
+            if (!blockData.AutoScale && blockData.Scale > 0)
                 blockContent.Scale = blockData.Scale;
 
             blockContent.Rotation = blockData.Rotation;
         }
 
-        private void CheckTitleRow(Table acadTable, TableSerializerParameters parameters, out int headerRow)
+        private void CheckTitleRow(
+            TableBuilder.Table tableData,
+            Table acadTable,
+            TableSerializerParameters parameters,
+            out int headerRow)
         {
             var rowTitle = acadTable.Rows[0];
             if (parameters.HasTitle)
@@ -137,8 +141,12 @@
             headerRow = 0;
             if (rowTitle.IsMerged == true || rowTitle.Style == RowStyleTitle)
             {
+                var height = tableData.Rows[0].Height;
+                if (height == 0)
+                    height = parameters.RowHeightDefault;
+
                 acadTable.DeleteRows(0, 1);
-                acadTable.InsertRows(acadTable.Rows.Count - 1, 8, 1);
+                acadTable.InsertRows(acadTable.Rows.Count - 1, height, 1);
             }
         }
 
