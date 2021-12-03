@@ -6,13 +6,12 @@
     "build": {
       "type": "object",
       "properties": {
-        "AllProjects": {
+        "AllPackages": {
           "type": "boolean",
-          "description": "Select all projects"
+          "description": "All projects"
         },
         "Configuration": {
           "type": "string",
-          "description": "Configuration to build - Default is 'Debug' (local) or 'Release' (server)",
           "enum": [
             "Debug",
             "Release"
@@ -37,11 +36,18 @@
             "GitHubActions",
             "GitLab",
             "Jenkins",
+            "Rider",
             "SpaceAutomation",
             "TeamCity",
             "Terminal",
-            "TravisCI"
+            "TravisCI",
+            "VisualStudio",
+            "VSCode"
           ]
+        },
+        "IgnoreFailedSources": {
+          "type": "boolean",
+          "description": "Ignore unreachable sources during Restore"
         },
         "NoLogo": {
           "type": "boolean",
@@ -49,15 +55,23 @@
         },
         "NugetApiKey": {
           "type": "string",
-          "description": "NuGet API key"
+          "description": "Nuget API key",
+          "default": "Secrets must be entered via 'nuke :secret [profile]'"
         },
         "NugetSource": {
           "type": "string",
           "description": "NuGet source URL"
         },
-        "NugetSymbolSource": {
+        "Packages": {
+          "type": "array",
+          "description": "Project name list",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Partition": {
           "type": "string",
-          "description": "NuGet symbol source URL"
+          "description": "Partition to use on CI"
         },
         "Plan": {
           "type": "boolean",
@@ -66,13 +80,6 @@
         "Profile": {
           "type": "array",
           "description": "Defines the profiles to load",
-          "items": {
-            "type": "string"
-          }
-        },
-        "Projects": {
-          "type": "array",
-          "description": "Project name list",
           "items": {
             "type": "string"
           }
@@ -87,15 +94,14 @@
           "items": {
             "type": "string",
             "enum": [
-              "CheckUncommitted",
               "Clean",
               "Compile",
               "List",
               "Pack",
+              "Prerelease",
               "Publish",
-              "Push",
+              "Release",
               "Restore",
-              "Tag",
               "Test"
             ]
           }
@@ -110,15 +116,14 @@
           "items": {
             "type": "string",
             "enum": [
-              "CheckUncommitted",
               "Clean",
               "Compile",
               "List",
               "Pack",
+              "Prerelease",
               "Publish",
-              "Push",
+              "Release",
               "Restore",
-              "Tag",
               "Test"
             ]
           }
