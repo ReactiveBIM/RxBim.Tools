@@ -12,11 +12,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="RxBim.Nuke" Version="1.0.3" />
+    <PackageReference Include="BimLab.Nuke" Version="2021.3.0" />
+    <PackageReference Include="BimLab.Nuke.Nuget" Version="2021.8.0" />
     <PackageReference Include="NuGet.CommandLine" Version="5.9.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Nuke.Common" Version="5.2.1" />
   </ItemGroup>
 
 </Project>
