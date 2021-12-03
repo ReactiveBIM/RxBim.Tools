@@ -1,4 +1,4 @@
-﻿namespace RxBim.Tools.Revit.Test
+﻿namespace RxBim.Tools.Revit.Tests
 {
     using System;
     using System.Collections.Generic;

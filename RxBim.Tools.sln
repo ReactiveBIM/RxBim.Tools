@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1B8A8578-7C3C-425C-B769-9E097411094F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RxBim.Tools.Revit.Test", "tests\RxBim.Tools.Revit.Test\RxBim.Tools.Revit.Test.csproj", "{DE5198BA-8F65-4E9C-BE74-EDA541287ED6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RxBim.Tools.Revit.Tests", "tests\RxBim.Tools.Revit.Tests\RxBim.Tools.Revit.Tests.csproj", "{DE5198BA-8F65-4E9C-BE74-EDA541287ED6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RxBim.Tools.TableBuilder.Tests", "tests\RxBim.Tools.TableBuilder.Tests\RxBim.Tools.TableBuilder.Tests.csproj", "{4FE437B4-01EA-4D30-A530-2FD399CC8CF7}"
 EndProject
@@ -26,6 +26,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionF
 		README.md = README.md
 		stylecop.ruleset = stylecop.ruleset
 		stylecopTests.ruleset = stylecopTests.ruleset
+		Directory.Build.Props = Directory.Build.Props
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.csproj", "{E2EC9FDA-2F0E-4BD1-8F63-3787605ED60C}"
