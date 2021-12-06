@@ -7,6 +7,7 @@
     using CSharpFunctionalExtensions;
     using RxBim.Tools.TableBuilder.Extensions;
     using Tools.Revit.Abstractions;
+    using Tools.Revit.Extensions;
     using Tools.Revit.Serializers;
     using Tools.TableBuilder.Abstractions;
     using Tools.TableBuilder.Models.Styles;
@@ -99,7 +100,8 @@
                     return DeleteViewScheduleIfExists(name)
                         .Map(() => table.Serialize(_tableSerializer, serializeParams))
                         .Ensure(view => view is not null, "Error when created or serialized specification")
-                        .Bind(view => PutSpecificationOnSheet(view, _doc.ActiveView.Id, XYZ.Zero));
+                        .Tap(view => PutSpecificationOnSheet(view, _doc.ActiveView.Id, XYZ.Zero))
+                        .Tap(view => ApplyHeaderStyle(view, columnsCount, 30));
                 }, $"Created ViewSchedule: {name}");
             }
             catch (Exception e)
@@ -128,6 +130,25 @@
             return _transactionService.RunInTransaction(
                 () => ScheduleSheetInstance.Create(_doc, viewSheetId, schedule.Id, origin),
                 nameof(PutSpecificationOnSheet));
+        }
+
+        // Revit does not apply styles when putting specification
+        private Result ApplyHeaderStyle(ViewSchedule schedule, int columnsCount, int columnWidth)
+        {
+            var headerData = schedule.GetTableData().GetSectionData(SectionType.Header);
+
+            var style = headerData.GetTableCellStyle(headerData.FirstRowNumber, headerData.FirstColumnNumber);
+            var opt = style.GetCellStyleOverrideOptions();
+            style.SetCellStyleOverrideOptions(opt);
+            opt.Italics = true;
+            style.IsFontItalic = true;
+
+            return _transactionService.RunInTransaction(() =>
+            {
+                for (var i = 0; i < columnsCount; i++)
+                    headerData.SetColumnWidth(0, columnWidth.MmToFt());
+                headerData.SetCellStyle(headerData.FirstRowNumber, headerData.FirstColumnNumber, style);
+            }, nameof(ApplyHeaderStyle));
         }
     }
 }

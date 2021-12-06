@@ -1,9 +1,12 @@
 ﻿namespace RxBim.Command.TableBuilder.Revit.Sample
 {
     using Abstractions;
+    using Autodesk.Revit.DB;
     using Di;
     using Services;
     using Tools.Revit;
+    using Tools.Revit.Serializers;
+    using Tools.TableBuilder.Abstractions;
 
     /// <inheritdoc />
     public class Config : ICommandConfiguration
@@ -13,7 +16,8 @@
         {
             container.AddRevitHelpers();
 
-            container.AddTransient<IViewScheduleCreator, ViewScheduleCreator>();
+            container.AddTransient<IViewScheduleCreator, ViewScheduleCreator>()
+                .AddTransient<ITableSerializer<ViewSchedule>, ViewScheduleTableSerializer<ViewSchedule>>();
         }
     }
 }
