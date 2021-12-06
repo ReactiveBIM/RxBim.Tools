@@ -197,14 +197,16 @@
         {
             var list = source.ToList();
 
-            if (!list.Any() || !propertySelectors.Any())
+            if (!list.Any())
                 return this;
 
-            var matrix = new object[list.Count, propertySelectors.Length];
+            var selectorList = GetSelectorList(propertySelectors);
 
-            for (var c = 0; c < propertySelectors.Length; c++)
+            var matrix = new object[list.Count, selectorList.Count];
+
+            for (var c = 0; c < selectorList.Count; c++)
             {
-                var prop = propertySelectors[c];
+                var prop = selectorList[c];
                 for (var r = 0; r < list.Count; r++)
                 {
                     var value = prop.Invoke(list[r]);
@@ -254,14 +256,16 @@
             params Func<TSource, object>[] propertySelectors)
         {
             var list = source.ToList();
-            if (!list.Any() || !propertySelectors.Any())
+            if (!list.Any())
                 return this;
 
-            var matrix = new object[propertySelectors.Length, list.Count];
+            var selectorList = GetSelectorList(propertySelectors);
 
-            for (var r = 0; r < propertySelectors.Length; r++)
+            var matrix = new object[selectorList.Count, list.Count];
+
+            for (var r = 0; r < selectorList.Count; r++)
             {
-                var prop = propertySelectors[r];
+                var prop = selectorList[r];
                 for (var c = 0; c < list.Count; c++)
                 {
                     var value = prop.Invoke(list[c]);
@@ -298,6 +302,15 @@
                 for (var c = 0; c < matrix.GetLength(1); c++)
                     this[row + r, column + c].SetContent(matrix[r, c]);
             }
+        }
+
+        private List<Func<TSource, object>> GetSelectorList<TSource>(
+            IEnumerable<Func<TSource, object>> propertySelectors)
+        {
+            var selectorList = propertySelectors.ToList();
+            if (!selectorList.Any())
+                selectorList.Add(x => x?.ToString() ?? string.Empty);
+            return selectorList;
         }
     }
 }

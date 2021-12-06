@@ -158,9 +158,9 @@
                 .AddColumnsFromList(data, 0, 0, p => p.Prop1, p => p.Prop2)
                 .AddColumnsFromList(data, 2, 0, p => p.Prop1, p => p.Prop2)
                 .AddColumnsFromList(data, 4, 0, p => p.Prop1, p => p.Prop2)[1, 3]
-                .MergeNext(1, action: (x, y) => { })
+                .MergeNext(1, (_, _) => { })
                 .ToTable()[1, 3]
-                .MergeDown(1, action: (x, y) => { })
+                .MergeDown(1, (_, _) => { })
                 .ToTable()
                 .Build();
 
