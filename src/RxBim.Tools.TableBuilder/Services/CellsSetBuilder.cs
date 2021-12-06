@@ -50,7 +50,7 @@
 
             for (var i = 0; i < source.Count; i++)
             {
-                CellBuilder cell = ObjectForBuild.Cells.ElementAt(i);
+                CellBuilder cell = ObjectForBuild.Cells[i];
                 cell.SetContent(new TextCellContent(source[i]?.ToString() ?? string.Empty));
                 cellsAction?.Invoke(cell);
             }

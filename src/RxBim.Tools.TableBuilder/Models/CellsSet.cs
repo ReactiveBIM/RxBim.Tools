@@ -20,7 +20,7 @@
         /// <summary>
         /// Cells in this set.
         /// </summary>
-        public IEnumerable<Cell> Cells => _cells;
+        public IReadOnlyList<Cell> Cells => _cells;
 
         /// <inheritdoc />
         public override CellFormatStyle GetComposedFormat() => Format.Collect(Table.DefaultFormat);
