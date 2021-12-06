@@ -62,7 +62,7 @@
                 col < table.Columns.Count();
                 col++, scheduleCol++)
             {
-                var widthInFt = table.Columns.ElementAt(col).Width.MmToFt();
+                var widthInFt = table.Columns[col].Width.MmToFt();
                 headerData.SetColumnWidth(scheduleCol, widthInFt);
 
                 var scheduleRow = headerData.FirstRowNumber;
@@ -73,7 +73,7 @@
                 {
                     var cell = table[row, col];
 
-                    var rowHeight = table.Rows.ElementAt(row).Height;
+                    var rowHeight = table.Rows[row].Height;
                     const int defaultRowHeightInMm = 8;
                     rowHeight = rowHeight > 0 ? rowHeight.MmToFt() : defaultRowHeightInMm.MmToFt();
 

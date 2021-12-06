@@ -25,17 +25,17 @@
         /// <summary>
         /// Columns of this table.
         /// </summary>
-        public IEnumerable<Column> Columns => _columns;
+        public IReadOnlyList<Column> Columns => _columns;
 
         /// <summary>
         /// Rows of this table.
         /// </summary>
-        public IEnumerable<Row> Rows => _rows;
+        public IReadOnlyList<Row> Rows => _rows;
 
         /// <summary>
         /// Merge areas of table cells.
         /// </summary>
-        public IEnumerable<CellRange> MergeAreas => _mergeAreas;
+        public IReadOnlyList<CellRange> MergeAreas => _mergeAreas;
 
         /// <summary>
         /// The width of the table.
@@ -83,7 +83,7 @@
                 if (column >= _columns.Count)
                     throw new IndexOutOfRangeException($"Column {column} doesn't exist!");
 
-                return _rows[row].Cells.ElementAt(column);
+                return _rows[row].Cells[column];
             }
         }
 

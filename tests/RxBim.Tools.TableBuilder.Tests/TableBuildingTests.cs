@@ -139,7 +139,7 @@
                 .AllBeEquivalentTo(format);
             foreach (var x in table.Columns.First().Cells)
                 x.GetComposedFormat().Should().NotBeEquivalentTo(format);
-            foreach (var x in table.Columns.ElementAt(3).Cells)
+            foreach (var x in table.Columns[3].Cells)
                 x.GetComposedFormat().Should().NotBeEquivalentTo(format);
             foreach (var x in table.Columns)
                 x.GetComposedFormat().Should().NotBeEquivalentTo(format);
@@ -253,7 +253,7 @@
             var downMergedCell = ((CellBuilder)table.Columns.Last().Cells.First()).MergeDown().ObjectForBuild;
             downMergedCell.Row.GetIndex().Should().Be(1);
 
-            var leftMergedCell = ((CellBuilder)table.Rows.Last().Cells.ElementAt(1)).MergeLeft().ObjectForBuild;
+            var leftMergedCell = ((CellBuilder)table.Rows.Last().Cells[1]).MergeLeft().ObjectForBuild;
             leftMergedCell.GetColumnIndex().Should().Be(0);
         }
 

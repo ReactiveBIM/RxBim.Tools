@@ -166,7 +166,7 @@
             if (cellsSet.Cells.Count() <= cellIndex + step)
                 throw new ArgumentOutOfRangeException(nameof(step));
 
-            return new CellBuilder(cellsSet.Cells.ElementAt(cellIndex + step));
+            return new CellBuilder(cellsSet.Cells[cellIndex + step]);
         }
 
         private CellBuilder GetPreviousCellBuilder(CellsSet cellsSet, int step)
@@ -176,7 +176,7 @@
             if (cellIndex - step < 0)
                 throw new ArgumentOutOfRangeException(nameof(step));
 
-            return new CellBuilder(cellsSet.Cells.ElementAt(cellIndex - step));
+            return new CellBuilder(cellsSet.Cells[cellIndex - step]);
         }
 
         private CellBuilder MergeInternal(int count, Direction direction, Action<CellBuilder, CellBuilder>? action)
