@@ -112,7 +112,9 @@
                 .AddRow(x => x.FromList(data).SetHeight(rowHeight));
             table.Columns.Select(e => e.GetComposedFormat()).Should().AllBeEquivalentTo(format);
             table.Columns.Select(e => e.Width).Should().AllBeEquivalentTo(columnWidth);
-            table.Columns.SelectMany(e => e.Cells.Select(x => x.GetComposedFormat())).Should().AllBeEquivalentTo(format);
+            table.Columns.SelectMany(e => e.Cells.Select(x => x.GetComposedFormat()))
+                .Should()
+                .AllBeEquivalentTo(format);
             foreach (var x in table.Columns.First().Cells)
                 x.GetComposedFormat().Should().BeEquivalentTo(format);
             table.Rows.Select(e => e.Height).Should().AllBeEquivalentTo(rowHeight);
@@ -259,18 +261,17 @@
 
         private static CellFormatStyle GetTestCellFormat()
         {
-            var format = new CellFormatStyle
-            {
-                BackgroundColor = Color.Bisque,
-                ContentHorizontalAlignment = CellContentHorizontalAlignment.Left,
-                ContentVerticalAlignment = CellContentVerticalAlignment.Top
-            };
-            format.Borders.SetBorders(left: CellBorderType.Hidden, bottom: CellBorderType.Hidden);
-
-            format.TextFormat.Bold = true;
-            format.TextFormat.Italic = true;
-            format.TextFormat.TextColor = Color.Blue;
-            format.TextFormat.TextSize = 55;
+            var format = new CellFormatStyleBuilder()
+                .SetBackgroundColor(Color.Bisque)
+                .SetContentHorizontalAlignment(CellContentHorizontalAlignment.Left)
+                .SetContentVerticalAlignment(CellContentVerticalAlignment.Top)
+                .SetBorders(left: CellBorderType.Hidden, bottom: CellBorderType.Hidden)
+                .SetTextFormat(x => x
+                    .SetBold(true)
+                    .SetItalic(true)
+                    .SetTextColor(Color.Blue)
+                    .SetTextSize(55))
+                .Build();
 
             return format;
         }

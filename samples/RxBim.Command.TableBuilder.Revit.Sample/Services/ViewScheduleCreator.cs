@@ -47,16 +47,13 @@
             try
             {
                 var tableBuilder = new TableBuilder();
-                var baseFormat = new CellFormatStyle
-                {
-                    ContentHorizontalAlignment = CellContentHorizontalAlignment.Center,
-                    ContentVerticalAlignment = CellContentVerticalAlignment.Middle,
-                    TextFormat =
-                    {
-                        Italic = true,
-                        TextColor = Color.Gray
-                    }
-                };
+                var baseFormat = new CellFormatStyleBuilder()
+                    .SetContentHorizontalAlignment(CellContentHorizontalAlignment.Center)
+                    .SetContentVerticalAlignment(CellContentVerticalAlignment.Middle)
+                    .SetTextFormat(x => x
+                        .SetItalic(true)
+                        .SetTextColor(Color.Gray))
+                    .Build();
 
                 tableBuilder.SetTableStateStandardFormat(1)
                     .AddRow(row => row.SetHeight(20))
@@ -64,23 +61,13 @@
                     .AddColumnsFromList(Enumerable.Range(1, columnsCount), 0, 0)
                     .SetFormat(baseFormat)
                     .SetCellsFormat(
-                        new CellFormatStyle
-                            {
-                                ContentHorizontalAlignment = CellContentHorizontalAlignment.Center,
-                                ContentVerticalAlignment = CellContentVerticalAlignment.Middle,
-                                TextFormat =
-                                {
-                                    Bold = true,
-                                    TextColor = Color.Red
-                                },
-                                Borders =
-                                {
-                                    Bottom = CellBorderType.Bold,
-                                    Left = CellBorderType.Bold,
-                                    Right = CellBorderType.Bold,
-                                    Top = CellBorderType.Bold
-                                }
-                            },
+                        new CellFormatStyleBuilder()
+                            .SetBorders(
+                                bottom: CellBorderType.Bold,
+                                left: CellBorderType.Bold,
+                                right: CellBorderType.Bold,
+                                top: CellBorderType.Bold)
+                            .Build(),
                         0,
                         0,
                         columnsCount,
@@ -96,13 +83,14 @@
                 };
 
                 return _transactionService.RunInTransactionGroup(() =>
-                {
-                    return DeleteViewScheduleIfExists(name)
-                        .Map(() => table.Serialize(_tableSerializer, serializeParams))
-                        .Ensure(view => view is not null, "Error when created or serialized specification")
-                        .Tap(view => PutSpecificationOnSheet(view, _doc.ActiveView.Id, XYZ.Zero))
-                        .Tap(view => ApplyHeaderStyle(view, columnsCount, 30));
-                }, $"Created ViewSchedule: {name}");
+                    {
+                        return DeleteViewScheduleIfExists(name)
+                            .Map(() => table.Serialize(_tableSerializer, serializeParams))
+                            .Ensure(view => view is not null, "Error when created or serialized specification")
+                            .Tap(view => PutSpecificationOnSheet(view, _doc.ActiveView.Id, XYZ.Zero))
+                            .Tap(view => ApplyHeaderStyle(view, columnsCount, 30));
+                    },
+                    $"Created ViewSchedule: {name}");
             }
             catch (Exception e)
             {
@@ -115,7 +103,8 @@
             var existedScheduleId = _scopedCollector.GetFilteredElementCollector(ignoreScope: true)
                 .WhereElementIsNotElementType()
                 .OfType<ViewSchedule>()
-                .FirstOrDefault(x => x.Name.Contains(name))?.Id;
+                .FirstOrDefault(x => x.Name.Contains(name))
+                ?.Id;
 
             if (existedScheduleId is null)
                 return Result.Success();
@@ -144,11 +133,12 @@
             style.IsFontItalic = true;
 
             return _transactionService.RunInTransaction(() =>
-            {
-                for (var i = 0; i < columnsCount; i++)
-                    headerData.SetColumnWidth(0, columnWidth.MmToFt());
-                headerData.SetCellStyle(headerData.FirstRowNumber, headerData.FirstColumnNumber, style);
-            }, nameof(ApplyHeaderStyle));
+                {
+                    for (var i = 0; i < columnsCount; i++)
+                        headerData.SetColumnWidth(0, columnWidth.MmToFt());
+                    headerData.SetCellStyle(headerData.FirstRowNumber, headerData.FirstColumnNumber, style);
+                },
+                nameof(ApplyHeaderStyle));
         }
     }
 }

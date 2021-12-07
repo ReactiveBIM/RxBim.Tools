@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Extensions;
     using Models;
     using Models.Contents;
     using Models.Styles;
@@ -91,7 +90,7 @@
             {
                 foreach (var cell in column.Cells.Skip(startRow).Take(rangeHeight))
                 {
-                    cell.Format.CopyProperties(formatStyle);
+                    new CellFormatStyleBuilder(cell.Format).SetFromFormat(formatStyle);
                 }
             }
 
@@ -108,16 +107,20 @@
         /// </remarks>
         public TableBuilder SetTableStateStandardFormat(int headerRowsCount)
         {
-            var boldFormat = new CellFormatStyle { ContentVerticalAlignment = CellContentVerticalAlignment.Middle };
-            boldFormat.Borders.SetAllBorders(CellBorderType.Bold);
+            var boldFormat = new CellFormatStyleBuilder()
+                .SetContentVerticalAlignment(CellContentVerticalAlignment.Middle)
+                .SetAllBorders(CellBorderType.Bold)
+                .Build();
 
-            var rowFormat = new CellFormatStyle { ContentVerticalAlignment = CellContentVerticalAlignment.Middle };
-            rowFormat.Borders
-                .SetBorders(CellBorderType.Thin, CellBorderType.Thin, CellBorderType.Bold, CellBorderType.Bold);
+            var rowFormat = new CellFormatStyleBuilder()
+                .SetContentVerticalAlignment(CellContentVerticalAlignment.Middle)
+                .SetBorders(CellBorderType.Thin, CellBorderType.Thin, CellBorderType.Bold, CellBorderType.Bold)
+                .Build();
 
-            var lastRowFormat = new CellFormatStyle { ContentVerticalAlignment = CellContentVerticalAlignment.Middle };
-            lastRowFormat.Borders
-                .SetBorders(CellBorderType.Thin, CellBorderType.Bold, CellBorderType.Bold, CellBorderType.Bold);
+            var lastRowFormat = new CellFormatStyleBuilder()
+                .SetContentVerticalAlignment(CellContentVerticalAlignment.Middle)
+                .SetBorders(CellBorderType.Thin, CellBorderType.Bold, CellBorderType.Bold, CellBorderType.Bold)
+                .Build();
 
             SetFormat(boldFormat);
 

@@ -154,7 +154,7 @@
         /// <param name="format">Format value.</param>
         public CellBuilder SetFormat(CellFormatStyle format)
         {
-            SetToMergedArea(cell => cell.Format.CopyProperties(format));
+            SetToMergedArea(cell => new CellFormatStyleBuilder(cell.Format).SetFromFormat(format));
             return this;
         }
 

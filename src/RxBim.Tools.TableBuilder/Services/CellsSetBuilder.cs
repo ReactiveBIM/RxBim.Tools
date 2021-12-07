@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Extensions;
     using Models;
     using Models.Contents;
     using Models.Styles;
@@ -65,7 +64,7 @@
         /// <param name="setForInnerCells">Sets this format for all inner cells.</param>
         public TBuilder SetFormat(CellFormatStyle format, bool setForInnerCells = false)
         {
-            ObjectForBuild.Format.CopyProperties(format);
+            new CellFormatStyleBuilder(ObjectForBuild.Format).SetFromFormat(format);
             if (setForInnerCells)
             {
                 foreach (var cellBuilder in ToCells())

@@ -3,7 +3,7 @@
     /// <summary>
     /// Margins size.
     /// </summary>
-    public struct CellContentMargins
+    public class CellContentMargins
     {
         /// <summary>
         /// Top margin size.

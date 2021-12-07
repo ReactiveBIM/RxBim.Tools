@@ -8,6 +8,13 @@
     public class CellFormatStyle
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="CellFormatStyle"/> class.
+        /// </summary>
+        internal CellFormatStyle()
+        {
+        }
+
+        /// <summary>
         /// Cell text format.
         /// </summary>
         public CellTextFormatStyle TextFormat { get; } = new ();
@@ -20,7 +27,7 @@
         /// <summary>
         /// Margins from borders to content.
         /// </summary>
-        public CellContentMargins? ContentMargins { get; set; }
+        public CellContentMargins ContentMargins { get; } = new ();
 
         /// <summary>
         /// The background color for a cell.

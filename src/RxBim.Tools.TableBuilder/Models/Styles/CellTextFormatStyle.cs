@@ -25,7 +25,7 @@
         /// <summary>
         /// The font size of the text.
         /// </summary>
-        public int? TextSize { get; set; }
+        public double? TextSize { get; set; }
 
         /// <summary>
         /// Use word wrap for long text.
