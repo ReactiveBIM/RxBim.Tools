@@ -10,7 +10,7 @@
     using TableBuilder.Models.Styles;
 
     /// <inheritdoc />
-    public class ViewScheduleTableSerializer<T> : ITableSerializer<ViewSchedule>
+    public class ViewScheduleTableSerializer<T> : ITableSerializer<ViewScheduleTableSerializerParameters, ViewSchedule>
         where T : ViewSchedule
     {
         private const double FontRatio = 3.77951502;
@@ -26,12 +26,8 @@
         }
 
         /// <inheritdoc />
-        public ViewSchedule Serialize(Table table, params object[] parameters)
+        public ViewSchedule Serialize(Table table, ViewScheduleTableSerializerParameters serializerParameters)
         {
-            var serializerParameters =
-                parameters[0] as ViewScheduleTableSerializerParameters ??
-                throw new ArgumentException("Serialization parameters must be specified.", nameof(parameters));
-
             using var t = new Transaction(_document);
             t.Start(nameof(ViewScheduleTableSerializer<T>));
 

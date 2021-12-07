@@ -19,7 +19,7 @@
     {
         private readonly IScopedElementsCollector _scopedCollector;
         private readonly ITransactionService _transactionService;
-        private readonly ITableSerializer<ViewSchedule> _tableSerializer;
+        private readonly ITableSerializer<ViewScheduleTableSerializerParameters, ViewSchedule> _tableSerializer;
         private readonly Document _doc;
 
         /// <summary>
@@ -32,7 +32,7 @@
         public ViewScheduleCreator(
             IScopedElementsCollector scopedCollector,
             ITransactionService transactionService,
-            ITableSerializer<ViewSchedule> tableSerializer,
+            ITableSerializer<ViewScheduleTableSerializerParameters, ViewSchedule> tableSerializer,
             Document doc)
         {
             _scopedCollector = scopedCollector;

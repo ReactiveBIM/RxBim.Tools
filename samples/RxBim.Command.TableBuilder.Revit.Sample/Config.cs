@@ -17,7 +17,8 @@
             container.AddRevitHelpers();
 
             container.AddTransient<IViewScheduleCreator, ViewScheduleCreator>()
-                .AddTransient<ITableSerializer<ViewSchedule>, ViewScheduleTableSerializer<ViewSchedule>>();
+                .AddTransient<ITableSerializer<ViewScheduleTableSerializerParameters, ViewSchedule>,
+                    ViewScheduleTableSerializer<ViewSchedule>>();
         }
     }
 }
