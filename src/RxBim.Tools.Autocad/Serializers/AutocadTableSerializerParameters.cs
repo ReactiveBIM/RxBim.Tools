@@ -18,6 +18,11 @@ namespace RxBim.Tools.Autocad.Serializers
         public ObjectId TableStyleId { get; set; }
 
         /// <summary>
+        /// The text style identifier for a table text.
+        /// </summary>
+        public ObjectId TextStyleId { get; set; }
+
+        /// <summary>
         /// The drawing database into which a table is inserted.
         /// </summary>
         public Database? TargetDatabase { get; set; }

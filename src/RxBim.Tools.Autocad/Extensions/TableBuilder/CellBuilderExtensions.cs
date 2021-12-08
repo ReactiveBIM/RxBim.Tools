@@ -16,7 +16,12 @@
         /// <param name="builder"><see cref="CellBuilder"/> object.</param>
         /// <param name="text">Content text value.</param>
         /// <param name="angle">Text rotation angle.</param>
-        public static CellBuilder SetText(this CellBuilder builder, string text, RotationAngle angle)
+        /// <param name="adjustCellSize"><see cref="AutocadTextCellContent.AdjustCellSize"/> property value.</param>
+        public static CellBuilder SetAcadTableText(
+            this CellBuilder builder,
+            string text,
+            RotationAngle angle = RotationAngle.Degrees000,
+            bool adjustCellSize = false)
         {
             var content = new AutocadTextCellContent(text)
             {
@@ -28,7 +33,8 @@
                     RotationAngle.Degrees180 => Math.PI,
                     RotationAngle.Degrees270 => Math.PI * 3 / 2,
                     _ => throw new ArgumentOutOfRangeException(nameof(angle), angle, null)
-                }
+                },
+                AdjustCellSize = adjustCellSize
             };
             return builder.SetContent(content);
         }

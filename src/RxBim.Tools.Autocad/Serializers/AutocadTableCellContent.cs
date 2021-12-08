@@ -17,6 +17,6 @@
         /// <summary>
         /// The rotation angle of the content in radians.
         /// </summary>
-        public double? Rotation { get; set; }
+        public double Rotation { get; set; }
     }
 }

@@ -10,9 +10,10 @@
         /// <inheritdoc />
         public void Configure(IContainer container)
         {
-            container.AddAutocadHelpers();
-            container.AddSingleton<ITableDataService, TableDataService>();
-            container.AddTableSerializer();
+            container
+                .AddAutocadHelpers()
+                .AddTableSerializer()
+                .AddSingleton<ITableDataService, TableDataService>();
         }
     }
 }

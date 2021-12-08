@@ -28,13 +28,12 @@
             }
 
             acadTable.UnmergeCells(acadTable.Cells);
-            acadTable.FlowDirection = FlowDirection.TopToBottom;
 
             foreach (var row in acadTable.Rows)
-                row.IsMergeAllEnabled = null;
+                row.IsMergeAllEnabled = false;
 
             foreach (var column in acadTable.Columns)
-                column.IsMergeAllEnabled = null;
+                column.IsMergeAllEnabled = false;
         }
     }
 }

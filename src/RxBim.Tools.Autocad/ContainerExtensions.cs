@@ -8,24 +8,25 @@
     using TableBuilder.Abstractions;
 
     /// <summary>
-    /// Расширения для контейнера
+    /// Extensions for <see cref="IContainer"/>.
     /// </summary>
     public static class ContainerExtensions
     {
         /// <summary>
-        /// Добавляет сервисы работы с AutoCAD в контейнер
+        /// Adds AutoCAD services to the container.
         /// </summary>
-        /// <param name="container">Контейнер</param>
-        public static void AddAutocadHelpers(this IContainer container)
+        /// <param name="container"><see cref="IContainer"/> object.</param>
+        public static IContainer AddAutocadHelpers(this IContainer container)
         {
             container.AddSingleton<IObjectsSelectionService, ObjectsSelectionService>();
             container.AddSingleton<ICommandLineService, CommandLineService>();
+            return container;
         }
 
         /// <summary>
-        /// Добавляет сериализатор таблицы в автокад
+        /// Adds table serializer to AutoCAD.
         /// </summary>
-        /// <param name="container">Контейнер</param>
+        /// <param name="container"><see cref="IContainer"/> object.</param>
         public static IContainer AddTableSerializer(this IContainer container)
         {
             container.AddSingleton<ITableSerializer<AutocadTableSerializerParameters, Table>, AutocadTableSerializer>();

@@ -4,11 +4,11 @@
     using System.Linq;
     using Autodesk.AutoCAD.Colors;
     using Autodesk.AutoCAD.DatabaseServices;
-    using Extensions;
     using Extensions.TableBuilder;
     using TableBuilder.Abstractions;
     using TableBuilder.Models.Contents;
     using TableBuilder.Models.Styles;
+    using BuilderCell = TableBuilder.Models.Cell;
 
     /// <inheritdoc />
     public class AutocadTableSerializer : ITableSerializer<AutocadTableSerializerParameters, Table>
@@ -19,12 +19,14 @@
             AutocadTableSerializerParameters serializerParameters)
         {
             var acadTable = new Table();
-
-            if (serializerParameters.TargetDatabase != null)
-                acadTable.SetDatabaseDefaults(serializerParameters.TargetDatabase);
-
-            if (!serializerParameters.TableStyleId.IsNull)
-                acadTable.TableStyle = serializerParameters.TableStyleId;
+            var database = serializerParameters.TargetDatabase ?? HostApplicationServices.WorkingDatabase;
+            acadTable.SetDatabaseDefaults(database);
+            acadTable.TableStyle = serializerParameters.TableStyleId.IsNull
+                ? database.Tablestyle
+                : serializerParameters.TableStyleId;
+            acadTable.Cells.TextStyleId = serializerParameters.TextStyleId.IsNull
+                ? database.Textstyle
+                : serializerParameters.TextStyleId;
 
             var numRows = tableData.Rows.Count();
             var numCols = tableData.Columns.Count();
@@ -35,7 +37,7 @@
             {
                 var acadCol = acadTable.Columns[columnIndex];
                 var width = tableData.Columns[columnIndex].Width;
-                if (!width.IsZero())
+                if (width > 0)
                     acadCol.Width = width;
 
                 for (var rowIndex = 0; rowIndex < numRows; rowIndex++)
@@ -45,21 +47,22 @@
                     var cellData = tableData[rowIndex, columnIndex];
 
                     var rowHeight = tableData.Rows[rowIndex].Height;
-                    rowHeight = rowHeight.IsZero() ? serializerParameters.DefaultRowHeight : rowHeight;
+                    rowHeight = rowHeight > 0 ? rowHeight : serializerParameters.DefaultRowHeight;
                     acadRow.Height = rowHeight;
 
-                    SetCellStyle(acadCell, cellData.GetComposedFormat(), serializerParameters);
+                    var format = cellData.GetComposedFormat();
+                    SetCellStyle(acadCell, format, serializerParameters);
 
                     switch (cellData.Content)
                     {
                         case AutocadTextCellContent textCellContent:
-                            SetText(acadCell, textCellContent.Value, textCellContent.Rotation);
+                            SetAcadText(acadCell, format, textCellContent);
                             break;
                         case BlockCellContent blockData:
                             SetBlock(acadCell, blockData);
                             break;
                         case TextCellContent textData:
-                            SetText(acadCell, textData.Value, null);
+                            SetText(acadCell, textData.Value);
                             break;
                         case CellContent<object> valueData:
                             acadCell.Value = valueData.Value;
@@ -86,14 +89,36 @@
             return acadTable;
         }
 
-        private void SetText(Cell cell, string text, double? rotation)
+        private void SetAcadText(Cell cell, CellFormatStyle format, AutocadTextCellContent content)
+        {
+            if (string.IsNullOrEmpty(content.Value))
+                return;
+            cell.TextString = content.Value;
+
+            cell.Contents.First().Rotation = content.Rotation;
+
+            if (content.AdjustCellSize)
+            {
+                var (length, height) =
+                    content.Value.GetAutocadTextSize(content.Rotation, cell.TextStyleId, cell.TextHeight);
+
+                var minColumnWidthForText = length + format.GetContentHorizontalMargins() * 2 ?? 0;
+                var column = cell.ParentTable.Columns[cell.Column];
+                if (column.Width < minColumnWidthForText)
+                    column.Width = Math.Ceiling(minColumnWidthForText);
+
+                var minRowHeightForText = height + format.GetContentVerticalMargins() * 2 ?? 0;
+                var row = cell.ParentTable.Rows[cell.Row];
+                if (row.Height < minRowHeightForText)
+                    row.Height = Math.Ceiling(minRowHeightForText);
+            }
+        }
+
+        private void SetText(Cell cell, string text)
         {
             if (string.IsNullOrEmpty(text))
                 return;
             cell.TextString = text;
-
-            if (rotation != null)
-                cell.Contents.First().Rotation = rotation.Value;
         }
 
         private void SetBlock(Cell cell, BlockCellContent blockData)
@@ -109,8 +134,7 @@
             if (!blockData.AutoScale && blockData.Scale > 0)
                 blockContent.Scale = blockData.Scale;
 
-            if (blockData.Rotation.HasValue)
-                blockContent.Rotation = blockData.Rotation.Value;
+            blockContent.Rotation = blockData.Rotation;
         }
 
         private void SetCellStyle(Cell cell, CellFormatStyle format, AutocadTableSerializerParameters parameters)

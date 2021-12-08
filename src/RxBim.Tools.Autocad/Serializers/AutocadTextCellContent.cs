@@ -10,5 +10,10 @@
             : base(value)
         {
         }
+
+        /// <summary>
+        /// Adjust the cell size to fit the text completely.
+        /// </summary>
+        public bool AdjustCellSize { get; set; }
     }
 }
