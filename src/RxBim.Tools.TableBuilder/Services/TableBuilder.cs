@@ -72,6 +72,16 @@
         }
 
         /// <summary>
+        /// Sets format for the table.
+        /// </summary>
+        /// <param name="action">Format building action.</param>
+        public TableBuilder SetFormat(Action<CellFormatStyleBuilder> action)
+        {
+            action(new CellFormatStyleBuilder(Table.DefaultFormat));
+            return this;
+        }
+
+        /// <summary>
         /// Sets the format for a range of cells.
         /// </summary>
         /// <param name="formatStyle">Format value.</param>

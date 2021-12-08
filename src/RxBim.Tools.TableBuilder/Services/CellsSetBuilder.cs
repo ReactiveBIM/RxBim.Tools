@@ -61,16 +61,19 @@
         /// Sets format for the cells set.
         /// </summary>
         /// <param name="format">Format value.</param>
-        /// <param name="setForInnerCells">Sets this format for all inner cells.</param>
-        public TBuilder SetFormat(CellFormatStyle format, bool setForInnerCells = false)
+        public TBuilder SetFormat(CellFormatStyle format)
         {
             new CellFormatStyleBuilder(ObjectForBuild.Format).SetFromFormat(format);
-            if (setForInnerCells)
-            {
-                foreach (var cellBuilder in ToCells())
-                    cellBuilder.SetFormat(format);
-            }
+            return (TBuilder)this;
+        }
 
+        /// <summary>
+        /// Sets format for the cells set.
+        /// </summary>
+        /// <param name="action">Format building action.</param>
+        public TBuilder SetFormat(Action<CellFormatStyleBuilder> action)
+        {
+            action(new CellFormatStyleBuilder(ObjectForBuild.Format));
             return (TBuilder)this;
         }
     }

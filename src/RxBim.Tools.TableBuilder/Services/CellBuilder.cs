@@ -158,6 +158,16 @@
             return this;
         }
 
+        /// <summary>
+        /// Sets format for the cell.
+        /// </summary>
+        /// <param name="action">Format building action.</param>
+        public CellBuilder SetFormat(Action<CellFormatStyleBuilder> action)
+        {
+            SetToMergedArea(cell => action(new CellFormatStyleBuilder(cell.Format)));
+            return this;
+        }
+
         private CellBuilder GetNextCellBuilder(Direction direction, int step)
         {
             var cellsSet = direction == Direction.Next ? (CellsSet)ObjectForBuild.Row : ObjectForBuild.Column;
