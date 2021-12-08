@@ -129,16 +129,6 @@
         }
 
         /// <summary>
-        /// Sets <see cref="CellFormatStyle.ContentOrientation"/> property.
-        /// </summary>
-        /// <param name="orientation">Property value.</param>
-        public CellFormatStyleBuilder SetContentOrientation(CellContentOrientation? orientation = null)
-        {
-            _format.ContentOrientation = orientation;
-            return this;
-        }
-
-        /// <summary>
         /// Sets properties from another format.
         /// </summary>
         /// <param name="format">Another format.</param>
@@ -156,7 +146,6 @@
                     format.ContentMargins.Bottom ?? additionalFormat?.ContentMargins.Bottom,
                     format.ContentMargins.Left ?? additionalFormat?.ContentMargins.Left,
                     format.ContentMargins.Right ?? additionalFormat?.ContentMargins.Right)
-                .SetContentOrientation(format.ContentOrientation ?? additionalFormat?.ContentOrientation)
                 .SetContentHorizontalAlignment(
                     format.ContentHorizontalAlignment ?? additionalFormat?.ContentHorizontalAlignment)
                 .SetContentVerticalAlignment(

@@ -43,10 +43,5 @@
         /// The vertical alignment of the contents of a cell.
         /// </summary>
         public CellContentVerticalAlignment? ContentVerticalAlignment { get; set; }
-
-        /// <summary>
-        /// Cell content orientation.
-        /// </summary>
-        public CellContentOrientation? ContentOrientation { get; set; }
     }
 }
