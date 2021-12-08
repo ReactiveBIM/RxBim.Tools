@@ -28,7 +28,7 @@
         /// <param name="container">Контейнер</param>
         public static IContainer AddTableSerializer(this IContainer container)
         {
-            container.AddSingleton<ITableSerializer<Table>, TableSerializer>();
+            container.AddSingleton<ITableSerializer<AutocadTableSerializerParameters, Table>, AutocadTableSerializer>();
             return container;
         }
     }

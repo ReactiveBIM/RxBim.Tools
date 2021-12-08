@@ -5,22 +5,12 @@ namespace RxBim.Tools.Autocad.Serializers
     /// <summary>
     /// Serialization parameters to AutoCAD table
     /// </summary>
-    public class TableSerializerParameters
+    public class AutocadTableSerializerParameters
     {
-        /// <summary>
-        /// If true, the first row of a table is used as the title of a table.
-        /// </summary>
-        public bool HasTitle { get; set; }
-
-        /// <summary>
-        /// The number of header rows in a table.
-        /// </summary>
-        public int RowHeadersCount { get; set; } = 1;
-
         /// <summary>
         /// The default height of a table rows.
         /// </summary>
-        public double RowHeightDefault { get; set; } = 8;
+        public double DefaultRowHeight { get; set; } = 8;
 
         /// <summary>
         /// The style identifier for a table.

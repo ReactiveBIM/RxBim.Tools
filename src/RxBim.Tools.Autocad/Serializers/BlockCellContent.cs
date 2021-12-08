@@ -1,15 +1,14 @@
 namespace RxBim.Tools.Autocad.Serializers
 {
     using Autodesk.AutoCAD.DatabaseServices;
-    using TableBuilder.Models.Contents;
 
     /// <summary>
     /// Data to insert a block into a cell.
     /// </summary>
-    public class BlockCellData : CellContent<ObjectId>
+    public class BlockCellContent : AutocadTableCellContent<ObjectId>
     {
         /// <inheritdoc />
-        public BlockCellData(ObjectId value)
+        public BlockCellContent(ObjectId value)
             : base(value)
         {
         }
@@ -23,10 +22,5 @@ namespace RxBim.Tools.Autocad.Serializers
         /// Scale value.
         /// </summary>
         public double Scale { get; set; }
-
-        /// <summary>
-        /// Rotation angle in radians.
-        /// </summary>
-        public double Rotation { get; set; }
     }
 }

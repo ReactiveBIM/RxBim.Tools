@@ -20,20 +20,20 @@
     [RxBimCommandClass("RxBimTableSample")]
     public class Command : RxBimCommand
     {
-        private IObjectsSelectionService? _selectionService;
-        private ICommandLineService? _commandLineService;
+        private IObjectsSelectionService _selectionService;
+        private ICommandLineService _commandLineService;
 
         /// <summary>
         /// Command execution
         /// </summary>
         /// <param name="tableDataService"><see cref="ITableDataService"/> object.</param>
-        /// <param name="tableSerializer"><see cref="ITableSerializer{T}"/> object.</param>
+        /// <param name="tableSerializer"><see cref="ITableSerializer{T1, T2}"/> object.</param>
         /// <param name="selectionService"><see cref="IObjectsSelectionService"/> object.</param>
         /// <param name="commandLineService"><see cref="ICommandLineService"/> object.</param>
         /// <param name="doc"><see cref="Document"/> object.</param>>
         public PluginResult ExecuteCommand(
             ITableDataService tableDataService,
-            ITableSerializer<Table> tableSerializer,
+            ITableSerializer<AutocadTableSerializerParameters, Table> tableSerializer,
             IObjectsSelectionService selectionService,
             ICommandLineService commandLineService,
             Document doc)
@@ -41,7 +41,7 @@
             _commandLineService = commandLineService;
             _selectionService = selectionService;
 
-            var parameters = new TableSerializerParameters
+            var parameters = new AutocadTableSerializerParameters
             {
                 TargetDatabase = doc.Database
             };

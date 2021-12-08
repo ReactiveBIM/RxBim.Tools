@@ -6,8 +6,8 @@
     using Autodesk.AutoCAD.DatabaseServices;
     using CSharpFunctionalExtensions;
     using Extensions;
+    using Extensions.TableBuilder;
     using Serializers;
-    using TableBuilder.Extensions;
     using TableBuilder.Models.Styles;
     using TableBuilder.Services;
     using Table = TableBuilder.Models.Table;
@@ -20,28 +20,10 @@
         {
             var tableBuilder = new TableBuilder();
 
-            tableBuilder.AddRow();
-            tableBuilder.AddRow(r => r.SetHeight(15));
-
-            var cellFormat = GetDefaultFormat();
-            cellFormat.Borders.SetBorders(left: CellBorderType.Bold, right: CellBorderType.Bold);
-            tableBuilder.AddColumn(c =>
-                c.SetWidth(60).SetFormat(cellFormat).ToCells().ElementAt(1).SetText("Object class"));
-            tableBuilder.AddColumn(c => c.SetWidth(80)
-                .SetFormat(cellFormat)
-                .ToCells()
-                .ElementAt(1)
-                .SetText("Layer"));
-
-            cellFormat.ContentHorizontalAlignment = CellContentHorizontalAlignment.Center;
-            tableBuilder.AddColumn(c => c.SetWidth(50).SetFormat(cellFormat).ToCells().ElementAt(1).SetText("Id"));
-            tableBuilder.AddColumn(c =>
-                c.SetWidth(40).SetFormat(cellFormat).ToCells().ElementAt(1).SetText("Designation"));
-
-            var titleFormat = GetDefaultFormat();
-            titleFormat.ContentHorizontalAlignment = CellContentHorizontalAlignment.Center;
-            titleFormat.Borders
-                .SetBorders(CellBorderType.Hidden, CellBorderType.Bold, CellBorderType.Hidden, CellBorderType.Hidden);
+            var titleFormat = new CellFormatStyleBuilder()
+                .SetContentHorizontalAlignment(CellContentHorizontalAlignment.Center)
+                .SetBorders(CellBorderType.Hidden, CellBorderType.Bold, CellBorderType.Hidden, CellBorderType.Hidden)
+                .Build();
 
             tableBuilder
                 .ToRows()
@@ -52,9 +34,59 @@
                 .SetText("Selected object data")
                 .SetFormat(titleFormat);
 
-            var headerFormat = GetDefaultFormat();
-            headerFormat.ContentHorizontalAlignment = CellContentHorizontalAlignment.Center;
-            headerFormat.Borders.SetBorders(CellBorderType.Bold);
+            tableBuilder
+                .AddColumn(x => x.SetWidth(60))
+                .AddColumn(x => x.SetWidth(80))
+                .AddColumn(x => x.SetWidth(50))
+                .AddColumn(x => x.SetWidth(40))
+                .AddRow(r => r.MergeRow().SetFormat().ToCells().First().SetText("Selected object data"))
+                .AddRow(r => r.SetHeight(15)
+                    .ToCells()
+                    .First()
+                    .SetText("Object class", RotationAngle.Degrees090)
+                    .Next()
+                    .SetText("Layer", RotationAngle.Degrees090)
+                    .Next()
+                    .SetText("Id", RotationAngle.Degrees090)
+                    .Next()
+                    .SetText("Designation", RotationAngle.Degrees090));
+
+            var cellFormat = GetDefaultFormat();
+            cellFormat.Borders.Left = CellBorderType.Bold;
+            cellFormat.Borders.Right = CellBorderType.Bold;
+            tableBuilder.AddColumn(c =>
+                c.SetWidth(60)
+                    .SetFormat(cellFormat)
+                    .ToCells()
+                    .ElementAt(1)
+                    .SetText("Object class", RotationAngle.Degrees090));
+
+            tableBuilder.AddColumn(c => c.SetWidth(80)
+                .SetFormat(cellFormat)
+                .ToCells()
+                .ElementAt(1)
+                .SetText("Layer", RotationAngle.Degrees090));
+
+            cellFormat.ContentHorizontalAlignment = CellContentHorizontalAlignment.Center;
+            tableBuilder.AddColumn(c =>
+                c.SetWidth(50)
+                    .SetFormat(cellFormat)
+                    .ToCells()
+                    .ElementAt(1)
+                    .SetText("Id", RotationAngle.Degrees090));
+
+            tableBuilder.AddColumn(c =>
+                c.SetWidth(40)
+                    .SetFormat(cellFormat)
+                    .ToCells()
+                    .ElementAt(1)
+                    .SetText("Designation", RotationAngle.Degrees090));
+
+            var headerFormat = new CellFormatStyleBuilder()
+                .SetContentHorizontalAlignment(CellContentHorizontalAlignment.Center)
+                .SetAllBorders(CellBorderType.Bold)
+                .Build();
+
             foreach (var cellBuilder in tableBuilder.ToRows().ElementAt(1).ToCells())
                 cellBuilder.SetFormat(headerFormat);
 
@@ -73,9 +105,7 @@
                         .SetText(entity.Id.ToString());
 
                     if (entity is BlockReference blRef)
-                    {
-                        row.ToCells().ElementAt(3).SetContent(new BlockCellData(blRef.DynamicBlockTableRecord));
-                    }
+                        row.ToCells().ElementAt(3).SetContent(new BlockCellContent(blRef.DynamicBlockTableRecord));
                 });
             }
 
@@ -83,7 +113,7 @@
                 .ElementAt(1)
                 .ToCells()
                 .ToList()
-                .ForEach(c => c.ObjectForBuild.Format.Borders.SetBorders(CellBorderType.Bold));
+                .ForEach(c => new CellFormatStyleBuilder(c.ObjectForBuild.Format).SetAllBorders(CellBorderType.Bold));
 
             tableBuilder.ToRows()
                 .Last()
@@ -96,13 +126,10 @@
 
         private CellFormatStyle GetDefaultFormat()
         {
-            return new CellFormatStyle
-            {
-                BackgroundColor = null,
-                TextFormat = { TextColor = null, FontFamily = string.Empty },
-                ContentHorizontalAlignment = CellContentHorizontalAlignment.Left,
-                ContentVerticalAlignment = CellContentVerticalAlignment.Middle
-            };
+            return new CellFormatStyleBuilder()
+                .SetContentHorizontalAlignment(CellContentHorizontalAlignment.Left)
+                .SetContentVerticalAlignment(CellContentVerticalAlignment.Middle)
+                .Build();
         }
     }
 }
