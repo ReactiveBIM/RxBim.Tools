@@ -1,16 +1,16 @@
-﻿namespace RxBim.Tools.Autocad.Table.Sample.Services
+﻿namespace RxBim.Command.TableBuilder.Autocad.Sample.Services
 {
     using System.Collections.Generic;
     using System.Linq;
     using Abstractions;
     using Autodesk.AutoCAD.DatabaseServices;
     using CSharpFunctionalExtensions;
-    using Extensions;
-    using Extensions.TableBuilder;
-    using Serializers;
-    using TableBuilder.Models.Styles;
-    using TableBuilder.Services;
-    using Table = TableBuilder.Models.Table;
+    using Tools.Autocad.Extensions;
+    using Tools.Autocad.Extensions.TableBuilder;
+    using Tools.Autocad.Serializers;
+    using Tools.TableBuilder.Models.Styles;
+    using Tools.TableBuilder.Services;
+    using Table = Tools.TableBuilder.Models.Table;
 
     /// <inheritdoc />
     public class TableDataService : ITableDataService

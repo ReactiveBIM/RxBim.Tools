@@ -1,19 +1,19 @@
-﻿namespace RxBim.Tools.Autocad.Table.Sample.Commands
+﻿namespace RxBim.Command.TableBuilder.Autocad.Sample.Commands
 {
     using System.Collections.Generic;
     using System.Linq;
     using Abstractions;
-    using Autocad.Abstractions;
     using Autodesk.AutoCAD.ApplicationServices;
     using Autodesk.AutoCAD.DatabaseServices;
     using Autodesk.AutoCAD.EditorInput;
     using CSharpFunctionalExtensions;
-    using Extensions;
     using RxBim.Command.Autocad;
-    using Serializers;
     using Shared;
-    using TableBuilder.Abstractions;
-    using TableBuilder.Extensions;
+    using Tools.Autocad.Abstractions;
+    using Tools.Autocad.Extensions;
+    using Tools.Autocad.Serializers;
+    using Tools.TableBuilder.Abstractions;
+    using Tools.TableBuilder.Extensions;
     using Result = CSharpFunctionalExtensions.Result;
 
     /// <inheritdoc />

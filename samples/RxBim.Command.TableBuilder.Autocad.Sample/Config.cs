@@ -1,8 +1,9 @@
-﻿namespace RxBim.Tools.Autocad.Table.Sample
+﻿namespace RxBim.Command.TableBuilder.Autocad.Sample
 {
     using Abstractions;
     using Di;
     using Services;
+    using Tools.Autocad;
 
     /// <inheritdoc />
     public class Config : ICommandConfiguration

@@ -1,9 +1,9 @@
-﻿namespace RxBim.Tools.Autocad.Table.Sample.Abstractions
+﻿namespace RxBim.Command.TableBuilder.Autocad.Sample.Abstractions
 {
     using System.Collections.Generic;
     using Autodesk.AutoCAD.DatabaseServices;
     using CSharpFunctionalExtensions;
-    using Table = TableBuilder.Models.Table;
+    using Table = Tools.TableBuilder.Models.Table;
 
     /// <summary>
     /// Data service for a table.

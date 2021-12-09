@@ -1,9 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net472</TargetFramework>        
-    </PropertyGroup>
-
     <ItemGroup>
         <ProjectReference Include="..\..\src\RxBim.Tools.Autocad\RxBim.Tools.Autocad.csproj" />
     </ItemGroup>
