@@ -24,7 +24,7 @@
         /// <summary>
         /// The table to be built.
         /// </summary>
-        internal Table Table { get; }
+        private Table Table { get; }
 
         /// <summary>
         /// Returns the builder of a table cell by row and column index.
