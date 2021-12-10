@@ -1,11 +1,11 @@
-﻿namespace RxBim.Tools.Autocad
+﻿namespace RxBim.Tools.Autocad.Extensions
 {
     using Abstractions;
     using Autodesk.AutoCAD.DatabaseServices;
     using Di;
     using Serializers;
     using Services;
-    using TableBuilder.Abstractions;
+    using Tools.TableBuilder.Abstractions;
 
     /// <summary>
     /// Extensions for <see cref="IContainer"/>.
@@ -24,10 +24,10 @@
         }
 
         /// <summary>
-        /// Adds table serializer to AutoCAD.
+        /// Adds table serializer to AutoCAD table.
         /// </summary>
         /// <param name="container"><see cref="IContainer"/> object.</param>
-        public static IContainer AddTableSerializer(this IContainer container)
+        public static IContainer AddAutocadTableSerializer(this IContainer container)
         {
             container.AddSingleton<ITableSerializer<AutocadTableSerializerParameters, Table>, AutocadTableSerializer>();
             return container;

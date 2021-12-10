@@ -24,9 +24,8 @@
             acadTable.TableStyle = serializerParameters.TableStyleId.IsNull
                 ? database.Tablestyle
                 : serializerParameters.TableStyleId;
-            acadTable.Cells.TextStyleId = serializerParameters.TextStyleId.IsNull
-                ? database.Textstyle
-                : serializerParameters.TextStyleId;
+            if (!serializerParameters.TextStyleId.IsNull)
+                acadTable.Cells.TextStyleId = serializerParameters.TextStyleId;
 
             var numRows = tableData.Rows.Count();
             var numCols = tableData.Columns.Count();
