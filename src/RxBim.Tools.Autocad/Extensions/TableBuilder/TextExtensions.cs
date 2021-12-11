@@ -29,20 +29,15 @@
             };
 
             if (styleId != null)
-            {
                 text.TextStyleId = styleId.Value;
-            }
 
             using var txtStyle = text.TextStyleId.OpenAs<TextStyleTableRecord>();
 
             // If the text is not forced to set the height.
             if (txtStyle.TextSize.IsZero() && height != null)
-            {
-                // We set the height of the text.
-                text.TextHeight = height.Value;
-            }
+                text.TextHeight = height.Value; // Set the height of the text.
 
-            // We calculate the size of the text.
+            // Calculate the size of the text.
             return
                 (text.GeometricExtents.MaxPoint.X - text.GeometricExtents.MinPoint.X,
                 text.GeometricExtents.MaxPoint.Y - text.GeometricExtents.MinPoint.Y);
