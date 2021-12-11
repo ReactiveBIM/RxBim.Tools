@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Tools.TableBuilder.Models
 {
+    using Abstractions;
     using Contents;
     using Extensions;
     using Services;
@@ -41,7 +42,7 @@
         /// <summary>
         /// Cell content.
         /// </summary>
-        public object Content { get; set; } = TextCellContent.Empty;
+        public ICellContent Content { get; set; } = TextCellContent.Empty;
 
         /// <summary>
         /// Merge area in which this cell is used.

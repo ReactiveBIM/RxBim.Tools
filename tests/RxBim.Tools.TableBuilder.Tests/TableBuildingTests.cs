@@ -51,27 +51,27 @@
             var data = GetTestData(assert);
             Table table = new TableBuilder().SetWidth(100)
                 .AddRowsFromList(data, 1, 1, p => p.Prop1, p => p.Prop2);
-            table[0, 0].Content.ToString().Should().BeEquivalentTo(string.Empty);
-            table[0, 1].Content.ToString().Should().BeEquivalentTo(string.Empty);
-            table[1, 0].Content.ToString().Should().BeEquivalentTo(string.Empty);
+            table[0, 0].Content.ValueObject?.ToString().Should().BeEquivalentTo(string.Empty);
+            table[0, 1].Content.ValueObject?.ToString().Should().BeEquivalentTo(string.Empty);
+            table[1, 0].Content.ValueObject?.ToString().Should().BeEquivalentTo(string.Empty);
             table.Columns.First()
                 .Cells
-                .Select(x => x.Content.ToString())
+                .Select(x => x.Content.ValueObject?.ToString())
                 .Should()
                 .OnlyContain(x => x == string.Empty);
             table.Rows.First()
                 .Cells
-                .Select(x => x.Content.ToString())
+                .Select(x => x.Content.ValueObject?.ToString())
                 .Should()
                 .OnlyContain(x => x == string.Empty);
             for (var r = 1; r <= assert; r++)
             {
                 var cell = table[r, 1];
-                var cellData = cell.Content.ToString();
+                var cellData = cell.Content.ValueObject?.ToString();
                 var srcData = data[r - 1];
                 cellData.Should().BeEquivalentTo(srcData.Prop1.ToString());
                 var rightCell = ((CellBuilder)cell).Next().ObjectForBuild;
-                cellData = rightCell.Content.ToString();
+                cellData = rightCell.Content.ValueObject?.ToString();
                 cellData.Should().BeEquivalentTo(srcData.Prop2);
             }
         }

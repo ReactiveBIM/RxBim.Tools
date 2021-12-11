@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Abstractions;
     using Models;
     using Models.Contents;
     using Models.Styles;
@@ -24,7 +25,7 @@
         /// <summary>
         /// The table to be built.
         /// </summary>
-        internal Table Table { get; }
+        private Table Table { get; }
 
         /// <summary>
         /// Returns the builder of a table cell by row and column index.
@@ -215,7 +216,7 @@
 
             var selectorList = GetSelectorList(propertySelectors);
 
-            var matrix = new object[list.Count, selectorList.Count];
+            var matrix = new ICellContent[list.Count, selectorList.Count];
 
             for (var c = 0; c < selectorList.Count; c++)
             {
@@ -223,7 +224,9 @@
                 for (var r = 0; r < list.Count; r++)
                 {
                     var value = prop.Invoke(list[r]);
-                    matrix[r, c] = new TextCellContent(value.ToString());
+                    matrix[r, c] = prop is ICellContent propContent
+                        ? propContent
+                        : new TextCellContent(value.ToString());
                 }
             }
 
@@ -274,7 +277,7 @@
 
             var selectorList = GetSelectorList(propertySelectors);
 
-            var matrix = new object[selectorList.Count, list.Count];
+            var matrix = new ICellContent[selectorList.Count, list.Count];
 
             for (var r = 0; r < selectorList.Count; r++)
             {
@@ -282,7 +285,9 @@
                 for (var c = 0; c < list.Count; c++)
                 {
                     var value = prop.Invoke(list[c]);
-                    matrix[r, c] = new TextCellContent(value.ToString());
+                    matrix[r, c] = prop is ICellContent propContent
+                        ? propContent
+                        : new TextCellContent(value.ToString());
                 }
             }
 
@@ -302,7 +307,7 @@
         private void FromMatrix(
             int row,
             int column,
-            object[,] matrix)
+            ICellContent[,] matrix)
         {
             var diffRows = row + matrix.GetLength(0) - Table.Rows.Count();
             var diffCols = column + matrix.GetLength(1) - Table.Columns.Count();

@@ -1,7 +1,9 @@
 ﻿namespace RxBim.Tools.TableBuilder.Services
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using Abstractions;
     using Extensions;
     using Models;
     using Models.Contents;
@@ -44,7 +46,7 @@
         /// Sets the content of the cell.
         /// </summary>
         /// <param name="data">A cell content object.</param>
-        public CellBuilder SetContent(object data)
+        public CellBuilder SetContent(ICellContent data)
         {
             SetToMergedArea(cell => cell.Content = data);
             return this;
@@ -102,6 +104,7 @@
         /// Returns the <see cref="CellBuilder"/> for the previous cell to the left.
         /// </summary>
         /// <param name="step">Offset step to the left.</param>
+        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global", Justification = "PublicAPI")]
         public CellBuilder Previous(int step = 1)
         {
             return GetPreviousCellBuilder(ObjectForBuild.Row, step);
