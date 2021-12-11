@@ -15,11 +15,5 @@
         /// Empty text content.
         /// </summary>
         public static TextCellContent Empty { get; } = new (string.Empty);
-
-        /// <inheritdoc />
-        public override string ToString()
-        {
-            return Value;
-        }
     }
 }
