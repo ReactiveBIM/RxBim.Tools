@@ -14,23 +14,20 @@
         /// <param name="acadTable"><see cref="Table"/> object.</param>
         public static void ResetTable(this Table acadTable)
         {
-            var lastCellRef = acadTable.Cells.Last();
-            var tableCell = acadTable.Cells[lastCellRef.Row, lastCellRef.Column];
-            var cellStyleName = tableCell.Style;
+            var acadTableCells = acadTable.Cells;
+            var lastCellRef = acadTableCells.Last();
+            var lastCell = acadTableCells[lastCellRef.Row, lastCellRef.Column];
+            acadTableCells.Style = lastCell.Style;
+            acadTableCells.State = CellStates.None;
+            acadTable.UnmergeCells(acadTableCells);
 
-            foreach (var cellReference in acadTable.Cells)
-            {
-                var cell = acadTable.Cells[cellReference.Row, cellReference.Column];
-                cell.Style = cellStyleName;
-                cell.State = CellStates.None;
-                cell.Contents.Clear();
-                cell.ResetValue();
-            }
-
-            acadTable.UnmergeCells(acadTable.Cells);
+            var lastRow = acadTable.Rows[lastCellRef.Row];
 
             foreach (var row in acadTable.Rows)
+            {
                 row.IsMergeAllEnabled = false;
+                row.Style = lastRow.Style;
+            }
 
             foreach (var column in acadTable.Columns)
                 column.IsMergeAllEnabled = false;

@@ -19,18 +19,21 @@
             AutocadTableSerializerParameters serializerParameters)
         {
             var acadTable = new Table();
+
+            var numRows = tableData.Rows.Count();
+            var numCols = tableData.Columns.Count();
+            acadTable.SetSize(numRows, numCols);
+
             var database = serializerParameters.TargetDatabase ?? HostApplicationServices.WorkingDatabase;
             acadTable.SetDatabaseDefaults(database);
             acadTable.TableStyle = serializerParameters.TableStyleId.IsNull
                 ? database.Tablestyle
                 : serializerParameters.TableStyleId;
+
+            acadTable.ResetTable();
+
             if (!serializerParameters.TextStyleId.IsNull)
                 acadTable.Cells.TextStyleId = serializerParameters.TextStyleId;
-
-            var numRows = tableData.Rows.Count();
-            var numCols = tableData.Columns.Count();
-            acadTable.SetSize(numRows, numCols);
-            acadTable.ResetTable();
 
             for (var columnIndex = 0; columnIndex < numCols; columnIndex++)
             {
