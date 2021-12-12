@@ -151,7 +151,7 @@
                     $" {nameof(bottomRow)}={bottomRow}, {nameof(rightColumn)}={rightColumn}");
             }
 
-            var range = new CellRange(topRow, leftColumn, bottomRow, rightColumn);
+            var range = new CellRange(topRow, bottomRow, leftColumn, rightColumn);
             if (!range.IsValid)
             {
                 throw new ArgumentException(
