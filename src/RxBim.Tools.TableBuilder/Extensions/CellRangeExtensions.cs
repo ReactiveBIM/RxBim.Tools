@@ -27,10 +27,10 @@
         /// <param name="otherRange">Another <see cref="CellRange"/></param>
         public static bool IsIntersectWith(this CellRange range, CellRange otherRange)
         {
-            return otherRange.RightColumn > range.LeftColumn &&
-                   otherRange.LeftColumn < range.RightColumn &&
-                   otherRange.BottomRow > range.TopRow &&
-                   otherRange.TopRow < range.BottomRow;
+            return otherRange.RightColumn >= range.LeftColumn &&
+                   otherRange.LeftColumn <= range.RightColumn &&
+                   otherRange.BottomRow >= range.TopRow &&
+                   otherRange.TopRow <= range.BottomRow;
         }
     }
 }
