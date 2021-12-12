@@ -9,14 +9,14 @@
         /// Initializes a new instance of the <see cref="CellRange"/> class.
         /// </summary>
         /// <param name="topRow"><see cref="TopRow"/></param>
-        /// <param name="leftColumn"><see cref="LeftColumn"/></param>
         /// <param name="bottomRow"><see cref="BottomRow"/></param>
+        /// <param name="leftColumn"><see cref="LeftColumn"/></param>
         /// <param name="rightColumn"><see cref="RightColumn"/></param>
-        internal CellRange(int topRow, int leftColumn, int bottomRow, int rightColumn)
+        internal CellRange(int topRow, int bottomRow, int leftColumn, int rightColumn)
         {
             TopRow = topRow;
-            LeftColumn = leftColumn;
             BottomRow = bottomRow;
+            LeftColumn = leftColumn;
             RightColumn = rightColumn;
         }
 
