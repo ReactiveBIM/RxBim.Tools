@@ -1,15 +1,16 @@
 ﻿namespace RxBim.Tools.Revit.Serializers
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using Autodesk.Revit.DB;
     using Extensions;
-    using TableBuilder;
     using TableBuilder.Abstractions;
+    using TableBuilder.Models;
+    using TableBuilder.Models.Contents;
+    using TableBuilder.Models.Styles;
 
     /// <inheritdoc />
-    public class ViewScheduleTableSerializer<T> : ITableSerializer<ViewSchedule>
+    public class ViewScheduleTableSerializer<T> : ITableSerializer<ViewScheduleTableSerializerParameters, ViewSchedule>
         where T : ViewSchedule
     {
         private const double FontRatio = 3.77951502;
@@ -18,25 +19,22 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="ViewScheduleTableSerializer{T}"/> class.
         /// </summary>
-        /// <param name="document">документ.</param>
+        /// <param name="document"><see cref="Document"/> object.</param>
         public ViewScheduleTableSerializer(Document document)
         {
             _document = document;
         }
 
         /// <inheritdoc />
-        public ViewSchedule Serialize(Table table, ITableSerializerParameters @params)
+        public ViewSchedule Serialize(Table table, ViewScheduleTableSerializerParameters serializerParameters)
         {
-            var parameters = @params as ViewScheduleTableSerializerParameters
-                             ?? throw new Exception("Параметры сериализации должны быть заданы");
-
             using var t = new Transaction(_document);
             t.Start(nameof(ViewScheduleTableSerializer<T>));
 
             var id = new ElementId((int)BuiltInCategory.OST_NurseCallDevices);
 
             var schedule = ViewSchedule.CreateSchedule(_document, id);
-            schedule.Name = parameters.Name;
+            schedule.Name = serializerParameters.Name;
             schedule.Definition.ShowHeaders = false;
 
             var field = schedule.Definition
@@ -46,60 +44,55 @@
 
             if (field != null)
             {
-                schedule.Definition.AddField(field).GridColumnWidth = table.Width.HasValue
-                    ? table.Width.Value.MmToFt()
-                    : table.Rows.Select(roe => roe.Width).Max().MmToFt();
+                schedule.Definition.AddField(field).GridColumnWidth = table.Width.MmToFt();
             }
 
             var tableData = schedule.GetTableData();
             var headerData = tableData.GetSectionData(SectionType.Header);
 
-            InsertCells(headerData, table.Rows.Count - 1, table.Columns.Count);
-
-            var mergedCells = new List<TableMergedArea>();
+            InsertCells(headerData, table.Rows.Count() - 1, table.Columns.Count());
 
             var scheduleCol = headerData.FirstColumnNumber;
 
             for (var col = 0;
-                col < table.Columns.Count;
+                col < table.Columns.Count();
                 col++, scheduleCol++)
             {
-                var widthInFt = table[0, col].Width.MmToFt();
+                var widthInFt = table.Columns[col].Width.MmToFt();
                 headerData.SetColumnWidth(scheduleCol, widthInFt);
 
                 var scheduleRow = headerData.FirstRowNumber;
 
                 for (var row = 0;
-                    row < table.Rows.Count;
+                    row < table.Rows.Count();
                     row++, scheduleRow++)
                 {
                     var cell = table[row, col];
 
                     var rowHeight = table.Rows[row].Height;
-                    rowHeight = rowHeight > 0 ? rowHeight.MmToFt() : 8.MmToFt();
+                    const int defaultRowHeightInMm = 8;
+                    rowHeight = rowHeight > 0 ? rowHeight.MmToFt() : defaultRowHeightInMm.MmToFt();
 
-                    var text = cell.Data as TextCellData;
+                    var text = cell.Content as TextCellContent;
                     headerData.SetRowHeight(scheduleRow, rowHeight);
                     headerData.SetCellText(scheduleRow, scheduleCol, text?.Value);
-                    headerData.SetCellStyle(scheduleRow, scheduleCol, GetCellStyle(cell.Format, parameters));
-
-                    // Merge logic
-                    if (!cell.Merged || mergedCells.Exists(x => Equals(x, cell.Area)))
-                        continue;
-
-                    mergedCells.Add(cell.Area);
-
-                    var tableMergedCell = new TableMergedCell
-                    {
-                        Bottom = cell.Area.BottomRow,
-                        Top = cell.Area.TopRow,
-                        Left = cell.Area.LeftColumn,
-                        Right = cell.Area.RightColumn
-                    };
-
-                    headerData.MergeCells(tableMergedCell);
-                    EnsureTableMergedCell(tableMergedCell, scheduleRow, scheduleCol);
+                    headerData.SetCellStyle(scheduleRow,
+                        scheduleCol,
+                        GetCellStyle(cell.GetComposedFormat(), serializerParameters));
                 }
+            }
+
+            foreach (var mergeArea in table.MergeAreas)
+            {
+                var tableMergedCell = new TableMergedCell
+                {
+                    Bottom = mergeArea.BottomRow,
+                    Top = mergeArea.TopRow,
+                    Left = mergeArea.LeftColumn,
+                    Right = mergeArea.RightColumn
+                };
+
+                headerData.MergeCells(tableMergedCell);
             }
 
             headerData.RemoveColumn(headerData.LastColumnNumber);
@@ -114,11 +107,11 @@
         {
             var options = new TableCellStyleOverrideOptions
             {
-                BorderTopLineStyle = cellStyle.Borders.Top != CellBorderType.Usual,
-                BorderBottomLineStyle = cellStyle.Borders.Bottom != CellBorderType.Usual,
-                BorderLeftLineStyle = cellStyle.Borders.Left != CellBorderType.Usual,
-                BorderRightLineStyle = cellStyle.Borders.Right != CellBorderType.Usual,
-                FontSize = cellStyle.TextSize > 0,
+                BorderTopLineStyle = GetCellBorderType(cellStyle.Borders.Top) != CellBorderType.Thin,
+                BorderBottomLineStyle = GetCellBorderType(cellStyle.Borders.Bottom) != CellBorderType.Thin,
+                BorderLeftLineStyle = GetCellBorderType(cellStyle.Borders.Left) != CellBorderType.Thin,
+                BorderRightLineStyle = GetCellBorderType(cellStyle.Borders.Right) != CellBorderType.Thin,
+                FontSize = cellStyle.TextFormat.TextSize is > 0,
                 Bold = true,
                 Italics = true,
                 HorizontalAlignment = true,
@@ -131,25 +124,25 @@
 
             var style = new TableCellStyle
             {
-                BorderTopLineStyle = GetLineId(cellStyle.Borders.Top, boldLineId),
-                BorderBottomLineStyle = GetLineId(cellStyle.Borders.Bottom, boldLineId),
-                BorderLeftLineStyle = GetLineId(cellStyle.Borders.Left, boldLineId),
-                BorderRightLineStyle = GetLineId(cellStyle.Borders.Right, boldLineId),
-                TextSize = cellStyle.TextSize * FontRatio,
-                IsFontBold = cellStyle.Bold,
-                IsFontItalic = cellStyle.Italic,
-                TextColor = GetRevitColor(cellStyle.TextColor),
-                BackgroundColor = GetRevitColor(cellStyle.BackgroundColor),
-                FontVerticalAlignment = cellStyle.TextVerticalAlignment switch
+                BorderTopLineStyle = GetLineId(GetCellBorderType(cellStyle.Borders.Top), boldLineId),
+                BorderBottomLineStyle = GetLineId(GetCellBorderType(cellStyle.Borders.Bottom), boldLineId),
+                BorderLeftLineStyle = GetLineId(GetCellBorderType(cellStyle.Borders.Left), boldLineId),
+                BorderRightLineStyle = GetLineId(GetCellBorderType(cellStyle.Borders.Right), boldLineId),
+                TextSize = cellStyle.TextFormat.TextSize ?? 0 * FontRatio,
+                IsFontBold = cellStyle.TextFormat.Bold ?? false,
+                IsFontItalic = cellStyle.TextFormat.Italic ?? false,
+                TextColor = GetRevitColor(cellStyle.TextFormat.TextColor ?? System.Drawing.Color.Black),
+                BackgroundColor = GetRevitColor(cellStyle.BackgroundColor ?? System.Drawing.Color.White),
+                FontVerticalAlignment = cellStyle.ContentVerticalAlignment switch
                 {
-                    TextVerticalAlignment.Top => VerticalAlignmentStyle.Top,
-                    TextVerticalAlignment.Middle => VerticalAlignmentStyle.Middle,
+                    CellContentVerticalAlignment.Top => VerticalAlignmentStyle.Top,
+                    CellContentVerticalAlignment.Middle => VerticalAlignmentStyle.Middle,
                     _ => VerticalAlignmentStyle.Bottom
                 },
-                FontHorizontalAlignment = cellStyle.TextHorizontalAlignment switch
+                FontHorizontalAlignment = cellStyle.ContentHorizontalAlignment switch
                 {
-                    TextHorizontalAlignment.Right => HorizontalAlignmentStyle.Right,
-                    TextHorizontalAlignment.Left => HorizontalAlignmentStyle.Left,
+                    CellContentHorizontalAlignment.Right => HorizontalAlignmentStyle.Right,
+                    CellContentHorizontalAlignment.Left => HorizontalAlignmentStyle.Left,
                     _ => HorizontalAlignmentStyle.Center
                 }
             };
@@ -159,14 +152,14 @@
             return style;
         }
 
-        private ElementId GetLineId(CellBorderType borderType, int boldLineId = -1)
+        private ElementId GetLineId(CellBorderType cellBorderType, int boldLineId = -1)
         {
-            return borderType switch
+            return cellBorderType switch
             {
-                CellBorderType.Usual => ElementId.InvalidElementId, // не применяется
+                CellBorderType.Thin => ElementId.InvalidElementId, // does not apply
                 CellBorderType.Hidden => ElementId.InvalidElementId,
                 CellBorderType.Bold => new ElementId(boldLineId),
-                _ => throw new Exception($"Линия {borderType} не реализована в сериализаторе"),
+                _ => throw new Exception($"Line {cellBorderType} is not implemented in the serializer."),
             };
         }
 
@@ -179,22 +172,14 @@
                 section.InsertColumn(j);
         }
 
-        private void EnsureTableMergedCell(TableMergedCell tableMergedCell, int row, int col)
+        private Color GetRevitColor(System.Drawing.Color color)
         {
-            if (tableMergedCell.Bottom < row)
-                tableMergedCell.Bottom = row;
-
-            if (tableMergedCell.Top > row)
-                tableMergedCell.Top = row;
-
-            if (tableMergedCell.Left > col)
-                tableMergedCell.Left = col;
-
-            if (tableMergedCell.Right < col)
-                tableMergedCell.Right = col;
+            return new Color(color.R, color.G, color.B);
         }
 
-        private Color GetRevitColor(System.Drawing.Color color) =>
-            new Color(red: color.R, green: color.G, blue: color.B);
+        private CellBorderType GetCellBorderType(CellBorderType? cellBorderType)
+        {
+            return cellBorderType ?? CellBorderType.Thin;
+        }
     }
 }
