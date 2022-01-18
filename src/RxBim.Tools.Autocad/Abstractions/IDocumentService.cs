@@ -4,12 +4,12 @@
     using CSharpFunctionalExtensions;
 
     /// <summary>
-    /// Сервис документа
+    /// AutoCAD documents service
     /// </summary>
     public interface IDocumentService
     {
         /// <summary>
-        /// Возвращает текущий документ
+        /// Gets the current document
         /// </summary>
         Result<Document> GetActiveDocument();
     }
