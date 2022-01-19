@@ -12,7 +12,7 @@
         public Result<Document> GetActiveDocument()
         {
             return Application.DocumentManager.MdiActiveDocument ??
-                   Result.Failure<Document>("Нет активного документа");
+                   Result.Failure<Document>("No active document");
         }
     }
 }
