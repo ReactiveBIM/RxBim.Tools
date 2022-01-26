@@ -18,6 +18,7 @@
         /// <param name="container"><see cref="IContainer"/> object.</param>
         public static IContainer AddAutocadHelpers(this IContainer container)
         {
+            container.AddSingleton<IDocumentService, DocumentService>();
             container.AddSingleton<IObjectsSelectionService, ObjectsSelectionService>();
             container.AddSingleton<ICommandLineService, CommandLineService>();
             return container;
