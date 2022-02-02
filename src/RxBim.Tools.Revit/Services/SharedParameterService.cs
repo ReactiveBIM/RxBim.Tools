@@ -225,30 +225,18 @@
             SharedParameterCreateData createData)
         {
             var document = _uiApplication.ActiveUIDocument.Document;
-            
-            // var creationService = document.Application.Create;
             var parameterBindings = document.ParameterBindings;
-
             var binding = (ElementBinding)parameterBindings.get_Item(definition);
             var existCategories = binding?.Categories ?? new CategorySet();
-
             var creatingCategories = createData.CategoriesForBind
                 .Select(bic => Category.GetCategory(document, bic))
                 .ToList();
-
-            foreach (var category in creatingCategories.Where(c => !existCategories.Contains(c)))
-                existCategories.Insert(category);
-            return Result.Success();
-
-            /*var newBinding = binding is InstanceBinding || createData.IsCreateForInstance
-                ? (ElementBinding)creationService.NewInstanceBinding(existCategories)
-                : creationService.NewTypeBinding(existCategories);
-
-            parameterBindings.Remove(definition);
-
-            return Result.SuccessIf(
-                parameterBindings.Insert(definition, newBinding, createData.ParameterGroup),
-                $"Не удалось обновить параметр '{definition.Name}'");*/
+            return creatingCategories
+                .LastOrDefault(creatingCategory => existCategories.Insert(creatingCategory)) != null
+                ? Result.SuccessIf(
+                    parameterBindings.ReInsert(definition, binding),
+                    $"Не удалось обновить параметр '{definition.Name}'")
+                : Result.Success();
         }
 
         /// <summary>
