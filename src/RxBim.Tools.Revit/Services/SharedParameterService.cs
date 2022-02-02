@@ -158,13 +158,13 @@
         {
             var doc = _uiApplication.ActiveUIDocument.Document;
             foreach (var sharedParameterElement in new FilteredElementCollector(doc)
-                .OfClass(typeof(SharedParameterElement))
-                .Cast<SharedParameterElement>())
+                         .OfClass(typeof(SharedParameterElement))
+                         .Cast<SharedParameterElement>())
             {
                 if (!fullMatch && string.Equals(
-                    sharedParameterElement.Name,
-                    definition.ParameterName,
-                    StringComparison.InvariantCultureIgnoreCase))
+                        sharedParameterElement.Name,
+                        definition.ParameterName,
+                        StringComparison.InvariantCultureIgnoreCase))
                     return true;
 
                 if (fullMatch && IsFullMatch(definition, sharedParameterElement))
@@ -203,7 +203,8 @@
 
             var externalDefinition = GetSharedExternalDefinition(sharedParameterInfo, fullMatch, definitionFile);
             if (externalDefinition == null)
-                return Result.Failure($"Параметр '{sharedParameterInfo.Definition.ParameterName}' не найден в ФОП '{definitionFile.Filename}'");
+                return Result.Failure(
+                    $"Параметр '{sharedParameterInfo.Definition.ParameterName}' не найден в ФОП '{definitionFile.Filename}'");
 
             var binding = sharedParameterInfo.CreateData.IsCreateForInstance
                 ? (Binding)document.Application.Create.NewInstanceBinding(categorySet)
@@ -224,23 +225,22 @@
             SharedParameterCreateData createData)
         {
             var document = _uiApplication.ActiveUIDocument.Document;
-            var creationService = document.Application.Create;
+            
+            // var creationService = document.Application.Create;
             var parameterBindings = document.ParameterBindings;
 
             var binding = (ElementBinding)parameterBindings.get_Item(definition);
             var existCategories = binding?.Categories ?? new CategorySet();
 
-            var newCategories = createData.CategoriesForBind
+            var creatingCategories = createData.CategoriesForBind
                 .Select(bic => Category.GetCategory(document, bic))
                 .ToList();
 
-            if (newCategories.All(existCategories.Contains))
-                return Result.Success();
-
-            foreach (var category in newCategories.Where(c => !existCategories.Contains(c)))
+            foreach (var category in creatingCategories.Where(c => !existCategories.Contains(c)))
                 existCategories.Insert(category);
+            return Result.Success();
 
-            var newBinding = binding is InstanceBinding || createData.IsCreateForInstance
+            /*var newBinding = binding is InstanceBinding || createData.IsCreateForInstance
                 ? (ElementBinding)creationService.NewInstanceBinding(existCategories)
                 : creationService.NewTypeBinding(existCategories);
 
@@ -248,7 +248,7 @@
 
             return Result.SuccessIf(
                 parameterBindings.Insert(definition, newBinding, createData.ParameterGroup),
-                $"Не удалось обновить параметр '{definition.Name}'");
+                $"Не удалось обновить параметр '{definition.Name}'");*/
         }
 
         /// <summary>
@@ -360,7 +360,8 @@
         }
 
         private bool IsFullMatch(
-            SharedParameterDefinition sharedParameterDefinition, SharedParameterElement sharedParameterElement)
+            SharedParameterDefinition sharedParameterDefinition,
+            SharedParameterElement sharedParameterElement)
         {
             var internalDefinition = sharedParameterElement.GetDefinition();
             if (internalDefinition.Name != sharedParameterDefinition.ParameterName)
