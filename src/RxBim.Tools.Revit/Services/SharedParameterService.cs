@@ -220,6 +220,8 @@
             return result;
         }
 
+        /// <remark>При присоединении новых категорий к существующему параметру, в некоторых случаях, 
+        /// проиходит очистка параметров у элементов существующих привязанных категорий</remark>
         private Result UpdateParameterBindings(
             Definition definition,
             SharedParameterCreateData createData)
