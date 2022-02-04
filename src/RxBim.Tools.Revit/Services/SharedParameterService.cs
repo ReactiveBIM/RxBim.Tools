@@ -17,11 +17,13 @@
     public class SharedParameterService : ISharedParameterService
     {
         private readonly UIApplication _uiApplication;
+        private readonly ITransactionService _transactionService;
 
         /// <inheritdoc />
-        public SharedParameterService(UIApplication uiApplication)
+        public SharedParameterService(UIApplication uiApplication, ITransactionService transactionService)
         {
             _uiApplication = uiApplication;
+            _transactionService = transactionService;
         }
 
         /// <inheritdoc />
@@ -48,20 +50,10 @@
             if (!useTransaction)
                 return AddSharedParameter(doc, definitionFile, sharedParameterInfo, fullMatch);
 
-            using var tr = new Transaction(doc, "Добавление параметров");
-            try
-            {
-                tr.Start();
-                var result = AddSharedParameter(doc, definitionFile, sharedParameterInfo, fullMatch);
-                tr.Commit();
-                return result;
-            }
-            catch (Exception exception)
-            {
-                if (tr.GetStatus() != TransactionStatus.RolledBack)
-                    tr.RollBack();
-                return Result.Failure(exception.ToString());
-            }
+            return _transactionService.RunInTransaction(
+                () => AddSharedParameter(doc, definitionFile, sharedParameterInfo, fullMatch),
+                "Добавление параметров",
+                doc);
         }
 
         /// <inheritdoc />
