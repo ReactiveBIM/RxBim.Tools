@@ -53,7 +53,7 @@
             return _transactionService.RunInTransaction(
                 () => AddSharedParameter(doc, definitionFile, sharedParameterInfo, fullMatch),
                 "Добавление параметров",
-                doc);
+                document);
         }
 
         /// <inheritdoc />
