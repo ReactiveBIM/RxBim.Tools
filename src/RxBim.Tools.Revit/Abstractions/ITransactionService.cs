@@ -24,7 +24,7 @@
         /// <param name="action">Действие</param>
         /// <param name="transactionGroupName">Название группы транзакций</param>
         /// <param name="document">выбранный документ.
-        /// при null - транзакция запустится в текущем документе</param>
+        /// при null - группа транзакций запустится в текущем документе</param>
         Result RunInTransactionGroup(Action action, string transactionGroupName, Document document = null);
 
         /// <summary>
@@ -42,7 +42,7 @@
         /// <param name="action">Действие с возвратом результата</param>
         /// <param name="transactionGroupName">Название группы транзакций</param>
         /// <param name="document">выбранный документ.
-        /// при null - транзакция запустится в текущем документе</param>
+        /// при null - группа транзакций запустится в текущем документе</param>
         Result RunInTransactionGroup(Func<Result> action, string transactionGroupName, Document document = null);
     }
 }
