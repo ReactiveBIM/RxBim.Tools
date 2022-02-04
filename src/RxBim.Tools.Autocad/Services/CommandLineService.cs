@@ -1,26 +1,27 @@
 ﻿namespace RxBim.Tools.Autocad.Services
 {
     using Abstractions;
-    using Autodesk.AutoCAD.EditorInput;
+    using CSharpFunctionalExtensions;
 
     /// <inheritdoc />
     public class CommandLineService : ICommandLineService
     {
-        private readonly Editor _editor;
+        private readonly IDocumentService _documentService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandLineService"/> class.
         /// </summary>
-        /// <param name="editor">Редактор документа</param>
-        public CommandLineService(Editor editor)
+        /// <param name="documentService"><see cref="IDocumentService"/></param>
+        public CommandLineService(IDocumentService documentService)
         {
-            _editor = editor;
+            _documentService = documentService;
         }
 
         /// <inheritdoc />
         public void WriteAsNewLine(string message)
         {
-            _editor.WriteMessage($"\n{message}");
+            _documentService.GetActiveDocument()
+                .Tap(doc => doc.Editor.WriteMessage($"\n{message}"));
         }
     }
 }

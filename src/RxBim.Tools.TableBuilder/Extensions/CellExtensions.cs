@@ -1,24 +1,30 @@
 ﻿namespace RxBim.Tools.TableBuilder.Extensions
 {
+    using Models;
+
     /// <summary>
-    /// Расширения для работы с ячейкой
+    /// Extensions for <see cref="Cell"/>
     /// </summary>
     public static class CellExtensions
     {
         /// <summary>
-        /// Установить текст в ячейке
+        /// Returns the zero-based index of a cell in a table row.
         /// </summary>
-        /// <param name="cell">Ячейка</param>
-        /// <param name="text">текст</param>
-        public static Cell SetText(this Cell cell, string text)
-            => cell.SetValue(new TextCellData(text));
+        /// <param name="cell"><see cref="Cell"/> object.</param>
+        /// <returns></returns>
+        public static int GetColumnIndex(this Cell cell)
+        {
+            return cell.Column.GetIndex();
+        }
 
         /// <summary>
-        /// Объединить влево, возвращает крайнюю левую ячейку объединения
+        /// Returns the zero-based index of a cell in a table column.
         /// </summary>
-        /// <param name="cell">ячейка</param>
-        /// <param name="count">количество ячеек</param>
-        public static Cell MergeLeft(this Cell cell, int count = 1)
-            => cell.Previous(count).MergeNext(count).Previous(count);
+        /// <param name="cell"><see cref="Cell"/> object.</param>
+        /// <returns></returns>
+        public static int GetRowIndex(this Cell cell)
+        {
+            return cell.Row.GetIndex();
+        }
     }
 }
