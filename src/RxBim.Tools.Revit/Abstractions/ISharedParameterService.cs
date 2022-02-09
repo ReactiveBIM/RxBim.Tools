@@ -10,7 +10,7 @@
     public interface ISharedParameterService
     {
         /// <summary>
-        /// Добавление общего параметра из указанного ФОП в текущий документ. Если параметр уже существует, то метод выйдет без
+        /// Добавление общего параметра из указанного ФОП в выбранный документ. Если параметр уже существует, то метод выйдет без
         /// каких-либо действий над параметром. Проверка уже существующего параметра производится с учетом аргумента fullMatch.
         /// Метод позволяет работать как в существующей транзакции, так и с созданием новой транзакции
         /// </summary>
@@ -24,15 +24,18 @@
         /// Имя, Guid, DataType. Если последние два имеют значение у sharedParameterInfo
         /// </param>
         /// <param name="useTransaction">Создавать транзакцию внутри метода</param>
+        /// <param name="document">Документ, в котором нужно добавить параметр.
+        /// при значении null параметр добавляется в текущий документ</param>
         /// <returns>true - если параметр был добавлен</returns>
         Result AddSharedParameter(
             DefinitionFile definitionFile,
             SharedParameterInfo sharedParameterInfo,
             bool fullMatch,
-            bool useTransaction = false);
+            bool useTransaction = false,
+            Document document = null);
 
         /// <summary>
-        /// Метод добавляет общий параметр из указанного ФОП в текущий документ,
+        /// Метод добавляет общий параметр из указанного ФОП в выбранный документ,
         /// дополняя привязки параметра категориями,
         /// указанными в <paramref name="sharedParameterInfo"/>.
         /// <see cref="SharedParameterCreateData.CategoriesForBind"/>.
@@ -51,11 +54,14 @@
         /// если задано true, происходит проверка только по свойствам:
         /// Имя, Guid, DataType. Если последние два имеют значение у sharedParameterInfo
         /// </param>
+        /// <param name="document">Документ, в котором нужно добавить параметр.
+        /// при значении null параметр добавляется в текущий документ</param>
         /// <returns>true - если параметр был добавлен или обновлён</returns>
         Result AddOrUpdateParameter(
             DefinitionFile[] definitionFiles,
             SharedParameterInfo sharedParameterInfo,
-            bool fullMatch);
+            bool fullMatch,
+            Document document = null);
 
         /// <summary>
         /// Проверка параметра, представленного экземпляром <see cref="SharedParameterElement"/>, на существование
@@ -71,7 +77,7 @@
             bool fullMatch);
 
         /// <summary>
-        /// Возвращает <see cref="DefinitionFile"/>, подключенный в текущем документе
+        /// Возвращает <see cref="DefinitionFile"/>, подключенный в выбранном документе
         /// </summary>
         /// <param name="document">Документ, из которого требуется получить ФОП.
         /// Если задано null, то ФОП будет браться из текущего документа</param>
@@ -82,15 +88,19 @@
         /// из <see cref="SharedParameterFileSource"/>
         /// </summary>
         /// <param name="fileSource"><see cref="SharedParameterFileSource"/></param>
-        DefinitionFile[] TryGetDefinitionFiles(SharedParameterFileSource fileSource);
+        /// <param name="document">документ для считывания файлов
+        /// Если задано null, то ФОП будут браться из текущего документа</param>
+        DefinitionFile[] TryGetDefinitionFiles(SharedParameterFileSource fileSource, Document document = null);
 
         /// <summary>
-        /// Проверяет существование параметра в документе
+        /// Проверяет существование параметра в выбранном документе
         /// </summary>
         /// <param name="definition">Данные об общем параметре</param>
         /// <param name="fullMatch">True - параметр должен совпасть со всеми заполненными значениями
         /// sharedParameterInfo, доступными для проверки через SharedParameterElement (Имя, Guid, DataType).
         /// False - параметр ищется только по имени</param>
-        bool ParameterExistsInDocument(SharedParameterDefinition definition, bool fullMatch);
+        /// <param name="document">документ для проверки.
+        /// Если задано null, то параметр проверяется в текущем документе</param>
+        bool ParameterExistsInDocument(SharedParameterDefinition definition, bool fullMatch, Document document = null);
     }
 }

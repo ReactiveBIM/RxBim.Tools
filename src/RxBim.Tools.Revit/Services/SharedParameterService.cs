@@ -17,13 +17,13 @@
     public class SharedParameterService : ISharedParameterService
     {
         private readonly UIApplication _uiApplication;
-        private readonly ITransactionService _transactions;
+        private readonly ITransactionService _transactionService;
 
         /// <inheritdoc />
-        public SharedParameterService(UIApplication uiApplication, ITransactionService transactions)
+        public SharedParameterService(UIApplication uiApplication, ITransactionService transactionService)
         {
             _uiApplication = uiApplication;
-            _transactions = transactions;
+            _transactionService = transactionService;
         }
 
         /// <inheritdoc />
@@ -31,7 +31,8 @@
             DefinitionFile definitionFile,
             SharedParameterInfo sharedParameterInfo,
             bool fullMatch,
-            bool useTransaction = false)
+            bool useTransaction = false,
+            Document document = null)
         {
             if (sharedParameterInfo == null)
                 return Result.Failure("Данные об общем параметре не заданы");
@@ -44,27 +45,28 @@
             if (sharedParameterInfo.CreateData.CategoriesForBind?.Any() != true)
                 return Result.Failure($"Не указаны категории для привязки параметра '{sharedParameterInfo.Definition.ParameterName}'");
 
-            var doc = _uiApplication.ActiveUIDocument.Document;
+            var doc = document ?? _uiApplication.ActiveUIDocument.Document;
 
-            if (useTransaction)
-            {
-                return _transactions.RunInTransaction(
-                    () => AddSharedParameter(doc, definitionFile, sharedParameterInfo, fullMatch),
-                    "Добавление параметров");
-            }
+            if (!useTransaction)
+                return AddSharedParameter(doc, definitionFile, sharedParameterInfo, fullMatch);
 
-            return AddSharedParameter(doc, definitionFile, sharedParameterInfo, fullMatch);
+            return _transactionService.RunInTransaction(
+                () => AddSharedParameter(doc, definitionFile, sharedParameterInfo, fullMatch),
+                "Добавление параметров",
+                document);
         }
 
         /// <inheritdoc />
         public Result AddOrUpdateParameter(
             DefinitionFile[] definitionFiles,
             SharedParameterInfo sharedParameterInfo,
-            bool fullMatch)
+            bool fullMatch,
+            Document document = null)
         {
             var existsInDocument = ParameterExistsInDocument(
                 sharedParameterInfo.Definition,
-                fullMatch);
+                fullMatch,
+                document);
 
             var externalDefinitionInFile = definitionFiles
                 .Select(df => new
@@ -88,17 +90,19 @@
             {
                 return UpdateParameterBindings(
                         externalDefinitionInFile[0].ExternalDefinition,
-                        sharedParameterInfo.CreateData)
+                        sharedParameterInfo.CreateData,
+                        document)
                     .TapIf(
                         sharedParameterInfo.CreateData.AllowVaryBetweenGroups,
-                        () => SetAllowVaryBetweenGroups(sharedParameterInfo.Definition.ParameterName));
+                        () => SetAllowVaryBetweenGroups(sharedParameterInfo.Definition.ParameterName, document));
             }
 
             return AddSharedParameter(
                 externalDefinitionInFile[0].DefinitionFile,
                 sharedParameterInfo,
                 fullMatch,
-                false);
+                false,
+                document);
         }
 
         /// <inheritdoc />
@@ -116,9 +120,9 @@
         }
 
         /// <inheritdoc/>
-        public DefinitionFile[] TryGetDefinitionFiles(SharedParameterFileSource fileSource)
+        public DefinitionFile[] TryGetDefinitionFiles(SharedParameterFileSource fileSource, Document doc = null)
         {
-            var document = _uiApplication.ActiveUIDocument.Document;
+            var document = doc ?? _uiApplication.ActiveUIDocument.Document;
             var oldDefinitionFilePath = string.Empty;
 
             bool initialized;
@@ -154,9 +158,9 @@
         }
 
         /// <inheritdoc/>
-        public bool ParameterExistsInDocument(SharedParameterDefinition definition, bool fullMatch)
+        public bool ParameterExistsInDocument(SharedParameterDefinition definition, bool fullMatch, Document document = null)
         {
-            var doc = _uiApplication.ActiveUIDocument.Document;
+            var doc = document ?? _uiApplication.ActiveUIDocument.Document;
             foreach (var sharedParameterElement in new FilteredElementCollector(doc)
                 .OfClass(typeof(SharedParameterElement))
                 .Cast<SharedParameterElement>())
@@ -221,9 +225,10 @@
 
         private Result UpdateParameterBindings(
             Definition definition,
-            SharedParameterCreateData createData)
+            SharedParameterCreateData createData,
+            Document doc = null)
         {
-            var document = _uiApplication.ActiveUIDocument.Document;
+            var document = doc ?? _uiApplication.ActiveUIDocument.Document;
             var creationService = document.Application.Create;
             var parameterBindings = document.ParameterBindings;
 
@@ -303,13 +308,14 @@
         }
 
         /// <summary>
-        /// Установить для параметров свойство "Значения могут меняться по экземплярам групп". Метод должен использоваться
-        /// внутри запущенной транзакции
+        /// Установить для параметров свойство "Значения могут меняться по экземплярам групп".
+        /// Метод должен использоваться внутри запущенной транзакции
         /// </summary>
         /// <param name="parameterName">Имя параметра</param>
-        private void SetAllowVaryBetweenGroups(string parameterName)
+        /// <param name="document">Текущий документ</param>
+        private void SetAllowVaryBetweenGroups(string parameterName, Document document = null)
         {
-            var doc = _uiApplication.ActiveUIDocument.Document;
+            var doc = document ?? _uiApplication.ActiveUIDocument.Document;
             var map = doc.ParameterBindings;
             var it = map.ForwardIterator();
             it.Reset();
