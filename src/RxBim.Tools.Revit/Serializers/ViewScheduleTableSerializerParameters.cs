@@ -1,17 +1,17 @@
 ﻿namespace RxBim.Tools.Revit.Serializers
 {
-    using Tools.TableBuilder.Abstractions;
-
     /// <summary>
-    /// Параметры сериализации в таблицу Revit
+    /// Serialization options to Revit table.
     /// </summary>
-    public class ViewScheduleTableSerializerParameters : ITableSerializerParameters
+    public class ViewScheduleTableSerializerParameters
     {
-        /// <summary> Имя таблицы (Спецификации) </summary>
+        /// <summary>
+        /// The name of a table (specification).
+        /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Id жирной линии
+        /// Bold line identifier.
         /// </summary>
         public int? SpecificationBoldLineId { get; set; }
     }

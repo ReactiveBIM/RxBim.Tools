@@ -23,7 +23,7 @@
         private Document CurrentDocument => _uiApplication.ActiveUIDocument.Document;
 
         /// <inheritdoc/>
-        public Result RunInTransaction(Action action, string transactionName)
+        public Result RunInTransaction(Action action, string transactionName, Document document = null)
         {
             Func<Result> funcWithResult = () =>
             {
@@ -31,11 +31,11 @@
                 return Result.Success();
             };
 
-            return RunInTransaction(funcWithResult, transactionName);
+            return RunInTransaction(funcWithResult, transactionName, document);
         }
 
         /// <inheritdoc/>
-        public Result RunInTransactionGroup(Action action, string transactionGroupName)
+        public Result RunInTransactionGroup(Action action, string transactionGroupName, Document document = null)
         {
             Func<Result> funcWithResult = () =>
             {
@@ -43,18 +43,18 @@
                 return Result.Success();
             };
 
-            return RunInTransactionGroup(funcWithResult, transactionGroupName);
+            return RunInTransactionGroup(funcWithResult, transactionGroupName, document);
         }
 
         /// <inheritdoc />
-        public Result RunInTransaction(Func<Result> action, string transactionName)
+        public Result RunInTransaction(Func<Result> action, string transactionName, Document document = null)
         {
             if (action == null)
                 return Result.Failure("Не задано действие для транзакции");
 
             Result result;
 
-            using var tr = new Transaction(CurrentDocument, transactionName);
+            using var tr = new Transaction(document ?? CurrentDocument, transactionName);
             try
             {
                 tr.Start();
@@ -72,13 +72,13 @@
         }
 
         /// <inheritdoc />
-        public Result RunInTransactionGroup(Func<Result> action, string transactionGroupName)
+        public Result RunInTransactionGroup(Func<Result> action, string transactionGroupName, Document document = null)
         {
             if (action == null)
                 return Result.Failure("Не задано действие для транзакции");
 
             Result result;
-            using var tr = new TransactionGroup(CurrentDocument, transactionGroupName);
+            using var tr = new TransactionGroup(document ?? CurrentDocument, transactionGroupName);
             try
             {
                 tr.Start();

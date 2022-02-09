@@ -62,7 +62,7 @@
             var transfromedXyzs = new List<XYZ>();
 
             var element = document.GetElement(new ElementId(elementId));
-            var boundingBox = element.get_BoundingBox(null);
+            var boundingBox = element?.get_BoundingBox(null);
             if (boundingBox == null)
                 return;
 

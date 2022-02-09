@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <PackageReference Include="RxBim.Command.Revit" Version="1.0.5" />
+        <PackageReference Include="RxBim.Di.SimpleInjector" Version="1.0.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\RxBim.Tools.Revit\RxBim.Tools.Revit.csproj" />
+    </ItemGroup>
+
+</Project>

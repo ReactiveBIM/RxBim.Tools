@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\RxBim.Tools.Autocad\RxBim.Tools.Autocad.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="RxBim.Command.Autocad" Version="1.0.6" />
+        <PackageReference Include="RxBim.Di.SimpleInjector" Version="1.0.2" />
+    </ItemGroup>
+
+</Project>
