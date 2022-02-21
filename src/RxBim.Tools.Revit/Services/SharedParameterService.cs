@@ -248,37 +248,33 @@
             if (creatingCategories
                     .LastOrDefault(creatingCategory => existCategories.Insert(creatingCategory)) != null)
             {
-                if (isSavePastValues && binding is InstanceBinding)
+                if (!isSavePastValues || binding is not InstanceBinding)
                 {
-                    /*return Result.SuccessIf(
+                    return Result.SuccessIf(
                         parameterBindings.ReInsert(definition, binding),
-                        $"Не удалось обновить параметр '{definition.Name}'");*/
-
-                    // найти все элементы заданных категорий до добавления новых категорий
-                    var categoryFilter =
-                        new ElementMulticategoryFilter(existCategoriesCopy.Cast<Category>().Select(cat => cat.Id).ToArray());
-                    var elements = new FilteredElementCollector(doc)
-                        .WherePasses(categoryFilter)
-                        .WhereElementIsNotElementType();
-                    var values = elements.Select(element => new
-                        { Element = element, Value = element.get_Parameter(definition).GetParameterValue() }).ToArray();
-
-                    parameterBindings.ReInsert(definition, binding);
-                    doc!.Regenerate();
-                    foreach (var value in values)
-                    {
-                        var param = value.Element.get_Parameter(definition);
-                        if (param is null || value.Value is null)
-                            continue;
-                        param.SetParameterValue(value.Value);
-                    }
-
-                    return Result.Success();
+                        $"Не удалось обновить параметр '{definition.Name}'");
                 }
 
-                return Result.SuccessIf(
-                    parameterBindings.ReInsert(definition, binding),
-                    $"Не удалось обновить параметр '{definition.Name}'");
+                var categoryFilter =
+                    new ElementMulticategoryFilter(existCategoriesCopy.Cast<Category>().Select(cat => cat.Id).ToArray());
+                var paramValuePairs = new FilteredElementCollector(doc)
+                    .WherePasses(categoryFilter)
+                    .WhereElementIsNotElementType()
+                    .Select(element =>
+                    {
+                        var param = element.get_Parameter(definition);
+                        if (param.IsReadOnly || !param.HasValue)
+                            return null;
+                        return new
+                            { Param = param, Value = param.GetParameterValue() };
+                    })
+                    .Where(paramValuePair => paramValuePair?.Value is not null)
+                    .ToArray();
+                parameterBindings.ReInsert(definition, binding);
+                doc!.Regenerate();
+                foreach (var pair in paramValuePairs)
+                    pair.Param.SetParameterValue(pair.Value);
+                return Result.Success();
             }
 
             return Result.Success();
