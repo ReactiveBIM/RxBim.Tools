@@ -8,6 +8,7 @@
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
     using CSharpFunctionalExtensions;
+    using Extensions;
     using Models;
     using Result = CSharpFunctionalExtensions.Result;
 
@@ -61,6 +62,7 @@
             DefinitionFile[] definitionFiles,
             SharedParameterInfo sharedParameterInfo,
             bool fullMatch,
+            bool isSavePastValues = false,
             Document document = null)
         {
             var existsInDocument = ParameterExistsInDocument(
@@ -91,7 +93,8 @@
                 return UpdateParameterBindings(
                         externalDefinitionInFile[0].ExternalDefinition,
                         sharedParameterInfo.CreateData,
-                        document)
+                        document,
+                        isSavePastValues)
                     .TapIf(
                         sharedParameterInfo.CreateData.AllowVaryBetweenGroups,
                         () => SetAllowVaryBetweenGroups(sharedParameterInfo.Definition.ParameterName, document));
@@ -207,8 +210,10 @@
 
             var externalDefinition = GetSharedExternalDefinition(sharedParameterInfo, fullMatch, definitionFile);
             if (externalDefinition == null)
+            {
                 return Result.Failure(
                     $"Параметр '{sharedParameterInfo.Definition.ParameterName}' не найден в ФОП '{definitionFile.Filename}'");
+            }
 
             var binding = sharedParameterInfo.CreateData.IsCreateForInstance
                 ? (Binding)document.Application.Create.NewInstanceBinding(categorySet)
@@ -229,21 +234,54 @@
         private Result UpdateParameterBindings(
             Definition definition,
             SharedParameterCreateData createData,
-            Document doc = null)
+            Document doc = null,
+            bool isSavePastValues = false)
         {
-            var document = doc ?? _uiApplication.ActiveUIDocument.Document;
-            var parameterBindings = document.ParameterBindings;
+            doc ??= _uiApplication.ActiveUIDocument.Document;
+            var parameterBindings = doc.ParameterBindings;
             var binding = (ElementBinding)parameterBindings.get_Item(definition);
             var existCategories = binding?.Categories ?? new CategorySet();
+            var existCategoriesCopy = binding?.Categories ?? new CategorySet();
             var creatingCategories = createData.CategoriesForBind
-                .Select(bic => Category.GetCategory(document, bic))
+                .Select(bic => Category.GetCategory(doc, bic))
                 .ToList();
-            return creatingCategories
-                .LastOrDefault(creatingCategory => existCategories.Insert(creatingCategory)) != null
-                ? Result.SuccessIf(
+            if (creatingCategories
+                    .LastOrDefault(creatingCategory => existCategories.Insert(creatingCategory)) != null)
+            {
+                if (isSavePastValues && binding is InstanceBinding)
+                {
+                    /*return Result.SuccessIf(
+                        parameterBindings.ReInsert(definition, binding),
+                        $"Не удалось обновить параметр '{definition.Name}'");*/
+
+                    // найти все элементы заданных категорий до добавления новых категорий
+                    var categoryFilter =
+                        new ElementMulticategoryFilter(existCategoriesCopy.Cast<Category>().Select(cat => cat.Id).ToArray());
+                    var elements = new FilteredElementCollector(doc)
+                        .WherePasses(categoryFilter)
+                        .WhereElementIsNotElementType();
+                    var values = elements.Select(element => new
+                        { Element = element, Value = element.get_Parameter(definition).GetParameterValue() }).ToArray();
+
+                    parameterBindings.ReInsert(definition, binding);
+                    doc!.Regenerate();
+                    foreach (var value in values)
+                    {
+                        var param = value.Element.get_Parameter(definition);
+                        if (param is null || value.Value is null)
+                            continue;
+                        param.SetParameterValue(value.Value);
+                    }
+
+                    return Result.Success();
+                }
+
+                return Result.SuccessIf(
                     parameterBindings.ReInsert(definition, binding),
-                    $"Не удалось обновить параметр '{definition.Name}'")
-                : Result.Success();
+                    $"Не удалось обновить параметр '{definition.Name}'");
+            }
+
+            return Result.Success();
         }
 
         /// <summary>
