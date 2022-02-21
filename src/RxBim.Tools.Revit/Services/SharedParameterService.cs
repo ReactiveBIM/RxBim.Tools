@@ -229,8 +229,6 @@
             return result;
         }
 
-        /// <remark>При присоединении новых категорий к существующему параметру, в некоторых случаях, 
-        /// происходит очистка параметров у элементов существующих привязанных категорий.</remark>
         private Result UpdateParameterBindings(
             Definition definition,
             SharedParameterCreateData createData,
@@ -255,6 +253,9 @@
                         $"Не удалось обновить параметр '{definition.Name}'");
                 }
 
+                // Производится запись параметров-значений для элементов существующих категорий,
+                // и их перезапись после биндинга новый категорий.
+                // Это необходимо т.к. возможны случаи обнуления данных параметров.
                 var categoryFilter =
                     new ElementMulticategoryFilter(existCategoriesCopy.Cast<Category>().Select(cat => cat.Id).ToArray());
                 var paramValuePairs = new FilteredElementCollector(doc)
@@ -263,7 +264,7 @@
                     .Select(element =>
                     {
                         var param = element.get_Parameter(definition);
-                        if (param.IsReadOnly || !param.HasValue)
+                        if (param is null || param.IsReadOnly || !param.HasValue)
                             return null;
                         return new
                             { Param = param, Value = param.GetParameterValue() };
