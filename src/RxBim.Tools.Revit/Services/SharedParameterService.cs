@@ -8,6 +8,7 @@
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
     using CSharpFunctionalExtensions;
+    using Extensions;
     using Models;
     using Result = CSharpFunctionalExtensions.Result;
 
@@ -61,6 +62,7 @@
             DefinitionFile[] definitionFiles,
             SharedParameterInfo sharedParameterInfo,
             bool fullMatch,
+            bool isSavePastValues = false,
             Document document = null)
         {
             var existsInDocument = ParameterExistsInDocument(
@@ -91,7 +93,8 @@
                 return UpdateParameterBindings(
                         externalDefinitionInFile[0].ExternalDefinition,
                         sharedParameterInfo.CreateData,
-                        document)
+                        document,
+                        isSavePastValues)
                     .TapIf(
                         sharedParameterInfo.CreateData.AllowVaryBetweenGroups,
                         () => SetAllowVaryBetweenGroups(sharedParameterInfo.Definition.ParameterName, document));
@@ -207,8 +210,10 @@
 
             var externalDefinition = GetSharedExternalDefinition(sharedParameterInfo, fullMatch, definitionFile);
             if (externalDefinition == null)
+            {
                 return Result.Failure(
                     $"Параметр '{sharedParameterInfo.Definition.ParameterName}' не найден в ФОП '{definitionFile.Filename}'");
+            }
 
             var binding = sharedParameterInfo.CreateData.IsCreateForInstance
                 ? (Binding)document.Application.Create.NewInstanceBinding(categorySet)
@@ -224,26 +229,56 @@
             return result;
         }
 
-        /// <remark>При присоединении новых категорий к существующему параметру, в некоторых случаях, 
-        /// происходит очистка параметров у элементов существующих привязанных категорий.</remark>
         private Result UpdateParameterBindings(
             Definition definition,
             SharedParameterCreateData createData,
-            Document doc = null)
+            Document doc = null,
+            bool isSavePastValues = false)
         {
-            var document = doc ?? _uiApplication.ActiveUIDocument.Document;
-            var parameterBindings = document.ParameterBindings;
+            doc ??= _uiApplication.ActiveUIDocument.Document;
+            var parameterBindings = doc.ParameterBindings;
             var binding = (ElementBinding)parameterBindings.get_Item(definition);
             var existCategories = binding?.Categories ?? new CategorySet();
+            var existCategoriesCopy = binding?.Categories ?? new CategorySet();
             var creatingCategories = createData.CategoriesForBind
-                .Select(bic => Category.GetCategory(document, bic))
+                .Select(bic => Category.GetCategory(doc, bic))
                 .ToList();
-            return creatingCategories
-                .LastOrDefault(creatingCategory => existCategories.Insert(creatingCategory)) != null
-                ? Result.SuccessIf(
-                    parameterBindings.ReInsert(definition, binding),
-                    $"Не удалось обновить параметр '{definition.Name}'")
-                : Result.Success();
+            if (creatingCategories
+                    .LastOrDefault(creatingCategory => existCategories.Insert(creatingCategory)) != null)
+            {
+                if (!isSavePastValues || binding is not InstanceBinding)
+                {
+                    return Result.SuccessIf(
+                        parameterBindings.ReInsert(definition, binding),
+                        $"Не удалось обновить параметр '{definition.Name}'");
+                }
+
+                // Производится запись параметров-значений для элементов существующих категорий,
+                // и их перезапись после биндинга новый категорий.
+                // Это необходимо т.к. возможны случаи обнуления данных параметров.
+                var categoryFilter =
+                    new ElementMulticategoryFilter(existCategoriesCopy.Cast<Category>().Select(cat => cat.Id).ToArray());
+                var paramValuePairs = new FilteredElementCollector(doc)
+                    .WherePasses(categoryFilter)
+                    .WhereElementIsNotElementType()
+                    .Select(element =>
+                    {
+                        var param = element.get_Parameter(definition);
+                        if (param is null || param.IsReadOnly || !param.HasValue)
+                            return null;
+                        return new
+                            { Param = param, Value = param.GetParameterValue() };
+                    })
+                    .Where(paramValuePair => paramValuePair?.Value is not null)
+                    .ToArray();
+                parameterBindings.ReInsert(definition, binding);
+                doc!.Regenerate();
+                foreach (var pair in paramValuePairs)
+                    pair.Param.SetParameterValue(pair.Value);
+                return Result.Success();
+            }
+
+            return Result.Success();
         }
 
         /// <summary>
