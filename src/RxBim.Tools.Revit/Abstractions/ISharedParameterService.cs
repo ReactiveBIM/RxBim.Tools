@@ -54,6 +54,8 @@
         /// если задано true, происходит проверка только по свойствам:
         /// Имя, Guid, DataType. Если последние два имеют значение у sharedParameterInfo
         /// </param>
+        /// <param name="isSavePastValues">Производит сохранение значений параметров элементов существующих привязанных категорий
+        /// и дальнейшую их установку после обновления биндинга.</param>
         /// <param name="document">Документ, в котором нужно добавить параметр.
         /// при значении null параметр добавляется в текущий документ</param>
         /// <returns>true - если параметр был добавлен или обновлён</returns>
@@ -61,6 +63,7 @@
             DefinitionFile[] definitionFiles,
             SharedParameterInfo sharedParameterInfo,
             bool fullMatch,
+            bool isSavePastValues = false,
             Document document = null);
 
         /// <summary>
