@@ -182,12 +182,7 @@
                     {
                         var parameterBindings = doc.ParameterBindings;
                         var binding = (ElementBinding)parameterBindings.get_Item(sharedParameterElement.GetDefinition());
-                        if (binding is null)
-                        {
-                            return false;
-                        }
-
-                        return true;
+                        return binding is not null;
                     }
                 }
             }
