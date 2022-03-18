@@ -1,6 +1,10 @@
 ﻿<Project>
     <PropertyGroup>
+        <TargetFramework>net472</TargetFramework>
+        <PlatformTarget>x64</PlatformTarget>
+        <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
         <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(ProjectName)' != '_build' And !'$(ProjectName.EndsWith(`Tests`))'">
@@ -16,6 +20,7 @@
     </ItemGroup>
 
     <PropertyGroup>
+        <Version>$(ApiVersion)</Version>
         <Company>pik-group.com</Company>
         <Authors>Reactive BIM</Authors>
         <Product>RxBim</Product>
