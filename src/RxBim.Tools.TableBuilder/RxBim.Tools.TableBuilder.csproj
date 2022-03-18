@@ -2,8 +2,6 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
-        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
@@ -17,7 +15,6 @@
     </ItemGroup>
 
     <PropertyGroup>
-        <Version>$(ApiVersion)</Version>
          <Description>RxBim table builder Library</Description>
         <PackageId>RxBim.Tools.TableBuilder</PackageId>
     </PropertyGroup>
