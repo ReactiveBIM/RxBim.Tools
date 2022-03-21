@@ -20,7 +20,11 @@
         private readonly UIApplication _uiApplication;
         private readonly ITransactionService _transactionService;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SharedParameterService"/> class.
+        /// </summary>
+        /// <param name="uiApplication"><see cref="UIApplication"/></param>
+        /// <param name="transactionService"><see cref="ITransactionService"/></param>
         public SharedParameterService(UIApplication uiApplication, ITransactionService transactionService)
         {
             _uiApplication = uiApplication;
@@ -65,16 +69,11 @@
             bool isSavePastValues = false,
             Document document = null)
         {
-            var existsInDocument = ParameterExistsInDocument(
-                sharedParameterInfo.Definition,
-                fullMatch,
-                document);
-
             var externalDefinitionInFile = definitionFiles
                 .Select(df => new
                 {
                     ExternalDefinition = GetSharedExternalDefinition(
-                        sharedParameterInfo,
+                        sharedParameterInfo.Definition,
                         fullMatch,
                         df),
                     DefinitionFile = df
@@ -87,6 +86,11 @@
 
             if (externalDefinitionInFile.Count > 1 && !fullMatch)
                 return Result.Failure($"Параметр '{sharedParameterInfo.Definition.ParameterName}' обнаружен в нескольких ФОП");
+
+            var existsInDocument = ParameterExistsInDocument(
+                sharedParameterInfo.Definition,
+                fullMatch,
+                document);
 
             if (existsInDocument)
             {
@@ -168,14 +172,19 @@
                          .OfClass(typeof(SharedParameterElement))
                          .Cast<SharedParameterElement>())
             {
-                if (!fullMatch && string.Equals(
+                switch (fullMatch)
+                {
+                    case false when string.Equals(
                         sharedParameterElement.Name,
                         definition.ParameterName,
-                        StringComparison.InvariantCultureIgnoreCase))
-                    return true;
-
-                if (fullMatch && IsFullMatch(definition, sharedParameterElement))
-                    return true;
+                        StringComparison.InvariantCultureIgnoreCase):
+                    case true when IsFullMatch(definition, sharedParameterElement):
+                    {
+                        var parameterBindings = doc.ParameterBindings;
+                        var binding = (ElementBinding)parameterBindings.get_Item(sharedParameterElement.GetDefinition());
+                        return binding is not null;
+                    }
+                }
             }
 
             return false;
@@ -190,7 +199,7 @@
             try
             {
                 return Result.SuccessIf(
-                    GetSharedExternalDefinition(sharedParameterInfo, fullMatch, definitionFile) != null,
+                    GetSharedExternalDefinition(sharedParameterInfo.Definition, fullMatch, definitionFile) != null,
                     "Параметр не найден в ФОП");
             }
             catch (Exception exception)
@@ -208,7 +217,7 @@
             var categorySet =
                 GetCategorySet(sharedParameterInfo.CreateData.CategoriesForBind.Select(c => Category.GetCategory(document, c)));
 
-            var externalDefinition = GetSharedExternalDefinition(sharedParameterInfo, fullMatch, definitionFile);
+            var externalDefinition = GetSharedExternalDefinition(sharedParameterInfo.Definition, fullMatch, definitionFile);
             if (externalDefinition == null)
             {
                 return Result.Failure(
@@ -254,7 +263,7 @@
                 }
 
                 // Производится запись параметров-значений для элементов существующих категорий,
-                // и их перезапись после биндинга новый категорий.
+                // и их перезапись после биндинга новых категорий.
                 // Это необходимо т.к. возможны случаи обнуления данных параметров.
                 var categoryFilter =
                     new ElementMulticategoryFilter(existCategoriesCopy.Cast<Category>().Select(cat => cat.Id).ToArray());
@@ -300,12 +309,12 @@
         /// <summary>
         /// Возвращает определение общего параметра <see cref="ExternalDefinition"/> из текущего ФОП по имени
         /// </summary>
-        /// <param name="sharedParameterInfo">Данные об общем параметре</param>
+        /// <param name="sharedParameterDefinition">Данные об общем параметре</param>
         /// <param name="fullMatch">True - параметр ФОП должен совпасть со всеми заполненными
         /// значениями sharedParameterInfo. False - параметр ищется только по имени</param>
         /// <param name="definitionFile">ФОП</param>
         private ExternalDefinition GetSharedExternalDefinition(
-            SharedParameterInfo sharedParameterInfo,
+            SharedParameterDefinition sharedParameterDefinition,
             bool fullMatch,
             DefinitionFile definitionFile)
         {
@@ -316,12 +325,12 @@
                     if (!(def is ExternalDefinition externalDefinition))
                         continue;
 
-                    if (!fullMatch && sharedParameterInfo.Definition.ParameterName == externalDefinition.Name)
+                    if (!fullMatch && sharedParameterDefinition.ParameterName == externalDefinition.Name)
                         return externalDefinition;
 
                     if (fullMatch)
                     {
-                        if (!IsFullMatch(sharedParameterInfo.Definition, externalDefinition))
+                        if (!IsFullMatch(sharedParameterDefinition, externalDefinition))
                             continue;
 
                         return externalDefinition;
