@@ -36,5 +36,10 @@
         /// The color of the letters for this text.
         /// </summary>
         public Color? TextColor { get; set; }
+
+        /// <summary>
+        /// Indicates if text automatically shrinks to fit in the available column width
+        /// </summary>
+        public bool? ShrinkToFit { get; set; }
     }
 }

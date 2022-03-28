@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net472</TargetFramework>
-        <PlatformTarget>x64</PlatformTarget>
+        <AssemblyName>$(MSBuildProjectName)</AssemblyName>
         <NoWarn>NU1701</NoWarn>
         <IsPackable>false</IsPackable>
     </PropertyGroup>
