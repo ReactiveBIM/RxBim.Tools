@@ -14,11 +14,20 @@
         /// <summary>
         /// Add excel serializer service
         /// </summary>
-        /// <param name="container">контейнер</param>
+        /// <param name="container"><see cref="IContainer"/></param>
         public static IContainer AddExcelSerializer(this IContainer container)
         {
             return container
                 .AddSingleton<ITableSerializer<ExcelTableSerializerParameters, IXLWorkbook>, ExcelTableSerializer>();
+        }
+
+        /// <summary>
+        /// Add excel deserializer service
+        /// </summary>
+        /// <param name="container"><see cref="IContainer"/></param>
+        public static IContainer AddExcelDeserializer(this IContainer container)
+        {
+            return container.AddSingleton<ITableDeserializer<IXLWorksheet>, ExcelTableDeserializer>();
         }
     }
 }
