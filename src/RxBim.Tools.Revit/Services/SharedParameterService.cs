@@ -178,10 +178,15 @@
                         sharedParameterElement.Name,
                         definition.ParameterName,
                         StringComparison.InvariantCultureIgnoreCase):
+                    {
+                        return true;
+                    }
+
                     case true when IsFullMatch(definition, sharedParameterElement):
                     {
                         var parameterBindings = doc.ParameterBindings;
-                        var binding = (ElementBinding)parameterBindings.get_Item(sharedParameterElement.GetDefinition());
+                        var binding =
+                            (ElementBinding)parameterBindings.get_Item(sharedParameterElement.GetDefinition());
                         return binding is not null;
                     }
                 }
