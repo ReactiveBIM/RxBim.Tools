@@ -4,9 +4,15 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.95.4" />
-    <PackageReference Include="RxBim.Di" Version="1.0.5" />    
+    <PackageReference Include="RxBim.Di" Version="1.0.5" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RxBim.Tools.TableBuilder\RxBim.Tools.TableBuilder.csproj" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <Description>RxBim Excel serializer</Description>
+    <PackageId>$(MSBuildProjectName)</PackageId>
+  </PropertyGroup>
+
 </Project>
