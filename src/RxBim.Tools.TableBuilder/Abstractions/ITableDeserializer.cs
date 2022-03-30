@@ -1,6 +1,5 @@
 ﻿namespace RxBim.Tools.TableBuilder.Abstractions
 {
-    using System.Collections.Generic;
     using Models;
 
     /// <summary>
@@ -13,6 +12,6 @@
         /// Deserializes a table from a data source
         /// </summary>
         /// <param name="source">Source data</param>
-        public (Table Data, List<string> Headers) Deserialize(T source);
+        public Table Deserialize(T source);
     }
 }

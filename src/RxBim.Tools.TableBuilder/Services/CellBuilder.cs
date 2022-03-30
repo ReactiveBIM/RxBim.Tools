@@ -83,6 +83,16 @@
         }
 
         /// <summary>
+        /// Set value in the cell.
+        /// </summary>
+        /// <param name="value">Value.</param>
+        public CellBuilder SetValue(object value)
+        {
+            SetContent(new ObjectCellContent(value));
+            return this;
+        }
+
+        /// <summary>
         /// Returns the <see cref="CellBuilder"/> for the next cell to the right.
         /// </summary>
         /// <param name="step">Offset step to the right.</param>

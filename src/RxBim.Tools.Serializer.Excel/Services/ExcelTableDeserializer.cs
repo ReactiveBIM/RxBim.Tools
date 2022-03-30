@@ -1,10 +1,8 @@
 ﻿namespace RxBim.Tools.Serializer.Excel.Services
 {
-    using System.Collections.Generic;
     using System.Linq;
     using ClosedXML.Excel;
     using TableBuilder.Abstractions;
-    using TableBuilder.Models.Contents;
     using TableBuilder.Services;
     using Table = TableBuilder.Models.Table;
 
@@ -14,54 +12,34 @@
     internal class ExcelTableDeserializer : ITableDeserializer<IXLWorksheet>
     {
         /// <inheritdoc/>
-        public (Table Data, List<string> Headers) Deserialize(IXLWorksheet source)
+        public Table Deserialize(IXLWorksheet source)
         {
-            const int headersRow = 1;
-            const int firstValueRow = 3;
-
             var builder = new TableBuilder();
-            var headers = new List<string>();
 
-            var headerRow = source.Row(headersRow);
-            var cellCount = headerRow.CellCount();
+            var tableRowIndex = 0;
+            var rowsCount = source.Rows().Count();
+            var columnsCount = source.Columns().Count();
 
-            // Set columns and headers
-            for (var cellIndex = 0; cellIndex < cellCount; cellIndex++)
-            {
-                builder.AddColumn();
-
-                var cell = headerRow.Cell(cellIndex);
-                if (cell == null || string.IsNullOrWhiteSpace(cell.ToString()))
-                {
-                    headers.Add(string.Empty);
-                    continue;
-                }
-
-                headers.Add(cell.ToString());
-            }
-
-            var rowIndex = 0;
+            builder.AddColumn(count: columnsCount);
 
             // Read data
-            for (var tableRowIndex = firstValueRow; tableRowIndex <= source.RowCount(); tableRowIndex++)
+            for (var sourceRowIndex = 1; sourceRowIndex <= rowsCount; sourceRowIndex++)
             {
-                var row = source.Row(tableRowIndex);
-                if (row == null || row.Cells().All(d => d.IsEmpty()))
-                    break;
-
+                var row = source.Row(sourceRowIndex);
                 builder.AddRow();
 
-                for (var columnIndex = 0; columnIndex < cellCount; columnIndex++)
+                var tableColumnIndex = 0;
+                for (var sourceColumnIndex = 1; sourceColumnIndex <= columnsCount; sourceColumnIndex++)
                 {
-                    var cellValue = row.Cell(columnIndex).Value?.ToString();
-                    if (!string.IsNullOrEmpty(cellValue))
-                        builder[rowIndex, columnIndex].SetContent(new TextCellContent(cellValue!));
+                    var cellValue = row.Cell(sourceColumnIndex).Value;
+                    builder[tableRowIndex, tableColumnIndex].SetValue(cellValue);
+                    tableColumnIndex++;
                 }
 
-                rowIndex++;
+                tableRowIndex++;
             }
 
-            return (builder, headers);
+            return builder;
         }
     }
 }

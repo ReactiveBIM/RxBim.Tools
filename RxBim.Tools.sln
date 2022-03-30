@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1B8A8578-7C3C-425C-B769-9E097411094F}"
+	ProjectSection(SolutionItems) = preProject
+		tests\Directory.Build.Props = tests\Directory.Build.Props
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RxBim.Tools.Revit.Tests", "tests\RxBim.Tools.Revit.Tests\RxBim.Tools.Revit.Tests.csproj", "{DE5198BA-8F65-4E9C-BE74-EDA541287ED6}"
 EndProject
@@ -41,6 +44,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Command.TableBuilder.Revit.Sample", "samples\RxBim.Command.TableBuilder.Revit.Sample\RxBim.Command.TableBuilder.Revit.Sample.csproj", "{004DDE18-43BF-4D97-A5A6-8D4751E40B6C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.Serializer.Excel", "src\RxBim.Tools.Serializer.Excel\RxBim.Tools.Serializer.Excel.csproj", "{517E2FF5-7E77-49CA-BECE-EFBFC6D6090B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.Serializer.Excel.Tests", "tests\RxBim.Tools.Serializer.Excel.Tests\RxBim.Tools.Serializer.Excel.Tests.csproj", "{24FBE399-C806-4CB6-98DB-C71712B1C7B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -86,6 +91,10 @@ Global
 		{517E2FF5-7E77-49CA-BECE-EFBFC6D6090B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{517E2FF5-7E77-49CA-BECE-EFBFC6D6090B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{517E2FF5-7E77-49CA-BECE-EFBFC6D6090B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24FBE399-C806-4CB6-98DB-C71712B1C7B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24FBE399-C806-4CB6-98DB-C71712B1C7B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24FBE399-C806-4CB6-98DB-C71712B1C7B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24FBE399-C806-4CB6-98DB-C71712B1C7B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -100,6 +109,7 @@ Global
 		{004DDE18-43BF-4D97-A5A6-8D4751E40B6C} = {EA1ADE6F-F986-4CF3-A953-5B3C25A5C3F0}
 		{BD814946-EDC4-45DC-AE70-57831679B706} = {EA1ADE6F-F986-4CF3-A953-5B3C25A5C3F0}
 		{517E2FF5-7E77-49CA-BECE-EFBFC6D6090B} = {5339A0F1-1884-4682-BFD2-DE050B2E5D69}
+		{24FBE399-C806-4CB6-98DB-C71712B1C7B5} = {1B8A8578-7C3C-425C-B769-9E097411094F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EA2C589E-5222-413E-AEDF-F8B9DA1ABC2F}

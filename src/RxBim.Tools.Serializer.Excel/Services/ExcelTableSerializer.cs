@@ -82,10 +82,6 @@
                     cell.Style.NumberFormat.Format = numerateCellContent.Format;
                     break;
 
-                case TextCellContent textCellContent:
-                    cell.Value = textCellContent.Value;
-                    break;
-
                 default:
                     cell.Value = content.ValueObject;
                     break;

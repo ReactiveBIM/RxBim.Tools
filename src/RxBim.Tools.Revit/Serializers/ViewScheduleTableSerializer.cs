@@ -73,9 +73,8 @@
                     const int defaultRowHeightInMm = 8;
                     rowHeight = rowHeight > 0 ? rowHeight.MmToFt() : defaultRowHeightInMm.MmToFt();
 
-                    var text = cell.Content as TextCellContent;
                     headerData.SetRowHeight(scheduleRow, rowHeight);
-                    headerData.SetCellText(scheduleRow, scheduleCol, text?.Value);
+                    headerData.SetCellText(scheduleRow, scheduleCol, cell.Content.ValueObject?.ToString());
                     headerData.SetCellStyle(scheduleRow,
                         scheduleCol,
                         GetCellStyle(cell.GetComposedFormat(), serializerParameters));
