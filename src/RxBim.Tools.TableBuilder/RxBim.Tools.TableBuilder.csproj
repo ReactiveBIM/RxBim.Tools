@@ -2,6 +2,8 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
+        <AssemblyName>$(MSBuildProjectName).$(Version)</AssemblyName>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>

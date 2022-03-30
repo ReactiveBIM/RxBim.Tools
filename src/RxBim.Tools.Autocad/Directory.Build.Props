@@ -1,9 +1,8 @@
 ﻿<Project>
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+    
     <PropertyGroup>
-        <ApiVersion>1.1.0</ApiVersion>
+        <Version>1.1.0</Version>
         <ReleaseNotes>Add IDocumentService. CommandLineService use IDocumentService.</ReleaseNotes>
     </PropertyGroup>
-
-    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
-
 </Project>

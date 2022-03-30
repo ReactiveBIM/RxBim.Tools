@@ -2,6 +2,7 @@
 
     <PropertyGroup>
         <NoWarn>NU1701</NoWarn>
+        <AssemblyName>$(MSBuildProjectName).$(Version)</AssemblyName>
         <UseWPF>true</UseWPF>
     </PropertyGroup>
 
