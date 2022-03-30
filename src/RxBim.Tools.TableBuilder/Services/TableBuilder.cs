@@ -32,7 +32,7 @@
         /// </summary>
         /// <param name="row">Row index.</param>
         /// <param name="column">Column index.</param>
-        public CellBuilder this[int row, int column] => new (Table[row, column]);
+        public CellBuilder this[int row, int column] => new(Table[row, column]);
 
         /// <summary>
         /// Returns the built <see cref="Table"/>.

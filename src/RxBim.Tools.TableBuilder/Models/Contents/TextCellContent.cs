@@ -14,6 +14,6 @@
         /// <summary>
         /// Empty text content.
         /// </summary>
-        public static TextCellContent Empty { get; } = new (string.Empty);
+        public static TextCellContent Empty { get; } = new(string.Empty);
     }
 }

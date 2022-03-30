@@ -17,17 +17,17 @@
         /// <summary>
         /// Cell text format.
         /// </summary>
-        public CellTextFormatStyle TextFormat { get; } = new ();
+        public CellTextFormatStyle TextFormat { get; } = new();
 
         /// <summary>
         /// Line types for borders.
         /// </summary>
-        public CellBorders Borders { get; } = new ();
+        public CellBorders Borders { get; } = new();
 
         /// <summary>
         /// Margins from borders to content.
         /// </summary>
-        public CellContentMargins ContentMargins { get; } = new ();
+        public CellContentMargins ContentMargins { get; } = new();
 
         /// <summary>
         /// The background color for a cell.

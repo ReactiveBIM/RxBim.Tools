@@ -9,7 +9,7 @@
     /// </summary>
     public abstract class CellsSet : TableItemBase
     {
-        private readonly List<Cell> _cells = new ();
+        private readonly List<Cell> _cells = new();
 
         /// <inheritdoc />
         protected CellsSet(Table table)
