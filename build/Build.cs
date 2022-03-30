@@ -27,7 +27,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
     OnPushBranches = new[] { MasterBranch, "release/**" },
     InvokedTargets = new[] { nameof(Test), nameof(IPublish.Publish) },
     ImportSecrets = new[] { "NUGET_API_KEY", "ALL_PACKAGES" })]
-partial class Build : NukeBuild,
+class Build : NukeBuild,
     IPublish
 {
     const string MasterBranch = "master";
@@ -49,7 +49,6 @@ partial class Build : NukeBuild,
                 .ForEach(FileSystemTasks.DeleteDirectory);
         });
     
-
     public Target Test => _ => _
         .Before(Clean)
         .Before<IRestore>()
@@ -59,8 +58,8 @@ partial class Build : NukeBuild,
                 .SetProjectFile(From<IHazSolution>().Solution.Path)
                 .SetConfiguration(From<IHazConfiguration>().Configuration));
         });
-    
-    private T From<T>()
+
+   T From<T>()
         where T : INukeBuild
         => (T)(object)this;
 }

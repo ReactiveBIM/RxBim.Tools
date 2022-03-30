@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net472</TargetFramework>
         <PlatformTarget>x64</PlatformTarget>
-        <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
+        <AssemblyName>$(MSBuildProjectName).$(Version)</AssemblyName>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
@@ -23,7 +23,6 @@
     </ItemGroup>
 
     <PropertyGroup>
-        <Version>$(ApiVersion)</Version>
         <Description>RxBim AutoCAD Extensions Library</Description>
         <PackageId>RxBim.Tools.Autocad</PackageId>
         <PackageReleaseNotes>$(ReleaseNotes)</PackageReleaseNotes>
