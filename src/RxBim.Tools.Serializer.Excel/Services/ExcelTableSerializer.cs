@@ -10,7 +10,9 @@
     using TableBuilder.Models.Contents;
     using TableBuilder.Models.Styles;
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Excel serializer to table
+    /// </summary>
     internal class ExcelTableSerializer : ITableSerializer<ExcelTableSerializerParameters, IXLWorkbook>
     {
         /// <inheritdoc />

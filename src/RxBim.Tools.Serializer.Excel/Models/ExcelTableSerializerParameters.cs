@@ -23,8 +23,8 @@
         public int FreezeRows { get; set; } = 0;
 
         /// <summary>
-        /// Auto-filter range
+        /// Adding an AutoFilter to a Range
         /// </summary>
-        public (int fromRow, int fromColumn, int toRow, int toColumn) AutoFilterRange { get; set; }
+        public (int FromRow, int FromColumn, int ToRow, int ToColumn) AutoFilterRange { get; set; }
     }
 }

@@ -72,14 +72,16 @@
                             : Math.Round(
                                 UnitUtils.ConvertFromInternalUnits(
                                     param.AsDouble(),
-                                    param.DisplayUnitType), digits);
+                                    param.DisplayUnitType),
+                                digits);
                     }
                     catch (Autodesk.Revit.Exceptions.InvalidOperationException)
                     {
                         value = Math.Round(
                             UnitUtils.ConvertFromInternalUnits(
                                 param.AsDouble(),
-                                DisplayUnitType.DUT_GENERAL), digits);
+                                DisplayUnitType.DUT_GENERAL),
+                            digits);
                     }
 
                     break;

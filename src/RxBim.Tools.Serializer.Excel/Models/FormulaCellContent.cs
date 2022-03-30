@@ -3,32 +3,32 @@
     using TableBuilder.Abstractions;
 
     /// <summary>
-    /// Формула
+    /// The formula content of a cell
     /// </summary>
     public class FormulaCellContent : ICellContent
     {
         /// <summary>
         /// ctor
         /// </summary>
-        /// <param name="formula">Формула</param>
-        /// <param name="cellRange">Диапазон ячеек для формулы</param>
+        /// <param name="formula">Formulas</param>
+        /// <param name="cellRange">Cell range for formula</param>
         public FormulaCellContent(
             Formulas formula,
-            (int fromRow, int fromColumn, int toRow, int toColumn) cellRange)
+            (int FromRow, int FromColumn, int ToRow, int ToColumn) cellRange)
         {
             Formula = formula;
             CellRange = cellRange;
         }
 
         /// <summary>
-        /// Формула
+        /// Formulas
         /// </summary>
         public Formulas Formula { get; set; }
 
         /// <summary>
-        /// Диапазон ячеек для формулы
+        /// Cell range for formula
         /// </summary>
-        public (int fromRow, int fromColumn, int toRow, int toColumn) CellRange { get; set; }
+        public (int FromRow, int FromColumn, int ToRow, int ToColumn) CellRange { get; set; }
 
         /// <inheritdoc />
         public object? ValueObject => null;

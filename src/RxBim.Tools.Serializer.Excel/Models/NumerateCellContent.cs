@@ -3,17 +3,16 @@
     using TableBuilder.Abstractions;
 
     /// <summary>
-    /// Numeric data
+    /// The numeric content of a cell
     /// </summary>
     public class NumerateCellContent : ICellContent
     {
         /// <summary>
         /// ctor
         /// </summary>
-        /// <param name="value">Число</param>
-        /// <param name="format">Формат числа</param>
-        public NumerateCellContent(
-            object value, string format)
+        /// <param name="value">Number</param>
+        /// <param name="format">Number format</param>
+        public NumerateCellContent(object value, string format)
         {
             Format = format;
             ValueObject = value;

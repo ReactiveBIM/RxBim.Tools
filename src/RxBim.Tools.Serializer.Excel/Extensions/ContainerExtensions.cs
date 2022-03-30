@@ -12,7 +12,7 @@
     public static class ContainerExtensions
     {
         /// <summary>
-        /// Add excel serializer service
+        /// Adds a table serialization service to Excel
         /// </summary>
         /// <param name="container"><see cref="IContainer"/></param>
         public static IContainer AddExcelSerializer(this IContainer container)
@@ -22,7 +22,7 @@
         }
 
         /// <summary>
-        /// Add excel deserializer service
+        /// Adds a table deserialization service from Excel
         /// </summary>
         /// <param name="container"><see cref="IContainer"/></param>
         public static IContainer AddExcelDeserializer(this IContainer container)

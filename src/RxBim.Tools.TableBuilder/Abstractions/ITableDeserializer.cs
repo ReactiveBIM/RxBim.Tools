@@ -10,9 +10,9 @@
     public interface ITableDeserializer<in T>
     {
         /// <summary>
-        /// Deserialize table from source
+        /// Deserializes a table from a data source
         /// </summary>
         /// <param name="source">Source data</param>
-        public (Table Data, List<string> Headers) DeserializeTable(T source);
+        public (Table Data, List<string> Headers) Deserialize(T source);
     }
 }

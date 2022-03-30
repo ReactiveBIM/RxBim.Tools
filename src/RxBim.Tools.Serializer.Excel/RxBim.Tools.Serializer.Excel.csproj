@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
-    <PlatformTarget>x64</PlatformTarget>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PlatformTarget>x64</PlatformTarget>    
     <AssemblyName>$(MSBuildProjectName).$(Version)</AssemblyName>
     <Nullable>enable</Nullable>
     <LangVersion>default</LangVersion>

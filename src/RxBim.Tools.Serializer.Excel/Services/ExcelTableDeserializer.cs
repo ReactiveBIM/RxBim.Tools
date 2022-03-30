@@ -14,7 +14,7 @@
     internal class ExcelTableDeserializer : ITableDeserializer<IXLWorksheet>
     {
         /// <inheritdoc/>
-        public (Table Data, List<string> Headers) DeserializeTable(IXLWorksheet source)
+        public (Table Data, List<string> Headers) Deserialize(IXLWorksheet source)
         {
             const int headersRow = 1;
             const int firstValueRow = 3;
