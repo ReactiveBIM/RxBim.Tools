@@ -7,7 +7,6 @@
     using Models;
     using TableBuilder.Abstractions;
     using TableBuilder.Models;
-    using TableBuilder.Models.Contents;
     using TableBuilder.Models.Styles;
 
     /// <summary>
@@ -19,7 +18,7 @@
         public IXLWorkbook Serialize(Table table, ExcelTableSerializerParameters parameters)
         {
             var document = parameters.Document ?? new XLWorkbook();
-            var worksheet = document.Worksheets.Add(parameters.WorksheetName);
+            var worksheet = document.Worksheets.Add(parameters.WorksheetName ?? "Sheet1");
 
             var mergedCells = new List<CellRange>();
 

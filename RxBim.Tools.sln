@@ -47,6 +47,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.Serializer.Exce
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.Serializer.Excel.Tests", "tests\RxBim.Tools.Serializer.Excel.Tests\RxBim.Tools.Serializer.Excel.Tests.csproj", "{24FBE399-C806-4CB6-98DB-C71712B1C7B5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.Serializer.Excel.Sample", "samples\RxBim.Tools.Serializer.Excel.Sample\RxBim.Tools.Serializer.Excel.Sample.csproj", "{7F91C502-9B22-46E2-892F-B47AD3F8526C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,6 +97,10 @@ Global
 		{24FBE399-C806-4CB6-98DB-C71712B1C7B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24FBE399-C806-4CB6-98DB-C71712B1C7B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24FBE399-C806-4CB6-98DB-C71712B1C7B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F91C502-9B22-46E2-892F-B47AD3F8526C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F91C502-9B22-46E2-892F-B47AD3F8526C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F91C502-9B22-46E2-892F-B47AD3F8526C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F91C502-9B22-46E2-892F-B47AD3F8526C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -110,6 +116,7 @@ Global
 		{BD814946-EDC4-45DC-AE70-57831679B706} = {EA1ADE6F-F986-4CF3-A953-5B3C25A5C3F0}
 		{517E2FF5-7E77-49CA-BECE-EFBFC6D6090B} = {5339A0F1-1884-4682-BFD2-DE050B2E5D69}
 		{24FBE399-C806-4CB6-98DB-C71712B1C7B5} = {1B8A8578-7C3C-425C-B769-9E097411094F}
+		{7F91C502-9B22-46E2-892F-B47AD3F8526C} = {EA1ADE6F-F986-4CF3-A953-5B3C25A5C3F0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EA2C589E-5222-413E-AEDF-F8B9DA1ABC2F}
