@@ -35,7 +35,7 @@
             var table = GetTable();
 
             // Serializing a table to Excel
-            var workBook = table.Serialize(serializer, parameters);
+            var workBook = serializer.Serialize(table, parameters);
 
             // Save Excel file and open
             var excelFile = Save(workBook);
