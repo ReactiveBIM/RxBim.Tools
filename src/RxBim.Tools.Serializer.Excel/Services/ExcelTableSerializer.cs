@@ -30,30 +30,7 @@
                 var column = worksheet.Column(sheetColumnIndex);
                 column.Width = table.Columns[currentColumnIndex].Width;
 
-                var sheetRowIndex = 1;
-                for (var currentRowIndex = 0; currentRowIndex < table.Rows.Count; currentRowIndex++, sheetRowIndex++)
-                {
-                    var row = worksheet.Row(sheetRowIndex);
-                    row.Height = table.Rows[currentRowIndex].Height;
-
-                    var cell = table[currentRowIndex, currentColumnIndex];
-                    var sheetCell = worksheet.Cell(sheetRowIndex, sheetColumnIndex);
-
-                    SetData(sheetCell, cell.Content);
-                    SetStyle(sheetCell, cell.Format);
-
-                    // Merge logic
-                    if (!cell.Merged || cell.MergeArea == null || mergedCells.Exists(x => Equals(x, cell.MergeArea)))
-                        continue;
-
-                    mergedCells.Add(cell.MergeArea.Value);
-
-                    worksheet.Range(
-                        cell.MergeArea.Value.TopRow + 1,
-                        cell.MergeArea.Value.LeftColumn + 1,
-                        cell.MergeArea.Value.BottomRow + 1,
-                        cell.MergeArea.Value.RightColumn + 1).Merge();
-                }
+                FillRow(table, worksheet, currentColumnIndex, sheetColumnIndex, mergedCells);
             }
 
             AdjustToContents(ref worksheet);
@@ -66,6 +43,39 @@
                 worksheet.Range(fromRow, fromColumn, toRow, toColumn).SetAutoFilter(true);
 
             return document;
+        }
+
+        private void FillRow(
+            Table table,
+            IXLWorksheet worksheet,
+            int currentColumnIndex,
+            int sheetColumnIndex,
+            List<CellRange> mergedCells)
+        {
+            var sheetRowIndex = 1;
+            for (var currentRowIndex = 0; currentRowIndex < table.Rows.Count; currentRowIndex++, sheetRowIndex++)
+            {
+                var row = worksheet.Row(sheetRowIndex);
+                row.Height = table.Rows[currentRowIndex].Height;
+
+                var cell = table[currentRowIndex, currentColumnIndex];
+                var sheetCell = worksheet.Cell(sheetRowIndex, sheetColumnIndex);
+
+                SetData(sheetCell, cell.Content);
+                SetStyle(sheetCell, cell.Format);
+
+                // Merge logic
+                if (!cell.Merged || cell.MergeArea == null || mergedCells.Exists(x => Equals(x, cell.MergeArea)))
+                    continue;
+
+                mergedCells.Add(cell.MergeArea.Value);
+
+                worksheet.Range(
+                    cell.MergeArea.Value.TopRow + 1,
+                    cell.MergeArea.Value.LeftColumn + 1,
+                    cell.MergeArea.Value.BottomRow + 1,
+                    cell.MergeArea.Value.RightColumn + 1).Merge();
+            }
         }
 
         private void SetData(IXLCell cell, ICellContent content)
@@ -105,54 +115,71 @@
             return sFormula.ToString();
         }
 
-        private void SetStyle(IXLCell sheetCell, CellFormatStyle format)
+        private void SetStyle(IXLCell sheetCell, CellFormatStyle cellFormat)
         {
-            var style = sheetCell.Style;
+            var cellStyle = sheetCell.Style;
 
-            if (format.BackgroundColor != null)
+            SetBackgroundFormat(cellFormat, cellStyle);
+            SetTextFormat(cellFormat, cellStyle);
+            SetAlignmentFormat(cellFormat, cellStyle);
+            SetBordersFormat(cellFormat, cellStyle);
+        }
+
+        private void SetBackgroundFormat(CellFormatStyle cellFormat, IXLStyle cellStyle)
+        {
+            if (cellFormat.BackgroundColor != null)
             {
-                style.Fill.PatternType = XLFillPatternValues.Solid;
-                style.Fill.SetBackgroundColor(XLColor.FromColor(format.BackgroundColor.Value));
+                cellStyle.Fill.PatternType = XLFillPatternValues.Solid;
+                cellStyle.Fill.SetBackgroundColor(XLColor.FromColor(cellFormat.BackgroundColor.Value));
             }
+        }
 
-            if (!string.IsNullOrEmpty(format.TextFormat.FontFamily))
-                style.Font.FontName = format.TextFormat.FontFamily;
+        private void SetAlignmentFormat(CellFormatStyle cellFormat, IXLStyle cellStyle)
+        {
+            if (cellFormat.ContentHorizontalAlignment != null)
+                cellStyle.Alignment.SetHorizontal(GetExcelHorizontalAlignment(cellFormat.ContentHorizontalAlignment.Value));
 
-            if (format.TextFormat.Bold != null)
-                style.Font.Bold = format.TextFormat.Bold.Value;
+            if (cellFormat.ContentVerticalAlignment != null)
+                cellStyle.Alignment.SetVertical(GetExcelVerticalAlignment(cellFormat.ContentVerticalAlignment.Value));
+        }
 
-            if (format.TextFormat.Italic != null)
-                style.Font.Italic = format.TextFormat.Italic.Value;
+        private void SetBordersFormat(CellFormatStyle cellFormat, IXLStyle cellStyle)
+        {
+            if (cellFormat.Borders.Top != null)
+                cellStyle.Border.TopBorder = GetExcelBorderStyle(cellFormat.Borders.Top.Value);
 
-            if (format.TextFormat.TextColor != null)
-                style.Font.SetFontColor(XLColor.FromColor(format.TextFormat.TextColor.Value));
+            if (cellFormat.Borders.Right != null)
+                cellStyle.Border.RightBorder = GetExcelBorderStyle(cellFormat.Borders.Right.Value);
 
-            if (format.TextFormat.TextSize != null)
-                style.Font.FontSize = format.TextFormat.TextSize.Value;
+            if (cellFormat.Borders.Bottom != null)
+                cellStyle.Border.BottomBorder = GetExcelBorderStyle(cellFormat.Borders.Bottom.Value);
 
-            if (format.TextFormat.WrapText != null)
-                style.Alignment.WrapText = format.TextFormat.WrapText.Value;
+            if (cellFormat.Borders.Left != null)
+                cellStyle.Border.LeftBorder = GetExcelBorderStyle(cellFormat.Borders.Left.Value);
+        }
 
-            if (format.TextFormat.ShrinkToFit != null)
-                style.Alignment.ShrinkToFit = format.TextFormat.ShrinkToFit.Value;
+        private void SetTextFormat(CellFormatStyle cellFormat, IXLStyle cellStyle)
+        {
+            if (!string.IsNullOrEmpty(cellFormat.TextFormat.FontFamily))
+                cellStyle.Font.FontName = cellFormat.TextFormat.FontFamily;
 
-            if (format.ContentHorizontalAlignment != null)
-                style.Alignment.SetHorizontal(GetExcelHorizontalAlignment(format.ContentHorizontalAlignment.Value));
+            if (cellFormat.TextFormat.Bold != null)
+                cellStyle.Font.Bold = cellFormat.TextFormat.Bold.Value;
 
-            if (format.ContentVerticalAlignment != null)
-                style.Alignment.SetVertical(GetExcelVerticalAlignment(format.ContentVerticalAlignment.Value));
+            if (cellFormat.TextFormat.Italic != null)
+                cellStyle.Font.Italic = cellFormat.TextFormat.Italic.Value;
 
-            if (format.Borders.Top != null)
-                style.Border.TopBorder = GetExcelBorderStyle(format.Borders.Top.Value);
+            if (cellFormat.TextFormat.TextColor != null)
+                cellStyle.Font.SetFontColor(XLColor.FromColor(cellFormat.TextFormat.TextColor.Value));
 
-            if (format.Borders.Right != null)
-                style.Border.RightBorder = GetExcelBorderStyle(format.Borders.Right.Value);
+            if (cellFormat.TextFormat.TextSize != null)
+                cellStyle.Font.FontSize = cellFormat.TextFormat.TextSize.Value;
 
-            if (format.Borders.Bottom != null)
-                style.Border.BottomBorder = GetExcelBorderStyle(format.Borders.Bottom.Value);
+            if (cellFormat.TextFormat.WrapText != null)
+                cellStyle.Alignment.WrapText = cellFormat.TextFormat.WrapText.Value;
 
-            if (format.Borders.Left != null)
-                style.Border.LeftBorder = GetExcelBorderStyle(format.Borders.Left.Value);
+            if (cellFormat.TextFormat.ShrinkToFit != null)
+                cellStyle.Alignment.ShrinkToFit = cellFormat.TextFormat.ShrinkToFit.Value;
         }
 
         private XLAlignmentVerticalValues GetExcelVerticalAlignment(CellContentVerticalAlignment verticalAlignment)
