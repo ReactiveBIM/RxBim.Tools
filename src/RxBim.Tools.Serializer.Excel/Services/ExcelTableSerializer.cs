@@ -62,7 +62,7 @@
                 var sheetCell = worksheet.Cell(sheetRowIndex, sheetColumnIndex);
 
                 SetData(sheetCell, cell.Content);
-                SetStyle(sheetCell, cell.Format);
+                SetFormat(sheetCell, cell.Format);
 
                 // Merge logic
                 if (!cell.Merged || cell.MergeArea == null || mergedCells.Exists(x => Equals(x, cell.MergeArea)))
@@ -115,7 +115,7 @@
             return sFormula.ToString();
         }
 
-        private void SetStyle(IXLCell sheetCell, CellFormatStyle cellFormat)
+        private void SetFormat(IXLCell sheetCell, CellFormatStyle cellFormat)
         {
             var cellStyle = sheetCell.Style;
 
