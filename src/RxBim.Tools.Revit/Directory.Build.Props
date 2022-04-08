@@ -2,6 +2,6 @@
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
     <PropertyGroup>
-        <Version>1.2.1</Version>
+        <Version>1.2.2-dev1</Version>
     </PropertyGroup>
 </Project>
