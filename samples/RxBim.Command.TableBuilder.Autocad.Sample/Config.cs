@@ -3,7 +3,6 @@
     using Abstractions;
     using Di;
     using Services;
-    using Tools.Autocad;
     using Tools.Autocad.Extensions;
 
     /// <inheritdoc />

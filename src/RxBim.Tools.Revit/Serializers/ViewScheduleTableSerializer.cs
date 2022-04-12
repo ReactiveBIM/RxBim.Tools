@@ -6,7 +6,6 @@
     using Extensions;
     using TableBuilder.Abstractions;
     using TableBuilder.Models;
-    using TableBuilder.Models.Contents;
     using TableBuilder.Models.Styles;
 
     /// <inheritdoc />
@@ -26,7 +25,7 @@
         }
 
         /// <inheritdoc />
-        public ViewSchedule Serialize(Table table, ViewScheduleTableSerializerParameters serializerParameters)
+        public ViewSchedule Serialize(Table table, ViewScheduleTableSerializerParameters parameters)
         {
             using var t = new Transaction(_document);
             t.Start(nameof(ViewScheduleTableSerializer<T>));
@@ -34,7 +33,7 @@
             var id = new ElementId((int)BuiltInCategory.OST_NurseCallDevices);
 
             var schedule = ViewSchedule.CreateSchedule(_document, id);
-            schedule.Name = serializerParameters.Name;
+            schedule.Name = parameters.Name;
             schedule.Definition.ShowHeaders = false;
 
             var field = schedule.Definition
@@ -77,7 +76,7 @@
                     headerData.SetCellText(scheduleRow, scheduleCol, cell.Content.ValueObject?.ToString());
                     headerData.SetCellStyle(scheduleRow,
                         scheduleCol,
-                        GetCellStyle(cell.GetComposedFormat(), serializerParameters));
+                        GetCellStyle(cell.GetComposedFormat(), parameters));
                 }
             }
 

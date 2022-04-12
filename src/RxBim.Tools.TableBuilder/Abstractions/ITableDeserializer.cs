@@ -3,15 +3,15 @@
     using Models;
 
     /// <summary>
-    /// Table deserializer
+    /// Represents an interface of a <see cref="Table"/> deserialazer.
     /// </summary>
-    /// <typeparam name="T">Source type</typeparam>
-    public interface ITableDeserializer<in T>
+    /// <typeparam name="TSource">The type of a source object.</typeparam>
+    public interface ITableDeserializer<in TSource>
     {
         /// <summary>
-        /// Deserializes a table from a data source
+        /// Creates a table instance from the given data source.
         /// </summary>
-        /// <param name="source">Source data</param>
-        public Table Deserialize(T source);
+        /// <param name="source">The data source.</param>
+        public Table Deserialize(TSource source);
     }
 }

@@ -16,7 +16,7 @@
         /// <inheritdoc />
         public Table Serialize(
             TableBuilder.Models.Table tableData,
-            AutocadTableSerializerParameters serializerParameters)
+            AutocadTableSerializerParameters parameters)
         {
             var acadTable = new Table();
 
@@ -24,16 +24,16 @@
             var numCols = tableData.Columns.Count();
             acadTable.SetSize(numRows, numCols);
 
-            var database = serializerParameters.TargetDatabase ?? HostApplicationServices.WorkingDatabase;
+            var database = parameters.TargetDatabase ?? HostApplicationServices.WorkingDatabase;
             acadTable.SetDatabaseDefaults(database);
-            acadTable.TableStyle = serializerParameters.TableStyleId.IsNull
+            acadTable.TableStyle = parameters.TableStyleId.IsNull
                 ? database.Tablestyle
-                : serializerParameters.TableStyleId;
+                : parameters.TableStyleId;
 
             acadTable.ResetTable();
 
-            if (!serializerParameters.TextStyleId.IsNull)
-                acadTable.Cells.TextStyleId = serializerParameters.TextStyleId;
+            if (!parameters.TextStyleId.IsNull)
+                acadTable.Cells.TextStyleId = parameters.TextStyleId;
 
             for (var columnIndex = 0; columnIndex < numCols; columnIndex++)
             {
@@ -49,11 +49,11 @@
                     var cellData = tableData[rowIndex, columnIndex];
 
                     var rowHeight = tableData.Rows[rowIndex].Height;
-                    rowHeight = rowHeight > 0 ? rowHeight : serializerParameters.DefaultRowHeight;
+                    rowHeight = rowHeight > 0 ? rowHeight : parameters.DefaultRowHeight;
                     acadRow.Height = rowHeight;
 
                     var format = cellData.GetComposedFormat();
-                    SetCellStyle(acadCell, format, serializerParameters);
+                    SetCellStyle(acadCell, format, parameters);
 
                     switch (cellData.Content)
                     {
