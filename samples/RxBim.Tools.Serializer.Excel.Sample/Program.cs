@@ -6,10 +6,9 @@
     using System.Linq;
     using ClosedXML.Excel;
     using Di;
-    using Extensions;
-    using Models;
     using TableBuilder.Abstractions;
-    using TableBuilder.Extensions;
+    using TableBuilder.Excel.Extensions;
+    using TableBuilder.Excel.Models;
     using TableBuilder.Models;
     using TableBuilder.Services;
 

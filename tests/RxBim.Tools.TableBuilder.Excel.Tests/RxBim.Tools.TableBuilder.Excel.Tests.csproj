@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">    
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\RxBim.Tools.TableBuilder.Excel\RxBim.Tools.TableBuilder.Excel.csproj" />
+    </ItemGroup>
+
+</Project>

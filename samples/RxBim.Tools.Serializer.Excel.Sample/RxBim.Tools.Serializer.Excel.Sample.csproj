@@ -8,6 +8,6 @@
     <PackageReference Include="RxBim.Di.SimpleInjector" Version="1.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\RxBim.Tools.Serializer.Excel\RxBim.Tools.Serializer.Excel.csproj" />
+    <ProjectReference Include="..\..\src\RxBim.Tools.TableBuilder.Excel\RxBim.Tools.TableBuilder.Excel.csproj" />
   </ItemGroup>  
 </Project>

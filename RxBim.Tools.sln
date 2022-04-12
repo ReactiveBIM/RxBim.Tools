@@ -43,9 +43,9 @@ EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Command.TableBuilder.Revit.Sample", "samples\RxBim.Command.TableBuilder.Revit.Sample\RxBim.Command.TableBuilder.Revit.Sample.csproj", "{004DDE18-43BF-4D97-A5A6-8D4751E40B6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.Serializer.Excel", "src\RxBim.Tools.Serializer.Excel\RxBim.Tools.Serializer.Excel.csproj", "{517E2FF5-7E77-49CA-BECE-EFBFC6D6090B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.TableBuilder.Excel", "src\RxBim.Tools.TableBuilder.Excel\RxBim.Tools.TableBuilder.Excel.csproj", "{517E2FF5-7E77-49CA-BECE-EFBFC6D6090B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.Serializer.Excel.Tests", "tests\RxBim.Tools.Serializer.Excel.Tests\RxBim.Tools.Serializer.Excel.Tests.csproj", "{24FBE399-C806-4CB6-98DB-C71712B1C7B5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.TableBuilder.Excel.Tests", "tests\RxBim.Tools.TableBuilder.Excel.Tests\RxBim.Tools.TableBuilder.Excel.Tests.csproj", "{24FBE399-C806-4CB6-98DB-C71712B1C7B5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.Serializer.Excel.Sample", "samples\RxBim.Tools.Serializer.Excel.Sample\RxBim.Tools.Serializer.Excel.Sample.csproj", "{7F91C502-9B22-46E2-892F-B47AD3F8526C}"
 EndProject

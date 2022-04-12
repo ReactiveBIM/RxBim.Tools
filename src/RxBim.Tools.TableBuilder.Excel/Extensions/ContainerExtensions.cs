@@ -1,4 +1,4 @@
-﻿namespace RxBim.Tools.Serializer.Excel.Extensions
+﻿namespace RxBim.Tools.TableBuilder.Excel.Extensions
 {
     using ClosedXML.Excel;
     using Di;

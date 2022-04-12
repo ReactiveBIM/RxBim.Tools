@@ -1,4 +1,4 @@
-﻿namespace RxBim.Tools.Serializer.Excel.Tests
+﻿namespace RxBim.Tools.TableBuilder.Excel.Tests
 {
     using System.Linq;
     using ClosedXML.Excel;

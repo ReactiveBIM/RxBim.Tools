@@ -1,4 +1,4 @@
-﻿namespace RxBim.Tools.Serializer.Excel.Models
+﻿namespace RxBim.Tools.TableBuilder.Excel.Models
 {
     using TableBuilder.Abstractions;
 
