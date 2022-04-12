@@ -5,6 +5,7 @@
     using Di;
     using Serializers;
     using Services;
+    using Tools.TableBuilder;
     using Tools.TableBuilder.Abstractions;
 
     /// <summary>

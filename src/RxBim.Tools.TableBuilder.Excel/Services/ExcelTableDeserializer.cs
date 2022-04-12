@@ -1,15 +1,14 @@
-﻿namespace RxBim.Tools.TableBuilder.Excel.Services
+﻿namespace RxBim.Tools.TableBuilder.Services
 {
     using System.Linq;
+    using Abstractions;
     using ClosedXML.Excel;
-    using TableBuilder.Abstractions;
-    using TableBuilder.Services;
-    using Table = TableBuilder.Models.Table;
+    using Models;
 
     /// <summary>
-    /// Excel deserializer to table
+    /// Represents a <see cref="Table"/> deserialazer from an Excel workbook.
     /// </summary>
-    internal class ExcelTableDeserializer : ITableDeserializer<IXLWorksheet>
+    internal class ExcelTableDeserializer : IExcelTableDeserializer
     {
         /// <inheritdoc/>
         public Table Deserialize(IXLWorksheet source)

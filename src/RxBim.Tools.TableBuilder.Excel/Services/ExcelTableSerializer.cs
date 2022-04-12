@@ -1,18 +1,17 @@
-﻿namespace RxBim.Tools.TableBuilder.Excel.Services
+﻿namespace RxBim.Tools.TableBuilder.Services
 {
     using System;
     using System.Collections.Generic;
     using System.Text;
+    using Abstractions;
     using ClosedXML.Excel;
     using Models;
-    using TableBuilder.Abstractions;
-    using TableBuilder.Models;
-    using TableBuilder.Models.Styles;
+    using Models.Styles;
 
     /// <summary>
-    /// Excel serializer to table
+    /// Defines a <see cref="Table"/> serializer to an Excle workbook.
     /// </summary>
-    internal class ExcelTableSerializer : ITableSerializer<ExcelTableSerializerParameters, IXLWorkbook>
+    internal class ExcelTableSerializer : IExcelTableSerializer
     {
         /// <inheritdoc />
         public IXLWorkbook Serialize(Table table, ExcelTableSerializerParameters parameters)
@@ -82,13 +81,13 @@
         {
             switch (content)
             {
-                case FormulaCellContent formulaCellContent:
-                    cell.FormulaA1 = GetFormula(cell.Worksheet, formulaCellContent);
+                case FormulaCellContent formula:
+                    cell.FormulaA1 = GetFormula(cell.Worksheet, formula);
                     break;
 
-                case NumerateCellContent numerateCellContent:
-                    cell.Value = numerateCellContent.ValueObject;
-                    cell.Style.NumberFormat.Format = numerateCellContent.Format;
+                case NumericCellContent numeric:
+                    cell.Value = numeric.ValueObject;
+                    cell.Style.NumberFormat.Format = numeric.Format;
                     break;
 
                 default:

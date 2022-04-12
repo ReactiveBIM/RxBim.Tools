@@ -12,6 +12,7 @@
     using Tools.Autocad.Abstractions;
     using Tools.Autocad.Extensions;
     using Tools.Autocad.Serializers;
+    using Tools.TableBuilder;
     using Tools.TableBuilder.Abstractions;
     using Tools.TableBuilder.Extensions;
     using Result = CSharpFunctionalExtensions.Result;
@@ -27,7 +28,7 @@
         /// Command execution
         /// </summary>
         /// <param name="tableDataService"><see cref="ITableDataService"/> object.</param>
-        /// <param name="tableSerializer"><see cref="ITableSerializer{T1, T2}"/> object.</param>
+        /// <param name="tableSerializer"><see cref="ITableSerializer{TParams,TResult}"/> object.</param>
         /// <param name="selectionService"><see cref="IObjectsSelectionService"/> object.</param>
         /// <param name="commandLineService"><see cref="ICommandLineService"/> object.</param>
         /// <param name="doc"><see cref="Document"/> object.</param>>
@@ -49,7 +50,7 @@
             Result.Try(
                 () => SelectObjects()
                     .Bind(tableDataService.GetTable)
-                    .Map(table => table.Serialize(tableSerializer, parameters))
+                    .Map(table => tableSerializer.Serialize(table, parameters))
                     .Tap(table => InsertTable(doc, table))
                     .OnFailure(ShowError))
                 .OnFailure(ShowError);

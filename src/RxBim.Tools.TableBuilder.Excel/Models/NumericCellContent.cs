@@ -1,18 +1,18 @@
-﻿namespace RxBim.Tools.TableBuilder.Excel.Models
+﻿namespace RxBim.Tools.TableBuilder.Models
 {
-    using TableBuilder.Abstractions;
+    using Abstractions;
 
     /// <summary>
     /// The numeric content of a cell
     /// </summary>
-    public class NumerateCellContent : ICellContent
+    public class NumericCellContent : ICellContent
     {
         /// <summary>
         /// ctor
         /// </summary>
         /// <param name="value">Number</param>
         /// <param name="format">Number format</param>
-        public NumerateCellContent(object value, string format)
+        public NumericCellContent(object value, string format)
         {
             Format = format;
             ValueObject = value;

@@ -1,11 +1,10 @@
 namespace RxBim.Tools.TableBuilder.Excel.Tests
 {
     using System.Linq;
+    using Abstractions;
     using ClosedXML.Excel;
+    using Di;
     using FluentAssertions;
-    using Models;
-    using Services;
-    using TableBuilder.Extensions;
     using TableBuilder.Models;
     using TableBuilder.Services;
     using Xunit;
@@ -13,7 +12,7 @@ namespace RxBim.Tools.TableBuilder.Excel.Tests
     /// <summary>
     /// Tests for <see cref="ExcelTableSerializer"/>
     /// </summary>
-    public class SerializeTests
+    public class SerializeTests : TestsBase
     {
         [Fact]
         public void ExcelSerializerTest()
@@ -22,11 +21,11 @@ namespace RxBim.Tools.TableBuilder.Excel.Tests
             const int tableRowsCount = 10;
             var table = GetTestTable(tableRowsCount);
             using var xlPackage = new XLWorkbook();
-            var serializer = new ExcelTableSerializer();
+            var serializer = Container.GetRequiredService<IExcelTableSerializer>();
 
             // Act
-            var workBook = table.Serialize(
-                serializer,
+            var workBook = serializer.Serialize(
+                table,
                 new ExcelTableSerializerParameters
                 {
                     WorksheetName = "Sheet1",

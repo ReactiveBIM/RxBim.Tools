@@ -6,9 +6,9 @@
     using System.Linq;
     using ClosedXML.Excel;
     using Di;
+    using TableBuilder;
     using TableBuilder.Abstractions;
-    using TableBuilder.Excel.Extensions;
-    using TableBuilder.Excel.Models;
+    using TableBuilder.Extensions;
     using TableBuilder.Models;
     using TableBuilder.Services;
 
@@ -27,7 +27,7 @@
             var container = GetContainer();
 
             // Getting a serialization service
-            var serializer = container.GetService<ITableSerializer<ExcelTableSerializerParameters, IXLWorkbook>>();
+            var serializer = container.GetRequiredService<IExcelTableSerializer>();
             var parameters = new ExcelTableSerializerParameters();
 
             // Create an example table
@@ -63,7 +63,7 @@
         private static IContainer GetContainer()
         {
             var container = new SimpleInjectorContainer();
-            container.AddExcelSerializer();
+            container.AddExcelSerialization();
             return container;
         }
     }

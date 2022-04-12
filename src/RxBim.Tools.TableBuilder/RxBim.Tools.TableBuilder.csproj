@@ -17,6 +17,10 @@
         </AssemblyAttribute>
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="RxBim.Tools.TableBuilder.csproj.DotSettings" />
+    </ItemGroup>
+
     <PropertyGroup>
          <Description>RxBim table builder Library</Description>
         <PackageId>RxBim.Tools.TableBuilder</PackageId>

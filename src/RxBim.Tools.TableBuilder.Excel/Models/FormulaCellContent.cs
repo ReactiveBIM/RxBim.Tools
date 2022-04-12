@@ -1,6 +1,6 @@
-﻿namespace RxBim.Tools.TableBuilder.Excel.Models
+﻿namespace RxBim.Tools.TableBuilder.Models
 {
-    using TableBuilder.Abstractions;
+    using Abstractions;
 
     /// <summary>
     /// The formula content of a cell

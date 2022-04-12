@@ -5,6 +5,7 @@
     using Autodesk.AutoCAD.Colors;
     using Autodesk.AutoCAD.DatabaseServices;
     using Extensions.TableBuilder;
+    using TableBuilder;
     using TableBuilder.Abstractions;
     using TableBuilder.Models.Contents;
     using TableBuilder.Models.Styles;

@@ -9,6 +9,7 @@
     using Tools.Revit.Abstractions;
     using Tools.Revit.Extensions;
     using Tools.Revit.Serializers;
+    using Tools.TableBuilder;
     using Tools.TableBuilder.Abstractions;
     using Tools.TableBuilder.Models.Styles;
     using Tools.TableBuilder.Services;
@@ -85,7 +86,7 @@
                 return _transactionService.RunInTransactionGroup(() =>
                     {
                         return DeleteViewScheduleIfExists(name)
-                            .Map(() => table.Serialize(_tableSerializer, serializeParams))
+                            .Map(() => _tableSerializer.Serialize(table, serializeParams))
                             .Ensure(view => view is not null, "Error when created or serialized specification")
                             .Tap(view => PutSpecificationOnSheet(view, _doc.ActiveView.Id, XYZ.Zero))
                             .Tap(view => ApplyHeaderStyle(view, columnsCount, 30));

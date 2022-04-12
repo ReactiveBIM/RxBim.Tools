@@ -2,6 +2,10 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\RxBim.Tools.TableBuilder.Excel\RxBim.Tools.TableBuilder.Excel.csproj" />
+    </ItemGroup>    
+
+    <ItemGroup>
+      <PackageReference Include="RxBim.Di.SimpleInjector" Version="1.1.0-dev002" />
     </ItemGroup>
 
 </Project>

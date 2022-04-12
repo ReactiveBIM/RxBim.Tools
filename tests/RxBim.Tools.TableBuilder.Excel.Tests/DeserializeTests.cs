@@ -1,7 +1,9 @@
 ﻿namespace RxBim.Tools.TableBuilder.Excel.Tests
 {
     using System.Linq;
+    using Abstractions;
     using ClosedXML.Excel;
+    using Di;
     using FluentAssertions;
     using Services;
     using Xunit;
@@ -9,7 +11,7 @@
     /// <summary>
     /// Tests for <see cref="ExcelTableDeserializer"/>
     /// </summary>
-    public class DeserializeTests
+    public class DeserializeTests : TestsBase
     {
         [Fact]
         public void ExcelSerializerTest()
@@ -17,7 +19,7 @@
             // Arrange
             const int rowCount = 10;
             const int columnCount = 5;
-            var excelDeserializer = new ExcelTableDeserializer();
+            var excelDeserializer = Container.GetRequiredService<IExcelTableDeserializer>();
             var workSheet = GetTestWorkSheet(rowCount, columnCount);
 
             // Act

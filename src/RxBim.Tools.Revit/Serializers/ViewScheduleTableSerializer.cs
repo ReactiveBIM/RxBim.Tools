@@ -4,6 +4,7 @@
     using System.Linq;
     using Autodesk.Revit.DB;
     using Extensions;
+    using TableBuilder;
     using TableBuilder.Abstractions;
     using TableBuilder.Models;
     using TableBuilder.Models.Styles;

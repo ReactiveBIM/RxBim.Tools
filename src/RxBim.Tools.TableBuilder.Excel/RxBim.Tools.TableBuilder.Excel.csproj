@@ -6,6 +6,7 @@
     <AssemblyName>$(MSBuildProjectName).$(Version)</AssemblyName>
     <Nullable>enable</Nullable>
     <LangVersion>default</LangVersion>
+    <RootNamespace>RxBim.Tools.TableBuilder</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -20,10 +21,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RxBim.Tools.TableBuilder\RxBim.Tools.TableBuilder.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Abstractions" />
   </ItemGroup>  
 
 </Project>
