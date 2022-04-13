@@ -1,12 +1,9 @@
 namespace RxBim.Tools.TableBuilder.Excel.Tests
 {
     using System.Linq;
-    using Abstractions;
     using ClosedXML.Excel;
     using Di;
     using FluentAssertions;
-    using TableBuilder.Models;
-    using TableBuilder.Services;
     using Xunit;
 
     /// <summary>

@@ -1,4 +1,4 @@
-﻿namespace RxBim.Tools.TableBuilder.Models
+﻿namespace RxBim.Tools.TableBuilder
 {
     /// <summary>
     /// Range of table cells.

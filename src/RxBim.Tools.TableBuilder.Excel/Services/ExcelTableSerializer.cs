@@ -3,10 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Text;
-    using Abstractions;
     using ClosedXML.Excel;
-    using Models;
-    using Models.Styles;
+    using Styles;
 
     /// <summary>
     /// Defines a <see cref="Table"/> serializer to an Excle workbook.

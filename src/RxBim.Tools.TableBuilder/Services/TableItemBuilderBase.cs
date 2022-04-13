@@ -1,7 +1,5 @@
-﻿namespace RxBim.Tools.TableBuilder.Services
+﻿namespace RxBim.Tools.TableBuilder
 {
-    using Models;
-
     /// <summary>
     /// Base class of the table item builder.
     /// </summary>

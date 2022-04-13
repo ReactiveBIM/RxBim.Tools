@@ -11,9 +11,9 @@
     using Shared;
     using Tools.Autocad.Abstractions;
     using Tools.Autocad.Extensions;
-    using Tools.Autocad.Serializers;
-    using Tools.TableBuilder.Abstractions;
+    using Tools.TableBuilder;
     using Result = CSharpFunctionalExtensions.Result;
+    using Table = Autodesk.AutoCAD.DatabaseServices.Table;
 
     /// <inheritdoc />
     [RxBimCommandClass("RxBimTableSample")]

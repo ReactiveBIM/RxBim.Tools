@@ -1,7 +1,7 @@
-﻿namespace RxBim.Tools.TableBuilder.Services
+﻿namespace RxBim.Tools.TableBuilder
 {
     using System.Drawing;
-    using Models.Styles;
+    using Styles;
 
     /// <summary>
     /// Builder for <see cref="CellTextFormatStyle"/>

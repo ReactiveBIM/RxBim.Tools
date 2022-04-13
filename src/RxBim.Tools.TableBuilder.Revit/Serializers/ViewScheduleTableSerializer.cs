@@ -1,12 +1,10 @@
-﻿namespace RxBim.Tools.Revit.Serializers
+﻿namespace RxBim.Tools.TableBuilder
 {
     using System;
     using System.Linq;
-    using Abstractions;
     using Autodesk.Revit.DB;
-    using Extensions;
-    using TableBuilder.Models;
-    using TableBuilder.Models.Styles;
+    using Revit.Extensions;
+    using Styles;
 
     /// <summary>
     /// Represents a serializer that renders a <see cref="Table"/> object as Revit ViewSchedule.

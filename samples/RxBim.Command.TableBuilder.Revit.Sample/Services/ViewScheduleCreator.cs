@@ -5,13 +5,10 @@
     using Abstractions;
     using Autodesk.Revit.DB;
     using CSharpFunctionalExtensions;
-    using Tools.Revit;
     using Tools.Revit.Abstractions;
     using Tools.Revit.Extensions;
-    using Tools.Revit.Serializers;
-    using Tools.TableBuilder.Abstractions;
-    using Tools.TableBuilder.Models.Styles;
-    using Tools.TableBuilder.Services;
+    using Tools.TableBuilder;
+    using Tools.TableBuilder.Styles;
     using Color = System.Drawing.Color;
 
     /// <inheritdoc />

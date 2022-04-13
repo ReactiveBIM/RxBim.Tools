@@ -1,7 +1,6 @@
-﻿namespace RxBim.Tools.TableBuilder.Abstractions;
+﻿namespace RxBim.Tools.TableBuilder;
 
 using ClosedXML.Excel;
-using Models;
 
 /// <summary>
 /// Represents an interface of a <see cref="Table"/> deserialazer from an Excel workbook.

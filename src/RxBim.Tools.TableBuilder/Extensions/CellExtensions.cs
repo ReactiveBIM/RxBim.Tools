@@ -1,7 +1,5 @@
-﻿namespace RxBim.Tools.TableBuilder.Extensions
+﻿namespace RxBim.Tools.TableBuilder
 {
-    using Models;
-
     /// <summary>
     /// Extensions for <see cref="Cell"/>
     /// </summary>

@@ -1,4 +1,4 @@
-﻿namespace RxBim.Tools.TableBuilder.Models.Contents
+﻿namespace RxBim.Tools.TableBuilder.Content
 {
     /// <summary>
     /// The text content of a cell.

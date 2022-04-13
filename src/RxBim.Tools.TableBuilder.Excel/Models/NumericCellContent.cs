@@ -1,7 +1,5 @@
-﻿namespace RxBim.Tools.TableBuilder.Models
+﻿namespace RxBim.Tools.TableBuilder
 {
-    using Abstractions;
-
     /// <summary>
     /// The numeric content of a cell
     /// </summary>

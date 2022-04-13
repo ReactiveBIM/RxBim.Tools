@@ -1,9 +1,6 @@
-﻿namespace RxBim.Tools.TableBuilder.Models
+﻿namespace RxBim.Tools.TableBuilder
 {
-    using Abstractions;
-    using Contents;
-    using Extensions;
-    using Services;
+    using Content;
     using Styles;
 
     /// <summary>

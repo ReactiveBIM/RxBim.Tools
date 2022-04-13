@@ -6,10 +6,6 @@
     using System.Linq;
     using ClosedXML.Excel;
     using Di;
-    using TableBuilder.Abstractions;
-    using TableBuilder.Extensions;
-    using TableBuilder.Models;
-    using TableBuilder.Services;
 
     /// <summary>
     /// Console program
@@ -62,7 +58,7 @@
         private static IContainer CreateContainer()
         {
             var container = new SimpleInjectorContainer();
-            container.AddExcelSerialization();
+            container.AddExcelTableBuilder();
             return container;
         }
     }

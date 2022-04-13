@@ -1,7 +1,6 @@
-﻿namespace RxBim.Tools.TableBuilder.Extensions
+﻿namespace RxBim.Tools.TableBuilder
 {
-    using Models.Styles;
-    using Services;
+    using Styles;
 
     /// <summary>
     /// Extensions for <see cref="CellFormatStyle"/>.

@@ -1,4 +1,4 @@
-﻿namespace RxBim.Tools.TableBuilder.Abstractions
+﻿namespace RxBim.Tools.TableBuilder
 {
     /// <summary>
     /// The content of a cell.

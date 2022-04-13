@@ -1,7 +1,6 @@
-﻿namespace RxBim.Tools.TableBuilder.Abstractions;
+﻿namespace RxBim.Tools.TableBuilder;
 
 using ClosedXML.Excel;
-using Models;
 
 /// <summary>
 /// Defines an interface of a <see cref="Table"/> serializer to an Excle workbook.

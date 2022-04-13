@@ -1,7 +1,6 @@
-﻿namespace RxBim.Tools.Autocad.Extensions.TableBuilder
+﻿namespace RxBim.Tools.TableBuilder
 {
-    using Tools.TableBuilder.Models.Styles;
-    using Tools.TableBuilder.Services;
+    using Styles;
 
     /// <summary>
     /// Extensions for <see cref="CellFormatStyleBuilder"/>

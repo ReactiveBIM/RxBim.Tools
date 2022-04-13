@@ -1,4 +1,4 @@
-﻿namespace RxBim.Tools.Revit.Serializers
+﻿namespace RxBim.Tools.TableBuilder
 {
     /// <summary>
     /// Serialization options to Revit table.

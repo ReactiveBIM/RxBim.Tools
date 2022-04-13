@@ -1,18 +1,18 @@
-﻿namespace RxBim.Tools.Autocad.Extensions.TableBuilder
+﻿namespace RxBim.Tools.TableBuilder
 {
     using System.Linq;
     using Autodesk.AutoCAD.DatabaseServices;
 
     /// <summary>
-    /// Extensions for <see cref="Table"/>.
+    /// Extensions for <see cref="Autodesk.AutoCAD.DatabaseServices.Table"/>.
     /// </summary>
     internal static class TableExtensions
     {
         /// <summary>
         /// Resets the preset table settings.
         /// </summary>
-        /// <param name="acadTable"><see cref="Table"/> object.</param>
-        public static void ResetTable(this Table acadTable)
+        /// <param name="acadTable"><see cref="Autodesk.AutoCAD.DatabaseServices.Table"/> object.</param>
+        public static void ResetTable(this Autodesk.AutoCAD.DatabaseServices.Table acadTable)
         {
             var acadTableCells = acadTable.Cells;
             var lastCellRef = acadTableCells.Last();

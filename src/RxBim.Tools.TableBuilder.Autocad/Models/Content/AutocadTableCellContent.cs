@@ -1,6 +1,6 @@
-﻿namespace RxBim.Tools.Autocad.Serializers
+﻿namespace RxBim.Tools.TableBuilder
 {
-    using TableBuilder.Models.Contents;
+    using Content;
 
     /// <summary>
     /// Cell content for AutoCAD table.

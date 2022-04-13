@@ -1,7 +1,5 @@
-﻿namespace RxBim.Tools.TableBuilder.Abstractions
+﻿namespace RxBim.Tools.TableBuilder
 {
-    using Models;
-
     /// <summary>
     /// Represents an interface of a <see cref="Table"/> deserialazer.
     /// </summary>

@@ -1,4 +1,4 @@
-namespace RxBim.Tools.Autocad.Serializers
+namespace RxBim.Tools.TableBuilder
 {
     using Autodesk.AutoCAD.DatabaseServices;
 

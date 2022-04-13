@@ -1,9 +1,7 @@
-﻿namespace RxBim.Tools.Autocad.Extensions.TableBuilder
+﻿namespace RxBim.Tools.TableBuilder
 {
     using System;
     using Autodesk.AutoCAD.DatabaseServices;
-    using Serializers;
-    using Tools.TableBuilder.Services;
 
     /// <summary>
     /// Extensions for <see cref="CellBuilder"/>

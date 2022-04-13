@@ -6,7 +6,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\RxBim.Tools.Revit\RxBim.Tools.Revit.csproj" />
+      <ProjectReference Include="..\..\src\RxBim.Tools.TableBuilder.Revit\RxBim.Tools.TableBuilder.Revit.csproj" />
     </ItemGroup>
 
 </Project>

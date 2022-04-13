@@ -1,14 +1,11 @@
-﻿namespace RxBim.Tools.Autocad.Serializers
+﻿namespace RxBim.Tools.TableBuilder.Serializers
 {
     using System;
     using System.Linq;
-    using Abstractions;
     using Autodesk.AutoCAD.Colors;
     using Autodesk.AutoCAD.DatabaseServices;
-    using Extensions.TableBuilder;
-    using TableBuilder.Models.Contents;
-    using TableBuilder.Models.Styles;
-    using BuilderCell = TableBuilder.Models.Cell;
+    using Content;
+    using Styles;
 
     /// <summary>
     /// Defines a class of a serializer that renders a <see cref="Table"/> object in Autocad.
@@ -17,7 +14,7 @@
     {
         /// <inheritdoc />
         public Table Serialize(
-            TableBuilder.Models.Table tableData,
+            RxBim.Tools.TableBuilder.Table tableData,
             AutocadTableSerializerParameters parameters)
         {
             var acadTable = new Table();

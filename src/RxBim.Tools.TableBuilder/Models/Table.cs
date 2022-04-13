@@ -1,9 +1,8 @@
-﻿namespace RxBim.Tools.TableBuilder.Models
+﻿namespace RxBim.Tools.TableBuilder
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Extensions;
     using Styles;
 
     /// <summary>

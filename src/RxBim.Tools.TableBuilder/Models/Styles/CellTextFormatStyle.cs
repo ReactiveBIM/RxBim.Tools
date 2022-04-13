@@ -1,4 +1,4 @@
-﻿namespace RxBim.Tools.TableBuilder.Models.Styles
+﻿namespace RxBim.Tools.TableBuilder.Styles
 {
     using System.Drawing;
 
