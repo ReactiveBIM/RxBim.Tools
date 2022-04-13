@@ -1,4 +1,4 @@
-﻿namespace RxBim.Tools.Serializer.Excel.Sample
+﻿namespace RxBim.Tools.TableBuilder.Excel.Sample
 {
     using System.Collections.Generic;
     using System.Diagnostics;
@@ -6,7 +6,6 @@
     using System.Linq;
     using ClosedXML.Excel;
     using Di;
-    using TableBuilder;
     using TableBuilder.Abstractions;
     using TableBuilder.Extensions;
     using TableBuilder.Models;
@@ -24,14 +23,14 @@
         public static void Main(string[] args)
         {
             // Create a simple container and register a serializer
-            var container = GetContainer();
+            var container = CreateContainer();
 
             // Getting a serialization service
             var serializer = container.GetRequiredService<IExcelTableSerializer>();
             var parameters = new ExcelTableSerializerParameters();
 
             // Create an example table
-            var table = GetTable();
+            var table = CreateTable();
 
             // Serializing a table to Excel
             var workBook = serializer.Serialize(table, parameters);
@@ -50,7 +49,7 @@
             return excelFile;
         }
 
-        private static Table GetTable()
+        private static Table CreateTable()
         {
             List<(string Property, string Value)> values =
                 Enumerable.Range(0, 10).Select(s => ($"Property-{s}", $"Value-{s}")).ToList();
@@ -60,7 +59,7 @@
             return table;
         }
 
-        private static IContainer GetContainer()
+        private static IContainer CreateContainer()
         {
             var container = new SimpleInjectorContainer();
             container.AddExcelSerialization();

@@ -2,17 +2,18 @@
 {
     using System;
     using System.Linq;
+    using Abstractions;
     using Autodesk.AutoCAD.Colors;
     using Autodesk.AutoCAD.DatabaseServices;
     using Extensions.TableBuilder;
-    using TableBuilder;
-    using TableBuilder.Abstractions;
     using TableBuilder.Models.Contents;
     using TableBuilder.Models.Styles;
     using BuilderCell = TableBuilder.Models.Cell;
 
-    /// <inheritdoc />
-    public class AutocadTableSerializer : ITableSerializer<AutocadTableSerializerParameters, Table>
+    /// <summary>
+    /// Defines a class of a serializer that renders a <see cref="Table"/> object in Autocad.
+    /// </summary>
+    internal class AutocadTableSerializer : IAutocadTableSerializer
     {
         /// <inheritdoc />
         public Table Serialize(

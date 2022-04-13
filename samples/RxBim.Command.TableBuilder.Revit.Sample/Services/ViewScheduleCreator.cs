@@ -5,11 +5,10 @@
     using Abstractions;
     using Autodesk.Revit.DB;
     using CSharpFunctionalExtensions;
-    using RxBim.Tools.TableBuilder.Extensions;
+    using Tools.Revit;
     using Tools.Revit.Abstractions;
     using Tools.Revit.Extensions;
     using Tools.Revit.Serializers;
-    using Tools.TableBuilder;
     using Tools.TableBuilder.Abstractions;
     using Tools.TableBuilder.Models.Styles;
     using Tools.TableBuilder.Services;
@@ -20,7 +19,7 @@
     {
         private readonly IScopedElementsCollector _scopedCollector;
         private readonly ITransactionService _transactionService;
-        private readonly ITableSerializer<ViewScheduleTableSerializerParameters, ViewSchedule> _tableSerializer;
+        private readonly IViewScheduleTableSerializer _tableSerializer;
         private readonly Document _doc;
 
         /// <summary>
@@ -33,7 +32,7 @@
         public ViewScheduleCreator(
             IScopedElementsCollector scopedCollector,
             ITransactionService transactionService,
-            ITableSerializer<ViewScheduleTableSerializerParameters, ViewSchedule> tableSerializer,
+            IViewScheduleTableSerializer tableSerializer,
             Document doc)
         {
             _scopedCollector = scopedCollector;

@@ -12,9 +12,7 @@
     using Tools.Autocad.Abstractions;
     using Tools.Autocad.Extensions;
     using Tools.Autocad.Serializers;
-    using Tools.TableBuilder;
     using Tools.TableBuilder.Abstractions;
-    using Tools.TableBuilder.Extensions;
     using Result = CSharpFunctionalExtensions.Result;
 
     /// <inheritdoc />

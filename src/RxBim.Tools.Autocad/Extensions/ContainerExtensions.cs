@@ -5,7 +5,6 @@
     using Di;
     using Serializers;
     using Services;
-    using Tools.TableBuilder;
     using Tools.TableBuilder.Abstractions;
 
     /// <summary>
@@ -31,7 +30,7 @@
         /// <param name="container"><see cref="IContainer"/> object.</param>
         public static IContainer AddAutocadTableSerializer(this IContainer container)
         {
-            container.AddSingleton<ITableSerializer<AutocadTableSerializerParameters, Table>, AutocadTableSerializer>();
+            container.AddSingleton<IAutocadTableSerializer, AutocadTableSerializer>();
             return container;
         }
     }

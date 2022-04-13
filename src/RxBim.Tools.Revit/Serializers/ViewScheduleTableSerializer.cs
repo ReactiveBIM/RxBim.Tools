@@ -2,24 +2,24 @@
 {
     using System;
     using System.Linq;
+    using Abstractions;
     using Autodesk.Revit.DB;
     using Extensions;
-    using TableBuilder;
-    using TableBuilder.Abstractions;
     using TableBuilder.Models;
     using TableBuilder.Models.Styles;
 
-    /// <inheritdoc />
-    public class ViewScheduleTableSerializer<T> : ITableSerializer<ViewScheduleTableSerializerParameters, ViewSchedule>
-        where T : ViewSchedule
+    /// <summary>
+    /// Represents a serializer that renders a <see cref="Table"/> object as Revit ViewSchedule.
+    /// </summary>
+    internal class ViewScheduleTableSerializer : IViewScheduleTableSerializer
     {
         private const double FontRatio = 3.77951502;
         private readonly Document _document;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ViewScheduleTableSerializer{T}"/> class.
+        /// ctor.
         /// </summary>
-        /// <param name="document"><see cref="Document"/> object.</param>
+        /// <param name="document">A <see cref="Document"/> object.</param>
         public ViewScheduleTableSerializer(Document document)
         {
             _document = document;
@@ -29,7 +29,7 @@
         public ViewSchedule Serialize(Table table, ViewScheduleTableSerializerParameters parameters)
         {
             using var t = new Transaction(_document);
-            t.Start(nameof(ViewScheduleTableSerializer<T>));
+            t.Start(nameof(ViewScheduleTableSerializer));
 
             var id = new ElementId((int)BuiltInCategory.OST_NurseCallDevices);
 

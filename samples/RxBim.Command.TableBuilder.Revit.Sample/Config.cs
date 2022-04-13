@@ -5,8 +5,8 @@
     using Di;
     using Services;
     using Tools.Revit;
+    using Tools.Revit.Extensions;
     using Tools.Revit.Serializers;
-    using Tools.TableBuilder;
     using Tools.TableBuilder.Abstractions;
 
     /// <inheritdoc />
@@ -16,10 +16,7 @@
         public void Configure(IContainer container)
         {
             container.AddRevitHelpers();
-
-            container.AddTransient<IViewScheduleCreator, ViewScheduleCreator>()
-                .AddTransient<ITableSerializer<ViewScheduleTableSerializerParameters, ViewSchedule>,
-                    ViewScheduleTableSerializer<ViewSchedule>>();
+            container.AddTableBuilderRevit();
         }
     }
 }
