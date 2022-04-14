@@ -28,6 +28,13 @@
         /// <inheritdoc />
         public ViewSchedule Convert(Table table, ViewScheduleTableConverterParameters parameters)
         {
+            if (string.IsNullOrWhiteSpace(parameters.Name))
+            {
+                throw new ArgumentException(
+                    "ViewSchedule name not defined.",
+                    nameof(parameters));
+            }
+
             using var t = new Transaction(_document);
             t.Start(nameof(ViewScheduleTableConverter));
 

@@ -19,7 +19,7 @@
         /// Опция актуальна при <see cref="ScopeType"/> == SelectedElements</param>
         /// <returns>Отфильтрованная коллекция элементов</returns>
         FilteredElementCollector GetFilteredElementCollector(
-            Document doc = null, bool ignoreScope = false, bool includeSubFamilies = true);
+            Document? doc = null, bool ignoreScope = false, bool includeSubFamilies = true);
 
         /// <summary>
         /// Включает в Revit режим выбора элемента в модели текущего документа с учетом заданного фильтра

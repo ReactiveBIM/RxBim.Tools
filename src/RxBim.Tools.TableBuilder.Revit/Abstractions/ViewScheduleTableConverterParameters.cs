@@ -6,9 +6,9 @@
     public class ViewScheduleTableConverterParameters
     {
         /// <summary>
-        /// The name of a table (specification).
+        /// The name of a ViewSchedule.
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
 
         /// <summary>
         /// Bold line identifier.

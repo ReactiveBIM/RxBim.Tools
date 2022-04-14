@@ -44,7 +44,7 @@
         /// </summary>
         /// <param name="doc">Текущий документ</param>
         /// <returns>true - есть элементы, иначе - false</returns>
-        bool HasElements(Document doc);
+        bool HasElements(Document? doc);
 
         /// <summary>
         /// Сохраняет выделенные элементы и снимает выделение на модели

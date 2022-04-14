@@ -39,7 +39,7 @@
 
         /// <inheritdoc/>
         public FilteredElementCollector GetFilteredElementCollector(
-            Document doc = null, bool ignoreScope = false, bool includeSubFamilies = true)
+            Document? doc = null, bool ignoreScope = false, bool includeSubFamilies = true)
         {
             if (doc == null)
                 doc = _uiApplication.ActiveUIDocument.Document;
@@ -80,7 +80,7 @@
         }
 
         /// <inheritdoc/>
-        public bool HasElements(Document doc)
+        public bool HasElements(Document? doc)
         {
             return GetFilteredElementCollector(doc)
                 ?.WhereElementIsNotElementType()
