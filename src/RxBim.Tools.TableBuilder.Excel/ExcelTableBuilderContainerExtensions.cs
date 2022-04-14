@@ -1,7 +1,6 @@
 ﻿namespace RxBim.Tools.TableBuilder
 {
     using Di;
-    using Services;
 
     /// <summary>
     /// Container extensions

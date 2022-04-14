@@ -1,4 +1,4 @@
-﻿namespace RxBim.Tools.TableBuilder.Services
+﻿namespace RxBim.Tools.TableBuilder
 {
     using System.Linq;
     using ClosedXML.Excel;
