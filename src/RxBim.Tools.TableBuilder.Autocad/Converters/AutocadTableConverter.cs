@@ -1,23 +1,25 @@
-﻿namespace RxBim.Tools.TableBuilder.Serializers
+﻿namespace RxBim.Tools.TableBuilder
 {
     using System;
     using System.Linq;
     using Autodesk.AutoCAD.Colors;
     using Autodesk.AutoCAD.DatabaseServices;
     using Content;
+    using JetBrains.Annotations;
     using Styles;
 
     /// <summary>
-    /// Defines a class of a serializer that renders a <see cref="Table"/> object in Autocad.
+    /// Defines a class of a converter that renders a <see cref="Autodesk.AutoCAD.DatabaseServices.Table"/> object in Autocad.
     /// </summary>
-    internal class AutocadTableSerializer : IAutocadTableSerializer
+    [UsedImplicitly]
+    internal class AutocadTableConverter : IAutocadTableConverter
     {
         /// <inheritdoc />
-        public Table Serialize(
-            RxBim.Tools.TableBuilder.Table tableData,
-            AutocadTableSerializerParameters parameters)
+        public Autodesk.AutoCAD.DatabaseServices.Table Convert(
+            Table tableData,
+            AutocadTableConverterParameters parameters)
         {
-            var acadTable = new Table();
+            var acadTable = new Autodesk.AutoCAD.DatabaseServices.Table();
 
             var numRows = tableData.Rows.Count();
             var numCols = tableData.Columns.Count();
@@ -76,7 +78,7 @@
 
             foreach (var mergeArea in tableData.MergeAreas)
             {
-                var mergeRange = CellRange.Create(
+                var mergeRange = Autodesk.AutoCAD.DatabaseServices.CellRange.Create(
                     acadTable,
                     mergeArea.TopRow,
                     mergeArea.LeftColumn,
@@ -90,7 +92,7 @@
             return acadTable;
         }
 
-        private void SetAcadText(Cell cell, CellFormatStyle format, AutocadTextCellContent content)
+        private void SetAcadText(Autodesk.AutoCAD.DatabaseServices.Cell cell, CellFormatStyle format, AutocadTextCellContent content)
         {
             if (string.IsNullOrEmpty(content.Value))
                 return;
@@ -115,14 +117,14 @@
             }
         }
 
-        private void SetText(Cell cell, string text)
+        private void SetText(Autodesk.AutoCAD.DatabaseServices.Cell cell, string text)
         {
             if (string.IsNullOrEmpty(text))
                 return;
             cell.TextString = text;
         }
 
-        private void SetBlock(Cell cell, BlockCellContent blockData)
+        private void SetBlock(Autodesk.AutoCAD.DatabaseServices.Cell cell, BlockCellContent blockData)
         {
             if (blockData.Value.IsNull)
                 return;
@@ -138,7 +140,7 @@
             blockContent.Rotation = blockData.Rotation;
         }
 
-        private void SetCellStyle(Cell cell, CellFormatStyle format, AutocadTableSerializerParameters parameters)
+        private void SetCellStyle(Autodesk.AutoCAD.DatabaseServices.Cell cell, CellFormatStyle format, AutocadTableConverterParameters parameters)
         {
             if (format.TextFormat.TextSize > 0)
                 cell.TextHeight = format.TextFormat.TextSize;
@@ -186,7 +188,7 @@
                     cellBorder.LineWeight = bold;
                     break;
                 default:
-                    throw new Exception($"Line {cellBorderType} is not implemented in the serializer.");
+                    throw new Exception($"Line {cellBorderType} is not implemented in the converter.");
             }
         }
 

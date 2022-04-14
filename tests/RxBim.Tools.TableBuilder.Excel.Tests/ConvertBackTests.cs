@@ -8,37 +8,37 @@
     using Xunit;
 
     /// <summary>
-    /// Tests for <see cref="ExcelTableDeserializer"/>
+    /// Tests for <see cref="FromExcelTableConverter"/>
     /// </summary>
-    public class DeserializeTests : TestsBase
+    public class ConvertBackTests : TestsBase
     {
         [Fact]
-        public void ExcelSerializerTest()
+        public void ConverterTest()
         {
             // Arrange
             const int rowCount = 10;
             const int columnCount = 5;
-            var excelDeserializer = Container.GetRequiredService<IExcelTableDeserializer>();
-            var workSheet = GetTestWorkSheet(rowCount, columnCount);
+            var converter = Container.GetRequiredService<IFromExcelTableConverter>();
+            var workbook = GetTestWorkbook(rowCount, columnCount);
 
             // Act
-            var table = excelDeserializer.Deserialize(workSheet);
+            var table = converter.Convert(workbook, new FromExcelConverterParameters());
 
             // Assert
             table.Columns.Count.Should().Be(columnCount);
             table.Rows.Count.Should().Be(rowCount);
         }
 
-        private IXLWorksheet GetTestWorkSheet(int rowCount, int columnCount)
+        private IXLWorkbook GetTestWorkbook(int rowCount, int columnCount)
         {
-            var workBook = new XLWorkbook();
-            var workSheet = workBook.AddWorksheet();
+            var workbook = new XLWorkbook();
+            var worksheet = workbook.AddWorksheet();
 
             var data = Enumerable.Range(0, rowCount)
                 .Select(r => Enumerable.Range(0, columnCount).Select(c => $"Row{r}-Column{c}").ToArray()).ToList();
 
-            workSheet.Cell(1, 1).InsertData(data);
-            return workSheet;
+            worksheet.Cell(1, 1).InsertData(data);
+            return workbook;
         }
     }
 }

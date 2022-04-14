@@ -1,9 +1,11 @@
-﻿# Excel Serializer
-Serializes `Table` from `RxBim.Tools.TableBuilder` to Excel. And deserialize.
+﻿TODO rewrite docs!
+
+# Excel Table Converter
+Converts a `Table` from `RxBim.Tools.TableBuilder` to an Excel workbook. And converts it back.
 ## Examples
 ```c#
-var serializer = container.GetService<ITableSerializer<ExcelTableSerializerParameters, IXLWorkbook>>();
+var converter = container.GetRequiredService<IFromExcelTableConverter>>();
 var table = new TableBuilder();
-var workBook = serializer.Serialize(table, new ExcelTableSerializerParameters());
+var workbook = converter.Serialize(table, new ExcelTableSerializerParameters());
 ```
 See sample project `RxBim.Tools.Serializer.Excel.Sample`

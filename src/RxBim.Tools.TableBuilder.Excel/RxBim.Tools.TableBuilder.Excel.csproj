@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Description>RxBim Excel serializer</Description>
+    <Description>Contains RxBim.TableBuilder converters to/from an Excel workbook.</Description>
     <PackageId>$(MSBuildProjectName)</PackageId>
   </PropertyGroup>
 

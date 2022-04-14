@@ -3,6 +3,5 @@
 
     <PropertyGroup>
         <Version>2.0.2-dev01</Version>
-        <PackageReleaseNotes>Add ITableDeserializer, ObjectCellContent</PackageReleaseNotes>
     </PropertyGroup>
 </Project>

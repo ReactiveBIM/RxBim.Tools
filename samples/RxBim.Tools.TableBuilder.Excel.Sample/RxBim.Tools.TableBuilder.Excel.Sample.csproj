@@ -2,7 +2,6 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <Nullable>enable</Nullable>
-    <Title>Examples for Excel Table Serializer</Title>
   </PropertyGroup>
   <ItemGroup>    
     <PackageReference Include="RxBim.Di.SimpleInjector" Version="1.0.2" />

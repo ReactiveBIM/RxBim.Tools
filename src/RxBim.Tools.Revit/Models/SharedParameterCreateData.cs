@@ -2,10 +2,12 @@
 {
     using System.Collections.Generic;
     using Autodesk.Revit.DB;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Данные для создания общего параметра в модели
     /// </summary>
+    [PublicAPI]
     public class SharedParameterCreateData
     {
         /// <summary>

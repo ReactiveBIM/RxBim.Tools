@@ -5,9 +5,11 @@
     using Abstractions;
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
+    using JetBrains.Annotations;
 
     /// <inheritdoc />
-    public class ElementsDisplayService : IElementsDisplay
+    [UsedImplicitly]
+    internal class ElementsDisplayService : IElementsDisplay
     {
         private readonly UIApplication _uiApplication;
 

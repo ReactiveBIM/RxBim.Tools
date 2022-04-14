@@ -1,8 +1,11 @@
 ﻿namespace RxBim.Tools.TableBuilder
 {
+    using JetBrains.Annotations;
+
     /// <summary>
     /// The numeric content of a cell
     /// </summary>
+    [PublicAPI]
     public class NumericCellContent : ICellContent
     {
         /// <summary>

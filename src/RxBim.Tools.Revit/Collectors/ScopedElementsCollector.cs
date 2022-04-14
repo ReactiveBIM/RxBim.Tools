@@ -8,12 +8,14 @@
     using Autodesk.Revit.UI;
     using Autodesk.Revit.UI.Selection;
     using Helpers;
+    using JetBrains.Annotations;
     using Models;
 
     /// <summary>
     /// Коллектор части элементов
     /// </summary>
-    public class ScopedElementsCollector : IScopedElementsCollector
+    [UsedImplicitly]
+    internal class ScopedElementsCollector : IScopedElementsCollector
     {
         private readonly UIApplication _uiApplication;
         private readonly IElementsDisplay _elementsDisplay;

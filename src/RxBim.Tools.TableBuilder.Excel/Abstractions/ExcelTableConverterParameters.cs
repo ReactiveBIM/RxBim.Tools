@@ -3,14 +3,14 @@
     using ClosedXML.Excel;
 
     /// <summary>
-    /// Excel serializer parameters
+    /// Excel converter parameters
     /// </summary>
-    public class ExcelTableSerializerParameters
+    public class ExcelTableConverterParameters
     {
         /// <summary>
         /// Excel document
         /// </summary>
-        public XLWorkbook? Document { get; set; }
+        public IXLWorkbook? Workbook { get; set; }
 
         /// <summary>
         /// Worksheet name

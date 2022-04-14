@@ -3,13 +3,15 @@
     using System;
     using System.Linq;
     using Autodesk.Revit.DB;
+    using JetBrains.Annotations;
     using Revit.Extensions;
     using Styles;
 
     /// <summary>
-    /// Represents a serializer that renders a <see cref="Table"/> object as Revit ViewSchedule.
+    /// Represents a converter that renders a <see cref="Table"/> object to a Revit ViewSchedule.
     /// </summary>
-    internal class ViewScheduleTableSerializer : IViewScheduleTableSerializer
+    [UsedImplicitly]
+    internal class ViewScheduleTableConverter : IViewScheduleTableConverter
     {
         private const double FontRatio = 3.77951502;
         private readonly Document _document;
@@ -18,16 +20,16 @@
         /// ctor.
         /// </summary>
         /// <param name="document">A <see cref="Document"/> object.</param>
-        public ViewScheduleTableSerializer(Document document)
+        public ViewScheduleTableConverter(Document document)
         {
             _document = document;
         }
 
         /// <inheritdoc />
-        public ViewSchedule Serialize(Table table, ViewScheduleTableSerializerParameters parameters)
+        public ViewSchedule Convert(Table table, ViewScheduleTableConverterParameters parameters)
         {
             using var t = new Transaction(_document);
-            t.Start(nameof(ViewScheduleTableSerializer));
+            t.Start(nameof(ViewScheduleTableConverter));
 
             var id = new ElementId((int)BuiltInCategory.OST_NurseCallDevices);
 
@@ -100,7 +102,7 @@
 
         private TableCellStyle GetCellStyle(
             CellFormatStyle cellStyle,
-            ViewScheduleTableSerializerParameters parameters)
+            ViewScheduleTableConverterParameters parameters)
         {
             var options = new TableCellStyleOverrideOptions
             {
@@ -156,7 +158,7 @@
                 CellBorderType.Thin => ElementId.InvalidElementId, // does not apply
                 CellBorderType.Hidden => ElementId.InvalidElementId,
                 CellBorderType.Bold => new ElementId(boldLineId),
-                _ => throw new Exception($"Line {cellBorderType} is not implemented in the serializer."),
+                _ => throw new Exception($"Line {cellBorderType} is not implemented in the converter."),
             };
         }
 

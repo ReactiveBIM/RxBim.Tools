@@ -1,8 +1,11 @@
 ﻿namespace RxBim.Tools.TableBuilder
 {
+    using JetBrains.Annotations;
+
     /// <summary>
     /// The formula content of a cell
     /// </summary>
+    [PublicAPI]
     public class FormulaCellContent : ICellContent
     {
         /// <summary>

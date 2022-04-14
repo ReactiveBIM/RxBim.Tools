@@ -2,10 +2,12 @@
 {
     using System;
     using Autodesk.Revit.DB;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Данные общего параметра, описывающие его в ФОП
     /// </summary>
+    [PublicAPI]
     public class SharedParameterDefinition
     {
         /// <summary>

@@ -9,13 +9,15 @@
     using Autodesk.Revit.UI;
     using CSharpFunctionalExtensions;
     using Extensions;
+    using JetBrains.Annotations;
     using Models;
     using Result = CSharpFunctionalExtensions.Result;
 
     /// <summary>
     /// Сервис по работе с общими параметрами
     /// </summary>
-    public class SharedParameterService : ISharedParameterService
+    [UsedImplicitly]
+    internal class SharedParameterService : ISharedParameterService
     {
         private readonly UIApplication _uiApplication;
         private readonly ITransactionService _transactionService;

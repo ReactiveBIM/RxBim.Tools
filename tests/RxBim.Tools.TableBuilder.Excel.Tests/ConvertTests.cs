@@ -7,37 +7,37 @@ namespace RxBim.Tools.TableBuilder.Excel.Tests
     using Xunit;
 
     /// <summary>
-    /// Tests for <see cref="ExcelTableSerializer"/>
+    /// Tests for <see cref="IExcelTableConverter"/>
     /// </summary>
-    public class SerializeTests : TestsBase
+    public class ConvertTests : TestsBase
     {
         [Fact]
-        public void ExcelSerializerTest()
+        public void ConverterTest()
         {
             // Arrange
             const int tableRowsCount = 10;
             var table = GetTestTable(tableRowsCount);
-            using var xlPackage = new XLWorkbook();
-            var serializer = Container.GetRequiredService<IExcelTableSerializer>();
+            using IXLWorkbook workbook = new XLWorkbook();
+            var converter = Container.GetRequiredService<IExcelTableConverter>();
 
             // Act
-            var workBook = serializer.Serialize(
+            var result = converter.Convert(
                 table,
-                new ExcelTableSerializerParameters
+                new ExcelTableConverterParameters
                 {
                     WorksheetName = "Sheet1",
-                    Document = xlPackage
+                    Workbook = workbook
                 });
 
             // Assert
-            workBook.Worksheets.First().Rows().Count().Should().Be(tableRowsCount);
-            workBook.Worksheets.First().Columns().Count().Should().Be(2);
+            result.Worksheets.First().Rows().Count().Should().Be(tableRowsCount);
+            result.Worksheets.First().Columns().Count().Should().Be(2);
         }
 
         private Table GetTestTable(int count)
         {
             var list = Enumerable.Range(0, count)
-                .Select(x => new RowData { Prop1 = x, Prop2 = nameof(SerializeTests) + x })
+                .Select(x => new RowData { Prop1 = x, Prop2 = nameof(ConvertTests) + x })
                 .ToList();
 
             return new TableBuilder()

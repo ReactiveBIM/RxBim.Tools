@@ -5,11 +5,13 @@
     using Abstractions;
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Коллектор документов
     /// </summary>
-    public class DocumentsCollector : IDocumentsCollector
+    [UsedImplicitly]
+    internal class DocumentsCollector : IDocumentsCollector
     {
         private readonly UIApplication _uiApplication;
 

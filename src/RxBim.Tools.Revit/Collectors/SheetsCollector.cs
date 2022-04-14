@@ -8,11 +8,13 @@
     using Autodesk.Revit.UI;
     using Extensions;
     using Helpers;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Репозиторий листов
     /// </summary>
-    public class SheetsCollector : ISheetsCollector
+    [UsedImplicitly]
+    internal class SheetsCollector : ISheetsCollector
     {
         private readonly UIApplication _uiApplication;
 

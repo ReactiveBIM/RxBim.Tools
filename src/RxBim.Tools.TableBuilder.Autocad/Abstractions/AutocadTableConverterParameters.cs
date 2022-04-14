@@ -3,9 +3,9 @@ namespace RxBim.Tools.TableBuilder
     using Autodesk.AutoCAD.DatabaseServices;
 
     /// <summary>
-    /// Serialization parameters to AutoCAD table
+    /// Contains converter parameters to an AutoCAD table.
     /// </summary>
-    public class AutocadTableSerializerParameters
+    public class AutocadTableConverterParameters
     {
         /// <summary>
         /// The default height of a table rows.

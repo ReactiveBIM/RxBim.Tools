@@ -4,18 +4,20 @@
     using System.Collections.Generic;
     using System.Text;
     using ClosedXML.Excel;
+    using JetBrains.Annotations;
     using Styles;
 
     /// <summary>
-    /// Defines a <see cref="Table"/> serializer to an Excle workbook.
+    /// Defines a <see cref="Table"/> converter to an Excle workbook.
     /// </summary>
-    internal class ExcelTableSerializer : IExcelTableSerializer
+    [UsedImplicitly]
+    internal class ExcelTableConverter : IExcelTableConverter
     {
         /// <inheritdoc />
-        public IXLWorkbook Serialize(Table table, ExcelTableSerializerParameters parameters)
+        public IXLWorkbook Convert(Table table, ExcelTableConverterParameters parameters)
         {
-            var document = parameters.Document ?? new XLWorkbook();
-            var worksheet = document.Worksheets.Add(parameters.WorksheetName ?? "Sheet1");
+            var workbook = parameters.Workbook ?? new XLWorkbook();
+            var worksheet = workbook.Worksheets.Add(parameters.WorksheetName ?? "Sheet1");
 
             var mergedCells = new List<CellRange>();
 
@@ -36,10 +38,11 @@
                 worksheet.SheetView.Freeze(parameters.FreezeRows, table.Columns.Count);
 
             var (fromRow, fromColumn, toRow, toColumn) = parameters.AutoFilterRange;
+
             if (fromRow > 0 && fromColumn > 0)
                 worksheet.Range(fromRow, fromColumn, toRow, toColumn).SetAutoFilter(true);
 
-            return document;
+            return workbook;
         }
 
         private void FillRow(

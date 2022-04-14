@@ -26,13 +26,13 @@
         /// Command execution
         /// </summary>
         /// <param name="tableDataService"><see cref="ITableDataService"/> object.</param>
-        /// <param name="tableSerializer"><see cref="ITableSerializer{TParams,TResult}"/> object.</param>
+        /// <param name="tableConverter"><see cref="ITableConverter{TParams,TResult,TSource}"/> object.</param>
         /// <param name="selectionService"><see cref="IObjectsSelectionService"/> object.</param>
         /// <param name="commandLineService"><see cref="ICommandLineService"/> object.</param>
         /// <param name="doc"><see cref="Document"/> object.</param>>
         public PluginResult ExecuteCommand(
             ITableDataService tableDataService,
-            ITableSerializer<AutocadTableSerializerParameters, Table> tableSerializer,
+            IAutocadTableConverter tableConverter,
             IObjectsSelectionService selectionService,
             ICommandLineService commandLineService,
             Document doc)
@@ -40,7 +40,7 @@
             _commandLineService = commandLineService;
             _selectionService = selectionService;
 
-            var parameters = new AutocadTableSerializerParameters
+            var parameters = new AutocadTableConverterParameters
             {
                 TargetDatabase = doc.Database
             };
@@ -48,7 +48,7 @@
             Result.Try(
                 () => SelectObjects()
                     .Bind(tableDataService.GetTable)
-                    .Map(table => tableSerializer.Serialize(table, parameters))
+                    .Map(table => tableConverter.Convert(table, parameters))
                     .Tap(table => InsertTable(doc, table))
                     .OnFailure(ShowError))
                 .OnFailure(ShowError);

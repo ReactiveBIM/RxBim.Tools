@@ -1,8 +1,11 @@
 ﻿namespace RxBim.Tools.Revit.Models
 {
+    using JetBrains.Annotations;
+
     /// <summary>
     /// Информация об общем параметре
     /// </summary>
+    [PublicAPI]
     public class SharedParameterInfo
     {
         /// <summary>

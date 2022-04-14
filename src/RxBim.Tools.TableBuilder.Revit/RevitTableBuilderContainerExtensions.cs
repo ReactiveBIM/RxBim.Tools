@@ -8,13 +8,13 @@
     public static class RevitTableBuilderContainerExtensions
     {
         /// <summary>
-        /// Adds table serialization to Excel services.
+        /// Register table converters.
         /// </summary>
         /// <param name="container"><see cref="IContainer"/></param>
         public static IContainer AddRevitTableBuilder(this IContainer container)
         {
             return container
-                .AddSingleton<IViewScheduleTableSerializer, ViewScheduleTableSerializer>();
+                .AddSingleton<IViewScheduleTableConverter, ViewScheduleTableConverter>();
         }
     }
 }

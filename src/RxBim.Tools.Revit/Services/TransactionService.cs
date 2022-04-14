@@ -4,10 +4,12 @@
     using Abstractions;
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
+    using JetBrains.Annotations;
     using Result = CSharpFunctionalExtensions.Result;
 
     /// <inheritdoc/>
-    public class TransactionService : ITransactionService
+    [UsedImplicitly]
+    internal class TransactionService : ITransactionService
     {
         private readonly UIApplication _uiApplication;
 
@@ -25,13 +27,13 @@
         /// <inheritdoc/>
         public Result RunInTransaction(Action action, string transactionName, Document document = null)
         {
-            Func<Result> funcWithResult = () =>
+            return RunInTransaction(FuncWithResult, transactionName, document);
+
+            Result FuncWithResult()
             {
                 action.Invoke();
                 return Result.Success();
-            };
-
-            return RunInTransaction(funcWithResult, transactionName, document);
+            }
         }
 
         /// <inheritdoc/>

@@ -1,9 +1,9 @@
 ﻿namespace RxBim.Tools.TableBuilder
 {
     /// <summary>
-    /// Serialization options to Revit table.
+    /// Contains to Revit converter parameters.
     /// </summary>
-    public class ViewScheduleTableSerializerParameters
+    public class ViewScheduleTableConverterParameters
     {
         /// <summary>
         /// The name of a table (specification).
