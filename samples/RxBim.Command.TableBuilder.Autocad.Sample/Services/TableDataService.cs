@@ -13,7 +13,7 @@
 
     /// <inheritdoc />
     [UsedImplicitly]
-    public class TableDataService : ITableDataService
+    internal class TableDataService : ITableDataService
     {
         /// <inheritdoc />
         public Result<Table> GetTable(List<ObjectId> ids)

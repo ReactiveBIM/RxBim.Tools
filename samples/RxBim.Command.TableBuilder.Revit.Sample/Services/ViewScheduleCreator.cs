@@ -5,6 +5,7 @@
     using Abstractions;
     using Autodesk.Revit.DB;
     using CSharpFunctionalExtensions;
+    using JetBrains.Annotations;
     using Tools.Revit.Abstractions;
     using Tools.Revit.Extensions;
     using Tools.TableBuilder;
@@ -12,7 +13,8 @@
     using Color = System.Drawing.Color;
 
     /// <inheritdoc />
-    public class ViewScheduleCreator : IViewScheduleCreator
+    [UsedImplicitly]
+    internal class ViewScheduleCreator : IViewScheduleCreator
     {
         private readonly IScopedElementsCollector _scopedCollector;
         private readonly ITransactionService _transactionService;

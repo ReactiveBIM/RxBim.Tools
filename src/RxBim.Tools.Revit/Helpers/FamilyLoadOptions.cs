@@ -5,7 +5,7 @@
     /// <summary>
     /// Опции загрузки семейства в документ
     /// </summary>
-    internal class FamilyLoadOptions : IFamilyLoadOptions
+    public class FamilyLoadOptions : IFamilyLoadOptions
     {
         private readonly bool _isOverWrite;
 

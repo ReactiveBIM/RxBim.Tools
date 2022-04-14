@@ -23,7 +23,7 @@
         /// <param name="ent">Объект Civil</param>
         /// <param name="edit">Действие с объектом</param>
         /// <typeparam name="T">Тип объекта Civil</typeparam>
-        public static void Edit<T>(this T ent, Action<T> edit)
+        public static void Edit<T>(this T? ent, Action<T> edit)
             where T : Entity
         {
             if (ent == null || ent.IsShortcutReference())
@@ -39,7 +39,7 @@
         /// </summary>
         /// <param name="ent">Объект Civil</param>
         /// <param name="edit">Действие с объектом</param>
-        public static void Edit(this Entity ent, Action edit)
+        public static void Edit(this Entity? ent, Action edit)
         {
             if (ent == null || ent.IsShortcutReference())
             {

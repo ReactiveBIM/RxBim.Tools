@@ -2,10 +2,12 @@
 {
     using System.Linq;
     using ClosedXML.Excel;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Represents a <see cref="Table"/> converter from an Excel workbook.
     /// </summary>
+    [UsedImplicitly]
     internal class FromExcelTableConverter : IFromExcelTableConverter
     {
         /// <inheritdoc/>
