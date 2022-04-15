@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using Autodesk.AutoCAD.DatabaseServices;
     using CSharpFunctionalExtensions;
-    using Table = Tools.TableBuilder.Models.Table;
+    using Table = Tools.TableBuilder.Table;
 
     /// <summary>
     /// Data service for a table.

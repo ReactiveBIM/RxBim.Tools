@@ -2,9 +2,11 @@
 {
     using Abstractions;
     using CSharpFunctionalExtensions;
+    using JetBrains.Annotations;
 
     /// <inheritdoc />
-    public class CommandLineService : ICommandLineService
+    [UsedImplicitly]
+    internal class CommandLineService : ICommandLineService
     {
         private readonly IDocumentService _documentService;
 

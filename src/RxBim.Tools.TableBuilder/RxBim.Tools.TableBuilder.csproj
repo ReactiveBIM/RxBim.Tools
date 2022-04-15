@@ -4,6 +4,7 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <AssemblyName>$(MSBuildProjectName).$(Version)</AssemblyName>
         <Nullable>enable</Nullable>
+        <LangVersion>default</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -14,6 +15,10 @@
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
             <_Parameter1>$(MSBuildProjectName).Tests</_Parameter1>
         </AssemblyAttribute>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="RxBim.Tools.TableBuilder.csproj.DotSettings" />
     </ItemGroup>
 
     <PropertyGroup>

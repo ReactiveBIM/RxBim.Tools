@@ -32,7 +32,7 @@
             SharedParameterInfo sharedParameterInfo,
             bool fullMatch,
             bool useTransaction = false,
-            Document document = null);
+            Document? document = null);
 
         /// <summary>
         /// Метод добавляет общий параметр из указанного ФОП в выбранный документ,
@@ -64,7 +64,7 @@
             SharedParameterInfo sharedParameterInfo,
             bool fullMatch,
             bool isSavePastValues = false,
-            Document document = null);
+            Document? document = null);
 
         /// <summary>
         /// Проверка параметра, представленного экземпляром <see cref="SharedParameterElement"/>, на существование
@@ -84,7 +84,7 @@
         /// </summary>
         /// <param name="document">Документ, из которого требуется получить ФОП.
         /// Если задано null, то ФОП будет браться из текущего документа</param>
-        Result<DefinitionFile> GetDefinitionFile(Document document = null);
+        Result<DefinitionFile> GetDefinitionFile(Document? document = null);
 
         /// <summary>
         /// Считывает файлы общих параметров используя информацию
@@ -93,7 +93,7 @@
         /// <param name="fileSource"><see cref="SharedParameterFileSource"/></param>
         /// <param name="document">документ для считывания файлов
         /// Если задано null, то ФОП будут браться из текущего документа</param>
-        DefinitionFile[] TryGetDefinitionFiles(SharedParameterFileSource fileSource, Document document = null);
+        DefinitionFile[] TryGetDefinitionFiles(SharedParameterFileSource fileSource, Document? document = null);
 
         /// <summary>
         /// Проверяет существование параметра в выбранном документе
@@ -104,6 +104,6 @@
         /// False - параметр ищется только по имени</param>
         /// <param name="document">документ для проверки.
         /// Если задано null, то параметр проверяется в текущем документе</param>
-        bool ParameterExistsInDocument(SharedParameterDefinition definition, bool fullMatch, Document document = null);
+        bool ParameterExistsInDocument(SharedParameterDefinition definition, bool fullMatch, Document? document = null);
     }
 }

@@ -5,21 +5,20 @@
     using Abstractions;
     using Autodesk.Revit.DB;
     using CSharpFunctionalExtensions;
-    using RxBim.Tools.TableBuilder.Extensions;
+    using JetBrains.Annotations;
     using Tools.Revit.Abstractions;
     using Tools.Revit.Extensions;
-    using Tools.Revit.Serializers;
-    using Tools.TableBuilder.Abstractions;
-    using Tools.TableBuilder.Models.Styles;
-    using Tools.TableBuilder.Services;
+    using Tools.TableBuilder;
+    using Tools.TableBuilder.Styles;
     using Color = System.Drawing.Color;
 
     /// <inheritdoc />
-    public class ViewScheduleCreator : IViewScheduleCreator
+    [UsedImplicitly]
+    internal class ViewScheduleCreator : IViewScheduleCreator
     {
         private readonly IScopedElementsCollector _scopedCollector;
         private readonly ITransactionService _transactionService;
-        private readonly ITableSerializer<ViewScheduleTableSerializerParameters, ViewSchedule> _tableSerializer;
+        private readonly IViewScheduleTableConverter _tableConverter;
         private readonly Document _doc;
 
         /// <summary>
@@ -27,17 +26,17 @@
         /// </summary>
         /// <param name="scopedCollector"><see cref="IScopedElementsCollector"/></param>
         /// <param name="transactionService"><see cref="ITransactionService"/></param>
-        /// <param name="tableSerializer">Serializer to <see cref="ViewSchedule"/></param>
+        /// <param name="tableConverter">A converter to <see cref="ViewSchedule"/></param>
         /// <param name="doc"><see cref="Document"/></param>
         public ViewScheduleCreator(
             IScopedElementsCollector scopedCollector,
             ITransactionService transactionService,
-            ITableSerializer<ViewScheduleTableSerializerParameters, ViewSchedule> tableSerializer,
+            IViewScheduleTableConverter tableConverter,
             Document doc)
         {
             _scopedCollector = scopedCollector;
             _transactionService = transactionService;
-            _tableSerializer = tableSerializer;
+            _tableConverter = tableConverter;
             _doc = doc;
         }
 
@@ -76,7 +75,7 @@
                 tableBuilder.GetColumns().ToList().ForEach(col => col.SetWidth(30));
 
                 var table = tableBuilder.Build();
-                var serializeParams = new ViewScheduleTableSerializerParameters
+                var parameters = new ViewScheduleTableConverterParameters
                 {
                     Name = name,
                     SpecificationBoldLineId = 571482
@@ -85,8 +84,8 @@
                 return _transactionService.RunInTransactionGroup(() =>
                     {
                         return DeleteViewScheduleIfExists(name)
-                            .Map(() => table.Serialize(_tableSerializer, serializeParams))
-                            .Ensure(view => view is not null, "Error when created or serialized specification")
+                            .Map(() => _tableConverter.Convert(table, parameters))
+                            .Ensure(view => view is not null, "Error during creation or convertion of the specification")
                             .Tap(view => PutSpecificationOnSheet(view, _doc.ActiveView.Id, XYZ.Zero))
                             .Tap(view => ApplyHeaderStyle(view, columnsCount, 30));
                     },

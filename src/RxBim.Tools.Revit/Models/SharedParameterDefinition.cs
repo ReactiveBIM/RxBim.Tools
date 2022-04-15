@@ -2,16 +2,18 @@
 {
     using System;
     using Autodesk.Revit.DB;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Данные общего параметра, описывающие его в ФОП
     /// </summary>
+    [PublicAPI]
     public class SharedParameterDefinition
     {
         /// <summary>
         /// Имя параметра
         /// </summary>
-        public string ParameterName { get; set; }
+        public string ParameterName { get; set; } = null!;
 
         /// <summary>
         /// Guid
@@ -26,12 +28,12 @@
         /// <summary>
         /// Имя группы в которую должен входить параметр
         /// </summary>
-        public string OwnerGroupName { get; set; }
+        public string? OwnerGroupName { get; set; }
 
         /// <summary>
         /// Описание параметра
         /// </summary>
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         /// <summary>
         /// Видимость параметра в проекте

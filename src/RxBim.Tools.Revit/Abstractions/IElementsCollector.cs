@@ -19,7 +19,7 @@
         /// Опция актуальна при <see cref="ScopeType"/> == SelectedElements</param>
         /// <returns>Отфильтрованная коллекция элементов</returns>
         FilteredElementCollector GetFilteredElementCollector(
-            Document doc = null, bool ignoreScope = false, bool includeSubFamilies = true);
+            Document? doc = null, bool ignoreScope = false, bool includeSubFamilies = true);
 
         /// <summary>
         /// Включает в Revit режим выбора элемента в модели текущего документа с учетом заданного фильтра
@@ -27,7 +27,7 @@
         /// <param name="filterElement">Фильтр для выбора элементов</param>
         /// <param name="statusPrompt">Описание статуса в Revit при выборе</param>
         /// <returns>Выбранный элемент</returns>
-        Element PickElement(Func<Element, bool> filterElement = null, string statusPrompt = "");
+        Element? PickElement(Func<Element, bool>? filterElement = null, string statusPrompt = "");
 
         /// <summary>
         /// Включает в Revit режим выбора элементов в модели текущего документа с учетом заданного фильтра
@@ -35,7 +35,7 @@
         /// <param name="filterElement">Фильтр для выбора элементов</param>
         /// <param name="statusPrompt">Описание статуса в Revit при выборе</param>
         /// <returns>Выбранный элемент</returns>
-        List<Element> PickElements(Func<Element, bool> filterElement = null, string statusPrompt = "");
+        List<Element> PickElements(Func<Element, bool>? filterElement = null, string statusPrompt = "");
 
         /// <summary>
         /// Включает в Revit режим выбора элемента в модели связанного документа с учетом заданного фильтра
@@ -43,7 +43,7 @@
         /// <param name="filterElement">Фильтр для выбора элементов</param>
         /// <param name="statusPrompt">Описание статуса в Revit при выборе</param>
         /// <returns>Выбранный элемент</returns>
-        LinkedElement PickLinkedElement(Func<Element, bool> filterElement = null, string statusPrompt = "");
+        LinkedElement? PickLinkedElement(Func<Element, bool>? filterElement = null, string statusPrompt = "");
 
         /// <summary>
         /// Включает в Revit режим выбора элементов в модели связанного документа с учетом заданного фильтра
@@ -51,6 +51,6 @@
         /// <param name="filterElement">Фильтр для выбора элементов</param>
         /// <param name="statusPrompt">Описание статуса в Revit при выборе</param>
         /// <returns>Выбранный элемент</returns>
-        List<LinkedElement> PickLinkedElements(Func<Element, bool> filterElement = null, string statusPrompt = "");
+        List<LinkedElement> PickLinkedElements(Func<Element, bool>? filterElement = null, string statusPrompt = "");
     }
 }

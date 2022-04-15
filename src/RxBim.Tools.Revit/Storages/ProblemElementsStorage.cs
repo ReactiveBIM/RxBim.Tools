@@ -3,14 +3,15 @@
     using System.Collections.Generic;
     using System.Linq;
     using Abstractions;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Хранилище проблемных элементов
     /// </summary>
-    public class ProblemElementsStorage : IProblemElementsStorage
+    [UsedImplicitly]
+    internal class ProblemElementsStorage : IProblemElementsStorage
     {
-        private readonly Dictionary<string, List<int>> _storage =
-            new Dictionary<string, List<int>>();
+        private readonly Dictionary<string, List<int>> _storage = new();
 
         /// <inheritdoc/>
         public void AddProblemElement(int id, string problem)

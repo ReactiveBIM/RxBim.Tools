@@ -5,11 +5,13 @@
     using Abstractions;
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Коллектор документов
     /// </summary>
-    public class DocumentsCollector : IDocumentsCollector
+    [UsedImplicitly]
+    internal class DocumentsCollector : IDocumentsCollector
     {
         private readonly UIApplication _uiApplication;
 
@@ -47,8 +49,9 @@
 
         private bool IsNotNestedLib(RevitLinkInstance linkInstance)
         {
-            var linkType = _uiApplication.ActiveUIDocument.Document
-                .GetElement(linkInstance.GetTypeId()) as RevitLinkType;
+            var linkType = (RevitLinkType)_uiApplication.ActiveUIDocument.Document
+                .GetElement(linkInstance.GetTypeId());
+            
             return linkType.GetLinkedFileStatus() == LinkedFileStatus.Loaded
                    && !linkType.IsNestedLink;
         }

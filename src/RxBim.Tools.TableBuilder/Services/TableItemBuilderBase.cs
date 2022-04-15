@@ -1,7 +1,5 @@
-﻿namespace RxBim.Tools.TableBuilder.Services
+﻿namespace RxBim.Tools.TableBuilder
 {
-    using Models;
-
     /// <summary>
     /// Base class of the table item builder.
     /// </summary>
@@ -26,6 +24,6 @@
         /// <summary>
         /// Returns new <see cref="TableBuilder"/> for <see cref="Table"/> to be build.
         /// </summary>
-        public TableBuilder ToTable() => new (ObjectForBuild.Table);
+        public TableBuilder ToTable() => new(ObjectForBuild.Table);
     }
 }

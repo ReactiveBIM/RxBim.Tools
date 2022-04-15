@@ -1,12 +1,10 @@
-﻿namespace RxBim.Tools.TableBuilder.Services
+﻿namespace RxBim.Tools.TableBuilder
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Abstractions;
-    using Models;
-    using Models.Contents;
-    using Models.Styles;
+    using Content;
+    using Styles;
 
     /// <summary>
     /// The builder of a <see cref="Table"/>.
@@ -32,7 +30,7 @@
         /// </summary>
         /// <param name="row">Row index.</param>
         /// <param name="column">Column index.</param>
-        public CellBuilder this[int row, int column] => new (Table[row, column]);
+        public CellBuilder this[int row, int column] => new(Table[row, column]);
 
         /// <summary>
         /// Returns the built <see cref="Table"/>.

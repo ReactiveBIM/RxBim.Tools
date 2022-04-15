@@ -8,11 +8,13 @@
     using Autodesk.AutoCAD.EditorInput;
     using Autodesk.AutoCAD.Runtime;
     using Helpers;
+    using JetBrains.Annotations;
     using Models;
     using AcRtException = Autodesk.AutoCAD.Runtime.Exception;
 
     /// <inheritdoc />
-    public class ObjectsSelectionService : IObjectsSelectionService
+    [UsedImplicitly]
+    internal class ObjectsSelectionService : IObjectsSelectionService
     {
         private readonly Editor _editor;
         private readonly PromptSelectionOptions _options;

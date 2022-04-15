@@ -1,7 +1,6 @@
-﻿namespace RxBim.Tools.TableBuilder.Models
+﻿namespace RxBim.Tools.TableBuilder
 {
     using System.Linq;
-    using Services;
 
     /// <summary>
     /// Table row data.

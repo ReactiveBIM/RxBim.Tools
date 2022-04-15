@@ -15,7 +15,7 @@
         /// <param name="secondPoint">Вторая точка</param>
         /// <returns>Созданная линия между двумя точками</returns>
         /// <remarks>Если растояние между точками мало, то возвращает null</remarks>
-        public static Line GetLine(this XYZ firstPoint, XYZ secondPoint)
+        public static Line? GetLine(this XYZ firstPoint, XYZ secondPoint)
             => firstPoint.DistanceTo(secondPoint) < 1.MmToFt()
                     ? null
                     : Line.CreateBound(firstPoint, secondPoint);
@@ -59,7 +59,7 @@
         /// <param name="line">Линия</param>
         /// <returns>Концевые точки линии</returns>
         public static XYZ[] GetEndpoints(this Line line)
-            => new XYZ[]
+            => new[]
             {
                 line.GetEndPoint(0),
                 line.GetEndPoint(1)

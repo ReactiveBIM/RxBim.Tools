@@ -1,17 +1,16 @@
-﻿namespace RxBim.Tools.TableBuilder.Services
+﻿namespace RxBim.Tools.TableBuilder
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using Abstractions;
-    using Extensions;
-    using Models;
-    using Models.Contents;
-    using Models.Styles;
+    using Content;
+    using JetBrains.Annotations;
+    using Styles;
 
     /// <summary>
     /// The builder of a single <see cref="Cell"/> of a <see cref="Table"/>.
     /// </summary>
+    [PublicAPI]
     public class CellBuilder : TableItemBuilderBase<Cell, CellBuilder>
     {
         /// <inheritdoc />
@@ -27,7 +26,7 @@
         }
 
         /// <summary>
-        /// Returns a new <see cref="RowBuilder"/> for the <see cref="Models.Row"/> that the <see cref="Cell"/> is in.
+        /// Returns a new <see cref="RowBuilder"/> for the <see cref="Row"/> that the <see cref="Cell"/> is in.
         /// </summary>
         public RowBuilder ToRow()
         {
@@ -35,7 +34,7 @@
         }
 
         /// <summary>
-        /// Returns a new <see cref="ColumnBuilder"/> for the <see cref="Models.Column"/> that the <see cref="Cell"/> is in.
+        /// Returns a new <see cref="ColumnBuilder"/> for the <see cref="Column"/> that the <see cref="Cell"/> is in.
         /// </summary>
         public ColumnBuilder ToColumn()
         {
@@ -79,6 +78,16 @@
         public CellBuilder SetText(string text)
         {
             SetContent(new TextCellContent(text));
+            return this;
+        }
+
+        /// <summary>
+        /// Set value in the cell.
+        /// </summary>
+        /// <param name="value">Value.</param>
+        public CellBuilder SetValue(object value)
+        {
+            SetContent(new ObjectCellContent(value));
             return this;
         }
 

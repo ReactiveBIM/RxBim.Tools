@@ -1,11 +1,13 @@
-﻿namespace RxBim.Tools.TableBuilder.Services
+﻿namespace RxBim.Tools.TableBuilder
 {
     using System.Drawing;
-    using Models.Styles;
+    using JetBrains.Annotations;
+    using Styles;
 
     /// <summary>
     /// Builder for <see cref="CellTextFormatStyle"/>
     /// </summary>
+    [PublicAPI]
     public class CellTextFormatStyleBuilder
     {
         private readonly CellTextFormatStyle _textFormat;

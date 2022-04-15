@@ -16,9 +16,9 @@
         /// <param name="creator"><see cref="IViewScheduleCreator"/></param>
         public PluginResult ExecuteCommand(IViewScheduleCreator creator)
         {
-            return creator.CreateSomeViewSchedule(
-                    "TestViewSchedule", 10, 10)
-                .IsSuccess ? PluginResult.Succeeded : PluginResult.Failed;
+            return creator.CreateSomeViewSchedule("TestViewSchedule", 10, 10).IsSuccess
+                ? PluginResult.Succeeded
+                : PluginResult.Failed;
         }
     }
 }

@@ -1,9 +1,8 @@
-﻿namespace RxBim.Tools.TableBuilder.Models
+﻿namespace RxBim.Tools.TableBuilder
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Extensions;
     using Styles;
 
     /// <summary>
@@ -11,9 +10,9 @@
     /// </summary>
     public class Table
     {
-        private readonly List<Column> _columns = new ();
-        private readonly List<Row> _rows = new ();
-        private readonly List<CellRange> _mergeAreas = new ();
+        private readonly List<Column> _columns = new();
+        private readonly List<Row> _rows = new();
+        private readonly List<CellRange> _mergeAreas = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Table"/> class.
@@ -50,7 +49,7 @@
         /// <summary>
         /// The default format for cells.
         /// </summary>
-        public CellFormatStyle DefaultFormat { get; set; } = new ();
+        public CellFormatStyle DefaultFormat { get; set; } = new();
 
         /// <summary>
         /// Own width.

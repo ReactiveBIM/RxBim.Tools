@@ -8,11 +8,13 @@
     using Autodesk.Revit.UI;
     using Extensions;
     using Helpers;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Репозиторий листов
     /// </summary>
-    public class SheetsCollector : ISheetsCollector
+    [UsedImplicitly]
+    internal class SheetsCollector : ISheetsCollector
     {
         private readonly UIApplication _uiApplication;
 
@@ -135,7 +137,7 @@
         /// <param name="doc">Документ Revit</param>
         /// <param name="selectedElems">Выбранные элементы на листе</param>
         /// <returns>Список листов документа</returns>
-        private List<ViewSheet> GetViewSheets(Document doc, ICollection<ElementId> selectedElems = null)
+        private List<ViewSheet> GetViewSheets(Document doc, ICollection<ElementId>? selectedElems = null)
         {
             FilteredElementCollector collector;
             if (selectedElems != null)

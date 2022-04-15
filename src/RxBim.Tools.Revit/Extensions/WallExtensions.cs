@@ -3,10 +3,12 @@
     using System;
     using System.Linq;
     using Autodesk.Revit.DB;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Расширения для стен
     /// </summary>
+    [PublicAPI]
     public static class WallExtensions
     {
         private const double Tolerance = 0.0001;
@@ -16,7 +18,7 @@
         /// </summary>
         /// <param name="wall">Стена</param>
         /// <returns>Линию расположения стены</returns>
-        public static Line GetLocationLine(this Wall wall)
+        public static Line? GetLocationLine(this Wall wall)
         {
             if (!(wall.Location is LocationCurve lc)
                 || !(lc.Curve is Line line))
@@ -30,7 +32,7 @@
         /// </summary>
         /// <param name="element">Стена</param>
         /// <returns>Линии стены</returns>
-        public static Line[] GetLines(this Wall element)
+        public static Line[]? GetLines(this Wall element)
         {
             var vs = element.GetVertices();
             if (vs == null)
@@ -62,7 +64,7 @@
 
             var bottom = Line.CreateBound(vsByY[2], vsByY[3]);
 
-            var ls = new Line[]
+            var ls = new[]
             {
                 left,
                 right,
@@ -83,8 +85,8 @@
             var axis = wall.GetLocationLine();
 
             var longs = wall
-                ?.GetLines()
-                .FirstOrDefault(line => axis.Direction.CrossProduct(line.Direction).GetLength() < Tolerance);
+                .GetLines()
+                ?.FirstOrDefault(line => axis?.Direction.CrossProduct(line.Direction).GetLength() < Tolerance);
 
             if (longs == null)
                 return 0d;
@@ -106,7 +108,7 @@
                 _ => throw new NotImplementedException($"Not implement {shellLayerType}"),
             };
 
-            return wall.GetGeometryObjectFromReference(sideFaces[0]) as Face;
+            return (Face)wall.GetGeometryObjectFromReference(sideFaces[0]);
         }
     }
 }

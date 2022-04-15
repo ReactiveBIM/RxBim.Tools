@@ -7,7 +7,7 @@
     /// <summary>
     /// Результат выбора
     /// </summary>
-    public class ObjectsSelectionResult : IObjectsSelectionResult
+    internal class ObjectsSelectionResult : IObjectsSelectionResult
     {
         /// <summary>
         /// Пустой результат

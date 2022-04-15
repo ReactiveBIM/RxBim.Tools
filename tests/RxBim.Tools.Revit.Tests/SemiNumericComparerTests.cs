@@ -96,7 +96,7 @@
             Action act = () => result = _comparer.Compare(string.Empty, string.Empty);
 
             act.Should().NotThrow();
-            result.Should().Equals(0);
+            result.Should().Be(0);
         }
 
         [Fact]
@@ -106,7 +106,7 @@
             Action act = () => result = _comparer.Compare("num 1.0", "num 1.0");
 
             act.Should().NotThrow();
-            result.Should().Equals(0);
+            result.Should().Be(0);
         }
 
         [Fact]
@@ -116,7 +116,7 @@
             Action act = () => result = _comparer.Compare("num 1", "num 1");
 
             act.Should().NotThrow();
-            result.Should().Equals(0);
+            result.Should().Be(0);
         }
 
         [Fact]
@@ -126,7 +126,7 @@
             Action act = () => result = _comparer.Compare("num", "num");
 
             act.Should().NotThrow();
-            result.Should().Equals(0);
+            result.Should().Be(0);
         }
 
         [Fact]
@@ -136,7 +136,7 @@
             Action act = () => result = _comparer.Compare("num 1.0", "1.0 num");
 
             act.Should().NotThrow();
-            result.Should().Equals(0);
+            result.Should().Be(0);
         }
 
         [Fact]
@@ -146,7 +146,7 @@
             Action act = () => result = _comparer.Compare("num 1", "1 num");
 
             act.Should().NotThrow();
-            result.Should().Equals(0);
+            result.Should().Be(0);
         }
 
         [Fact]

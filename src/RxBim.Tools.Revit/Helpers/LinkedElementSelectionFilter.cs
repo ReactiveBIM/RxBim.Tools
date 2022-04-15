@@ -8,14 +8,14 @@
     public class LinkedElementSelectionFilter : ISelectionFilter
     {
         private readonly Document _doc;
-        private readonly Func<Element, bool> _filterElement;
+        private readonly Func<Element, bool>? _filterElement;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LinkedElementSelectionFilter"/> class.
         /// </summary>
         /// <param name="doc">Родительский документ</param>
         /// <param name="filterElement">Фильтр для выбора элементов</param>
-        public LinkedElementSelectionFilter(Document doc, Func<Element, bool> filterElement = null)
+        public LinkedElementSelectionFilter(Document doc, Func<Element, bool>? filterElement = null)
         {
             _doc = doc;
             _filterElement = filterElement;

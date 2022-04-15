@@ -1,7 +1,6 @@
-﻿namespace RxBim.Tools.TableBuilder.Models
+﻿namespace RxBim.Tools.TableBuilder
 {
     using System.Collections.Generic;
-    using Extensions;
     using Styles;
 
     /// <summary>
@@ -9,7 +8,7 @@
     /// </summary>
     public abstract class CellsSet : TableItemBase
     {
-        private readonly List<Cell> _cells = new ();
+        private readonly List<Cell> _cells = new();
 
         /// <inheritdoc />
         protected CellsSet(Table table)

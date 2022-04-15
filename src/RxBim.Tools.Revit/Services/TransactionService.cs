@@ -4,10 +4,12 @@
     using Abstractions;
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
+    using JetBrains.Annotations;
     using Result = CSharpFunctionalExtensions.Result;
 
     /// <inheritdoc/>
-    public class TransactionService : ITransactionService
+    [UsedImplicitly]
+    internal class TransactionService : ITransactionService
     {
         private readonly UIApplication _uiApplication;
 
@@ -23,19 +25,19 @@
         private Document CurrentDocument => _uiApplication.ActiveUIDocument.Document;
 
         /// <inheritdoc/>
-        public Result RunInTransaction(Action action, string transactionName, Document document = null)
+        public Result RunInTransaction(Action action, string transactionName, Document? document = null)
         {
-            Func<Result> funcWithResult = () =>
+            return RunInTransaction(FuncWithResult, transactionName, document);
+
+            Result FuncWithResult()
             {
                 action.Invoke();
                 return Result.Success();
-            };
-
-            return RunInTransaction(funcWithResult, transactionName, document);
+            }
         }
 
         /// <inheritdoc/>
-        public Result RunInTransactionGroup(Action action, string transactionGroupName, Document document = null)
+        public Result RunInTransactionGroup(Action action, string transactionGroupName, Document? document = null)
         {
             Func<Result> funcWithResult = () =>
             {
@@ -47,7 +49,7 @@
         }
 
         /// <inheritdoc />
-        public Result RunInTransaction(Func<Result> action, string transactionName, Document document = null)
+        public Result RunInTransaction(Func<Result> action, string transactionName, Document? document = null)
         {
             if (action == null)
                 return Result.Failure("Не задано действие для транзакции");
@@ -72,7 +74,7 @@
         }
 
         /// <inheritdoc />
-        public Result RunInTransactionGroup(Func<Result> action, string transactionGroupName, Document document = null)
+        public Result RunInTransactionGroup(Func<Result> action, string transactionGroupName, Document? document = null)
         {
             if (action == null)
                 return Result.Failure("Не задано действие для транзакции");
