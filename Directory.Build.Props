@@ -2,6 +2,7 @@
     <PropertyGroup>
         <LangVersion>10</LangVersion>
         <TreatWarningsAsErrors Condition="'$(Configuration)' == 'Release'">true</TreatWarningsAsErrors>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <PropertyGroup Condition="!'$(ProjectName.EndsWith(`Tests`))'">
@@ -14,6 +15,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="JetBrains.Annotations" Version="2021.2.0" PrivateAssets="all" />
     </ItemGroup>
 
     <PropertyGroup>

@@ -61,12 +61,12 @@
                 {
                     Visible = visible
                 };
-                def = app
+                def = (ExternalDefinition)app
                     .OpenSharedParameterFile()
                     .Groups
                     .Create("TemporaryDefintionGroup")
                     .Definitions
-                    .Create(defOptions) as ExternalDefinition;
+                    .Create(defOptions);
 
                 File.Delete(tempFile);
             }
@@ -94,7 +94,7 @@
             this Document doc,
             string parameterName,
             bool useTransaction = true,
-            Func<ParameterElement, bool> condition = null)
+            Func<ParameterElement, bool>? condition = null)
         {
             var pElems = new FilteredElementCollector(doc)
                 .WhereElementIsNotElementType()
@@ -131,7 +131,7 @@
         /// <param name="doc">Текущий документ Revit</param>
         /// <param name="parameterName">Название параметра</param>
         /// <returns>ID параметра проекта</returns>
-        public static ElementId GetParameterId(
+        public static ElementId? GetParameterId(
             this Document doc,
             string parameterName)
         {

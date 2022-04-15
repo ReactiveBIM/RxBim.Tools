@@ -13,7 +13,7 @@
         /// <summary>
         /// Коллекция категорий, представленных типом <see cref="BuiltInCategory"/>, для привязки параметра
         /// </summary>
-        public List<BuiltInCategory> CategoriesForBind { get; set; }
+        public List<BuiltInCategory>? CategoriesForBind { get; set; }
         
         /// <summary>
         /// Установить для параметров свойство "Значения могут меняться по экземплярам групп"

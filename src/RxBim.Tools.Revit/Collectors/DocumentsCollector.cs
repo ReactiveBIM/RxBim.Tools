@@ -49,8 +49,9 @@
 
         private bool IsNotNestedLib(RevitLinkInstance linkInstance)
         {
-            var linkType = _uiApplication.ActiveUIDocument.Document
-                .GetElement(linkInstance.GetTypeId()) as RevitLinkType;
+            var linkType = (RevitLinkType)_uiApplication.ActiveUIDocument.Document
+                .GetElement(linkInstance.GetTypeId());
+            
             return linkType.GetLinkedFileStatus() == LinkedFileStatus.Loaded
                    && !linkType.IsNestedLink;
         }

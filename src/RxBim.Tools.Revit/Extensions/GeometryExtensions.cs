@@ -24,7 +24,7 @@
         /// </summary>
         /// <param name="doc">Документ Revit</param>
         /// <returns>Базовая точка проекта</returns>
-        public static XYZ GetProjectBasePoint(this Document doc)
+        public static XYZ? GetProjectBasePoint(this Document doc)
         {
             var elements = new FilteredElementCollector(doc)
                 .WherePasses(new ElementCategoryFilter(BuiltInCategory.OST_ProjectBasePoint))
@@ -40,7 +40,7 @@
 
             return new XYZ(x, y, elevation);
         }
-        
+
         /// <summary>
         /// Проверка наличия точки в списке через сверку расстояния
         /// </summary>
@@ -116,9 +116,9 @@
         /// <param name="element">Элемент Revit</param>
         /// <param name="options">Опции</param>
         /// <returns>Тело элемента</returns>
-        public static Solid GetSolid(
+        public static Solid? GetSolid(
             this Element element,
-            Options options = null)
+            Options? options = null)
         {
             var op = options ?? Options;
             var geometryObject = element.get_Geometry(op).First();
@@ -163,13 +163,15 @@
         /// <param name="element">Элемент Revit</param>
         /// <param name="options">Опции</param>
         /// <returns>Вертикали</returns>
-        public static ICollection<XYZ> GetVertices(
+        public static ICollection<XYZ>? GetVertices(
             this Element element,
-            Options options = null)
+            Options? options = null)
         {
             var op = options ?? Options;
 
             var solid = element.GetSolid(op);
+            if (solid == null)
+                return null;
 
             var verticalFaces = solid
                 .Faces
@@ -200,9 +202,9 @@
 
             var points = edgeArrays
                 .SelectMany(ea => ea.Cast<Edge>()
-                                    .Select(e => e.AsCurve() as Line)
-                                    .Where(l => l != null))
-                .SelectMany(l => new XYZ[]
+                                    .Select(e => e.AsCurve())
+                                    .OfType<Line>())
+                .SelectMany(l => new[]
                 {
                     l.GetEndPoint(0),
                     l.GetEndPoint(1)
@@ -232,7 +234,7 @@
             var minY = tPointsByY.First().Y;
             var maxY = tPointsByY.Last().Y;
 
-            var extremesT = new XYZ[]
+            var extremesT = new[]
             {
                 new XYZ(minX, minY, minZ),
                 new XYZ(minX, maxY, minZ),

@@ -25,7 +25,7 @@
         private Document CurrentDocument => _uiApplication.ActiveUIDocument.Document;
 
         /// <inheritdoc/>
-        public Result RunInTransaction(Action action, string transactionName, Document document = null)
+        public Result RunInTransaction(Action action, string transactionName, Document? document = null)
         {
             return RunInTransaction(FuncWithResult, transactionName, document);
 
@@ -37,7 +37,7 @@
         }
 
         /// <inheritdoc/>
-        public Result RunInTransactionGroup(Action action, string transactionGroupName, Document document = null)
+        public Result RunInTransactionGroup(Action action, string transactionGroupName, Document? document = null)
         {
             Func<Result> funcWithResult = () =>
             {
@@ -49,7 +49,7 @@
         }
 
         /// <inheritdoc />
-        public Result RunInTransaction(Func<Result> action, string transactionName, Document document = null)
+        public Result RunInTransaction(Func<Result> action, string transactionName, Document? document = null)
         {
             if (action == null)
                 return Result.Failure("Не задано действие для транзакции");
@@ -74,7 +74,7 @@
         }
 
         /// <inheritdoc />
-        public Result RunInTransactionGroup(Func<Result> action, string transactionGroupName, Document document = null)
+        public Result RunInTransactionGroup(Func<Result> action, string transactionGroupName, Document? document = null)
         {
             if (action == null)
                 return Result.Failure("Не задано действие для транзакции");

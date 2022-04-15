@@ -4,11 +4,13 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using Content;
+    using JetBrains.Annotations;
     using Styles;
 
     /// <summary>
     /// The builder of a single <see cref="Cell"/> of a <see cref="Table"/>.
     /// </summary>
+    [PublicAPI]
     public class CellBuilder : TableItemBuilderBase<Cell, CellBuilder>
     {
         /// <inheritdoc />

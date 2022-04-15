@@ -1,10 +1,12 @@
 ﻿namespace RxBim.Tools.Revit.Models
 {
     using Autodesk.Revit.DB;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Данные элемента, полученного из связанного файла
     /// </summary>
+    [PublicAPI]
     public class LinkedElement
     {
         /// <summary>

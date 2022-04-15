@@ -137,7 +137,7 @@
         /// <param name="doc">Документ Revit</param>
         /// <param name="selectedElems">Выбранные элементы на листе</param>
         /// <returns>Список листов документа</returns>
-        private List<ViewSheet> GetViewSheets(Document doc, ICollection<ElementId> selectedElems = null)
+        private List<ViewSheet> GetViewSheets(Document doc, ICollection<ElementId>? selectedElems = null)
         {
             FilteredElementCollector collector;
             if (selectedElems != null)

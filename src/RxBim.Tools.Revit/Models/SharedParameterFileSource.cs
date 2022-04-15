@@ -11,6 +11,6 @@
         /// <summary>
         /// Список путей к файлам общих параметров
         /// </summary>
-        public string[] FilePaths { get; set; }
+        public string[]? FilePaths { get; set; }
     }
 }

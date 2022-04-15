@@ -39,13 +39,15 @@
             SharedParameterInfo sharedParameterInfo,
             bool fullMatch,
             bool useTransaction = false,
-            Document document = null)
+            Document? document = null)
         {
-            if (sharedParameterInfo == null)
+            if (sharedParameterInfo == null!)
                 return Result.Failure("Данные об общем параметре не заданы");
-            if (sharedParameterInfo.Definition == null)
+            if (sharedParameterInfo.Definition == null!)
                 return Result.Failure("Не заданы данные для определения общего параметра");
-            if (sharedParameterInfo.CreateData == null)
+            if (sharedParameterInfo.Definition.ParameterName == null!)
+                return Result.Failure("Не задано название общего параметра");
+            if (sharedParameterInfo.CreateData == null!)
                 return Result.Failure($"Не заданы данные для создания общего параметра '{sharedParameterInfo.Definition.ParameterName}'");
             if (ParameterExistsInDocument(sharedParameterInfo.Definition, fullMatch))
                 return Result.Failure($"Параметр '{sharedParameterInfo.Definition.ParameterName}' уже добавлен в модель");
@@ -69,7 +71,7 @@
             SharedParameterInfo sharedParameterInfo,
             bool fullMatch,
             bool isSavePastValues = false,
-            Document document = null)
+            Document? document = null)
         {
             var externalDefinitionInFile = definitionFiles
                 .Select(df => new
@@ -115,7 +117,7 @@
         }
 
         /// <inheritdoc />
-        public Result<DefinitionFile> GetDefinitionFile(Document document = null)
+        public Result<DefinitionFile> GetDefinitionFile(Document? document = null)
         {
             var doc = document ?? _uiApplication.ActiveUIDocument.Document;
             var sharedParameterFilename = doc.Application.SharedParametersFilename;
@@ -129,7 +131,7 @@
         }
 
         /// <inheritdoc/>
-        public DefinitionFile[] TryGetDefinitionFiles(SharedParameterFileSource fileSource, Document doc = null)
+        public DefinitionFile[] TryGetDefinitionFiles(SharedParameterFileSource fileSource, Document? doc = null)
         {
             var document = doc ?? _uiApplication.ActiveUIDocument.Document;
             var oldDefinitionFilePath = string.Empty;
@@ -147,16 +149,19 @@
 
             var definitionFiles = new List<DefinitionFile>();
 
-            foreach (var filePath in fileSource.FilePaths)
+            if (fileSource.FilePaths != null)
             {
-                try
+                foreach (var filePath in fileSource.FilePaths)
                 {
-                    document.Application.SharedParametersFilename = new FileInfo(filePath).FullName;
-                    definitionFiles.Add(document.Application.OpenSharedParameterFile());
-                }
-                catch
-                {
-                    // ignore
+                    try
+                    {
+                        document.Application.SharedParametersFilename = new FileInfo(filePath).FullName;
+                        definitionFiles.Add(document.Application.OpenSharedParameterFile());
+                    }
+                    catch
+                    {
+                        // ignore
+                    }
                 }
             }
 
@@ -167,7 +172,7 @@
         }
 
         /// <inheritdoc/>
-        public bool ParameterExistsInDocument(SharedParameterDefinition definition, bool fullMatch, Document document = null)
+        public bool ParameterExistsInDocument(SharedParameterDefinition definition, bool fullMatch, Document? document = null)
         {
             var doc = document ?? _uiApplication.ActiveUIDocument.Document;
             foreach (var sharedParameterElement in new FilteredElementCollector(doc)
@@ -184,7 +189,7 @@
                     {
                         var parameterBindings = doc.ParameterBindings;
                         var binding = (ElementBinding)parameterBindings.get_Item(sharedParameterElement.GetDefinition());
-                        return binding is not null;
+                        return binding != null!;
                     }
                 }
             }
@@ -216,8 +221,11 @@
             SharedParameterInfo sharedParameterInfo,
             bool fullMatch)
         {
-            var categorySet =
-                GetCategorySet(sharedParameterInfo.CreateData.CategoriesForBind.Select(c => Category.GetCategory(document, c)));
+            var categorySet = GetCategorySet(
+                sharedParameterInfo
+                    .CreateData
+                    .CategoriesForBind
+                    ?.Select(c => Category.GetCategory(document, c)));
 
             var externalDefinition = GetSharedExternalDefinition(sharedParameterInfo.Definition, fullMatch, definitionFile);
             if (externalDefinition == null)
@@ -241,19 +249,21 @@
         }
 
         private Result UpdateParameterBindings(
-            Definition definition,
+            Definition? definition,
             SharedParameterCreateData createData,
-            Document doc = null,
+            Document? doc = null,
             bool isSavePastValues = false)
         {
+            if (definition == null)
+                return Result.Failure("'definition' argument not defined.");
             doc ??= _uiApplication.ActiveUIDocument.Document;
             var parameterBindings = doc.ParameterBindings;
-            var binding = (ElementBinding)parameterBindings.get_Item(definition);
+            ElementBinding? binding = (ElementBinding)parameterBindings.get_Item(definition);
             var existCategories = binding?.Categories ?? new CategorySet();
             var existCategoriesCopy = binding?.Categories ?? new CategorySet();
             var creatingCategories = createData.CategoriesForBind
-                .Select(bic => Category.GetCategory(doc, bic))
-                .ToList();
+                ?.Select(bic => Category.GetCategory(doc, bic))
+                .ToList() ?? new();
             if (creatingCategories
                     .LastOrDefault(creatingCategory => existCategories.Insert(creatingCategory)) != null)
             {
@@ -283,9 +293,9 @@
                     .Where(paramValuePair => paramValuePair?.Value is not null)
                     .ToArray();
                 parameterBindings.ReInsert(definition, binding);
-                doc!.Regenerate();
+                doc.Regenerate();
                 foreach (var pair in paramValuePairs)
-                    pair.Param.SetParameterValue(pair.Value);
+                    pair!.Param.SetParameterValue(pair.Value);
                 return Result.Success();
             }
 
@@ -296,13 +306,16 @@
         /// Конвертирование списка категорий в экземпляр <see cref="CategorySet"/>
         /// </summary>
         /// <param name="categories">Список категорий</param>
-        private CategorySet GetCategorySet(IEnumerable<Category> categories)
+        private CategorySet GetCategorySet(IEnumerable<Category>? categories)
         {
             var categorySet = new CategorySet();
-            foreach (var category in categories)
+            if (categories != null)
             {
-                if (category is { AllowsBoundParameters: true })
-                    categorySet.Insert(category);
+                foreach (var category in categories)
+                {
+                    if (category is { AllowsBoundParameters: true })
+                        categorySet.Insert(category);
+                }
             }
 
             return categorySet;
@@ -315,7 +328,7 @@
         /// <param name="fullMatch">True - параметр ФОП должен совпасть со всеми заполненными
         /// значениями sharedParameterInfo. False - параметр ищется только по имени</param>
         /// <param name="definitionFile">ФОП</param>
-        private ExternalDefinition GetSharedExternalDefinition(
+        private ExternalDefinition? GetSharedExternalDefinition(
             SharedParameterDefinition sharedParameterDefinition,
             bool fullMatch,
             DefinitionFile definitionFile)
@@ -349,7 +362,7 @@
         /// </summary>
         /// <param name="parameterName">Имя параметра</param>
         /// <param name="document">Текущий документ</param>
-        private void SetAllowVaryBetweenGroups(string parameterName, Document document = null)
+        private void SetAllowVaryBetweenGroups(string parameterName, Document? document = null)
         {
             var doc = document ?? _uiApplication.ActiveUIDocument.Document;
             var map = doc.ParameterBindings;

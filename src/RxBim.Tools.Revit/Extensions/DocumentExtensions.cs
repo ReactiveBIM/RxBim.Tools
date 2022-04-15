@@ -17,7 +17,7 @@
         /// <param name="rootDoc">Основной документ Revit</param>
         /// <param name="linkedDocTitle">Название связанного документа</param>
         /// <returns>Открытый связанный документ Revit</returns>
-        public static Document GetOpenedLinkedDocument(this Document rootDoc, string linkedDocTitle)
+        public static Document? GetOpenedLinkedDocument(this Document rootDoc, string linkedDocTitle)
         {
             var linkedDoc = rootDoc.Application.Documents
                 .Cast<Document>()
@@ -32,7 +32,7 @@
                 return null;
 
             var fileName = string.Empty;
-            ModelPath modelPath = null;
+            ModelPath? modelPath = null;
 
             if (linkedDoc.IsWorkshared)
                 modelPath = linkedDoc.GetWorksharingCentralModelPath();
@@ -43,7 +43,7 @@
 
             linkType.Unload(null);
 
-            Document lDoc = null;
+            Document? lDoc = null;
             try
             {
                 lDoc = modelPath != null && !modelPath.Empty
@@ -101,7 +101,7 @@
         /// <param name="rootDoc">Основной документ</param>
         /// <param name="linkedDocTitle">Название связаного документа</param>
         /// <returns>Тип связанного документа</returns>
-        public static RevitLinkType GetLinkType(this Document rootDoc, string linkedDocTitle)
+        public static RevitLinkType? GetLinkType(this Document rootDoc, string linkedDocTitle)
         {
             return new FilteredElementCollector(rootDoc)
                 .OfCategory(BuiltInCategory.OST_RvtLinks)

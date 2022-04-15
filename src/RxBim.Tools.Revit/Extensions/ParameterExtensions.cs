@@ -4,10 +4,12 @@
     using System.Globalization;
     using System.Linq;
     using Autodesk.Revit.DB;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Расширения для параметра элемента Revit
     /// </summary>
+    [PublicAPI]
     public static class ParameterExtensions
     {
         /// <summary>
@@ -15,7 +17,7 @@
         /// </summary>
         /// <param name="elem">Element</param>
         /// <param name="parameterName">Имя параметра</param>
-        public static Parameter GetParameterFromInstanceOrType(
+        public static Parameter? GetParameterFromInstanceOrType(
             this Element elem,
             string parameterName)
         {
@@ -43,8 +45,8 @@
         /// <param name="digits">Количество цифр дробной части в возвращаемом значении</param>
         /// <param name="getFeet">Получить значение во внутренних единицах измерения Revit</param>
         /// <returns>Значение параметра</returns>
-        public static object GetParameterValue(
-            this Parameter param,
+        public static object? GetParameterValue(
+            this Parameter? param,
             int digits = 4,
             bool getFeet = false)
         {
@@ -57,7 +59,7 @@
                 || paramName == "Workset")
                 storageType = StorageType.None;
 
-            object value = null;
+            object? value = null;
             switch (storageType)
             {
                 case StorageType.String:
@@ -111,7 +113,7 @@
         /// <param name="digits">Количество цифр дробной части в возвращаемом значении</param>
         /// <param name="getFeet">Получить значение во внутренних единицах измерения Revit</param>
         /// <returns>Значение параметра</returns>
-        public static T GetParameterValue<T>(
+        public static T? GetParameterValue<T>(
             this Element element,
             string parameterName,
             int digits = 4,
@@ -142,7 +144,7 @@
         /// <param name="value">Значение</param>
         /// <returns>true - значение задано, иначе - false</returns>
         public static bool SetParameterValue(
-            this Element element,
+            this Element? element,
             string parameterName,
             object value)
         {
@@ -162,11 +164,10 @@
         /// <param name="value">Значение</param>
         /// <returns>true - значение задано, иначе - false</returns>
         public static bool SetParameterValue(
-            this Parameter parameter,
-            object value)
+            this Parameter? parameter,
+            object? value)
         {
-            if (parameter == null
-                || parameter.IsReadOnly)
+            if (value == null || parameter == null || parameter.IsReadOnly)
                 return false;
 
             switch (parameter.StorageType)
@@ -198,7 +199,7 @@
         /// </summary>
         /// <param name="fromParameter">Из параметра</param>
         /// <param name="toParameter">В параметр</param>
-        public static void CopyParameterValue(this Parameter fromParameter, Parameter toParameter)
+        public static void CopyParameterValue(this Parameter? fromParameter, Parameter? toParameter)
         {
             if (fromParameter == null
                 || toParameter == null

@@ -19,8 +19,8 @@
     [RxBimCommandClass("RxBimTableSample")]
     public class Command : RxBimCommand
     {
-        private IObjectsSelectionService _selectionService;
-        private ICommandLineService _commandLineService;
+        private IObjectsSelectionService _selectionService = null!;
+        private ICommandLineService _commandLineService = null!;
 
         /// <summary>
         /// Command execution
@@ -58,7 +58,7 @@
 
         private void ShowError(string error)
         {
-            _commandLineService?.WriteAsNewLine(error);
+            _commandLineService.WriteAsNewLine(error);
         }
 
         private void InsertTable(Document doc, Table table)
@@ -78,11 +78,11 @@
 
         private Result<List<ObjectId>> SelectObjects()
         {
-            var selectResult = _selectionService?.RunSelection();
-            if (selectResult?.IsEmpty == true)
+            var selectResult = _selectionService.RunSelection();
+            if (selectResult.IsEmpty)
                 return Result.Failure<List<ObjectId>>("No objects selected.");
 
-            return selectResult?.SelectedObjects.ToList() ?? Result.Failure<List<ObjectId>>("Object selection error.");
+            return selectResult.SelectedObjects.ToList();
         }
     }
 }

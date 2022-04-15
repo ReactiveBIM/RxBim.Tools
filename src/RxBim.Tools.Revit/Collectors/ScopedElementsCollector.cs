@@ -39,10 +39,11 @@
 
         /// <inheritdoc/>
         public FilteredElementCollector GetFilteredElementCollector(
-            Document? doc = null, bool ignoreScope = false, bool includeSubFamilies = true)
+            Document? doc = null,
+            bool ignoreScope = false,
+            bool includeSubFamilies = true)
         {
-            if (doc == null)
-                doc = _uiApplication.ActiveUIDocument.Document;
+            doc ??= _uiApplication.ActiveUIDocument.Document;
 
             // Снимаем выделение, чтобы избежать блокировки контекста Revit
             SaveAndResetSelectedElements();
@@ -83,8 +84,8 @@
         public bool HasElements(Document? doc)
         {
             return GetFilteredElementCollector(doc)
-                ?.WhereElementIsNotElementType()
-                .Any() ?? false;
+                .WhereElementIsNotElementType()
+                .Any();
         }
 
         /// <inheritdoc/>
@@ -121,7 +122,7 @@
         }
 
         /// <inheritdoc/>
-        public Element PickElement(Func<Element, bool> filterElement = null, string statusPrompt = "")
+        public Element? PickElement(Func<Element, bool>? filterElement = null, string statusPrompt = "")
         {
             try
             {
@@ -144,7 +145,7 @@
         }
 
         /// <inheritdoc />
-        public List<Element> PickElements(Func<Element, bool> filterElement = null, string statusPrompt = "")
+        public List<Element> PickElements(Func<Element, bool>? filterElement = null, string statusPrompt = "")
         {
             try
             {
@@ -169,7 +170,7 @@
         }
 
         /// <inheritdoc />
-        public LinkedElement PickLinkedElement(Func<Element, bool> filterElement = null, string statusPrompt = "")
+        public LinkedElement? PickLinkedElement(Func<Element, bool>? filterElement = null, string statusPrompt = "")
         {
             try
             {
@@ -198,7 +199,7 @@
         }
 
         /// <inheritdoc />
-        public List<LinkedElement> PickLinkedElements(Func<Element, bool> filterElement = null, string statusPrompt = "")
+        public List<LinkedElement> PickLinkedElements(Func<Element, bool>? filterElement = null, string statusPrompt = "")
         {
             try
             {
