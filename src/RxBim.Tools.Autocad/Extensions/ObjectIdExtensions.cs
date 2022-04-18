@@ -1,5 +1,8 @@
-﻿namespace RxBim.Tools.Autocad.Extensions
+﻿namespace RxBim.Tools.Autocad
 {
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
     using Autodesk.AutoCAD.DatabaseServices;
     using Autodesk.AutoCAD.Runtime;
 
@@ -116,6 +119,26 @@
                 forWrite ? OpenMode.ForWrite : OpenMode.ForRead,
                 false,
                 forceOpenOnLockedLayer) as T;
+        }
+
+        /// <summary>
+        /// Возвращает объекты заданного типа, открытых с использованием транзакции
+        /// </summary>
+        /// <param name="ids">Id объектов</param>
+        /// <param name="forWrite">Открыть для записи</param>
+        /// <param name="onLockedLayer">На заблокированном слое</param>
+        /// <typeparam name="T">Тип</typeparam>
+        /// <returns>Список объектов заданного типа</returns>
+        public static IEnumerable<T> GetObjectsOf<T>(
+            this IEnumerable ids,
+            bool forWrite = false,
+            bool onLockedLayer = true)
+            where T : DBObject
+        {
+            return ids
+                .Cast<ObjectId>()
+                .Select(id => id.TryGetObjectAs<T>(forWrite, onLockedLayer))
+                .Where(t => t != null)!;
         }
     }
 }
