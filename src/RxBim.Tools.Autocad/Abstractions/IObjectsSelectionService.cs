@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using Autodesk.AutoCAD.DatabaseServices;
+    using CSharpFunctionalExtensions;
 
     /// <summary>
     /// Сервис выбора объектов
@@ -24,6 +25,6 @@
         /// <summary>
         /// Запускает выбор объектов и возвращает результат выбора
         /// </summary>
-        IObjectsSelectionResult RunSelection();
+        Result<IObjectsSelectionResult> RunSelection();
     }
 }

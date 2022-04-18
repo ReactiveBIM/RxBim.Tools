@@ -1,6 +1,5 @@
 ﻿namespace RxBim.Tools.Autocad.Abstractions
 {
-    using System.Collections.Generic;
     using Autodesk.AutoCAD.DatabaseServices;
 
     /// <summary>
@@ -16,16 +15,11 @@
         /// <summary>
         /// Возвращает коллекцию ObjectId выбранных объектов
         /// </summary>
-        IEnumerable<ObjectId> SelectedObjects { get; }
+        ObjectId[] SelectedObjects { get; }
 
         /// <summary>
         /// Возвращает введённое ключевое слово
         /// </summary>
         string Keyword { get; }
-
-        /// <summary>
-        /// Возвращает истину, если не были выбраны объекты и не было введено ключевое слово
-        /// </summary>
-        bool IsEmpty { get; }
     }
 }

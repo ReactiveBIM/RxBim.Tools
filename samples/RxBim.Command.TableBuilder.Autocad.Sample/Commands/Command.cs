@@ -78,11 +78,8 @@
 
         private Result<List<ObjectId>> SelectObjects()
         {
-            var selectResult = _selectionService.RunSelection();
-            if (selectResult.IsEmpty)
-                return Result.Failure<List<ObjectId>>("No objects selected.");
-
-            return selectResult.SelectedObjects.ToList();
+            return _selectionService.RunSelection()
+                .Map(ids => ids.SelectedObjects.ToList());
         }
     }
 }

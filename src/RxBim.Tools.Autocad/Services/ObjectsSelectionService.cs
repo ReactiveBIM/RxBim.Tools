@@ -7,6 +7,7 @@
     using Autodesk.AutoCAD.DatabaseServices;
     using Autodesk.AutoCAD.EditorInput;
     using Autodesk.AutoCAD.Runtime;
+    using CSharpFunctionalExtensions;
     using Helpers;
     using JetBrains.Annotations;
     using Models;
@@ -27,14 +28,14 @@
         {
             _editor = editor;
             _options = new PromptSelectionOptions();
-            _options.KeywordInput += (sender, e) => throw new AcRtException(ErrorStatus.OK, e.Input);
+            _options.KeywordInput += (_, e) => throw new AcRtException(ErrorStatus.OK, e.Input);
         }
 
         /// <inheritdoc />
-        public Func<ObjectId, bool> CanBeSelected { get; set; } = x => true;
+        public Func<ObjectId, bool> CanBeSelected { get; set; } = _ => true;
 
         /// <inheritdoc />
-        public IObjectsSelectionResult RunSelection()
+        public Result<IObjectsSelectionResult> RunSelection()
         {
             // Обработка предварительного выбора
             var selectionResult = _editor.SelectImplied();
@@ -59,7 +60,7 @@
                 }
             }
 
-            if (selectionResult.Status == PromptStatus.OK)
+            if (selectionResult.Status == PromptStatus.OK && selectionResult.Value.Count > 0)
             {
                 return new ObjectsSelectionResult
                 {
@@ -68,7 +69,7 @@
                 };
             }
 
-            return ObjectsSelectionResult.Empty;
+            return Result.Failure<IObjectsSelectionResult>("Объекты не выбраны");
         }
 
         /// <inheritdoc />
@@ -77,15 +78,15 @@
             _options.Keywords.Clear();
             _options.MessageForAdding = message;
 
-            if (keywordGlobalAndLocalNames != null && keywordGlobalAndLocalNames.Count > 0)
-            {
-                foreach (var globalAndLocalName in keywordGlobalAndLocalNames)
-                {
-                    _options.Keywords.Add(globalAndLocalName.Key, globalAndLocalName.Value);
-                }
+            if (keywordGlobalAndLocalNames is not { Count: > 0 })
+                return;
 
-                _options.MessageForAdding += _options.Keywords.GetDisplayString(true);
+            foreach (var globalAndLocalName in keywordGlobalAndLocalNames)
+            {
+                _options.Keywords.Add(globalAndLocalName.Key, globalAndLocalName.Value);
             }
+
+            _options.MessageForAdding += _options.Keywords.GetDisplayString(true);
         }
     }
 }
