@@ -94,5 +94,28 @@
 
             throw new Exception(ErrorStatus.WrongObjectType, $"Объект не является типом {typeof(T)}");
         }
+
+        /// <summary>
+        /// Возвращает объект, открытый с использованием транзакции и приведённый к заданному типу.
+        /// Для работы метода необходимо, чтобы была запущена транзакция!
+        /// </summary>
+        /// <param name="id">Идентификатор объекта</param>
+        /// <param name="forWrite">Открыть для записи</param>
+        /// <param name="forceOpenOnLockedLayer">Открыть, даже если объект находится на замороженном слое</param>
+        /// <typeparam name="T">Тип объекта</typeparam>
+        public static T? TryGetObjectAs<T>(
+            this ObjectId id,
+            bool forWrite = false,
+            bool forceOpenOnLockedLayer = true)
+            where T : DBObject
+        {
+            if (!id.IsFullyValid())
+                return null;
+
+            return id.GetObject(
+                forWrite ? OpenMode.ForWrite : OpenMode.ForRead,
+                false,
+                forceOpenOnLockedLayer) as T;
+        }
     }
 }
