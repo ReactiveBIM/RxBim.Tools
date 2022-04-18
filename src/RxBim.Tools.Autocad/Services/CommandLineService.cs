@@ -1,6 +1,5 @@
-﻿namespace RxBim.Tools.Autocad.Services
+﻿namespace RxBim.Tools.Autocad
 {
-    using Abstractions;
     using CSharpFunctionalExtensions;
     using JetBrains.Annotations;
 

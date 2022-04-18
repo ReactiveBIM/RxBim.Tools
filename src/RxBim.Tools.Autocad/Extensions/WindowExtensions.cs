@@ -1,8 +1,7 @@
-﻿namespace RxBim.Tools.Autocad.Extensions
+﻿namespace RxBim.Tools.Autocad
 {
     using System;
     using System.Windows;
-    using AcApp = Autodesk.AutoCAD.ApplicationServices.Application;
     using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
     /// <summary>

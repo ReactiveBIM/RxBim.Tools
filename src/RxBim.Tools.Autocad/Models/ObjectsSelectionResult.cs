@@ -1,7 +1,5 @@
-﻿namespace RxBim.Tools.Autocad.Models
+﻿namespace RxBim.Tools.Autocad
 {
-    using System.Collections.Generic;
-    using Abstractions;
     using Autodesk.AutoCAD.DatabaseServices;
 
     /// <summary>

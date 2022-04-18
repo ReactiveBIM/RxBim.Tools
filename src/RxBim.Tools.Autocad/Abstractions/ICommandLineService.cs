@@ -1,4 +1,4 @@
-﻿namespace RxBim.Tools.Autocad.Abstractions
+﻿namespace RxBim.Tools.Autocad
 {
     /// <summary>
     /// Command line service

@@ -1,4 +1,4 @@
-﻿namespace RxBim.Tools.Autocad.Helpers
+﻿namespace RxBim.Tools.Autocad
 {
     using System;
     using Autodesk.AutoCAD.DatabaseServices;

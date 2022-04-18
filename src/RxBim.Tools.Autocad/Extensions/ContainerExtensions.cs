@@ -1,8 +1,6 @@
-﻿namespace RxBim.Tools.Autocad.Extensions
+﻿namespace RxBim.Tools.Autocad
 {
-    using Abstractions;
     using Di;
-    using Services;
 
     /// <summary>
     /// Extensions for <see cref="IContainer"/>.

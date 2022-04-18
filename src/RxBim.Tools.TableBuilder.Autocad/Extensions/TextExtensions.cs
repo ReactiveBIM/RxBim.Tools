@@ -1,6 +1,6 @@
 ﻿namespace RxBim.Tools.TableBuilder
 {
-    using Autocad.Extensions;
+    using Autocad;
     using Autodesk.AutoCAD.DatabaseServices;
     using Autodesk.AutoCAD.Geometry;
 

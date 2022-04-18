@@ -1,16 +1,13 @@
-﻿namespace RxBim.Tools.Autocad.Services
+﻿namespace RxBim.Tools.Autocad
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Abstractions;
     using Autodesk.AutoCAD.DatabaseServices;
     using Autodesk.AutoCAD.EditorInput;
     using Autodesk.AutoCAD.Runtime;
     using CSharpFunctionalExtensions;
-    using Helpers;
     using JetBrains.Annotations;
-    using Models;
     using AcRtException = Autodesk.AutoCAD.Runtime.Exception;
 
     /// <inheritdoc />

@@ -1,9 +1,9 @@
-﻿namespace RxBim.Tools.Autocad.Abstractions
+﻿namespace RxBim.Tools.Autocad
 {
     using Autodesk.AutoCAD.DatabaseServices;
 
     /// <summary>
-    /// Результат выбора объектов
+    /// Result of object selection
     /// </summary>
     public interface IObjectsSelectionResult
     {

@@ -1,4 +1,4 @@
-﻿namespace RxBim.Tools.Autocad.Abstractions
+﻿namespace RxBim.Tools.Autocad
 {
     using System;
     using System.Collections.Generic;

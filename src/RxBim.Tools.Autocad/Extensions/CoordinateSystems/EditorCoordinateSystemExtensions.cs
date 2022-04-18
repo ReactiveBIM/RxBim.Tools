@@ -1,4 +1,4 @@
-﻿namespace RxBim.Tools.Autocad.Extensions.CoordinateSystems
+﻿namespace RxBim.Tools.Autocad
 {
     using Autodesk.AutoCAD.DatabaseServices;
     using Autodesk.AutoCAD.EditorInput;

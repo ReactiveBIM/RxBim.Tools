@@ -6,7 +6,7 @@
     using Autodesk.AutoCAD.DatabaseServices;
     using CSharpFunctionalExtensions;
     using JetBrains.Annotations;
-    using Tools.Autocad.Extensions;
+    using Tools.Autocad;
     using Tools.TableBuilder;
     using Tools.TableBuilder.Styles;
     using Table = Tools.TableBuilder.Table;

@@ -1,4 +1,4 @@
-﻿namespace RxBim.Tools.Autocad.Extensions
+﻿namespace RxBim.Tools.Autocad
 {
     using Autodesk.AutoCAD.Geometry;
 

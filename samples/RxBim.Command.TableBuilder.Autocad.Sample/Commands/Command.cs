@@ -9,8 +9,7 @@
     using CSharpFunctionalExtensions;
     using RxBim.Command.Autocad;
     using Shared;
-    using Tools.Autocad.Abstractions;
-    using Tools.Autocad.Extensions;
+    using Tools.Autocad;
     using Tools.TableBuilder;
     using Result = CSharpFunctionalExtensions.Result;
     using Table = Autodesk.AutoCAD.DatabaseServices.Table;

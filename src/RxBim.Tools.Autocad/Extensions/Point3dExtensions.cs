@@ -1,9 +1,7 @@
-﻿namespace RxBim.Tools.Autocad.Extensions
+﻿namespace RxBim.Tools.Autocad
 {
     using Autodesk.AutoCAD.ApplicationServices.Core;
     using Autodesk.AutoCAD.Geometry;
-    using CoordinateSystems;
-    using AcRx = Autodesk.AutoCAD.Runtime;
 
     /// <summary>
     /// Расширения для 3D точек
