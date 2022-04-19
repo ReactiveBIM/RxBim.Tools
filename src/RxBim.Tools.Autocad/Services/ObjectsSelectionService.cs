@@ -20,7 +20,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="ObjectsSelectionService"/> class.
         /// </summary>
-        /// <param name="editor">Редактор документа</param>
+        /// <param name="editor">Editor</param>
         public ObjectsSelectionService(Editor editor)
         {
             _editor = editor;
@@ -34,7 +34,6 @@
         /// <inheritdoc />
         public Result<IObjectsSelectionResult> RunSelection()
         {
-            // Обработка предварительного выбора
             var selectionResult = _editor.SelectImplied();
             if (selectionResult.Status == PromptStatus.OK)
             {
@@ -66,7 +65,7 @@
                 };
             }
 
-            return Result.Failure<IObjectsSelectionResult>("Объекты не выбраны");
+            return Result.Failure<IObjectsSelectionResult>("No objects selected.");
         }
 
         /// <inheritdoc />

@@ -7,31 +7,29 @@
     using Autodesk.AutoCAD.Runtime;
 
     /// <summary>
-    /// Расширения для идентификаторов объектов
+    /// Extensions for <see cref="ObjectId"/>
     /// </summary>
     public static class ObjectIdExtensions
     {
         /// <summary>
-        /// Возвращает истину, если идентификатор объекта полностью валидный: объект есть в базе и он не удалён
+        /// Returns true if the object identifier is fully valid: the object exists in the database and has not been deleted.
         /// </summary>
-        /// <param name="id">Идентификатор</param>
+        /// <param name="id">Identifier</param>
         public static bool IsFullyValid(this ObjectId id)
         {
             return id.IsValid && !id.IsNull && !id.IsErased && !id.IsEffectivelyErased;
         }
 
         /// <summary>
-        /// Возвращает истину, если объект соответствует заданному типу
+        /// Returns true if the object matches the given type.
         /// </summary>
-        /// <typeparam name="T">Тип, на который проверяем</typeparam>
-        /// <param name="id">Идентификатор объекта объекта</param>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="id">Identifier</param>
         public static bool Is<T>(this ObjectId id)
             where T : DBObject
         {
             if (!id.IsValid)
-            {
                 return false;
-            }
 
             RXClass
                 rxClass = RXObject.GetClass(typeof(T)),
@@ -42,14 +40,14 @@
         }
 
         /// <summary>
-        /// Возвращает объект, открытый без использования транзакции и приведённый к заданному типу
+        /// Returns an object opened without using a transaction and cast to the given type
         /// </summary>
-        /// <param name="id">Идентификатор объекта</param>
-        /// <param name="forWrite">Открыть для записи</param>
-        /// <param name="openErased">Открыть, даже если объект удалён</param>
-        /// <param name="forceOpenOnLockedLayer">Открыть, даже если объект находится на замороженном слое</param>
-        /// <typeparam name="T">Тип объекта</typeparam>
-        /// <exception cref="Exception">Если объект не соответствует заданному типу</exception>
+        /// <param name="id">Identifier</param>
+        /// <param name="forWrite">Open for writing</param>
+        /// <param name="openErased">Open even if object is deleted</param>
+        /// <param name="forceOpenOnLockedLayer">Open even if the object is on a frozen layer</param>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <exception cref="Exception">If the object does not match the specified type</exception>
         public static T OpenAs<T>(
             this ObjectId id,
             bool forWrite = false,
@@ -71,15 +69,43 @@
         }
 
         /// <summary>
-        /// Возвращает объект, открытый с использованием транзакции и приведённый к заданному типу.
-        /// Для работы метода необходимо, чтобы была запущена транзакция!
+        /// Returns an object opened without using a transaction and cast to the given type
         /// </summary>
-        /// <param name="id">Идентификатор объекта</param>
-        /// <param name="forWrite">Открыть для записи</param>
-        /// <param name="openErased">Открыть, даже если объект удалён</param>
-        /// <param name="forceOpenOnLockedLayer">Открыть, даже если объект находится на замороженном слое</param>
-        /// <typeparam name="T">Тип объекта</typeparam>
-        /// <exception cref="Exception">Если объект не соответствует заданному типу</exception>
+        /// <param name="id">Identifier</param>
+        /// <param name="forWrite">Open for writing</param>
+        /// <param name="openErased">Open even if object is deleted</param>
+        /// <param name="forceOpenOnLockedLayer">Open even if the object is on a frozen layer</param>
+        /// <typeparam name="T">Object type</typeparam>
+        public static T? TryOpenAs<T>(
+            this ObjectId id,
+            bool forWrite = false,
+            bool openErased = false,
+            bool forceOpenOnLockedLayer = true)
+            where T : DBObject
+        {
+            if (id.Is<T>())
+            {
+#pragma warning disable 618
+                return id.Open(
+                    forWrite ? OpenMode.ForWrite : OpenMode.ForRead,
+                    openErased,
+                    forceOpenOnLockedLayer) as T;
+#pragma warning restore 618
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// The return of an object opened using objects and bordering on the given level.
+        /// For the method to work, a transaction must be started!
+        /// </summary>
+        /// <param name="id">Identifier</param>
+        /// <param name="forWrite">Open for writing</param>
+        /// <param name="openErased">Open even if object is deleted</param>
+        /// <param name="forceOpenOnLockedLayer">Open even if the object is on a frozen layer</param>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <exception cref="Exception">If the object does not match the specified type</exception>
         public static T GetObjectAs<T>(
             this ObjectId id,
             bool forWrite = false,
@@ -99,13 +125,13 @@
         }
 
         /// <summary>
-        /// Возвращает объект, открытый с использованием транзакции и приведённый к заданному типу.
-        /// Для работы метода необходимо, чтобы была запущена транзакция!
+        /// Returns an object opened using a transaction and cast to the given type.
+        /// For the method to work, a transaction must be started!
         /// </summary>
-        /// <param name="id">Идентификатор объекта</param>
-        /// <param name="forWrite">Открыть для записи</param>
-        /// <param name="forceOpenOnLockedLayer">Открыть, даже если объект находится на замороженном слое</param>
-        /// <typeparam name="T">Тип объекта</typeparam>
+        /// <param name="id">Identifier</param>
+        /// <param name="forWrite">Open for writing</param>
+        /// <param name="forceOpenOnLockedLayer">Open even if the object is on a frozen layer</param>
+        /// <typeparam name="T">Object type</typeparam>
         public static T? TryGetObjectAs<T>(
             this ObjectId id,
             bool forWrite = false,
@@ -122,13 +148,12 @@
         }
 
         /// <summary>
-        /// Возвращает объекты заданного типа, открытых с использованием транзакции
+        /// Returns objects of the specified type opened using a transaction.
         /// </summary>
-        /// <param name="ids">Id объектов</param>
-        /// <param name="forWrite">Открыть для записи</param>
-        /// <param name="onLockedLayer">На заблокированном слое</param>
-        /// <typeparam name="T">Тип</typeparam>
-        /// <returns>Список объектов заданного типа</returns>
+        /// <param name="ids">Object identifier</param>
+        /// <param name="forWrite">Open for writing</param>
+        /// <param name="onLockedLayer">Open even if the object is on a frozen layer</param>
+        /// <typeparam name="T">Object type</typeparam>
         public static IEnumerable<T> GetObjectsOf<T>(
             this IEnumerable ids,
             bool forWrite = false,

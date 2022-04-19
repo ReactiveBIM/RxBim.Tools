@@ -26,93 +26,40 @@
             CoordinateSystemType from,
             CoordinateSystemType to)
         {
-#pragma warning disable SA1129
-            var mat = new Matrix3d();
-#pragma warning restore SA1129
-            switch (from)
+            var mat = from switch
             {
-                case CoordinateSystemType.WCS:
-                    switch (to)
-                    {
-                        case CoordinateSystemType.UCS:
-                            mat = ed.GetTransformMatrixFromWCSToUCS();
-                            break;
-
-                        case CoordinateSystemType.DCS:
-                            mat = ed.GetTransformMatrixFromWCSToDCS();
-                            break;
-
-                        case CoordinateSystemType.PSDCS:
-                            throw new AcRx.Exception(AcRx.ErrorStatus.InvalidInput, "To be used only with DCS");
-
-                        default:
-                            mat = Matrix3d.Identity;
-                            break;
-                    }
-
-                    break;
-
-                case CoordinateSystemType.UCS:
-                    switch (to)
-                    {
-                        case CoordinateSystemType.WCS:
-                            mat = ed.GetTransformMatrixFromUCSToWCS();
-                            break;
-
-                        case CoordinateSystemType.DCS:
-                            mat = ed.GetTransformMatrixFromUCSToWCS() * ed.GetTransformMatrixFromWCSToDCS();
-                            break;
-
-                        case CoordinateSystemType.PSDCS:
-                            throw new AcRx.Exception(AcRx.ErrorStatus.InvalidInput, "To be used only with DCS");
-
-                        default:
-                            mat = Matrix3d.Identity;
-                            break;
-                    }
-
-                    break;
-
-                case CoordinateSystemType.DCS:
-                    switch (to)
-                    {
-                        case CoordinateSystemType.WCS:
-                            mat = ed.GetTransformMatrixFromDCSToWCS();
-                            break;
-
-                        case CoordinateSystemType.UCS:
-                            mat = ed.GetTransformMatrixFromDCSToWCS() * ed.GetTransformMatrixFromWCSToUCS();
-                            break;
-
-                        case CoordinateSystemType.PSDCS:
-                            mat = ed.GetTransformMatrixFromDCSToPSDCS();
-                            break;
-
-                        default:
-                            mat = Matrix3d.Identity;
-                            break;
-                    }
-
-                    break;
-
-                case CoordinateSystemType.PSDCS:
-                    switch (to)
-                    {
-                        case CoordinateSystemType.WCS:
-                            throw new AcRx.Exception(AcRx.ErrorStatus.InvalidInput, "To be used only with DCS");
-                        case CoordinateSystemType.UCS:
-                            throw new AcRx.Exception(AcRx.ErrorStatus.InvalidInput, "To be used only with DCS");
-                        case CoordinateSystemType.DCS:
-                            mat = ed.GetTransformMatrixFromPSDCSToDCS();
-                            break;
-
-                        default:
-                            mat = Matrix3d.Identity;
-                            break;
-                    }
-
-                    break;
-            }
+                CoordinateSystemType.WCS => to switch
+                {
+                    CoordinateSystemType.UCS => ed.GetTransformMatrixFromWCSToUCS(),
+                    CoordinateSystemType.DCS => ed.GetTransformMatrixFromWCSToDCS(),
+                    CoordinateSystemType.PSDCS => throw new AcRx.Exception(AcRx.ErrorStatus.InvalidInput, "To be used only with DCS"),
+                    _ => Matrix3d.Identity
+                },
+                CoordinateSystemType.UCS => to switch
+                {
+                    CoordinateSystemType.WCS => ed.GetTransformMatrixFromUCSToWCS(),
+                    CoordinateSystemType.DCS => ed.GetTransformMatrixFromUCSToWCS() * ed.GetTransformMatrixFromWCSToDCS(),
+                    CoordinateSystemType.PSDCS => throw new AcRx.Exception(AcRx.ErrorStatus.InvalidInput, "To be used only with DCS"),
+                    _ => Matrix3d.Identity
+                },
+                CoordinateSystemType.DCS => to switch
+                {
+                    CoordinateSystemType.WCS => ed.GetTransformMatrixFromDCSToWCS(),
+                    CoordinateSystemType.UCS => ed.GetTransformMatrixFromDCSToWCS() * ed.GetTransformMatrixFromWCSToUCS(),
+                    CoordinateSystemType.PSDCS => ed.GetTransformMatrixFromDCSToPSDCS(),
+                    _ => Matrix3d.Identity
+                },
+                CoordinateSystemType.PSDCS => to switch
+                {
+                    CoordinateSystemType.WCS => throw new AcRx.Exception(AcRx.ErrorStatus.InvalidInput, "To be used only with DCS"),
+                    CoordinateSystemType.UCS => throw new AcRx.Exception(AcRx.ErrorStatus.InvalidInput, "To be used only with DCS"),
+                    CoordinateSystemType.DCS => ed.GetTransformMatrixFromPSDCSToDCS(),
+                    _ => Matrix3d.Identity
+                },
+#pragma warning disable SA1129
+                _ => new Matrix3d()
+#pragma warning restore SA1129
+            };
 
             return pt.TransformBy(mat);
         }

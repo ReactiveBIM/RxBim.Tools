@@ -1,25 +1,18 @@
 ﻿namespace RxBim.Tools.Autocad
 {
+    using System;
     using Autodesk.AutoCAD.DatabaseServices;
 
-    /// <summary>
-    /// Результат выбора
-    /// </summary>
+    /// <inheritdoc />
     internal class ObjectsSelectionResult : IObjectsSelectionResult
     {
-        /// <summary>
-        /// Флаг того, что было введено ключевое слово вместо выбора объектов
-        /// </summary>
+        /// <inheritdoc/>
         public bool IsKeyword { get; set; }
 
-        /// <summary>
-        /// Коллекция ObjectId выбранных объектов - если были выбраны объекты
-        /// </summary>
-        public ObjectId[] SelectedObjects { get; set; } = new ObjectId[0];
+        /// <inheritdoc/>
+        public ObjectId[] SelectedObjects { get; set; } = Array.Empty<ObjectId>();
 
-        /// <summary>
-        /// Ключевое слово - если было введено ключевое слово
-        /// </summary>
+        /// <inheritdoc/>
         public string Keyword { get; set; } = string.Empty;
     }
 }

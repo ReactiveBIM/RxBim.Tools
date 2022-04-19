@@ -4,7 +4,7 @@
     using Autodesk.AutoCAD.Geometry;
 
     /// <summary>
-    /// Расширения для видовых экранов для работы с системами координат
+    /// Viewport extensions for working with coordinate systems
     /// </summary>
     public static class ViewportCoordinateSystemExtensions
     {

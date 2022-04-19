@@ -5,15 +5,15 @@
     using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
     /// <summary>
-    /// Расширения для окон WPF
+    /// Extensions for WPF windows
     /// </summary>
     public static class WindowExtensions
     {
         /// <summary>
-        /// Отображает окно как модальное и отцентрированное относительно основного окна AutoCAD.
-        /// Возвращает результат диалога после его закрытия.
+        /// Displays the window as modal and centered relative to the main AutoCAD window.
+        /// Returns the result of the dialog after it is closed.
         /// </summary>
-        /// <param name="window">Окно диалога</param>
+        /// <param name="window">Window</param>
         public static bool? ShowAsModalCentered(this Window window)
         {
             FixStartupLocation(window);
@@ -22,9 +22,9 @@
         }
 
         /// <summary>
-        /// Отображает окно в виде немодального диалога, отцентрированного относительно основного окна AutoCAD
+        /// Displays the window as a modeless dialog centered on the main AutoCAD window.
         /// </summary>
-        /// <param name="window">Окно диалога</param>
+        /// <param name="window">Window</param>
         public static void ShowAsModelessCentered(this Window window)
         {
             FixStartupLocation(window);
