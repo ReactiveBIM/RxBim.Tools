@@ -50,9 +50,7 @@
                 catch (AcRtException e)
                 {
                     if (e.ErrorStatus == ErrorStatus.OK)
-                    {
                         return new ObjectsSelectionResult { IsKeyword = true, Keyword = e.Message };
-                    }
                 }
             }
 
@@ -78,9 +76,7 @@
                 return;
 
             foreach (var globalAndLocalName in keywordGlobalAndLocalNames)
-            {
                 _options.Keywords.Add(globalAndLocalName.Key, globalAndLocalName.Value);
-            }
 
             _options.MessageForAdding += _options.Keywords.GetDisplayString(true);
         }
