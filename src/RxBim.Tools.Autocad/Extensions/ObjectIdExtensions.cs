@@ -97,7 +97,7 @@
         }
 
         /// <summary>
-        /// The return of an object opened using objects and bordering on the given level.
+        /// Returns an object opened using objects and bordering on the given level.
         /// For the method to work, a transaction must be started!
         /// </summary>
         /// <param name="id">Identifier</param>

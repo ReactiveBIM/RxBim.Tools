@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using Autodesk.AutoCAD.DatabaseServices;
-    using CSharpFunctionalExtensions;
 
     /// <summary>
     /// Object selection service
@@ -25,6 +24,6 @@
         /// <summary>
         /// Runs a selection of objects and returns the result of the selection.
         /// </summary>
-        Result<IObjectsSelectionResult> RunSelection();
+        IObjectsSelectionResult RunSelection();
     }
 }

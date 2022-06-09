@@ -32,7 +32,7 @@
         public Func<ObjectId, bool> CanBeSelected { get; set; } = _ => true;
 
         /// <inheritdoc />
-        public Result<IObjectsSelectionResult> RunSelection()
+        public IObjectsSelectionResult RunSelection()
         {
             var selectionResult = _editor.SelectImplied();
             if (selectionResult.Status == PromptStatus.OK)
@@ -63,7 +63,7 @@
                 };
             }
 
-            return Result.Failure<IObjectsSelectionResult>("No objects selected.");
+            return ObjectsSelectionResult.Empty;
         }
 
         /// <inheritdoc />

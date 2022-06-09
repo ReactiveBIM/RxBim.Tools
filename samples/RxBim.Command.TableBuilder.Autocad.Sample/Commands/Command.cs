@@ -6,6 +6,7 @@
     using Autodesk.AutoCAD.ApplicationServices;
     using Autodesk.AutoCAD.DatabaseServices;
     using Autodesk.AutoCAD.EditorInput;
+    using Autodesk.AutoCAD.Runtime;
     using CSharpFunctionalExtensions;
     using RxBim.Command.Autocad;
     using Shared;
@@ -15,7 +16,7 @@
     using Table = Autodesk.AutoCAD.DatabaseServices.Table;
 
     /// <inheritdoc />
-    [RxBimCommandClass("RxBimTableSample")]
+    [RxBimCommandClass("RxBimTableSample", CommandFlags.UsePickSet)]
     public class Command : RxBimCommand
     {
         private IObjectsSelectionService _selectionService = null!;
@@ -75,10 +76,12 @@
             }
         }
 
-        private Result<List<ObjectId>> SelectObjects()
+        private Result<IEnumerable<ObjectId>> SelectObjects()
         {
-            return _selectionService.RunSelection()
-                .Map(ids => ids.SelectedObjects.ToList());
+            var selectionResult = _selectionService.RunSelection();
+            return selectionResult.IsEmpty
+                ? Result.Failure<IEnumerable<ObjectId>>("Objects not selected")
+                : Result.Success(selectionResult.SelectedObjects);
         }
     }
 }

@@ -16,7 +16,7 @@
     internal class TableDataService : ITableDataService
     {
         /// <inheritdoc />
-        public Result<Table> GetTable(List<ObjectId> ids)
+        public Result<Table> GetTable(IEnumerable<ObjectId> ids)
         {
             var tableBuilder = new TableBuilder();
 

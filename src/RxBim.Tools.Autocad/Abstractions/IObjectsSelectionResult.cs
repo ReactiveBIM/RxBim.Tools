@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Tools.Autocad
 {
+    using System.Collections.Generic;
     using Autodesk.AutoCAD.DatabaseServices;
 
     /// <summary>
@@ -15,11 +16,16 @@
         /// <summary>
         /// Returns the ObjectId collection of the selected objects.
         /// </summary>
-        ObjectId[] SelectedObjects { get; }
+        IEnumerable<ObjectId> SelectedObjects { get; }
 
         /// <summary>
         /// Returns the entered keyword.
         /// </summary>
         string Keyword { get; }
+
+        /// <summary>
+        /// Returns true if no objects were selected and no keyword was entered
+        /// </summary>
+        bool IsEmpty { get; }
     }
 }
