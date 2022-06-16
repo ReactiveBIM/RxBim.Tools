@@ -125,7 +125,7 @@
                     forceOpenOnLockedLayer);
             }
 
-            throw new Exception(ErrorStatus.WrongObjectType, $"Объект не является типом {typeof(T)}");
+            throw new Exception(ErrorStatus.WrongObjectType, $"Object is not a type {typeof(T)}");
         }
 
         /// <summary>
