@@ -72,14 +72,12 @@
         /// Try returns an object opened without using a transaction and cast to the given type
         /// </summary>
         /// <param name="id">Identifier</param>
-        /// <param name="dbObject">Opened object</param>
         /// <param name="forWrite">Open for writing</param>
         /// <param name="openErased">Open even if object is deleted</param>
         /// <param name="forceOpenOnLockedLayer">Open even if the object is on a frozen layer</param>
         /// <typeparam name="T">Object type</typeparam>
-        public static bool TryOpenAs<T>(
+        public static T? TryOpenAs<T>(
             this ObjectId id,
-            out T dbObject,
             bool forWrite = false,
             bool openErased = false,
             bool forceOpenOnLockedLayer = true)
@@ -88,16 +86,14 @@
             if (id.Is<T>())
             {
 #pragma warning disable 618
-                dbObject = (id.Open(
+                return id.Open(
                     forWrite ? OpenMode.ForWrite : OpenMode.ForRead,
                     openErased,
-                    forceOpenOnLockedLayer) as T)!;
+                    forceOpenOnLockedLayer) as T;
 #pragma warning restore 618
-                return dbObject != null!;
             }
 
-            dbObject = null!;
-            return false;
+            return null;
         }
 
         /// <summary>
