@@ -79,9 +79,7 @@
         private Result<IEnumerable<ObjectId>> SelectObjects()
         {
             var selectionResult = _selectionService.RunSelection();
-            return selectionResult.IsEmpty
-                ? Result.Failure<IEnumerable<ObjectId>>("Objects not selected")
-                : Result.Success(selectionResult.SelectedObjects);
+            return Result.SuccessIf(!selectionResult.IsEmpty, selectionResult.SelectedObjects, "Objects not selected");
         }
     }
 }
