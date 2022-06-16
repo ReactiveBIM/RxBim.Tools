@@ -177,7 +177,7 @@
                     id.TryGetObjectAs<T>(out var dbObject, forWrite, onLockedLayer);
                     return dbObject;
                 })
-                .Where(t => t != null)!;
+                .Where(t => t != null);
         }
     }
 }
