@@ -83,16 +83,17 @@
             bool forceOpenOnLockedLayer = true)
             where T : DBObject
         {
-            if (id.Is<T>())
-            {
 #pragma warning disable 618
-                return id.Open(
-                    forWrite ? OpenMode.ForWrite : OpenMode.ForRead,
-                    openErased,
-                    forceOpenOnLockedLayer) as T;
+            var dbObject = id.Open(
+                forWrite ? OpenMode.ForWrite : OpenMode.ForRead,
+                openErased,
+                forceOpenOnLockedLayer);
 #pragma warning restore 618
-            }
 
+            if (dbObject is T t)
+                return t;
+
+            dbObject.Dispose();
             return null;
         }
 
