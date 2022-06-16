@@ -5,7 +5,7 @@
     using System.Linq;
     using Autodesk.AutoCAD.DatabaseServices;
     using Autodesk.AutoCAD.Runtime;
-    using Exception = Autodesk.AutoCAD.Runtime.Exception;
+    using Exception = System.Exception;
 
     /// <summary>
     /// Extensions for <see cref="ObjectId"/>
@@ -67,7 +67,7 @@
                 return t;
 
             dbObject?.Dispose();
-            throw new Exception(ErrorStatus.WrongObjectType, $"Failed to open object {typeof(T)}");
+            throw new Exception($"Failed to open object {typeof(T)}");
         }
 
         /// <summary>
@@ -104,7 +104,7 @@
         /// <param name="openErased">Открыть, даже если объект удалён</param>
         /// <param name="forceOpenOnLockedLayer">Открыть, даже если объект находится на замороженном слое</param>
         /// <typeparam name="T">Тип объекта</typeparam>
-        /// <exception cref="Exception">Если объект не соответствует заданному типу</exception>
+        /// <exception cref="Autodesk.AutoCAD.Runtime.Exception">Если объект не соответствует заданному типу</exception>
         public static T GetObjectAs<T>(
             this Transaction transaction,
             ObjectId id,
@@ -129,7 +129,7 @@
         /// <param name="openErased">Open even if object is deleted</param>
         /// <param name="forceOpenOnLockedLayer">Open even if the object is on a frozen layer</param>
         /// <typeparam name="T">Object type</typeparam>
-        /// <exception cref="Exception">If the object does not match the specified type</exception>
+        /// <exception cref="Autodesk.AutoCAD.Runtime.Exception">If the object does not match the specified type</exception>
         public static T GetObjectAs<T>(
             this ObjectId id,
             bool forWrite = false,
