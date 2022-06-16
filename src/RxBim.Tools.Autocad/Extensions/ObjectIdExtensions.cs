@@ -66,8 +66,8 @@
             if (dbObject is T t)
                 return t;
 
-            dbObject.Dispose();
-            throw new Exception(ErrorStatus.WrongObjectType, $"Object is not a type {typeof(T)}");
+            dbObject?.Dispose();
+            throw new Exception(ErrorStatus.WrongObjectType, $"Failed to open object {typeof(T)}");
         }
 
         /// <summary>
