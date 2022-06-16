@@ -5,6 +5,7 @@
     using System.Linq;
     using Autodesk.AutoCAD.DatabaseServices;
     using Autodesk.AutoCAD.Runtime;
+    using Exception = Autodesk.AutoCAD.Runtime.Exception;
 
     /// <summary>
     /// Extensions for <see cref="ObjectId"/>
@@ -47,36 +48,8 @@
         /// <param name="openErased">Open even if object is deleted</param>
         /// <param name="forceOpenOnLockedLayer">Open even if the object is on a frozen layer</param>
         /// <typeparam name="T">Object type</typeparam>
-        /// <exception cref="Exception">If the object does not match the specified type</exception>
+        /// <exception cref="Autodesk.AutoCAD.Runtime.Exception">If the object does not match the specified type</exception>
         public static T OpenAs<T>(
-            this ObjectId id,
-            bool forWrite = false,
-            bool openErased = false,
-            bool forceOpenOnLockedLayer = true)
-            where T : DBObject
-        {
-            if (id.Is<T>())
-            {
-#pragma warning disable 618
-                return (T)id.Open(
-                    forWrite ? OpenMode.ForWrite : OpenMode.ForRead,
-                    openErased,
-                    forceOpenOnLockedLayer);
-#pragma warning restore 618
-            }
-
-            throw new Exception(ErrorStatus.WrongObjectType, $"Объект не является типом {typeof(T)}");
-        }
-
-        /// <summary>
-        /// Try returns an object opened without using a transaction and cast to the given type
-        /// </summary>
-        /// <param name="id">Identifier</param>
-        /// <param name="forWrite">Open for writing</param>
-        /// <param name="openErased">Open even if object is deleted</param>
-        /// <param name="forceOpenOnLockedLayer">Open even if the object is on a frozen layer</param>
-        /// <typeparam name="T">Object type</typeparam>
-        public static T? TryOpenAs<T>(
             this ObjectId id,
             bool forWrite = false,
             bool openErased = false,
@@ -94,7 +67,57 @@
                 return t;
 
             dbObject.Dispose();
-            return null;
+            throw new Exception(ErrorStatus.WrongObjectType, $"Object is not a type {typeof(T)}");
+        }
+
+        /// <summary>
+        /// Try returns an object opened without using a transaction and cast to the given type
+        /// </summary>
+        /// <param name="id">Identifier</param>
+        /// <param name="forWrite">Open for writing</param>
+        /// <param name="openErased">Open even if object is deleted</param>
+        /// <param name="forceOpenOnLockedLayer">Open even if the object is on a frozen layer</param>
+        /// <typeparam name="T">Object type</typeparam>
+        public static T? TryOpenAs<T>(
+            this ObjectId id,
+            bool forWrite = false,
+            bool openErased = false,
+            bool forceOpenOnLockedLayer = true)
+            where T : DBObject
+        {
+            try
+            {
+                return OpenAs<T>(id, forWrite, openErased, forceOpenOnLockedLayer);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Returns an object opened using a transaction and cast to the given type
+        /// </summary>
+        /// <param name="transaction">Транзакция</param>
+        /// <param name="id">Идентификатор объекта</param>
+        /// <param name="forWrite">Открыть для записи</param>
+        /// <param name="openErased">Открыть, даже если объект удалён</param>
+        /// <param name="forceOpenOnLockedLayer">Открыть, даже если объект находится на замороженном слое</param>
+        /// <typeparam name="T">Тип объекта</typeparam>
+        /// <exception cref="Exception">Если объект не соответствует заданному типу</exception>
+        public static T GetObjectAs<T>(
+            this Transaction transaction,
+            ObjectId id,
+            bool forWrite = false,
+            bool openErased = false,
+            bool forceOpenOnLockedLayer = true)
+            where T : DBObject
+        {
+            return (T)transaction.GetObject(
+                id,
+                forWrite ? OpenMode.ForWrite : OpenMode.ForRead,
+                openErased,
+                forceOpenOnLockedLayer);
         }
 
         /// <summary>
@@ -114,15 +137,10 @@
             bool forceOpenOnLockedLayer = true)
             where T : DBObject
         {
-            if (id.Is<T>())
-            {
-                return (T)id.GetObject(
+            return (T)id.GetObject(
                     forWrite ? OpenMode.ForWrite : OpenMode.ForRead,
                     openErased,
                     forceOpenOnLockedLayer);
-            }
-
-            throw new Exception(ErrorStatus.WrongObjectType, $"Object is not a type {typeof(T)}");
         }
 
         /// <summary>
@@ -130,28 +148,25 @@
         /// For the method to work, a transaction must be started!
         /// </summary>
         /// <param name="id">Identifier</param>
-        /// <param name="dbObject">Opened object</param>
         /// <param name="forWrite">Open for writing</param>
+        /// <param name="openErased">Open even if object is deleted</param>
         /// <param name="forceOpenOnLockedLayer">Open even if the object is on a frozen layer</param>
         /// <typeparam name="T">Object type</typeparam>
-        public static bool TryGetObjectAs<T>(
+        public static T? TryGetObjectAs<T>(
             this ObjectId id,
-            out T dbObject,
             bool forWrite = false,
+            bool openErased = false,
             bool forceOpenOnLockedLayer = true)
             where T : DBObject
         {
-            if (!id.IsFullyValid())
+            try
             {
-                dbObject = null!;
-                return false;
+                return id.GetObjectAs<T>(forWrite, openErased, forceOpenOnLockedLayer);
             }
-
-            dbObject = (id.GetObject(
-                forWrite ? OpenMode.ForWrite : OpenMode.ForRead,
-                false,
-                forceOpenOnLockedLayer) as T)!;
-            return dbObject != null!;
+            catch
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -169,12 +184,8 @@
         {
             return ids
                 .Cast<ObjectId>()
-                .Select(id =>
-                {
-                    id.TryGetObjectAs<T>(out var dbObject, forWrite, onLockedLayer);
-                    return dbObject;
-                })
-                .Where(t => t != null);
+                .Select(id => id.TryGetObjectAs<T>(forWrite, onLockedLayer))
+                .Where(t => t != null)!;
         }
     }
 }
