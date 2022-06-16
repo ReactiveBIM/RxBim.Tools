@@ -79,7 +79,7 @@
         /// <typeparam name="T">Object type</typeparam>
         public static bool TryOpenAs<T>(
             this ObjectId id,
-            out T? dbObject,
+            out T dbObject,
             bool forWrite = false,
             bool openErased = false,
             bool forceOpenOnLockedLayer = true)
@@ -88,15 +88,15 @@
             if (id.Is<T>())
             {
 #pragma warning disable 618
-                dbObject = id.Open(
+                dbObject = (id.Open(
                     forWrite ? OpenMode.ForWrite : OpenMode.ForRead,
                     openErased,
-                    forceOpenOnLockedLayer) as T;
+                    forceOpenOnLockedLayer) as T)!;
 #pragma warning restore 618
-                return dbObject != null;
+                return dbObject != null!;
             }
 
-            dbObject = null;
+            dbObject = null!;
             return false;
         }
 
@@ -139,22 +139,22 @@
         /// <typeparam name="T">Object type</typeparam>
         public static bool TryGetObjectAs<T>(
             this ObjectId id,
-            out T? dbObject,
+            out T dbObject,
             bool forWrite = false,
             bool forceOpenOnLockedLayer = true)
             where T : DBObject
         {
             if (!id.IsFullyValid())
             {
-                dbObject = null;
+                dbObject = null!;
                 return false;
             }
 
-            dbObject = id.GetObject(
+            dbObject = (id.GetObject(
                 forWrite ? OpenMode.ForWrite : OpenMode.ForRead,
                 false,
-                forceOpenOnLockedLayer) as T;
-            return dbObject != null;
+                forceOpenOnLockedLayer) as T)!;
+            return dbObject != null!;
         }
 
         /// <summary>
