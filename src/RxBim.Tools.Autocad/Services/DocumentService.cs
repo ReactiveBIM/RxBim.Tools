@@ -1,7 +1,7 @@
 ﻿namespace RxBim.Tools.Autocad
 {
+    using System;
     using Autodesk.AutoCAD.ApplicationServices;
-    using CSharpFunctionalExtensions;
     using JetBrains.Annotations;
     using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
@@ -10,10 +10,10 @@
     internal class DocumentService : IDocumentService
     {
         /// <inheritdoc />
-        public Result<Document> GetActiveDocument()
+        public Document GetActiveDocument()
         {
             return Application.DocumentManager.MdiActiveDocument ??
-                   Result.Failure<Document>("Нет активного документа");
+                   throw new Exception("No active document");
         }
     }
 }

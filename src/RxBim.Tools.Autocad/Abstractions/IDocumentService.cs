@@ -1,7 +1,6 @@
 ﻿namespace RxBim.Tools.Autocad
 {
     using Autodesk.AutoCAD.ApplicationServices;
-    using CSharpFunctionalExtensions;
 
     /// <summary>
     /// AutoCAD documents service
@@ -11,6 +10,6 @@
         /// <summary>
         /// Gets the current document
         /// </summary>
-        Result<Document> GetActiveDocument();
+        Document GetActiveDocument();
     }
 }

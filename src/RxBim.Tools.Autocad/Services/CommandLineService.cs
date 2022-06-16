@@ -1,6 +1,5 @@
 ﻿namespace RxBim.Tools.Autocad
 {
-    using CSharpFunctionalExtensions;
     using JetBrains.Annotations;
 
     /// <inheritdoc />
@@ -22,7 +21,7 @@
         public void WriteAsNewLine(string message)
         {
             _documentService.GetActiveDocument()
-                .Tap(doc => doc.Editor.WriteMessage($"\n{message}"));
+                .Editor.WriteMessage($"\n{message}");
         }
     }
 }

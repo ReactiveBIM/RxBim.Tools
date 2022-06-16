@@ -6,7 +6,6 @@
     using Autodesk.AutoCAD.DatabaseServices;
     using Autodesk.AutoCAD.EditorInput;
     using Autodesk.AutoCAD.Runtime;
-    using CSharpFunctionalExtensions;
     using JetBrains.Annotations;
     using AcRtException = Autodesk.AutoCAD.Runtime.Exception;
 
