@@ -14,6 +14,6 @@
         /// Retrieving tabular data.
         /// </summary>
         /// <param name="ids">Drawing object identifiers.</param>
-        Result<Table> GetTable(List<ObjectId> ids);
+        Result<Table> GetTable(IEnumerable<ObjectId> ids);
     }
 }

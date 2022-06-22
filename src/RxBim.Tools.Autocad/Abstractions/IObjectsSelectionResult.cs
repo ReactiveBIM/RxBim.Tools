@@ -1,30 +1,30 @@
-﻿namespace RxBim.Tools.Autocad.Abstractions
+﻿namespace RxBim.Tools.Autocad
 {
     using System.Collections.Generic;
     using Autodesk.AutoCAD.DatabaseServices;
 
     /// <summary>
-    /// Результат выбора объектов
+    /// Result of object selection
     /// </summary>
     public interface IObjectsSelectionResult
     {
         /// <summary>
-        /// Возвращает истину если было введено ключевое слово вместо выбора объектов
+        /// Returns true if the keyword was entered instead of selecting objects.
         /// </summary>
         bool IsKeyword { get; }
 
         /// <summary>
-        /// Возвращает коллекцию ObjectId выбранных объектов
+        /// Returns the ObjectId collection of the selected objects.
         /// </summary>
         IEnumerable<ObjectId> SelectedObjects { get; }
 
         /// <summary>
-        /// Возвращает введённое ключевое слово
+        /// Returns the entered keyword.
         /// </summary>
         string Keyword { get; }
 
         /// <summary>
-        /// Возвращает истину, если не были выбраны объекты и не было введено ключевое слово
+        /// Returns true if no objects were selected and no keyword was entered
         /// </summary>
         bool IsEmpty { get; }
     }

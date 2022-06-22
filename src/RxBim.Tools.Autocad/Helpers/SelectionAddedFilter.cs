@@ -1,11 +1,11 @@
-﻿namespace RxBim.Tools.Autocad.Helpers
+﻿namespace RxBim.Tools.Autocad
 {
     using System;
     using Autodesk.AutoCAD.DatabaseServices;
     using Autodesk.AutoCAD.EditorInput;
 
     /// <summary>
-    /// Вспомогательный класс для фильтрации добавляемого в пользовательский выбор объекта
+    /// Helper class for filtering the object added to the user's selection
     /// </summary>
     internal class SelectionAddedFilter : IDisposable
     {
@@ -15,10 +15,9 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectionAddedFilter"/> class.
         /// </summary>
-        /// <param name="editor">Редактор</param>
+        /// <param name="editor">Editor</param>
         /// <param name="checkFunc">
-        /// Функция проверки идентификатора, которая возвращает истину,
-        /// если объект является подходящим для добавления в выбор
+        /// ID validation function that returns true if the object is suitable to add to the selection.
         /// </param>
         public SelectionAddedFilter(Editor editor, Func<ObjectId, bool> checkFunc)
         {
@@ -34,7 +33,7 @@
         }
 
         /// <summary>
-        /// Метод фильтрации выбираемых с помощью GetSelection объектов в режиме реального времени
+        /// Method for filtering objects selected using GetSelection in real time.
         /// </summary>
         private void EditorSelectionAdded(object sender, SelectionAddedEventArgs e)
         {

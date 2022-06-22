@@ -6,17 +6,17 @@
     using Autodesk.AutoCAD.ApplicationServices;
     using Autodesk.AutoCAD.DatabaseServices;
     using Autodesk.AutoCAD.EditorInput;
+    using Autodesk.AutoCAD.Runtime;
     using CSharpFunctionalExtensions;
     using RxBim.Command.Autocad;
     using Shared;
-    using Tools.Autocad.Abstractions;
-    using Tools.Autocad.Extensions;
+    using Tools.Autocad;
     using Tools.TableBuilder;
     using Result = CSharpFunctionalExtensions.Result;
     using Table = Autodesk.AutoCAD.DatabaseServices.Table;
 
     /// <inheritdoc />
-    [RxBimCommandClass("RxBimTableSample")]
+    [RxBimCommandClass("RxBimTableSample", CommandFlags.UsePickSet)]
     public class Command : RxBimCommand
     {
         private IObjectsSelectionService _selectionService = null!;
@@ -76,13 +76,10 @@
             }
         }
 
-        private Result<List<ObjectId>> SelectObjects()
+        private Result<IEnumerable<ObjectId>> SelectObjects()
         {
-            var selectResult = _selectionService.RunSelection();
-            if (selectResult.IsEmpty)
-                return Result.Failure<List<ObjectId>>("No objects selected.");
-
-            return selectResult.SelectedObjects.ToList();
+            var selectionResult = _selectionService.RunSelection();
+            return Result.SuccessIf(!selectionResult.IsEmpty, selectionResult.SelectedObjects, "Objects not selected");
         }
     }
 }

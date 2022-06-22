@@ -1,15 +1,12 @@
-﻿namespace RxBim.Tools.Autocad.Services
+﻿namespace RxBim.Tools.Autocad
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Abstractions;
     using Autodesk.AutoCAD.DatabaseServices;
     using Autodesk.AutoCAD.EditorInput;
     using Autodesk.AutoCAD.Runtime;
-    using Helpers;
     using JetBrains.Annotations;
-    using Models;
     using AcRtException = Autodesk.AutoCAD.Runtime.Exception;
 
     /// <inheritdoc />
@@ -22,21 +19,20 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="ObjectsSelectionService"/> class.
         /// </summary>
-        /// <param name="editor">Редактор документа</param>
+        /// <param name="editor">Editor</param>
         public ObjectsSelectionService(Editor editor)
         {
             _editor = editor;
             _options = new PromptSelectionOptions();
-            _options.KeywordInput += (sender, e) => throw new AcRtException(ErrorStatus.OK, e.Input);
+            _options.KeywordInput += (_, e) => throw new AcRtException(ErrorStatus.OK, e.Input);
         }
 
         /// <inheritdoc />
-        public Func<ObjectId, bool> CanBeSelected { get; set; } = x => true;
+        public Func<ObjectId, bool> CanBeSelected { get; set; } = _ => true;
 
         /// <inheritdoc />
         public IObjectsSelectionResult RunSelection()
         {
-            // Обработка предварительного выбора
             var selectionResult = _editor.SelectImplied();
             if (selectionResult.Status == PromptStatus.OK)
             {
@@ -53,13 +49,11 @@
                 catch (AcRtException e)
                 {
                     if (e.ErrorStatus == ErrorStatus.OK)
-                    {
                         return new ObjectsSelectionResult { IsKeyword = true, Keyword = e.Message };
-                    }
                 }
             }
 
-            if (selectionResult.Status == PromptStatus.OK)
+            if (selectionResult.Status == PromptStatus.OK && selectionResult.Value.Count > 0)
             {
                 return new ObjectsSelectionResult
                 {
@@ -77,15 +71,13 @@
             _options.Keywords.Clear();
             _options.MessageForAdding = message;
 
-            if (keywordGlobalAndLocalNames != null && keywordGlobalAndLocalNames.Count > 0)
-            {
-                foreach (var globalAndLocalName in keywordGlobalAndLocalNames)
-                {
-                    _options.Keywords.Add(globalAndLocalName.Key, globalAndLocalName.Value);
-                }
+            if (keywordGlobalAndLocalNames is not { Count: > 0 })
+                return;
 
-                _options.MessageForAdding += _options.Keywords.GetDisplayString(true);
-            }
+            foreach (var globalAndLocalName in keywordGlobalAndLocalNames)
+                _options.Keywords.Add(globalAndLocalName.Key, globalAndLocalName.Value);
+
+            _options.MessageForAdding += _options.Keywords.GetDisplayString(true);
         }
     }
 }

@@ -6,7 +6,7 @@
     using Autodesk.AutoCAD.DatabaseServices;
     using CSharpFunctionalExtensions;
     using JetBrains.Annotations;
-    using Tools.Autocad.Extensions;
+    using Tools.Autocad;
     using Tools.TableBuilder;
     using Tools.TableBuilder.Styles;
     using Table = Tools.TableBuilder.Table;
@@ -16,7 +16,7 @@
     internal class TableDataService : ITableDataService
     {
         /// <inheritdoc />
-        public Result<Table> GetTable(List<ObjectId> ids)
+        public Result<Table> GetTable(IEnumerable<ObjectId> ids)
         {
             var tableBuilder = new TableBuilder();
 

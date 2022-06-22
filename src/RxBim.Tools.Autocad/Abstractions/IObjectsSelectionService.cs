@@ -1,28 +1,28 @@
-﻿namespace RxBim.Tools.Autocad.Abstractions
+﻿namespace RxBim.Tools.Autocad
 {
     using System;
     using System.Collections.Generic;
     using Autodesk.AutoCAD.DatabaseServices;
 
     /// <summary>
-    /// Сервис выбора объектов
+    /// Object selection service
     /// </summary>
     public interface IObjectsSelectionService
     {
         /// <summary>
-        /// Проверка объекта по идентификатору. Если возвращает истину - объект может быть выбран.
+        /// Checking an object by ID. If it returns true, the object can be selected.
         /// </summary>
         Func<ObjectId, bool> CanBeSelected { get; set; }
 
         /// <summary>
-        /// Задаёт сообщение и ключевые слова в опции выбора
+        /// Specifies the message and keywords in the select option.
         /// </summary>
-        /// <param name="message">Сообщение</param>
-        /// <param name="keywordGlobalAndLocalNames">Глобальные и локализованные имена ключевых слов</param>
+        /// <param name="message">Message</param>
+        /// <param name="keywordGlobalAndLocalNames">Global and localized keyword names</param>
         void SetMessageAndKeywords(string message, Dictionary<string, string>? keywordGlobalAndLocalNames = null);
 
         /// <summary>
-        /// Запускает выбор объектов и возвращает результат выбора
+        /// Runs a selection of objects and returns the result of the selection.
         /// </summary>
         IObjectsSelectionResult RunSelection();
     }

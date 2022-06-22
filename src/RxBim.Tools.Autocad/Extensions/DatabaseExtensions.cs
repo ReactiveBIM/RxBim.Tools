@@ -1,18 +1,18 @@
-﻿namespace RxBim.Tools.Autocad.Extensions
+﻿namespace RxBim.Tools.Autocad
 {
     using Autodesk.AutoCAD.DatabaseServices;
 
     /// <summary>
-    /// Расширения для базы данных
+    /// Database extensions
     /// </summary>
     public static class DatabaseExtensions
     {
         /// <summary>
-        /// Возвращает идентификатор текстового стиля по названию.
-        /// Если стиля с таким названием в чертеже нет, возвращается идентификатор текущего стиля.
+        /// Returns the id of the text style by name.
+        /// If there is no style with that name in the drawing, the ID of the current style is returned.
         /// </summary>
-        /// <param name="db">База данных</param>
-        /// <param name="textStyleName">Название текстового стиля</param>
+        /// <param name="db">Database</param>
+        /// <param name="textStyleName">Text style name</param>
         public static ObjectId GetTextStyleId(this Database db, string textStyleName = "PIK")
         {
             using var txtStylesTable = db.TextStyleTableId.OpenAs<TextStyleTable>();

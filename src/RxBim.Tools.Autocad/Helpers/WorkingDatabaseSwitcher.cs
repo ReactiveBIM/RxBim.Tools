@@ -1,27 +1,27 @@
-﻿namespace RxBim.Tools.Autocad.Helpers
+﻿namespace RxBim.Tools.Autocad
 {
     using System;
     using Autodesk.AutoCAD.DatabaseServices;
 
     /// <summary>
-    /// Класс для временного переключения рабочей БД
+    /// Class for temporarily switching the working database
     /// </summary>
     public class WorkingDatabaseSwitcher : IDisposable
     {
         /// <summary>
-        /// Метка того, нужно переключать БД или нет
+        /// Flag for whether to switch the database or not.
         /// </summary>
         private readonly bool _needSwitch;
 
         /// <summary>
-        /// Переменная для хранения исходной БД
+        /// Source database
         /// </summary>
         private readonly Database _oldWorkDb;
 
         /// <summary>
-        /// Создание вспомогательного объекта для временного переключения БД
+        /// Creating an auxiliary object for temporary database switching.
         /// </summary>
-        /// <param name="tmpWorkDb">Ссылка на БД на которую временно переключаемся</param>
+        /// <param name="tmpWorkDb">Link to the database to which we are temporarily switching</param>
         public WorkingDatabaseSwitcher(Database tmpWorkDb)
         {
             _oldWorkDb = HostApplicationServices.WorkingDatabase;
@@ -32,9 +32,7 @@
             }
         }
 
-        /// <summary>
-        /// Реализация IDisposable
-        /// </summary>
+        /// <inheritdoc />
         public void Dispose()
         {
             if (_needSwitch)

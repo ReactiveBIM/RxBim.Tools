@@ -1,4 +1,4 @@
-﻿namespace RxBim.Tools.Autocad.Extensions.CoordinateSystems
+﻿namespace RxBim.Tools.Autocad
 {
     /// <summary>
     /// AutoCAD coordinate systems enumeration.

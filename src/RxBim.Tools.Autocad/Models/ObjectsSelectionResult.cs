@@ -1,36 +1,28 @@
-﻿namespace RxBim.Tools.Autocad.Models
+﻿namespace RxBim.Tools.Autocad
 {
     using System.Collections.Generic;
-    using Abstractions;
+    using System.Linq;
     using Autodesk.AutoCAD.DatabaseServices;
 
-    /// <summary>
-    /// Результат выбора
-    /// </summary>
+    /// <inheritdoc />
     internal class ObjectsSelectionResult : IObjectsSelectionResult
     {
         /// <summary>
-        /// Пустой результат
+        /// Empty result
         /// </summary>
-        public static ObjectsSelectionResult Empty { get; } = new ObjectsSelectionResult();
+        public static ObjectsSelectionResult Empty { get; } = new();
 
-        /// <summary>
-        /// Флаг того, что было введено ключевое слово вместо выбора объектов
-        /// </summary>
+        /// <inheritdoc/>
         public bool IsKeyword { get; set; }
 
-        /// <summary>
-        /// Коллекция ObjectId выбранных объектов - если были выбраны объекты
-        /// </summary>
-        public IEnumerable<ObjectId> SelectedObjects { get; set; } = new ObjectId[0];
+        /// <inheritdoc/>
+        public IEnumerable<ObjectId> SelectedObjects { get; set; } = Enumerable.Empty<ObjectId>();
 
-        /// <summary>
-        /// Ключевое слово - если было введено ключевое слово
-        /// </summary>
+        /// <inheritdoc/>
         public string Keyword { get; set; } = string.Empty;
 
         /// <summary>
-        /// Выбор пустой
+        /// Empty selection
         /// </summary>
         public bool IsEmpty => ReferenceEquals(this, Empty);
     }
