@@ -86,8 +86,8 @@
                         return DeleteViewScheduleIfExists(name)
                             .Map(() => _tableConverter.Convert(table, parameters))
                             .Ensure(view => view is not null, "Error during creation or convertion of the specification")
-                            .Tap(view => PutSpecificationOnSheet(view, _doc.ActiveView.Id, XYZ.Zero))
-                            .Tap(view => ApplyHeaderStyle(view, columnsCount, 30));
+                            .Check(view => PutSpecificationOnSheet(view, _doc.ActiveView.Id, XYZ.Zero))
+                            .Check(view => ApplyHeaderStyle(view, columnsCount, 30));
                     },
                     $"Created ViewSchedule: {name}");
             }
