@@ -17,6 +17,10 @@
       <None Remove="RxBim.Tools.TableBuilder.csproj.DotSettings" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Update="JetBrains.Annotations" Version="2022.1.0" />
+    </ItemGroup>
+
     <PropertyGroup>
          <Description>RxBim table builder Library</Description>
         <PackageId>RxBim.Tools.TableBuilder</PackageId>
