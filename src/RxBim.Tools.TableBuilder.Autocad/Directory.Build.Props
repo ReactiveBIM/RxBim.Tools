@@ -2,7 +2,7 @@
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
     
     <PropertyGroup>
-        <Version>2019.0.0-dev01</Version>
+        <Version>2019.0.0-dev02</Version>
         <ReleaseNotes>Add IDocumentService. CommandLineService use IDocumentService.</ReleaseNotes>
     </PropertyGroup>
 </Project>
