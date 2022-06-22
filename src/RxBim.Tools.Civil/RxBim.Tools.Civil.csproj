@@ -10,6 +10,7 @@
     <ItemGroup>
         <PackageReference Include="AutoCAD2019.Base" Version="1.0.3" ExcludeAssets="build; runtime" />
         <PackageReference Include="Civil3D2019.Base" Version="1.0.0" ExcludeAssets="build; runtime" />
+        <PackageReference Update="JetBrains.Annotations" Version="2022.1.0" />
     </ItemGroup>
 
     <PropertyGroup>
