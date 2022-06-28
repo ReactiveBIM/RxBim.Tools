@@ -79,7 +79,7 @@
             if (inst)
                 binding = app.Create.NewInstanceBinding(cats);
 
-            var map = (new UIApplication(app)).ActiveUIDocument.Document.ParameterBindings;
+            var map = doc.ParameterBindings;
             return map.Insert(def, binding, group);
         }
 
