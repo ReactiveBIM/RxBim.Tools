@@ -1,9 +1,9 @@
-﻿namespace RxBim.Tools.Autocad
+﻿namespace RxBim.Tools.Common.Extensions
 {
     using System;
 
     /// <summary>
-    /// Extensions for real numbers
+    /// Extensions for <see cref="double"/>.
     /// </summary>
     public static class DoubleExtensions
     {
@@ -51,16 +51,6 @@
         public static bool IsZero(this double value, double precision = Epsilon)
         {
             return value.IsEqualTo(0D, precision);
-        }
-
-        /// <summary>
-        /// Returns the result of multiplying a number by another number.
-        /// </summary>
-        /// <param name="value">Value</param>
-        /// <param name="multiplier">Другое число (множитель)</param>
-        public static double Multiple(this double value, double multiplier)
-        {
-            return value * multiplier;
         }
 
         /// <summary>
