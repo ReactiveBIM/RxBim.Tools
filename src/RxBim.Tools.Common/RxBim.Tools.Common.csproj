@@ -5,4 +5,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="RxBim.Di" Version="1.0.5" />
+    </ItemGroup>
+
 </Project>
