@@ -13,7 +13,7 @@
         /// </summary>
         /// <param name="db">Database</param>
         /// <param name="textStyleName">Text style name</param>
-        public static ObjectId GetTextStyleId(this Database db, string textStyleName = "PIK")
+        public static ObjectId GetTextStyleId(this Database db, string textStyleName)
         {
             using var txtStylesTable = db.TextStyleTableId.OpenAs<TextStyleTable>();
             return txtStylesTable.Has(textStyleName) ? txtStylesTable[textStyleName] : db.Textstyle;

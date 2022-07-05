@@ -1,12 +1,14 @@
-﻿namespace RxBim.Tools.Common.Extensions
+﻿namespace RxBim.Tools
 {
     using System;
     using System.ComponentModel;
     using System.Linq;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Extensions for enumerations.
     /// </summary>
+    [PublicAPI]
     public static class EnumerationExtensions
     {
         /// <summary>

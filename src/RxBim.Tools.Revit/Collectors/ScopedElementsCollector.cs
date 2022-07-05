@@ -10,6 +10,7 @@
     using Helpers;
     using JetBrains.Annotations;
     using Models;
+    using OperationCanceledException = Autodesk.Revit.Exceptions.OperationCanceledException;
 
     /// <summary>
     /// Коллектор части элементов
@@ -138,7 +139,7 @@
 
                 return uiDoc.Document.GetElement(pickRef.ElementId);
             }
-            catch (Autodesk.Revit.Exceptions.OperationCanceledException)
+            catch (OperationCanceledException)
             {
                 return null;
             }
@@ -163,7 +164,7 @@
 
                 return pickElements;
             }
-            catch (Autodesk.Revit.Exceptions.OperationCanceledException)
+            catch (OperationCanceledException)
             {
                 return new List<Element>();
             }
@@ -192,7 +193,7 @@
 
                 return null;
             }
-            catch (Autodesk.Revit.Exceptions.OperationCanceledException)
+            catch (OperationCanceledException)
             {
                 return null;
             }
@@ -218,7 +219,7 @@
 
                 return pickElements;
             }
-            catch (Autodesk.Revit.Exceptions.OperationCanceledException)
+            catch (OperationCanceledException)
             {
                 return new List<LinkedElement>();
             }

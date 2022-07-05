@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Tools.Revit.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Abstractions;
@@ -23,7 +24,7 @@
         }
 
         /// <inheritdoc />
-        public void SetSelectedElements(IList<int> elementIds)
+        public void SetSelectedElements(IEnumerable<int> elementIds)
         {
             _uiApplication.ActiveUIDocument.Selection.SetElementIds(elementIds.Select(e => new ElementId(e)).ToList());
         }
@@ -41,7 +42,7 @@
         }
 
         /// <inheritdoc />
-        public void ZoomElement(int elementId, double zoomFactor = 0.25)
+        public void Zoom(int elementId, double zoomFactor = 0.25)
         {
             var activeView = _uiApplication.ActiveUIDocument.ActiveView;
             if (activeView == null)
@@ -55,37 +56,37 @@
                 return;
 
             var document = activeView.Document;
-            var transform = Transform.Identity;
-            transform.BasisX = activeView.RightDirection;
-            transform.BasisY = activeView.UpDirection;
-            transform.BasisZ = activeView.ViewDirection;
-            transform = transform.Inverse;
-            transform = Transform.Identity;
-            var transfromedXyzs = new List<XYZ>();
 
             var element = document.GetElement(new ElementId(elementId));
             var boundingBox = element?.get_BoundingBox(null);
             if (boundingBox == null)
                 return;
 
-            transfromedXyzs.Add(transform.OfPoint(boundingBox.Max));
-            transfromedXyzs.Add(transform.OfPoint(boundingBox.Min));
+            var (bottomLeft, upperRight) = GetTransformedRectangleCorners(boundingBox);
 
-            var min = transfromedXyzs.First();
-            var max = transfromedXyzs.First();
-
-            foreach (var xyz in transfromedXyzs)
-            {
-                if (xyz.X < min.X
-                    && xyz.Y < min.Y)
-                    min = xyz;
-                else if (xyz.X > max.X
-                         && xyz.Y > max.Y)
-                    max = xyz;
-            }
-
-            currentUiView.ZoomAndCenterRectangle(min, max);
+            currentUiView.ZoomAndCenterRectangle(bottomLeft, upperRight);
             currentUiView.Zoom(zoomFactor);
+        }
+
+        private (XYZ BottomLeft, XYZ UpperRight) GetTransformedRectangleCorners(BoundingBoxXYZ boundingBox)
+        {
+            var transform = Transform.Identity;
+
+            var minTransformed = transform.OfPoint(boundingBox.Min);
+            var maxTransformed = transform.OfPoint(boundingBox.Max);
+
+            var bottomLeft = CombineCoords(minTransformed, maxTransformed, Math.Min);
+            var upperRight = CombineCoords(minTransformed, maxTransformed, Math.Max);
+
+            return (bottomLeft, upperRight);
+        }
+
+        private XYZ CombineCoords(XYZ point1, XYZ point2, Func<double, double, double> combineFunc)
+        {
+            return new XYZ(
+                combineFunc(point1.X, point2.X),
+                combineFunc(point1.Y, point2.Y),
+                combineFunc(point1.Z, point2.Z));
         }
     }
 }

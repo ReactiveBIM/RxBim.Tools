@@ -3,7 +3,6 @@
     using Autocad;
     using Autodesk.AutoCAD.DatabaseServices;
     using Autodesk.AutoCAD.Geometry;
-    using Common.Extensions;
 
     /// <summary>
     /// Extensions for <see cref="string"/>.

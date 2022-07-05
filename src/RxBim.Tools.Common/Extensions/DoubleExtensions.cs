@@ -1,10 +1,12 @@
-﻿namespace RxBim.Tools.Common.Extensions
+﻿namespace RxBim.Tools
 {
     using System;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Extensions for <see cref="double"/>.
     /// </summary>
+    [PublicAPI]
     public static class DoubleExtensions
     {
         private const double Epsilon = 1e-6;

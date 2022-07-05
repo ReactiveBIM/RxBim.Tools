@@ -5,6 +5,7 @@
     using System.Linq;
     using Autodesk.Revit.DB;
     using JetBrains.Annotations;
+    using InvalidOperationException = Autodesk.Revit.Exceptions.InvalidOperationException;
 
     /// <summary>
     /// Расширения для параметра элемента Revit
@@ -77,7 +78,7 @@
                                     param.DisplayUnitType),
                                 digits);
                     }
-                    catch (Autodesk.Revit.Exceptions.InvalidOperationException)
+                    catch (InvalidOperationException)
                     {
                         value = Math.Round(
                             UnitUtils.ConvertFromInternalUnits(
