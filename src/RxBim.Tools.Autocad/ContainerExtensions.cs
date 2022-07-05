@@ -16,6 +16,8 @@
             container.AddSingleton<IDocumentService, DocumentService>();
             container.AddSingleton<IObjectsSelectionService, ObjectsSelectionService>();
             container.AddSingleton<ICommandLineService, CommandLineService>();
+            container.AddSingleton<IElementsDisplay, ElementsDisplayService>();
+            container.AddSingleton<IProblemElementsStorage, ProblemElementsStorage>();
             return container;
         }
     }

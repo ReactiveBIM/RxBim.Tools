@@ -1,10 +1,12 @@
-﻿namespace RxBim.Tools.Common.Extensions
+﻿namespace RxBim.Tools
 {
     using System;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Extensions for <see cref="string"/>.
     /// </summary>
+    [PublicAPI]
     public static class StringExtensions
     {
         /// <summary>
@@ -13,7 +15,7 @@
         /// <param name="value"><see cref="string"/> object.</param>
         /// <param name="part">The string to seek.</param>
         /// <param name="comparison">One of the enumeration values that specifies the rules for the search.</param>
-        public static bool ContainsWithComparison(this string value, string part, StringComparison comparison)
+        public static bool Contains(this string value, string part, StringComparison comparison)
         {
             return value.IndexOf(part, comparison) >= 0;
         }

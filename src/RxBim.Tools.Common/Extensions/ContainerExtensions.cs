@@ -1,12 +1,14 @@
-﻿namespace RxBim.Tools.Common.Extensions
+﻿namespace RxBim.Tools
 {
     using System;
     using Di;
+    using JetBrains.Annotations;
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
     /// Extensions for <see cref="IContainer"/>.
     /// </summary>
+    [PublicAPI]
     public static class ContainerExtensions
     {
         /// <summary>
@@ -26,7 +28,7 @@
             string? sectionName = null)
             where T : class
         {
-            return container.AddFromConfig<T>(true, config, sectionName);
+            return container.AddFromConfig<T>(Lifetime.Transient, config, sectionName);
         }
 
         /// <summary>
@@ -46,28 +48,28 @@
             string? sectionName = null)
             where T : class
         {
-            return container.AddFromConfig<T>(false, config, sectionName);
+            return container.AddFromConfig<T>(Lifetime.Singleton, config, sectionName);
         }
 
         private static IContainer AddFromConfig<T>(
             this IContainer container,
-            bool addAsTransient,
+            Lifetime lifetime,
             IConfiguration? config,
             string? sectionName)
             where T : class
         {
             var section = sectionName ?? typeof(T).Name;
-            var factory = config is null
+            var implementationFactory = config is null
                 ? (Func<T>)(() => container.GetService<IConfiguration>().GetSection(section).Get<T>())
                 : () => config.GetSection(section).Get<T>();
 
-            return container.Add(addAsTransient, factory);
-        }
-
-        private static IContainer Add<T>(this IContainer container, bool transient, Func<T> func)
-            where T : class
-        {
-            return transient ? container.AddTransient(func) : container.AddSingleton(func);
+            return lifetime switch
+            {
+                Lifetime.Singleton => container.AddSingleton(implementationFactory),
+                Lifetime.Transient => container.AddTransient(implementationFactory),
+                Lifetime.Scoped => container.AddScoped(implementationFactory),
+                _ => throw new ArgumentOutOfRangeException(nameof(lifetime), lifetime, "Unsupported lifetime!")
+            };
         }
     }
 }

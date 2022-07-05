@@ -4,7 +4,6 @@
     using Collectors;
     using Di;
     using Services;
-    using Storages;
 
     /// <summary>
     /// Расширения для контейнера
