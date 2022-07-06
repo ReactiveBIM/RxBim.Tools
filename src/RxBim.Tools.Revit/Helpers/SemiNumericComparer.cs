@@ -5,7 +5,7 @@
     using System.Text.RegularExpressions;
 
     /// <summary>
-    /// Сравниватель чисел в строковом виде
+    /// Comparator of numbers in string form.
     /// </summary>
     /// <remarks>https://stackoverflow.com/a/33330715/8252345</remarks>
     public class SemiNumericComparer : IComparer<string>
@@ -13,9 +13,9 @@
         private readonly string _numericPattern;
 
         /// <summary>
-        /// ctor
+        /// Initializes a new instance of the <see cref="SemiNumericComparer"/> class.
         /// </summary>
-        /// <param name="numericPattern">Регулярка для поиска числа в тексте</param>
+        /// <param name="numericPattern">Regular expression to search for a number in text.</param>
         public SemiNumericComparer(string numericPattern = @"[-+]?\d*\.\d+|\d+")
         {
             _numericPattern = numericPattern;
@@ -32,8 +32,8 @@
                 var dNum1 = double.Parse(num1.Value, CultureInfo.InvariantCulture);
                 var dNum2 = double.Parse(num2.Value, CultureInfo.InvariantCulture);
 
-                // Если два числа одинаковые, то проверяем длину исходного текста,
-                // чтобы сравнить случаи "000" и "0000"
+                // If two numbers are the same, then check the length
+                // of the original text (for case: "000" and "0000").
                 if (dNum1.Equals(dNum2))
                     return s1.Length - s2.Length;
 

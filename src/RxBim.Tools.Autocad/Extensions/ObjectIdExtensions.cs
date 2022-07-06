@@ -5,11 +5,13 @@
     using System.Linq;
     using Autodesk.AutoCAD.DatabaseServices;
     using Autodesk.AutoCAD.Runtime;
+    using JetBrains.Annotations;
     using Exception = System.Exception;
 
     /// <summary>
     /// Extensions for <see cref="ObjectId"/>
     /// </summary>
+    [PublicAPI]
     public static class ObjectIdExtensions
     {
         /// <summary>
@@ -76,7 +78,7 @@
         /// <param name="id">Identifier</param>
         /// <param name="forWrite">Open for writing</param>
         /// <param name="openErased">Open even if object is deleted</param>
-        /// <param name="forceOpenOnLockedLayer">Open even if the object is on a frozen layer</param>
+        /// <param name="forceOpenOnLockedLayer">Open even if the object is on a locked layer</param>
         /// <typeparam name="T">Object type</typeparam>
         public static T? TryOpenAs<T>(
             this ObjectId id,
@@ -98,13 +100,18 @@
         /// <summary>
         /// Returns an object opened using a transaction and cast to the given type
         /// </summary>
-        /// <param name="transaction">Транзакция</param>
-        /// <param name="id">Идентификатор объекта</param>
-        /// <param name="forWrite">Открыть для записи</param>
-        /// <param name="openErased">Открыть, даже если объект удалён</param>
-        /// <param name="forceOpenOnLockedLayer">Открыть, даже если объект находится на замороженном слое</param>
-        /// <typeparam name="T">Тип объекта</typeparam>
-        /// <exception cref="Autodesk.AutoCAD.Runtime.Exception">Если объект не соответствует заданному типу</exception>
+        /// <param name="transaction">Transaction.</param>
+        /// <param name="id">Object ID.</param>
+        /// <param name="forWrite">If true, the object is opened for writing. If false, opens for reading.</param>
+        /// <param name="openErased">
+        /// If true, it is allowed to open an object that has been deleted.
+        /// If false, objects that have been deleted cannot be opened.
+        /// </param>
+        /// <param name="forceOpenOnLockedLayer">
+        /// If true, the object on a locked layer can be opened.
+        /// If false, the object on a locked layer cannot be opened.
+        /// </param>
+        /// <typeparam name="T">Object type.</typeparam>
         public static T GetObjectAs<T>(
             this Transaction transaction,
             ObjectId id,
@@ -125,7 +132,7 @@
         /// For the method to work, a transaction must be started!
         /// </summary>
         /// <param name="id">Identifier</param>
-        /// <param name="forWrite">Open for writing</param>
+        /// <param name="forWrite">If true, the object is opened for writing. If false, opens for reading.</param>
         /// <param name="openErased">Open even if object is deleted</param>
         /// <param name="forceOpenOnLockedLayer">Open even if the object is on a frozen layer</param>
         /// <typeparam name="T">Object type</typeparam>

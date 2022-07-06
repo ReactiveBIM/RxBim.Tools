@@ -3,16 +3,16 @@
     using Autodesk.Revit.DB;
 
     /// <summary>
-    /// Опции загрузки семейства в документ
+    /// Options for loading a family into a document.
     /// </summary>
     public class FamilyLoadOptions : IFamilyLoadOptions
     {
         private readonly bool _isOverWrite;
 
         /// <summary>
-        /// Конструктор
+        /// Initializes a new instance of the <see cref="FamilyLoadOptions"/> class.
         /// </summary>
-        /// <param name="isOverWrite">Перезаписать значения параметров</param>
+        /// <param name="isOverWrite">Overwrite parameter values.</param>
         public FamilyLoadOptions(bool isOverWrite = true)
         {
             _isOverWrite = isOverWrite;

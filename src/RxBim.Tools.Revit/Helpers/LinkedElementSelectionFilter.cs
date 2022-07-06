@@ -13,8 +13,8 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="LinkedElementSelectionFilter"/> class.
         /// </summary>
-        /// <param name="doc">Родительский документ</param>
-        /// <param name="filterElement">Фильтр для выбора элементов</param>
+        /// <param name="doc">Parent document.</param>
+        /// <param name="filterElement">Filter for selecting elements.</param>
         public LinkedElementSelectionFilter(Document doc, Func<Element, bool>? filterElement = null)
         {
             _doc = doc;
@@ -30,15 +30,13 @@
         /// <inheritdoc />
         public bool AllowReference(Reference reference, XYZ position)
         {
-            if (_doc.GetElement(reference) is RevitLinkInstance linkInstance &&
-                reference.LinkedElementId != ElementId.InvalidElementId)
-            {
-                var docLink = linkInstance.GetLinkDocument();
-                var element = docLink.GetElement(reference.LinkedElementId);
-                return _filterElement?.Invoke(element) ?? true;
-            }
+            if (_doc.GetElement(reference) is not RevitLinkInstance linkInstance ||
+                reference.LinkedElementId == ElementId.InvalidElementId)
+                return false;
 
-            return false;
+            var docLink = linkInstance.GetLinkDocument();
+            var element = docLink.GetElement(reference.LinkedElementId);
+            return _filterElement?.Invoke(element) ?? true;
         }
     }
 }

@@ -16,7 +16,7 @@
         /// <summary>
         /// Source database
         /// </summary>
-        private readonly Database _oldWorkDb;
+        private readonly Database _oldWorkingDatabase;
 
         /// <summary>
         /// Creating an auxiliary object for temporary database switching.
@@ -24,21 +24,17 @@
         /// <param name="tmpWorkDb">Link to the database to which we are temporarily switching</param>
         public WorkingDatabaseSwitcher(Database tmpWorkDb)
         {
-            _oldWorkDb = HostApplicationServices.WorkingDatabase;
-            _needSwitch = !tmpWorkDb.Equals(_oldWorkDb);
+            _oldWorkingDatabase = HostApplicationServices.WorkingDatabase;
+            _needSwitch = !tmpWorkDb.Equals(_oldWorkingDatabase);
             if (_needSwitch)
-            {
                 HostApplicationServices.WorkingDatabase = tmpWorkDb;
-            }
         }
 
         /// <inheritdoc />
         public void Dispose()
         {
             if (_needSwitch)
-            {
-                HostApplicationServices.WorkingDatabase = _oldWorkDb;
-            }
+                HostApplicationServices.WorkingDatabase = _oldWorkingDatabase;
         }
     }
 }

@@ -2,11 +2,13 @@
 {
     using System;
     using System.Windows;
+    using JetBrains.Annotations;
     using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
     /// <summary>
     /// Extensions for WPF windows
     /// </summary>
+    [PublicAPI]
     public static class WindowExtensions
     {
         /// <summary>

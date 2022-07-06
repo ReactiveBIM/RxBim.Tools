@@ -41,8 +41,4 @@
       <ProjectReference Include="..\RxBim.Tools.TableBuilder\RxBim.Tools.TableBuilder.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Storages" />
-    </ItemGroup>
-
 </Project>
