@@ -49,9 +49,9 @@
         }
 
         /// <inheritdoc />
-        public Result RunInTransaction(Func<Result> action, string transactionName, Document? document = null)
+        public Result RunInTransaction(Func<Result> func, string transactionName, Document? document = null)
         {
-            if (action == null)
+            if (func == null)
                 return Result.Failure("Не задано действие для транзакции");
 
             Result result;
@@ -60,7 +60,7 @@
             try
             {
                 tr.Start();
-                result = action.Invoke();
+                result = func.Invoke();
                 tr.Commit();
             }
             catch (Exception exception)
@@ -74,9 +74,9 @@
         }
 
         /// <inheritdoc />
-        public Result RunInTransactionGroup(Func<Result> action, string transactionGroupName, Document? document = null)
+        public Result RunInTransactionGroup(Func<Result> func, string transactionGroupName, Document? document = null)
         {
-            if (action == null)
+            if (func == null)
                 return Result.Failure("Не задано действие для транзакции");
 
             Result result;
@@ -84,7 +84,7 @@
             try
             {
                 tr.Start();
-                result = action.Invoke();
+                result = func.Invoke();
                 tr.Assimilate();
             }
             catch (Exception exception)
