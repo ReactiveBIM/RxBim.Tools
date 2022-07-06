@@ -1,10 +1,12 @@
 ﻿namespace RxBim.Tools.Autocad
 {
     using Autodesk.AutoCAD.DatabaseServices;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Database extensions
     /// </summary>
+    [PublicAPI]
     public static class DatabaseExtensions
     {
         /// <summary>

@@ -2,10 +2,12 @@
 {
     using Autodesk.AutoCAD.DatabaseServices;
     using Autodesk.AutoCAD.Geometry;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Viewport extensions for working with coordinate systems
     /// </summary>
+    [PublicAPI]
     public static class ViewportCoordinateSystemExtensions
     {
          /// <summary>

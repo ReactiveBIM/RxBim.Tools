@@ -56,7 +56,7 @@
             try
             {
                 using var ent = id.OpenAs<Entity>();
-                activeDocument.Editor.Zoom(ent.GeometricExtents.Offset(zoomFactor));
+                activeDocument.Editor.Zoom(ent.GeometricExtents.Zoom(zoomFactor));
             }
             catch (Exception e)
             {

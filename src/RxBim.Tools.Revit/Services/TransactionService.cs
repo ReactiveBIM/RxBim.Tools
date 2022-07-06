@@ -39,21 +39,18 @@
         /// <inheritdoc/>
         public Result RunInTransactionGroup(Action action, string transactionGroupName, Document? document = null)
         {
-            Func<Result> funcWithResult = () =>
+            Result FuncWithResult()
             {
                 action.Invoke();
                 return Result.Success();
-            };
+            }
 
-            return RunInTransactionGroup(funcWithResult, transactionGroupName, document);
+            return RunInTransactionGroup(FuncWithResult, transactionGroupName, document);
         }
 
         /// <inheritdoc />
         public Result RunInTransaction(Func<Result> func, string transactionName, Document? document = null)
         {
-            if (func == null)
-                return Result.Failure("Не задано действие для транзакции");
-
             Result result;
 
             using var tr = new Transaction(document ?? CurrentDocument, transactionName);
@@ -76,9 +73,6 @@
         /// <inheritdoc />
         public Result RunInTransactionGroup(Func<Result> func, string transactionGroupName, Document? document = null)
         {
-            if (func == null)
-                return Result.Failure("Не задано действие для транзакции");
-
             Result result;
             using var tr = new TransactionGroup(document ?? CurrentDocument, transactionGroupName);
             try

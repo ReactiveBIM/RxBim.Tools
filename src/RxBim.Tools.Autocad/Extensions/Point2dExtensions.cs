@@ -1,10 +1,12 @@
 ﻿namespace RxBim.Tools.Autocad
 {
     using Autodesk.AutoCAD.Geometry;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Extensions for <see cref="Point2d"/>
     /// </summary>
+    [PublicAPI]
     public static class Point2dExtensions
     {
         /// <summary>

@@ -1,11 +1,10 @@
 ﻿namespace RxBim.Tools.Revit.Helpers
 {
-    using System;
     using System.Collections.Generic;
     using Autodesk.Revit.DB;
 
     /// <summary>
-    /// Сравниватель точек <see cref="XYZ"/>
+    /// Comparer for <see cref="XYZ"/>.
     /// </summary>
     public class XyzComparer : IComparer<XYZ>
     {
@@ -14,32 +13,19 @@
         /// <inheritdoc/>
         public int Compare(XYZ x, XYZ y)
         {
-            int d = Compare(x.X, y.X);
+            var compareValue = Compare(x.X, y.X);
 
-            if (d == 0)
-            {
-                d = Compare(x.Y, y.Y);
+            if (compareValue != 0)
+                return compareValue;
 
-                if (d == 0)
-                    d = Compare(x.Z, y.Z);
-            }
+            compareValue = Compare(x.Y, y.Y);
 
-            return d;
+            return compareValue == 0 ? Compare(x.Z, y.Z) : compareValue;
         }
 
         private static int Compare(double a, double b)
         {
-            return IsEqual(a, b) ? 0 : (a < b ? -1 : 1);
-        }
-
-        private static bool IsZero(double a)
-        {
-            return Math.Abs(a) < Tolerance;
-        }
-
-        private static bool IsEqual(double a, double b)
-        {
-            return IsZero(b - a);
+            return a.IsEqualTo(b, Tolerance) ? 0 : (a < b ? -1 : 1);
         }
     }
 }

@@ -2,43 +2,44 @@
 {
     using Autodesk.AutoCAD.DatabaseServices;
     using Autodesk.AutoCAD.Geometry;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Extensions for <see cref="Extents3d"/>.
     /// </summary>
+    [PublicAPI]
     public static class Extents3dExtensions
     {
         /// <summary>
-        /// Отступ границ
+        /// Returns a new extents according to the specified zoom factor.
         /// </summary>
-        /// <param name="ext">Границы</param>
-        /// <param name="zoomFactor">Отступ в процентах</param>
-        /// <returns></returns>
-        public static Extents3d Offset(this Extents3d ext, double zoomFactor = 0.25)
+        /// <param name="extents">Extents.</param>
+        /// <param name="zoomFactor">Zoom factor.</param>
+        public static Extents3d Zoom(this Extents3d extents, double zoomFactor = 0.25)
         {
-            var dX = ext.GetLength() / zoomFactor * 0.5;
-            var dY = ext.GetHeight() / zoomFactor * 0.5;
+            var dX = extents.GetLength() / zoomFactor * 0.5;
+            var dY = extents.GetHeight() / zoomFactor * 0.5;
             return new Extents3d(
-                new Point3d(ext.MinPoint.X - dX, ext.MinPoint.Y - dY, 0),
-                new Point3d(ext.MaxPoint.X + dX, ext.MaxPoint.Y + dY, 0));
+                new Point3d(extents.MinPoint.X - dX, extents.MinPoint.Y - dY, 0),
+                new Point3d(extents.MaxPoint.X + dX, extents.MaxPoint.Y + dY, 0));
         }
 
         /// <summary>
-        /// Расстояние по Y
+        /// The height of the extents (along the Y-axis).
         /// </summary>
-        /// <param name="ext">Граница</param>
-        public static double GetHeight(this Extents3d ext)
+        /// <param name="extents">Extents.</param>
+        public static double GetHeight(this Extents3d extents)
         {
-            return ext.MaxPoint.Y - ext.MinPoint.Y;
+            return extents.MaxPoint.Y - extents.MinPoint.Y;
         }
 
         /// <summary>
-        /// Расстояние по X
+        /// The length of the extents (along the X-axis).
         /// </summary>
-        /// <param name="ext">Граница</param>
-        public static double GetLength(this Extents3d ext)
+        /// <param name="extents">Extents.</param>
+        public static double GetLength(this Extents3d extents)
         {
-            return ext.MaxPoint.X - ext.MinPoint.X;
+            return extents.MaxPoint.X - extents.MinPoint.X;
         }
     }
 }

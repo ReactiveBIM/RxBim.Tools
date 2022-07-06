@@ -2,10 +2,12 @@
 {
     using Autodesk.AutoCAD.ApplicationServices.Core;
     using Autodesk.AutoCAD.Geometry;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Extensions for <see cref="Point3d"/>
     /// </summary>
+    [PublicAPI]
     public static class Point3dExtensions
     {
         /// <summary>
