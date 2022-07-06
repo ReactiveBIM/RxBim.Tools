@@ -3,46 +3,46 @@
     using System;
     using Autodesk.Revit.DB;
     using CSharpFunctionalExtensions;
+    using JetBrains.Annotations;
 
     /// <summary>
-    /// Сервис по работе с транзакцией
+    /// Transaction service.
     /// </summary>
+    [PublicAPI]
     public interface ITransactionService
     {
         /// <summary>
-        /// Оборачивает действие в транзакцию
+        /// Wraps an action in a transaction and executes it.
         /// </summary>
-        /// <param name="action">Действие</param>
-        /// <param name="transactionName">Название транзакции</param>
-        /// <param name="document">выбранный документ.
-        /// при null - транзакция запустится в текущем документе</param>
+        /// <param name="action">An action to be executed within a transaction.</param>
+        /// <param name="transactionName">Transaction name.</param>
+        /// <param name="document">
+        /// The document in which the action is performed. If null, runs in the current document.
+        /// </param>
         Result RunInTransaction(Action action, string transactionName, Document? document = null);
 
         /// <summary>
-        /// Оборачивает действие в группу транзакций
+        /// Wraps an action in a transaction group and executes it.
         /// </summary>
-        /// <param name="action">Действие</param>
-        /// <param name="transactionGroupName">Название группы транзакций</param>
-        /// <param name="document">выбранный документ.
-        /// при null - группа транзакций запустится в текущем документе</param>
+        /// <param name="action">An action to be executed within a transaction group.</param>
+        /// <param name="transactionGroupName">Transaction group name.</param>
+        /// <param name="document">The document in which the action is performed. If null, runs in the current document.</param>
         Result RunInTransactionGroup(Action action, string transactionGroupName, Document? document = null);
 
         /// <summary>
-        /// Оборачивает действие в транзакцию с возвратом результата
+        /// Wraps a function in a transaction and executes it. Returns the result of the function execution.
         /// </summary>
-        /// <param name="action">Действие с возвратом результата</param>
-        /// <param name="transactionName">Название транзакции</param>
-        /// <param name="document">выбранный документ.
-        /// при null - транзакция запустится в текущем документе</param>
-        Result RunInTransaction(Func<Result> action, string transactionName, Document? document = null);
+        /// <param name="func">A function to be executed within a transaction.</param>
+        /// <param name="transactionName">Transaction name.</param>
+        /// <param name="document">The document in which the action is performed. If null, runs in the current document.</param>
+        Result RunInTransaction(Func<Result> func, string transactionName, Document? document = null);
 
         /// <summary>
-        /// Оборачивает действие в группу транзакций с возвратом результата
+        /// Wraps an action in a transaction group and executes it. Returns the result of the function execution.
         /// </summary>
-        /// <param name="action">Действие с возвратом результата</param>
-        /// <param name="transactionGroupName">Название группы транзакций</param>
-        /// <param name="document">выбранный документ.
-        /// при null - группа транзакций запустится в текущем документе</param>
-        Result RunInTransactionGroup(Func<Result> action, string transactionGroupName, Document? document = null);
+        /// <param name="func">A function to be executed within a transaction group.</param>
+        /// <param name="transactionGroupName">Transaction group name.</param>
+        /// <param name="document">The document in which the action is performed. If null, runs in the current document.</param>
+        Result RunInTransactionGroup(Func<Result> func, string transactionGroupName, Document? document = null);
     }
 }
