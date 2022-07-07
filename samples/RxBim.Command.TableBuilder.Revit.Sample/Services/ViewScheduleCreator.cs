@@ -85,7 +85,7 @@
                     {
                         return DeleteViewScheduleIfExists(name)
                             .Map(() => _tableConverter.Convert(table, parameters))
-                            .Ensure(view => view is not null, "Error during creation or convertion of the specification")
+                            .Ensure(view => view is not null, "Error creating or converting a specification")
                             .Check(view => PutSpecificationOnSheet(view, _doc.ActiveView.Id, XYZ.Zero))
                             .Check(view => ApplyHeaderStyle(view, columnsCount, 30));
                     },
@@ -108,16 +108,20 @@
             if (existedScheduleId is null)
                 return Result.Success();
 
-            return _transactionService.RunInTransaction(
+            _transactionService.RunInTransaction(
                 () => _doc.Delete(existedScheduleId),
                 nameof(DeleteViewScheduleIfExists));
+
+            return Result.Success();
         }
 
         private Result PutSpecificationOnSheet(ViewSchedule schedule, ElementId viewSheetId, XYZ origin)
         {
-            return _transactionService.RunInTransaction(
+            _transactionService.RunInTransaction(
                 () => ScheduleSheetInstance.Create(_doc, viewSheetId, schedule.Id, origin),
                 nameof(PutSpecificationOnSheet));
+
+            return Result.Success();
         }
 
         // Revit does not apply styles when putting specification
@@ -131,13 +135,15 @@
             opt.Italics = true;
             style.IsFontItalic = true;
 
-            return _transactionService.RunInTransaction(() =>
+            _transactionService.RunInTransaction(() =>
                 {
                     for (var i = 0; i < columnsCount; i++)
                         headerData.SetColumnWidth(0, columnWidth.MmToFt());
                     headerData.SetCellStyle(headerData.FirstRowNumber, headerData.FirstColumnNumber, style);
                 },
                 nameof(ApplyHeaderStyle));
+
+            return Result.Success();
         }
     }
 }
