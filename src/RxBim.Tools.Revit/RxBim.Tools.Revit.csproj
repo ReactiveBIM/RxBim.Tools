@@ -37,7 +37,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\RxBim.Tools.Common\RxBim.Tools.Common.csproj" />
+      <ProjectReference Include="..\RxBim.Tools\RxBim.Tools.csproj" />
       <ProjectReference Include="..\RxBim.Tools.TableBuilder\RxBim.Tools.TableBuilder.csproj" />
     </ItemGroup>
 

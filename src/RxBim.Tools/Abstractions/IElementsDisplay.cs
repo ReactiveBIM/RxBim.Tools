@@ -1,4 +1,4 @@
-﻿namespace RxBim.Tools.Abstractions
+﻿namespace RxBim.Tools
 {
     using System.Collections.Generic;
     using JetBrains.Annotations;
