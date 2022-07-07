@@ -5,7 +5,6 @@
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
     using JetBrains.Annotations;
-    using Result = CSharpFunctionalExtensions.Result;
 
     /// <inheritdoc/>
     [UsedImplicitly]
@@ -25,70 +24,53 @@
         private Document CurrentDocument => _uiApplication.ActiveUIDocument.Document;
 
         /// <inheritdoc/>
-        public Result RunInTransaction(Action action, string transactionName, Document? document = null)
+        public void RunInTransaction(Action action, string transactionName, Document? document = null)
         {
-            return RunInTransaction(FuncWithResult, transactionName, document);
-
-            Result FuncWithResult()
-            {
-                action.Invoke();
-                return Result.Success();
-            }
+            RunInTransaction(action.ConvertToFunc(), transactionName, document);
         }
 
         /// <inheritdoc/>
-        public Result RunInTransactionGroup(Action action, string transactionGroupName, Document? document = null)
+        public void RunInTransactionGroup(Action action, string transactionGroupName, Document? document = null)
         {
-            Result FuncWithResult()
-            {
-                action.Invoke();
-                return Result.Success();
-            }
-
-            return RunInTransactionGroup(FuncWithResult, transactionGroupName, document);
+            RunInTransactionGroup(action.ConvertToFunc(), transactionGroupName, document);
         }
 
         /// <inheritdoc />
-        public Result RunInTransaction(Func<Result> func, string transactionName, Document? document = null)
+        public T RunInTransaction<T>(Func<T> func, string transactionName, Document? document = null)
         {
-            Result result;
-
-            using var tr = new Transaction(document ?? CurrentDocument, transactionName);
+            using var transaction = new Transaction(document ?? CurrentDocument, transactionName);
             try
             {
-                tr.Start();
-                result = func.Invoke();
-                tr.Commit();
+                transaction.Start();
+                var result = func.Invoke();
+                transaction.Commit();
+                return result;
             }
-            catch (Exception exception)
+            catch (Exception)
             {
-                if (tr.GetStatus() != TransactionStatus.RolledBack)
-                    tr.RollBack();
-                return Result.Failure(exception.ToString());
+                if (transaction.GetStatus() != TransactionStatus.RolledBack)
+                    transaction.RollBack();
+                throw;
             }
-
-            return result;
         }
 
         /// <inheritdoc />
-        public Result RunInTransactionGroup(Func<Result> func, string transactionGroupName, Document? document = null)
+        public T RunInTransactionGroup<T>(Func<T> func, string transactionGroupName, Document? document = null)
         {
-            Result result;
-            using var tr = new TransactionGroup(document ?? CurrentDocument, transactionGroupName);
+            using var transactionGroup = new TransactionGroup(document ?? CurrentDocument, transactionGroupName);
             try
             {
-                tr.Start();
-                result = func.Invoke();
-                tr.Assimilate();
+                transactionGroup.Start();
+                var result = func.Invoke();
+                transactionGroup.Assimilate();
+                return result;
             }
-            catch (Exception exception)
+            catch (Exception)
             {
-                if (tr.GetStatus() != TransactionStatus.RolledBack)
-                    tr.RollBack();
-                return Result.Failure(exception.ToString());
+                if (transactionGroup.GetStatus() != TransactionStatus.RolledBack)
+                    transactionGroup.RollBack();
+                throw;
             }
-
-            return result;
         }
     }
 }

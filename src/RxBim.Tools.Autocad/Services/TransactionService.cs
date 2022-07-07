@@ -22,10 +22,7 @@
         /// <inheritdoc />
         public void RunInTransaction(Action action, Database? database = null)
         {
-            database = GetDatabase(database);
-            using var transaction = database.TransactionManager.StartTransaction();
-            action();
-            transaction.Commit();
+            RunInTransaction(action.ConvertToFunc(), database);
         }
 
         /// <inheritdoc />
@@ -41,10 +38,7 @@
         /// <inheritdoc />
         public void RunInTransaction(Action<Transaction> action, Database? database = null)
         {
-            database = GetDatabase(database);
-            using var transaction = database.TransactionManager.StartTransaction();
-            action(transaction);
-            transaction.Commit();
+            RunInTransaction(action.ConvertToFunc(), database);
         }
 
         /// <inheritdoc />
