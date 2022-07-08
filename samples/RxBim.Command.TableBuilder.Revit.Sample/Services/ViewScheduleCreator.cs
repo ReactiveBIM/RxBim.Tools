@@ -6,6 +6,7 @@
     using Autodesk.Revit.DB;
     using CSharpFunctionalExtensions;
     using JetBrains.Annotations;
+    using Tools;
     using Tools.Revit.Abstractions;
     using Tools.Revit.Extensions;
     using Tools.TableBuilder;

@@ -11,25 +11,13 @@
         /// Returns <see cref="Func{Action}"/> for action.
         /// </summary>
         /// <param name="action">Action.</param>
-        public static Func<Action> ConvertToFunc(this Action action)
+        /// <param name="returnValue">The value to return the function.</param>
+        public static Func<object?> ToFunc(this Action action, object? returnValue = null)
         {
             return () =>
             {
                 action.Invoke();
-                return action;
-            };
-        }
-
-        /// <summary>
-        /// Returns <see cref="Func{Action}"/> for action.
-        /// </summary>
-        /// <param name="action">Action.</param>
-        public static Func<T, Action<T>> ConvertToFunc<T>(this Action<T> action)
-        {
-            return x =>
-            {
-                action.Invoke(x);
-                return action;
+                return returnValue;
             };
         }
     }

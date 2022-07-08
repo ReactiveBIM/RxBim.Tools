@@ -18,7 +18,7 @@
             container.AddSingleton<ICommandLineService, CommandLineService>();
             container.AddSingleton<IElementsDisplay, ElementsDisplayService>();
             container.AddSingleton<IProblemElementsStorage, ProblemElementsStorage>();
-            container.AddSingleton<ITransactionService, TransactionService>();
+            container.AddTransactionServices<AutocadTransactionFactory>();
             return container;
         }
     }
