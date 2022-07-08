@@ -14,4 +14,10 @@
       </PackageReference>
     </ItemGroup>
 
+    <PropertyGroup>
+        <Description>RxBim Tools Library</Description>
+        <PackageId>RxBim.Tools</PackageId>
+        <PackageReleaseNotes>$(ReleaseNotes)</PackageReleaseNotes>
+    </PropertyGroup>
+
 </Project>

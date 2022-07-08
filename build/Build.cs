@@ -27,8 +27,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
     OnPushBranches = new[] { MasterBranch, "release/**" },
     InvokedTargets = new[] { nameof(Test), nameof(IPublish.Publish) },
     ImportSecrets = new[] { "NUGET_API_KEY", "ALL_PACKAGES" })]
-class Build : NukeBuild,
-    IPublish
+class Build : NukeBuild, IPublish
 {
     const string MasterBranch = "master";
     const string DevelopBranch = "develop";
@@ -60,6 +59,6 @@ class Build : NukeBuild,
         });
 
    T From<T>()
-        where T : INukeBuild
+       where T : INukeBuild
         => (T)(object)this;
 }
