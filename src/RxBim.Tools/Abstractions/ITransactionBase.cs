@@ -1,9 +1,11 @@
 ﻿namespace RxBim.Tools
 {
+    using System;
+
     /// <summary>
     /// Base transaction object.
     /// </summary>
-    public interface ITransactionBase
+    public interface ITransactionBase : IDisposable
     {
         /// <summary>
         /// Starts.
@@ -13,7 +15,7 @@
         /// <summary>
         /// Rolls back all changes.
         /// </summary>
-        void Rollback();
+        void RollBack();
 
         /// <summary>
         /// Returns true if all changes have been rolled back. Otherwise, returns false.
