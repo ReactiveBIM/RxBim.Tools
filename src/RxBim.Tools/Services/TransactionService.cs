@@ -1,8 +1,10 @@
 ﻿namespace RxBim.Tools
 {
     using System;
+    using JetBrains.Annotations;
 
     /// <inheritdoc />
+    [UsedImplicitly]
     internal class TransactionService : ITransactionService
     {
         private readonly ITransactionFactory _transactionFactory;
@@ -17,15 +19,15 @@
         }
 
         /// <inheritdoc />
-        public void RunInTransaction(Action action, string? transactionName = null, object? document = null)
+        public void RunInTransaction(Action action, string? transactionName = null, object? transactionContext = null)
         {
-            RunInTransaction(action.ConvertToFunc(), transactionName, document);
+            RunInTransaction(action.ToFunc(), transactionName, transactionContext);
         }
 
         /// <inheritdoc />
-        public T RunInTransaction<T>(Func<T> func, string? transactionName = null, object? document = null)
+        public T RunInTransaction<T>(Func<T> func, string? transactionName = null, object? transactionContext = null)
         {
-            using var transaction = _transactionFactory.GetTransaction(transactionName, document);
+            using var transaction = _transactionFactory.GetTransaction(transactionContext, transactionName);
             try
             {
                 transaction.Start();
@@ -42,15 +44,15 @@
         }
 
         /// <inheritdoc />
-        public void RunInTransactionGroup(Action action, string transactionGroupName, object? document = null)
+        public void RunInTransactionGroup(Action action, string transactionGroupName, object? transactionContext = null)
         {
-            RunInTransactionGroup(action.ConvertToFunc(), transactionGroupName, document);
+            RunInTransactionGroup(action.ToFunc(), transactionGroupName, transactionContext);
         }
 
         /// <inheritdoc />
-        public T RunInTransactionGroup<T>(Func<T> func, string transactionGroupName, object? document = null)
+        public T RunInTransactionGroup<T>(Func<T> func, string transactionGroupName, object? transactionContext = null)
         {
-            using var transactionGroup = _transactionFactory.GetTransactionGroup(transactionGroupName, document);
+            using var transactionGroup = _transactionFactory.GetTransactionGroup(transactionContext, transactionGroupName);
             try
             {
                 transactionGroup.Start();
