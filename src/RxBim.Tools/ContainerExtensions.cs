@@ -12,6 +12,22 @@
     public static class ContainerExtensions
     {
         /// <summary>
+        /// Adds transaction services.
+        /// </summary>
+        /// <param name="container">The instance of <see cref="IContainer"/>.</param>
+        /// <typeparam name="TTransactionFactory">
+        /// The type of <see cref="ITransactionFactory"/> implementation.
+        /// </typeparam>
+        public static IContainer AddTransactionServices<TTransactionFactory>(
+            this IContainer container)
+            where TTransactionFactory : class, ITransactionFactory
+        {
+            return container
+                .AddSingleton<ITransactionService, TransactionService>()
+                .AddSingleton<ITransactionFactory, TTransactionFactory>();
+        }
+
+        /// <summary>
         /// Adds a transient object of the type specified in <typeparamref name="T"/> to the DI container.
         /// The object data is loaded from the configuration.
         /// </summary>
