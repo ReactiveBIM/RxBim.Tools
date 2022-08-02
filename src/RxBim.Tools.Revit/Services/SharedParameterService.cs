@@ -41,7 +41,7 @@
                 return Result.Failure("Не заданы данные для определения общего параметра");
             if (sharedParameterInfo.CreateData == null)
                 return Result.Failure($"Не заданы данные для создания общего параметра '{sharedParameterInfo.Definition.ParameterName}'");
-            if (ParameterExistsInDocument(sharedParameterInfo.Definition, fullMatch))
+            if (ParameterExistsInDocument(sharedParameterInfo.Definition, fullMatch, document))
                 return Result.Failure($"Параметр '{sharedParameterInfo.Definition.ParameterName}' уже добавлен в модель");
             if (sharedParameterInfo.CreateData.CategoriesForBind?.Any() != true)
                 return Result.Failure($"Не указаны категории для привязки параметра '{sharedParameterInfo.Definition.ParameterName}'");
