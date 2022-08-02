@@ -22,14 +22,14 @@
         }
 
         /// <inheritdoc />
-        public ITransaction GetTransaction(object? transactionContext = null, string? transactionName = null)
+        public ITransaction CreateTransaction(object? transactionContext = null, string? transactionName = null)
         {
             var transactionManager = GetTransactionManager(transactionContext);
             return new AutocadTransaction(transactionManager.StartTransaction());
         }
 
         /// <inheritdoc />
-        public ITransactionGroup GetTransactionGroup(object? document = null, string? transactionGroupName = null)
+        public ITransactionGroup CreateTransactionGroup(object? document = null, string? transactionGroupName = null)
         {
             var transactionManager = GetTransactionManager(document);
             return new AutocadTransactionGroup(transactionManager.StartTransaction());

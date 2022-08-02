@@ -5,7 +5,7 @@
     </ItemGroup>    
 
     <ItemGroup>
-      <PackageReference Include="RxBim.Di.SimpleInjector" Version="1.1.0-dev003" />
+      <PackageReference Include="RxBim.Di.SimpleInjector" Version="1.1.0-dev005" />
       <PackageReference Update="coverlet.collector" Version="3.1.2">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

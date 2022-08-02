@@ -5,7 +5,7 @@
 
     /// <inheritdoc cref="RxBim.Tools.ITransaction" />
     [UsedImplicitly]
-    internal class AutocadTransaction : AutocadTransactionBase, ITransaction
+    internal class AutocadTransaction : AutocadTransactionBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AutocadTransaction"/> class.

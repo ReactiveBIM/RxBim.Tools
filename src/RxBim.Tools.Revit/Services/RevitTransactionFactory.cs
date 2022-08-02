@@ -22,7 +22,7 @@
         }
 
         /// <inheritdoc />
-        public ITransaction GetTransaction(object? transactionContext = null, string? transactionName = null)
+        public ITransaction CreateTransaction(object? transactionContext = null, string? transactionName = null)
         {
             var revitDocument = GetRevitDocument(transactionContext);
             var transaction = new Transaction(revitDocument, transactionName ?? GetUniqueTransactionName());
@@ -30,7 +30,7 @@
         }
 
         /// <inheritdoc />
-        public ITransactionGroup GetTransactionGroup(object? document = null, string? transactionGroupName = null)
+        public ITransactionGroup CreateTransactionGroup(object? document = null, string? transactionGroupName = null)
         {
             var revitDocument = GetRevitDocument(document);
             var transactionGroup =

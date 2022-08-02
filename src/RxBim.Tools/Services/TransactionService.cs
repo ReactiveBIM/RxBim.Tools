@@ -25,13 +25,31 @@
         }
 
         /// <inheritdoc />
+        public void RunInTransaction(
+            Action<ITransaction> action,
+            string? transactionName = null,
+            object? transactionContext = null)
+        {
+            RunInTransaction(action.ToFunc(), transactionName, transactionContext);
+        }
+
+        /// <inheritdoc />
         public T RunInTransaction<T>(Func<T> func, string? transactionName = null, object? transactionContext = null)
         {
-            using var transaction = _transactionFactory.GetTransaction(transactionContext, transactionName);
+            return RunInTransaction(_ => func(), transactionName, transactionContext);
+        }
+
+        /// <inheritdoc />
+        public T RunInTransaction<T>(
+            Func<ITransaction, T> func,
+            string? transactionName = null,
+            object? transactionContext = null)
+        {
+            using var transaction = _transactionFactory.CreateTransaction(transactionContext, transactionName);
             try
             {
                 transaction.Start();
-                var result = func.Invoke();
+                var result = func.Invoke(transaction);
                 transaction.Commit();
                 return result;
             }
@@ -52,7 +70,8 @@
         /// <inheritdoc />
         public T RunInTransactionGroup<T>(Func<T> func, string transactionGroupName, object? transactionContext = null)
         {
-            using var transactionGroup = _transactionFactory.GetTransactionGroup(transactionContext, transactionGroupName);
+            using var transactionGroup =
+                _transactionFactory.CreateTransactionGroup(transactionContext, transactionGroupName);
             try
             {
                 transactionGroup.Start();

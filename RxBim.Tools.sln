@@ -57,6 +57,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.TableBuilder.Re
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools", "src\RxBim.Tools\RxBim.Tools.csproj", "{D4547F76-A7F7-43A2-BDDA-C21209F2D140}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.Autocad.Sample", "samples\RxBim.Tools.Autocad.Sample\RxBim.Tools.Autocad.Sample.csproj", "{C97FD9AF-9958-4235-BDB7-E9990295A822}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -121,6 +123,10 @@ Global
 		{D4547F76-A7F7-43A2-BDDA-C21209F2D140}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4547F76-A7F7-43A2-BDDA-C21209F2D140}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4547F76-A7F7-43A2-BDDA-C21209F2D140}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C97FD9AF-9958-4235-BDB7-E9990295A822}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C97FD9AF-9958-4235-BDB7-E9990295A822}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C97FD9AF-9958-4235-BDB7-E9990295A822}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C97FD9AF-9958-4235-BDB7-E9990295A822}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -141,6 +147,7 @@ Global
 		{087B5B48-A1A0-4D96-BF5A-1CA0E14441A8} = {6115E715-6C8A-4895-8745-4A1411955CCA}
 		{E9759165-3F09-4637-BE92-EC737F40F9CA} = {6115E715-6C8A-4895-8745-4A1411955CCA}
 		{D4547F76-A7F7-43A2-BDDA-C21209F2D140} = {5339A0F1-1884-4682-BFD2-DE050B2E5D69}
+		{C97FD9AF-9958-4235-BDB7-E9990295A822} = {EA1ADE6F-F986-4CF3-A953-5B3C25A5C3F0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EA2C589E-5222-413E-AEDF-F8B9DA1ABC2F}

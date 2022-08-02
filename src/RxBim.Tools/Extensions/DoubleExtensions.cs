@@ -9,9 +9,14 @@
     [PublicAPI]
     public static class DoubleExtensions
     {
-        private const double Epsilon = 1e-6;
+        /// <summary>
+        /// Double precision by default.
+        /// </summary>
+        public const double DefaultPrecision = 1e-6;
+
+        private const int DefaultDigits = 4;
+
         private const double DegreesInRadian = 180D / Math.PI;
-        private const int DefaultPrecisionDigits = 4;
 
         /// <summary>
         /// Returns true if a number is equal to another number with the given precision.
@@ -19,7 +24,7 @@
         /// <param name="value">Value</param>
         /// <param name="otherValue">Another value</param>
         /// <param name="precision">Comparison accuracy</param>
-        public static bool IsEqualTo(this double value, double otherValue, double precision = Epsilon)
+        public static bool IsEqualTo(this double value, double otherValue, double precision = DefaultPrecision)
         {
             return Math.Abs(value - otherValue) < precision;
         }
@@ -30,7 +35,7 @@
         /// <param name="value">Value</param>
         /// <param name="otherValue">Another value</param>
         /// <param name="precision">Comparison accuracy</param>
-        public static bool IsEqualOrLess(this double value, double otherValue, double precision = Epsilon)
+        public static bool IsEqualOrLess(this double value, double otherValue, double precision = DefaultPrecision)
         {
             return value.IsEqualTo(otherValue, precision) || value < otherValue;
         }
@@ -41,7 +46,7 @@
         /// <param name="value">Value</param>
         /// <param name="otherValue">Another value</param>
         /// <param name="precision">Comparison accuracy</param>
-        public static bool IsEqualOrGreater(this double value, double otherValue, double precision = Epsilon)
+        public static bool IsEqualOrGreater(this double value, double otherValue, double precision = DefaultPrecision)
         {
             return value.IsEqualTo(otherValue, precision) || value > otherValue;
         }
@@ -51,7 +56,7 @@
         /// </summary>
         /// <param name="value">Value</param>
         /// <param name="precision">Comparison accuracy</param>
-        public static bool IsZero(this double value, double precision = Epsilon)
+        public static bool IsZero(this double value, double precision = DefaultPrecision)
         {
             return value.IsEqualTo(0D, precision);
         }
@@ -84,7 +89,7 @@
         /// If value has fewer fractional digits than digits, value is returned unchanged.
         /// </returns>
         /// <remarks>Internally, the System.Math.Round method is used with Mode=MidpointRounding.AwayFromZero.</remarks>
-        public static double Round(this double value, int digits = DefaultPrecisionDigits)
+        public static double Round(this double value, int digits = DefaultDigits)
         {
             return Math.Round(value, digits, MidpointRounding.AwayFromZero);
         }

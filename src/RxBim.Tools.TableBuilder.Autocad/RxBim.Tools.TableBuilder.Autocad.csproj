@@ -10,7 +10,7 @@
 
     <ItemGroup>
         <PackageReference Include="AutoCAD2019.Base" Version="1.0.3" ExcludeAssets="build; runtime" />
-        <PackageReference Include="RxBim.Di" Version="1.1.0-dev003" />
+        <PackageReference Include="RxBim.Di" Version="1.1.0-dev005" />
         
         <Reference Include="PresentationCore" />
         

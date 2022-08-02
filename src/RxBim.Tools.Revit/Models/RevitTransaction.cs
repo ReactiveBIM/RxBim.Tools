@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Tools.Revit.Models
 {
+    using System;
     using Autodesk.Revit.DB;
 
     /// <inheritdoc />
@@ -44,6 +45,15 @@
         public void Commit()
         {
             _transaction.Commit();
+        }
+
+        /// <inheritdoc />
+        public T GetCadTransaction<T>()
+            where T : class
+        {
+            return _transaction as T ??
+                   throw new InvalidCastException(
+                       $"Can't convert transaction type {_transaction.GetType().Name} to {typeof(T).Name}");
         }
     }
 }

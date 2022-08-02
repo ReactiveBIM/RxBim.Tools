@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Tools.Autocad
 {
+    using System;
     using Autodesk.AutoCAD.DatabaseServices;
 
     /// <summary>
@@ -40,5 +41,14 @@
 
         /// <inheritdoc />
         public void Commit() => _transaction.Commit();
+
+        /// <inheritdoc />
+        public T GetCadTransaction<T>()
+            where T : class
+        {
+            return _transaction as T ??
+                   throw new InvalidCastException(
+                       $"Can't convert transaction type {_transaction.GetType().Name} to {typeof(T).Name}");
+        }
     }
 }
