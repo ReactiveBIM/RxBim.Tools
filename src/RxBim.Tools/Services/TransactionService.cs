@@ -19,71 +19,90 @@
         }
 
         /// <inheritdoc />
-        public void RunInTransaction(Action action, string? transactionName = null, object? transactionContext = null)
+        public void RunInTransaction(
+            Action<ITransactionContext> action,
+            string? transactionName = null,
+            ITransactionContext? transactionContext = null)
         {
             RunInTransaction(action.ToFunc(), transactionName, transactionContext);
         }
 
         /// <inheritdoc />
         public void RunInTransaction(
-            Action<ITransaction> action,
+            Action<ITransaction, ITransactionContext> action,
             string? transactionName = null,
-            object? transactionContext = null)
+            ITransactionContext? transactionContext = null)
         {
             RunInTransaction(action.ToFunc(), transactionName, transactionContext);
         }
 
         /// <inheritdoc />
-        public T RunInTransaction<T>(Func<T> func, string? transactionName = null, object? transactionContext = null)
+        public T RunInTransaction<T>(
+            Func<ITransactionContext, T> func,
+            string? transactionName = null,
+            ITransactionContext? transactionContext = null)
         {
-            return RunInTransaction(_ => func(), transactionName, transactionContext);
+            return RunInTransaction((_, context) => func(context), transactionName, transactionContext);
         }
 
         /// <inheritdoc />
         public T RunInTransaction<T>(
-            Func<ITransaction, T> func,
+            Func<ITransaction, ITransactionContext, T> func,
             string? transactionName = null,
-            object? transactionContext = null)
+            ITransactionContext? transactionContext = null)
         {
-            using var transaction = _transactionFactory.CreateTransaction(transactionContext, transactionName);
-            try
+            var (transaction, context) = _transactionFactory.CreateTransaction(transactionContext, transactionName);
+            using (transaction)
             {
-                transaction.Start();
-                var result = func.Invoke(transaction);
-                transaction.Commit();
-                return result;
-            }
-            catch (Exception)
-            {
-                if (!transaction.IsRolledBack())
-                    transaction.RollBack();
-                throw;
+                try
+                {
+                    transaction.Start();
+                    var result = func.Invoke(transaction, context);
+                    transaction.Commit();
+                    return result;
+                }
+                catch (Exception)
+                {
+                    if (!transaction.IsRolledBack())
+                        transaction.RollBack();
+                    throw;
+                }
             }
         }
 
         /// <inheritdoc />
-        public void RunInTransactionGroup(Action action, string transactionGroupName, object? transactionContext = null)
+        public void RunInTransactionGroup(
+            Action<ITransactionContext> action,
+            string transactionGroupName,
+            ITransactionContext? transactionContext = null)
         {
             RunInTransactionGroup(action.ToFunc(), transactionGroupName, transactionContext);
         }
 
         /// <inheritdoc />
-        public T RunInTransactionGroup<T>(Func<T> func, string transactionGroupName, object? transactionContext = null)
+        public T RunInTransactionGroup<T>(
+            Func<ITransactionContext, T> func,
+            string transactionGroupName,
+            ITransactionContext? transactionContext = null)
         {
-            using var transactionGroup =
+            var (transactionGroup, context) =
                 _transactionFactory.CreateTransactionGroup(transactionContext, transactionGroupName);
-            try
+
+            using (transactionGroup)
             {
-                transactionGroup.Start();
-                var result = func.Invoke();
-                transactionGroup.Assimilate();
-                return result;
-            }
-            catch (Exception)
-            {
-                if (!transactionGroup.IsRolledBack())
-                    transactionGroup.RollBack();
-                throw;
+                try
+                {
+                    transactionGroup.Start();
+                    var result = func.Invoke(context);
+                    transactionGroup.Assimilate();
+                    return result;
+                }
+                catch (Exception)
+                {
+                    if (!transactionGroup.IsRolledBack())
+                        transactionGroup.RollBack();
+                    throw;
+                }
             }
         }
     }

@@ -82,7 +82,7 @@
                     SpecificationBoldLineId = 571482
                 };
 
-                return _transactionService.RunInTransactionGroup(() =>
+                return _transactionService.RunInTransactionGroup(_ =>
                     {
                         return DeleteViewScheduleIfExists(name)
                             .Map(() => _tableConverter.Convert(table, parameters))
@@ -110,7 +110,7 @@
                 return Result.Success();
 
             _transactionService.RunInTransaction(
-                () => _doc.Delete(existedScheduleId),
+                _ => _doc.Delete(existedScheduleId),
                 nameof(DeleteViewScheduleIfExists));
 
             return Result.Success();
@@ -119,7 +119,7 @@
         private Result PutSpecificationOnSheet(ViewSchedule schedule, ElementId viewSheetId, XYZ origin)
         {
             _transactionService.RunInTransaction(
-                () => ScheduleSheetInstance.Create(_doc, viewSheetId, schedule.Id, origin),
+                _ => ScheduleSheetInstance.Create(_doc, viewSheetId, schedule.Id, origin),
                 nameof(PutSpecificationOnSheet));
 
             return Result.Success();
@@ -136,7 +136,7 @@
             opt.Italics = true;
             style.IsFontItalic = true;
 
-            _transactionService.RunInTransaction(() =>
+            _transactionService.RunInTransaction(_ =>
                 {
                     for (var i = 0; i < columnsCount; i++)
                         headerData.SetColumnWidth(0, columnWidth.MmToFt());

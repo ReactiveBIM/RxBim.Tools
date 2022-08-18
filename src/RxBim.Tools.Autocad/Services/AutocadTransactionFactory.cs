@@ -1,10 +1,7 @@
 ﻿namespace RxBim.Tools.Autocad
 {
-    using System;
-    using Autodesk.AutoCAD.ApplicationServices;
     using Autodesk.AutoCAD.DatabaseServices;
     using JetBrains.Annotations;
-    using TransactionManager = Autodesk.AutoCAD.DatabaseServices.TransactionManager;
 
     /// <inheritdoc />
     [UsedImplicitly]
@@ -22,30 +19,29 @@
         }
 
         /// <inheritdoc />
-        public ITransaction CreateTransaction(object? transactionContext = null, string? transactionName = null)
+        public (ITransaction Transaction, ITransactionContext Context) CreateTransaction(
+            ITransactionContext? transactionContext = null,
+            string? transactionName = null)
         {
-            var transactionManager = GetTransactionManager(transactionContext);
-            return new AutocadTransaction(transactionManager.StartTransaction());
+            var (context, transactionManager) = GetContextAndTransactionManager(transactionContext);
+            return (new AutocadTransaction(transactionManager.StartTransaction()), context);
         }
 
         /// <inheritdoc />
-        public ITransactionGroup CreateTransactionGroup(object? document = null, string? transactionGroupName = null)
+        public (ITransactionGroup Group, ITransactionContext Context) CreateTransactionGroup(
+            ITransactionContext? transactionContext = null,
+            string? transactionGroupName = null)
         {
-            var transactionManager = GetTransactionManager(document);
-            return new AutocadTransactionGroup(transactionManager.StartTransaction());
+            var (context, transactionManager) = GetContextAndTransactionManager(transactionContext);
+            return (new AutocadTransactionGroup(transactionManager.StartTransaction()), context);
         }
 
-        private TransactionManager GetTransactionManager(object? document)
+        private (ITransactionContext Context, TransactionManager TransactionManager)
+            GetContextAndTransactionManager(ITransactionContext? transactionContext)
         {
-            return document switch
-            {
-                null => _documentService.GetActiveDocument().TransactionManager,
-                Document acadDocument => acadDocument.TransactionManager,
-                Database database => database.TransactionManager,
-                _ => throw new ArgumentException(
-                    $"Incorrect type: {document.GetType().Name}. Must be a Revit document.",
-                    nameof(document))
-            };
+            var context = transactionContext ?? new AutocadTransactionContext(_documentService.GetActiveDocument());
+            var transactionManager = context.GetTransactionManager();
+            return (context, transactionManager);
         }
     }
 }

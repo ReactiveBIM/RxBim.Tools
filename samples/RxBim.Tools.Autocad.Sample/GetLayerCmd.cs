@@ -24,7 +24,7 @@
             if (!entityService.GetEntity(out var entityId))
                 return PluginResult.Cancelled;
 
-            var layerName = transactionService.RunInTransaction(() =>
+            var layerName = transactionService.RunInTransaction(_ =>
             {
                 var entity = entityId.GetObjectAs<Entity>();
                 return entity.Layer;

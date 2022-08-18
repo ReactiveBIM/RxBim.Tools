@@ -28,27 +28,27 @@
                 return PluginResult.Cancelled;
 
             // Action with transaction param
-            transactionService.RunInTransaction(transaction =>
+            transactionService.RunInTransaction((transaction, _) =>
             {
                 var cadTransaction = transaction.GetCadTransaction<Transaction>();
                 circleService.AddCircle(database, center, radius, cadTransaction, 1); // 1 - red
             });
 
             // Action<T> with transaction param
-            transactionService.RunInTransaction(transaction =>
+            transactionService.RunInTransaction((transaction, _) =>
             {
                 var cadTransaction = transaction.GetCadTransaction<Transaction>();
                 return circleService.AddCircle(database, center.OffsetPoint(radius * 2, 0), radius, cadTransaction, 2); // 2 - yellow
             });
 
             // Action without transaction param
-            transactionService.RunInTransaction(() =>
+            transactionService.RunInTransaction(_ =>
             {
                 circleService.AddCircle(center.OffsetPoint(radius * 4, 0), radius, 3); // 3 - green
             });
 
             // Action<T> without transaction param
-            transactionService.RunInTransaction(() =>
+            var id = transactionService.RunInTransaction(_ =>
                 circleService.AddCircle(center.OffsetPoint(radius * 6, 0), radius, 4)); // 4 - cyan
 
             return PluginResult.Succeeded;

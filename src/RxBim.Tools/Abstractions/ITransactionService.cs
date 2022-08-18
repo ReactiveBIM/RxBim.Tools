@@ -17,7 +17,10 @@
         /// <param name="transactionContext">
         /// The context(document, database, etc.) on which the action is performed. If null, runs in the current target.
         /// </param>
-        void RunInTransaction(Action action, string? transactionName = null, object? transactionContext = null);
+        void RunInTransaction(
+            Action<ITransactionContext> action,
+            string? transactionName = null,
+            ITransactionContext? transactionContext = null);
 
         /// <summary>
         /// Wraps an action in a transaction and executes it.
@@ -28,20 +31,9 @@
         /// The context(document, database, etc.) on which the action is performed. If null, runs in the current target.
         /// </param>
         void RunInTransaction(
-            Action<ITransaction> action,
+            Action<ITransaction, ITransactionContext> action,
             string? transactionName = null,
-            object? transactionContext = null);
-
-        /// <summary>
-        /// Wraps a function in a transaction and executes it. Returns the result of the function execution.
-        /// </summary>
-        /// <param name="func">A function to be executed within a transaction.</param>
-        /// <param name="transactionName">Transaction name.</param>
-        /// <param name="transactionContext">
-        /// The context(document, database, etc.) on which the action is performed. If null, runs in the current target.
-        /// </param>
-        /// <typeparam name="T">The type of the function result.</typeparam>
-        T RunInTransaction<T>(Func<T> func, string? transactionName = null, object? transactionContext = null);
+            ITransactionContext? transactionContext = null);
 
         /// <summary>
         /// Wraps a function in a transaction and executes it. Returns the result of the function execution.
@@ -53,9 +45,23 @@
         /// </param>
         /// <typeparam name="T">The type of the function result.</typeparam>
         T RunInTransaction<T>(
-            Func<ITransaction, T> func,
+            Func<ITransactionContext, T> func,
             string? transactionName = null,
-            object? transactionContext = null);
+            ITransactionContext? transactionContext = null);
+
+        /// <summary>
+        /// Wraps a function in a transaction and executes it. Returns the result of the function execution.
+        /// </summary>
+        /// <param name="func">A function to be executed within a transaction.</param>
+        /// <param name="transactionName">Transaction name.</param>
+        /// <param name="transactionContext">
+        /// The context(document, database, etc.) on which the action is performed. If null, runs in the current target.
+        /// </param>
+        /// <typeparam name="T">The type of the function result.</typeparam>
+        T RunInTransaction<T>(
+            Func<ITransaction, ITransactionContext, T> func,
+            string? transactionName = null,
+            ITransactionContext? transactionContext = null);
 
         /// <summary>
         /// Wraps an action in a transaction group and executes it.
@@ -65,7 +71,10 @@
         /// <param name="transactionContext">
         /// The context(document, database, etc.) on which the action is performed. If null, runs in the current target.
         /// </param>
-        void RunInTransactionGroup(Action action, string transactionGroupName, object? transactionContext = null);
+        void RunInTransactionGroup(
+            Action<ITransactionContext> action,
+            string transactionGroupName,
+            ITransactionContext? transactionContext = null);
 
         /// <summary>
         /// Wraps an action in a transaction group and executes it. Returns the result of the function execution.
@@ -75,6 +84,9 @@
         /// <param name="transactionContext">
         /// The context(document, database, etc.) on which the action is performed. If null, runs in the current target.
         /// </param>
-        T RunInTransactionGroup<T>(Func<T> func, string transactionGroupName, object? transactionContext = null);
+        T RunInTransactionGroup<T>(
+            Func<ITransactionContext, T> func,
+            string transactionGroupName,
+            ITransactionContext? transactionContext = null);
     }
 }
