@@ -1,6 +1,5 @@
 ﻿namespace RxBim.Tools.Autocad
 {
-    using System;
     using Autodesk.AutoCAD.DatabaseServices;
 
     /// <summary>
@@ -8,7 +7,6 @@
     /// </summary>
     internal abstract class AutocadTransactionBase : ITransaction
     {
-        private readonly Transaction _transaction;
         private bool _isRolledBack;
 
         /// <summary>
@@ -17,11 +15,16 @@
         /// <param name="transaction"><see cref="Transaction"/> instance.</param>
         protected AutocadTransactionBase(Transaction transaction)
         {
-            _transaction = transaction;
+            Transaction = transaction;
         }
 
+        /// <summary>
+        /// Autocad transaction object.
+        /// </summary>
+        public Transaction Transaction { get; }
+
         /// <inheritdoc/>
-        public void Dispose() => _transaction.Dispose();
+        public void Dispose() => Transaction.Dispose();
 
         /// <inheritdoc />
         public void Start()
@@ -32,7 +35,7 @@
         /// <inheritdoc />
         public void RollBack()
         {
-            _transaction.Abort();
+            Transaction.Abort();
             _isRolledBack = true;
         }
 
@@ -40,15 +43,6 @@
         public bool IsRolledBack() => _isRolledBack;
 
         /// <inheritdoc />
-        public void Commit() => _transaction.Commit();
-
-        /// <inheritdoc />
-        public T GetCadTransaction<T>()
-            where T : class
-        {
-            return _transaction as T ??
-                   throw new InvalidCastException(
-                       $"Can't convert transaction type {_transaction.GetType().Name} to {typeof(T).Name}");
-        }
+        public void Commit() => Transaction.Commit();
     }
 }

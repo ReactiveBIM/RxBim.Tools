@@ -61,8 +61,8 @@
 
             return _transactionService.RunInTransaction(
                 () => AddSharedParameter(doc, definitionFile, sharedParameterInfo, fullMatch),
-                "Добавление параметров",
-                document);
+                "Adding parameters",
+                doc.ToTransactionContext());
         }
 
         /// <inheritdoc />

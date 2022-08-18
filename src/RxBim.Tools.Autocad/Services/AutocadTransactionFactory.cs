@@ -19,29 +19,27 @@
         }
 
         /// <inheritdoc />
-        public (ITransaction Transaction, ITransactionContext Context) CreateTransaction(
+        public ITransaction CreateTransaction(
             ITransactionContext? transactionContext = null,
             string? transactionName = null)
         {
-            var (context, transactionManager) = GetContextAndTransactionManager(transactionContext);
-            return (new AutocadTransaction(transactionManager.StartTransaction()), context);
+            var transactionManager = GetContextAndTransactionManager(transactionContext);
+            return new AutocadTransaction(transactionManager.StartTransaction());
         }
 
         /// <inheritdoc />
-        public (ITransactionGroup Group, ITransactionContext Context) CreateTransactionGroup(
+        public ITransactionGroup CreateTransactionGroup(
             ITransactionContext? transactionContext = null,
             string? transactionGroupName = null)
         {
-            var (context, transactionManager) = GetContextAndTransactionManager(transactionContext);
-            return (new AutocadTransactionGroup(transactionManager.StartTransaction()), context);
+            var transactionManager = GetContextAndTransactionManager(transactionContext);
+            return new AutocadTransactionGroup(transactionManager.StartTransaction());
         }
 
-        private (ITransactionContext Context, TransactionManager TransactionManager)
-            GetContextAndTransactionManager(ITransactionContext? transactionContext)
+        private TransactionManager GetContextAndTransactionManager(ITransactionContext? transactionContext)
         {
-            var context = transactionContext ?? new AutocadTransactionContext(_documentService.GetActiveDocument());
-            var transactionManager = context.GetTransactionManager();
-            return (context, transactionManager);
+            var context = transactionContext ?? _documentService.GetActiveDocument().ToTransactionContext();
+            return context.GetTransactionManager();
         }
     }
 }

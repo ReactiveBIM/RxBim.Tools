@@ -20,7 +20,7 @@
 
         /// <inheritdoc />
         public void RunInTransaction(
-            Action<ITransactionContext> action,
+            Action action,
             string? transactionName = null,
             ITransactionContext? transactionContext = null)
         {
@@ -29,7 +29,7 @@
 
         /// <inheritdoc />
         public void RunInTransaction(
-            Action<ITransaction, ITransactionContext> action,
+            Action<ITransaction> action,
             string? transactionName = null,
             ITransactionContext? transactionContext = null)
         {
@@ -38,41 +38,38 @@
 
         /// <inheritdoc />
         public T RunInTransaction<T>(
-            Func<ITransactionContext, T> func,
+            Func<T> func,
             string? transactionName = null,
             ITransactionContext? transactionContext = null)
         {
-            return RunInTransaction((_, context) => func(context), transactionName, transactionContext);
+            return RunInTransaction(_ => func(), transactionName, transactionContext);
         }
 
         /// <inheritdoc />
         public T RunInTransaction<T>(
-            Func<ITransaction, ITransactionContext, T> func,
+            Func<ITransaction, T> func,
             string? transactionName = null,
             ITransactionContext? transactionContext = null)
         {
-            var (transaction, context) = _transactionFactory.CreateTransaction(transactionContext, transactionName);
-            using (transaction)
+            using var transaction = _transactionFactory.CreateTransaction(transactionContext, transactionName);
+            try
             {
-                try
-                {
-                    transaction.Start();
-                    var result = func.Invoke(transaction, context);
-                    transaction.Commit();
-                    return result;
-                }
-                catch (Exception)
-                {
-                    if (!transaction.IsRolledBack())
-                        transaction.RollBack();
-                    throw;
-                }
+                transaction.Start();
+                var result = func.Invoke(transaction);
+                transaction.Commit();
+                return result;
+            }
+            catch (Exception)
+            {
+                if (!transaction.IsRolledBack())
+                    transaction.RollBack();
+                throw;
             }
         }
 
         /// <inheritdoc />
         public void RunInTransactionGroup(
-            Action<ITransactionContext> action,
+            Action action,
             string transactionGroupName,
             ITransactionContext? transactionContext = null)
         {
@@ -81,28 +78,24 @@
 
         /// <inheritdoc />
         public T RunInTransactionGroup<T>(
-            Func<ITransactionContext, T> func,
+            Func<T> func,
             string transactionGroupName,
             ITransactionContext? transactionContext = null)
         {
-            var (transactionGroup, context) =
+            using var transactionGroup =
                 _transactionFactory.CreateTransactionGroup(transactionContext, transactionGroupName);
-
-            using (transactionGroup)
+            try
             {
-                try
-                {
-                    transactionGroup.Start();
-                    var result = func.Invoke(context);
-                    transactionGroup.Assimilate();
-                    return result;
-                }
-                catch (Exception)
-                {
-                    if (!transactionGroup.IsRolledBack())
-                        transactionGroup.RollBack();
-                    throw;
-                }
+                transactionGroup.Start();
+                var result = func.Invoke();
+                transactionGroup.Assimilate();
+                return result;
+            }
+            catch (Exception)
+            {
+                if (!transactionGroup.IsRolledBack())
+                    transactionGroup.RollBack();
+                throw;
             }
         }
     }

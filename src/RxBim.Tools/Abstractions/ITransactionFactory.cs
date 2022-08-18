@@ -12,7 +12,7 @@
         /// The context(document, drawing database) on which the transaction is executed.
         /// </param>
         /// <param name="transactionName">Transaction name.</param>
-        (ITransaction Transaction, ITransactionContext Context) CreateTransaction(
+        ITransaction CreateTransaction(
             ITransactionContext? transactionContext = null,
             string? transactionName = null);
 
@@ -23,7 +23,7 @@
         /// The context(document, drawing database) on which the transaction group is executed.
         /// </param>
         /// <param name="transactionGroupName">Transaction group name.</param>
-        (ITransactionGroup Group, ITransactionContext Context) CreateTransactionGroup(
+        ITransactionGroup CreateTransactionGroup(
             ITransactionContext? transactionContext = null,
             string? transactionGroupName = null);
     }

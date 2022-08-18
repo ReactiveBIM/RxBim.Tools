@@ -151,6 +151,15 @@
         }
 
         /// <summary>
+        /// Returns <see cref="Document"/> wrapped to <see cref="ITransactionContext"/>.
+        /// </summary>
+        /// <param name="document"><see cref="Document"/> object.</param>
+        public static ITransactionContext ToTransactionContext(this Document document)
+        {
+            return new TransactionContext(document);
+        }
+
+        /// <summary>
         /// Получение списка идентификаторов категорий, имеющихся в проекте
         /// </summary>
         /// <param name="doc">Документ</param>

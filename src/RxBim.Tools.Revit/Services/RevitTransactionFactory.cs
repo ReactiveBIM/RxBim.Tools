@@ -22,7 +22,9 @@
         }
 
         /// <inheritdoc />
-        public ITransaction CreateTransaction(object? transactionContext = null, string? transactionName = null)
+        public ITransaction CreateTransaction(
+            ITransactionContext? transactionContext = null,
+            string? transactionName = null)
         {
             var revitDocument = GetRevitDocument(transactionContext);
             var transaction = new Transaction(revitDocument, transactionName ?? GetUniqueTransactionName());
@@ -30,9 +32,11 @@
         }
 
         /// <inheritdoc />
-        public ITransactionGroup CreateTransactionGroup(object? document = null, string? transactionGroupName = null)
+        public ITransactionGroup CreateTransactionGroup(
+            ITransactionContext? transactionContext = null,
+            string? transactionGroupName = null)
         {
-            var revitDocument = GetRevitDocument(document);
+            var revitDocument = GetRevitDocument(transactionContext);
             var transactionGroup =
                 new TransactionGroup(revitDocument, transactionGroupName ?? GetUniqueTransactionGroupName());
             return new RevitTransactionGroup(transactionGroup);
@@ -48,13 +52,12 @@
             return $"TransactionGroup_{Guid.NewGuid()}";
         }
 
-        private Document GetRevitDocument(object? document)
+        private Document GetRevitDocument(ITransactionContext? document)
         {
             return document is null
                 ? _application.ActiveUIDocument.Document
-                : document as Document ?? throw new ArgumentException(
-                    $"Incorrect type: {document.GetType().Name}. Must be a Revit document.",
-                    nameof(document));
+                : document.ContextObject as Document ??
+                  throw new ArgumentException("Must be a Revit document.", nameof(document.ContextObject));
         }
     }
 }

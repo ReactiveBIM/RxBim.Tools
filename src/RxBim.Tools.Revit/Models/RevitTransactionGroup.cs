@@ -5,45 +5,48 @@
     /// <inheritdoc />
     internal class RevitTransactionGroup : ITransactionGroup
     {
-        private readonly TransactionGroup _transactionGroup;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="RevitTransactionGroup"/> class.
         /// </summary>
         /// <param name="transactionGroup"><see cref="TransactionGroup"/> instance.</param>
         public RevitTransactionGroup(TransactionGroup transactionGroup)
         {
-            _transactionGroup = transactionGroup;
+            TransactionGroup = transactionGroup;
         }
+
+        /// <summary>
+        /// Revit transaction group.
+        /// </summary>
+        public TransactionGroup TransactionGroup { get; }
 
         /// <inheritdoc />
         public void Dispose()
         {
-            _transactionGroup.Dispose();
+            TransactionGroup.Dispose();
         }
 
         /// <inheritdoc />
         public void Start()
         {
-            _transactionGroup.Start();
+            TransactionGroup.Start();
         }
 
         /// <inheritdoc />
         public void RollBack()
         {
-            _transactionGroup.RollBack();
+            TransactionGroup.RollBack();
         }
 
         /// <inheritdoc />
         public bool IsRolledBack()
         {
-            return _transactionGroup.GetStatus() == TransactionStatus.RolledBack;
+            return TransactionGroup.GetStatus() == TransactionStatus.RolledBack;
         }
 
         /// <inheritdoc />
         public void Assimilate()
         {
-            _transactionGroup.Assimilate();
+            TransactionGroup.Assimilate();
         }
     }
 }

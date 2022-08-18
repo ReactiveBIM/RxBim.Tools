@@ -15,10 +15,10 @@
         /// <param name="action">An action to be executed within a transaction.</param>
         /// <param name="transactionName">Transaction name.</param>
         /// <param name="transactionContext">
-        /// The context(document, database, etc.) on which the action is performed. If null, runs in the current target.
+        ///     The context(document, database, etc.) on which the action is performed. If null, runs in the current target.
         /// </param>
         void RunInTransaction(
-            Action<ITransactionContext> action,
+            Action action,
             string? transactionName = null,
             ITransactionContext? transactionContext = null);
 
@@ -28,10 +28,10 @@
         /// <param name="action">An action to be executed within a transaction.</param>
         /// <param name="transactionName">Transaction name.</param>
         /// <param name="transactionContext">
-        /// The context(document, database, etc.) on which the action is performed. If null, runs in the current target.
+        ///     The context(document, database, etc.) on which the action is performed. If null, runs in the current target.
         /// </param>
         void RunInTransaction(
-            Action<ITransaction, ITransactionContext> action,
+            Action<ITransaction> action,
             string? transactionName = null,
             ITransactionContext? transactionContext = null);
 
@@ -41,11 +41,11 @@
         /// <param name="func">A function to be executed within a transaction.</param>
         /// <param name="transactionName">Transaction name.</param>
         /// <param name="transactionContext">
-        /// The context(document, database, etc.) on which the action is performed. If null, runs in the current target.
+        ///     The context(document, database, etc.) on which the action is performed. If null, runs in the current target.
         /// </param>
         /// <typeparam name="T">The type of the function result.</typeparam>
         T RunInTransaction<T>(
-            Func<ITransactionContext, T> func,
+            Func<T> func,
             string? transactionName = null,
             ITransactionContext? transactionContext = null);
 
@@ -55,11 +55,11 @@
         /// <param name="func">A function to be executed within a transaction.</param>
         /// <param name="transactionName">Transaction name.</param>
         /// <param name="transactionContext">
-        /// The context(document, database, etc.) on which the action is performed. If null, runs in the current target.
+        ///     The context(document, database, etc.) on which the action is performed. If null, runs in the current target.
         /// </param>
         /// <typeparam name="T">The type of the function result.</typeparam>
         T RunInTransaction<T>(
-            Func<ITransaction, ITransactionContext, T> func,
+            Func<ITransaction, T> func,
             string? transactionName = null,
             ITransactionContext? transactionContext = null);
 
@@ -69,10 +69,10 @@
         /// <param name="action">An action to be executed within a transaction group.</param>
         /// <param name="transactionGroupName">Transaction group name.</param>
         /// <param name="transactionContext">
-        /// The context(document, database, etc.) on which the action is performed. If null, runs in the current target.
+        ///     The context(document, database, etc.) on which the action is performed. If null, runs in the current target.
         /// </param>
         void RunInTransactionGroup(
-            Action<ITransactionContext> action,
+            Action action,
             string transactionGroupName,
             ITransactionContext? transactionContext = null);
 
@@ -82,10 +82,10 @@
         /// <param name="func">A function to be executed within a transaction group.</param>
         /// <param name="transactionGroupName">Transaction group name.</param>
         /// <param name="transactionContext">
-        /// The context(document, database, etc.) on which the action is performed. If null, runs in the current target.
+        ///     The context(document, database, etc.) on which the action is performed. If null, runs in the current target.
         /// </param>
         T RunInTransactionGroup<T>(
-            Func<ITransactionContext, T> func,
+            Func<T> func,
             string transactionGroupName,
             ITransactionContext? transactionContext = null);
     }
