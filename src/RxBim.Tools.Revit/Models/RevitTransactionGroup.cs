@@ -9,15 +9,20 @@
         /// Initializes a new instance of the <see cref="RevitTransactionGroup"/> class.
         /// </summary>
         /// <param name="transactionGroup"><see cref="TransactionGroup"/> instance.</param>
-        public RevitTransactionGroup(TransactionGroup transactionGroup)
+        /// <param name="context"><see cref="ITransactionContext"/> instance.</param>
+        public RevitTransactionGroup(TransactionGroup transactionGroup, ITransactionContext context)
         {
             TransactionGroup = transactionGroup;
+            Context = context;
         }
 
         /// <summary>
         /// Revit transaction group.
         /// </summary>
         public TransactionGroup TransactionGroup { get; }
+
+        /// <inheritdoc/>
+        public ITransactionContext Context { get; }
 
         /// <inheritdoc />
         public void Dispose()

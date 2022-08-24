@@ -28,43 +28,22 @@
                 return PluginResult.Cancelled;
 
             // Action with transaction param
-            transactionService.RunInTransaction(transaction =>
-            {
-                var cadTransaction = transaction.ToAcadTransaction();
-                circleService.AddCircle(database, center, radius, cadTransaction, 1); // 1 - red
-            });
+            transactionService.RunInTransaction(transaction => circleService.AddCircle(transaction, center, radius, 1));
 
-            // Action<T> with transaction param
-            transactionService.RunInTransaction(
-                transaction =>
-                {
-                    var cadTransaction = transaction.ToAcadTransaction();
-                    circleService.AddCircle(
-                        database,
-                        center.OffsetPoint(radius * 2, 0),
-                        radius,
-                        cadTransaction,
-                        2); // 2 - yellow
-                },
+            // Action with transaction param and context
+            transactionService.RunInTransaction(transaction => circleService.AddCircle(transaction,
+                    center.OffsetPoint(radius * 2, 0),
+                    radius,
+                    2),
                 transactionContext: database.ToTransactionContext());
 
-            // Func without transaction param
-            var id1 = transactionService.RunInTransaction(() =>
-                circleService.AddCircle(center.OffsetPoint(radius * 4, 0), radius, 3));
+            // Func<T> with transaction param
+            var id = transactionService.RunInTransaction(transaction => circleService.AddCircle(transaction,
+                center.OffsetPoint(radius * 6, 0),
+                radius,
+                4));
 
-            // Func<T> without transaction param
-            var id2 = transactionService.RunInTransaction(transaction =>
-            {
-                var cadTransaction = transaction.ToAcadTransaction();
-                return circleService.AddCircle(
-                    database,
-                    center.OffsetPoint(radius * 6, 0),
-                    radius,
-                    cadTransaction,
-                    4); // 4 - cyan
-            });
-
-            return id1.IsFullyValid() && id2.IsFullyValid() ? PluginResult.Succeeded : PluginResult.Failed;
+            return id.IsFullyValid() ? PluginResult.Succeeded : PluginResult.Failed;
         }
     }
 }

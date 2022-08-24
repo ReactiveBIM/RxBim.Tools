@@ -1,6 +1,5 @@
 ﻿namespace RxBim.Tools.Autocad
 {
-    using Autodesk.AutoCAD.DatabaseServices;
     using JetBrains.Annotations;
 
     /// <inheritdoc />
@@ -23,8 +22,9 @@
             ITransactionContext? transactionContext = null,
             string? transactionName = null)
         {
-            var transactionManager = GetContextAndTransactionManager(transactionContext);
-            return new AutocadTransaction(transactionManager.StartTransaction());
+            var context = GetContext(transactionContext);
+            var acadTransaction = context.ToDatabase().TransactionManager.StartTransaction();
+            return new AutocadTransaction(acadTransaction, context);
         }
 
         /// <inheritdoc />
@@ -32,14 +32,14 @@
             ITransactionContext? transactionContext = null,
             string? transactionGroupName = null)
         {
-            var transactionManager = GetContextAndTransactionManager(transactionContext);
-            return new AutocadTransactionGroup(transactionManager.StartTransaction());
+            var context = GetContext(transactionContext);
+            var acadTransaction = context.ToDatabase().TransactionManager.StartTransaction();
+            return new AutocadTransactionGroup(acadTransaction, context);
         }
 
-        private TransactionManager GetContextAndTransactionManager(ITransactionContext? transactionContext)
+        private ITransactionContext GetContext(ITransactionContext? transactionContext)
         {
-            var context = transactionContext ?? _documentService.GetActiveDocument().ToTransactionContext();
-            return context.GetTransactionManager();
+            return transactionContext ?? _documentService.GetActiveDocument().ToTransactionContext();
         }
     }
 }

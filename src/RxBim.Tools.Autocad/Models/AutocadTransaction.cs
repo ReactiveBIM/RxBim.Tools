@@ -7,12 +7,9 @@
     [UsedImplicitly]
     internal class AutocadTransaction : AutocadTransactionBase
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AutocadTransaction"/> class.
-        /// </summary>
-        /// <param name="transaction"><see cref="Transaction"/> instance.</param>
-        public AutocadTransaction(Transaction transaction)
-        : base(transaction)
+        /// <inheritdoc />
+        public AutocadTransaction(Transaction transaction, ITransactionContext context)
+        : base(transaction, context)
         {
         }
     }

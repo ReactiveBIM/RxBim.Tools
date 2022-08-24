@@ -9,17 +9,14 @@
     public class CircleService : ICircleService
     {
         private readonly Editor _editor;
-        private readonly Database _database;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CircleService"/> class.
         /// </summary>
         /// <param name="editor"><see cref="Editor"/> instance.</param>
-        /// <param name="database"><see cref="Database"/> instance.</param>
-        public CircleService(Editor editor, Database database)
+        public CircleService(Editor editor)
         {
             _editor = editor;
-            _database = database;
         }
 
         /// <inheritdoc />
@@ -53,30 +50,14 @@
 
         /// <inheritdoc />
         public ObjectId AddCircle(
-            Database database,
+            ITransaction transaction,
             Point3d center,
             double radius,
-            Transaction transaction,
             int colorIndex)
         {
             var circle = new Circle(center, Vector3d.ZAxis, radius);
             circle.ColorIndex = colorIndex;
-            var blockTableRecord = transaction.GetObjectAs<BlockTableRecord>(database.CurrentSpaceId, true);
-            var circleId = blockTableRecord.AppendEntity(circle);
-            transaction.AddNewlyCreatedDBObject(circle, true);
-            return circleId;
-        }
-
-        /// <inheritdoc />
-        public ObjectId AddCircle(Point3d center, double radius, int colorIndex)
-        {
-            var circle = new Circle(center, Vector3d.ZAxis, radius);
-            circle.ColorIndex = colorIndex;
-            var transaction = _database.TransactionManager.TopTransaction;
-            var blockTableRecord = transaction.GetObjectAs<BlockTableRecord>(_database.CurrentSpaceId, true);
-            var circleId = blockTableRecord.AppendEntity(circle);
-            transaction.AddNewlyCreatedDBObject(circle, true);
-            return circleId;
+            return transaction.AppendToCurrentSpace(circle);
         }
     }
 }

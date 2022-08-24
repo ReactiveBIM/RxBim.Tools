@@ -30,7 +30,13 @@
                 return entity.Layer;
             });
 
-            Application.ShowAlertDialog($"Object layer is '{layerName}'");
+            var layerColorIndex = transactionService.RunInTransaction(transaction =>
+            {
+                var entity = transaction.GetObjectAs<Entity>(entityId);
+                return entity.ColorIndex;
+            });
+
+            Application.ShowAlertDialog($"Object layer is '{layerName}', color is: {layerColorIndex}");
             return PluginResult.Succeeded;
         }
     }

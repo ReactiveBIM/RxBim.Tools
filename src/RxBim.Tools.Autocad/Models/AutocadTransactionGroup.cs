@@ -6,8 +6,8 @@
     internal class AutocadTransactionGroup : AutocadTransactionBase, ITransactionGroup
     {
         /// <inheritdoc />
-        public AutocadTransactionGroup(Transaction transaction)
-            : base(transaction)
+        public AutocadTransactionGroup(Transaction transaction, ITransactionContext context)
+            : base(transaction, context)
         {
         }
 

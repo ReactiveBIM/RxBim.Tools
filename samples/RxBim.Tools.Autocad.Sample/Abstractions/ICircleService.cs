@@ -18,19 +18,10 @@
         /// <summary>
         /// Adds a circle to current space.
         /// </summary>
-        /// <param name="database">Drawing database.</param>
-        /// <param name="center">Center of circle.</param>
-        /// <param name="radius">Radius of circle.</param>
         /// <param name="transaction">Transaction.</param>
-        /// <param name="colorIndex">Color index of circle.</param>
-        ObjectId AddCircle(Database database, Point3d center, double radius, Transaction transaction, int colorIndex);
-
-        /// <summary>
-        /// Adds a circle to current space.
-        /// </summary>
         /// <param name="center">Center of circle.</param>
         /// <param name="radius">Radius of circle.</param>
         /// <param name="colorIndex">Color index of circle.</param>
-        ObjectId AddCircle(Point3d center, double radius, int colorIndex);
+        ObjectId AddCircle(ITransaction transaction, Point3d center, double radius, int colorIndex);
     }
 }

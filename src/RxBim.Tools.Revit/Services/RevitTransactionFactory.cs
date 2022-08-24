@@ -26,9 +26,9 @@
             ITransactionContext? transactionContext = null,
             string? transactionName = null)
         {
-            var revitDocument = GetRevitDocument(transactionContext);
-            var transaction = new Transaction(revitDocument, transactionName ?? GetUniqueTransactionName());
-            return new RevitTransaction(transaction);
+            var document = GetRevitDocument(transactionContext);
+            var revitTransaction = new Transaction(document, transactionName ?? GetUniqueTransactionName());
+            return new RevitTransaction(revitTransaction, transactionContext ?? new TransactionContext(document));
         }
 
         /// <inheritdoc />
@@ -39,7 +39,8 @@
             var revitDocument = GetRevitDocument(transactionContext);
             var transactionGroup =
                 new TransactionGroup(revitDocument, transactionGroupName ?? GetUniqueTransactionGroupName());
-            return new RevitTransactionGroup(transactionGroup);
+            return new RevitTransactionGroup(transactionGroup,
+                transactionContext ?? new TransactionContext(revitDocument));
         }
 
         private string GetUniqueTransactionName()
@@ -52,12 +53,12 @@
             return $"TransactionGroup_{Guid.NewGuid()}";
         }
 
-        private Document GetRevitDocument(ITransactionContext? document)
+        private Document GetRevitDocument(ITransactionContext? context)
         {
-            return document is null
+            return context is null
                 ? _application.ActiveUIDocument.Document
-                : document.ContextObject as Document ??
-                  throw new ArgumentException("Must be a Revit document.", nameof(document.ContextObject));
+                : context.ContextObject as Document ??
+                  throw new ArgumentException("Must be a Revit document.", nameof(context.ContextObject));
         }
     }
 }
