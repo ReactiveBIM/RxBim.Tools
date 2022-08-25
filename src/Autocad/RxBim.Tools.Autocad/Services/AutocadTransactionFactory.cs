@@ -20,7 +20,7 @@
         /// <inheritdoc />
         public ITransaction CreateTransaction(
             ITransactionContext? transactionContext = null,
-            string? transactionName = null)
+            string? name = null)
         {
             var context = GetContext(transactionContext);
             var acadTransaction = context.ToDatabase().TransactionManager.StartTransaction();
@@ -30,7 +30,7 @@
         /// <inheritdoc />
         public ITransactionGroup CreateTransactionGroup(
             ITransactionContext? transactionContext = null,
-            string? transactionGroupName = null)
+            string? name = null)
         {
             var context = GetContext(transactionContext);
             var acadTransaction = context.ToDatabase().TransactionManager.StartTransaction();

@@ -8,11 +8,6 @@
     public interface ITransactionBase : IDisposable
     {
         /// <summary>
-        /// Transaction context.
-        /// </summary>
-        ITransactionContext Context { get; }
-
-        /// <summary>
         /// Starts.
         /// </summary>
         void Start();

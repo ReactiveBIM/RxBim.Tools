@@ -35,7 +35,7 @@
                     center.OffsetPoint(radius * 2, 0),
                     radius,
                     2),
-                transactionContext: database.ToTransactionContext());
+                context: database.ToTransactionContext());
 
             // Func<T> with transaction param
             var id = transactionService.RunInTransaction(transaction => circleService.AddCircle(transaction,

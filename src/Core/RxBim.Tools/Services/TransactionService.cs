@@ -19,43 +19,43 @@
         }
 
         /// <inheritdoc />
-        public void RunInTransaction(
-            Action action,
-            string? transactionName = null,
-            ITransactionContext? transactionContext = null)
+        public void RunInTransaction<T>(Action<T> action, string? name = null, T? context = null)
+            where T : class, ITransactionContext
         {
-            RunInTransaction(action.ToFunc(), transactionName, transactionContext);
+            RunInTransaction(action.ToFunc(), name, context);
         }
 
         /// <inheritdoc />
-        public void RunInTransaction(
-            Action<ITransaction> action,
-            string? transactionName = null,
-            ITransactionContext? transactionContext = null)
+        public void RunInTransaction<T>(Action<T, ITransaction> action, string? name = null, T? context = null)
+            where T : class, ITransactionContext
         {
-            RunInTransaction(action.ToFunc(), transactionName, transactionContext);
+            RunInTransaction(action.ToFunc(), name, context);
         }
 
         /// <inheritdoc />
-        public T RunInTransaction<T>(
-            Func<T> func,
-            string? transactionName = null,
-            ITransactionContext? transactionContext = null)
+        public TRes RunInTransaction<TContext, TRes>(
+            Func<TContext, TRes> func,
+            string? name = null,
+            TContext? context = null)
+            where TContext : class, ITransactionContext
         {
-            return RunInTransaction(_ => func(), transactionName, transactionContext);
+            var transactionContext = context ?? _transactionFactory.GetDefaultContext<TContext>();
+            return RunInTransaction((_, _) => func(transactionContext), name, transactionContext);
         }
 
         /// <inheritdoc />
-        public T RunInTransaction<T>(
-            Func<ITransaction, T> func,
-            string? transactionName = null,
-            ITransactionContext? transactionContext = null)
+        public TRes RunInTransaction<TContext, TRes>(
+            Func<TContext, ITransaction, TRes> func,
+            string? name = null,
+            TContext? context = null)
+            where TContext : class, ITransactionContext
         {
-            using var transaction = _transactionFactory.CreateTransaction(transactionContext, transactionName);
+            var transactionContext = context ?? _transactionFactory.GetDefaultContext<TContext>();
+            using var transaction = _transactionFactory.CreateTransaction(transactionContext, name);
             try
             {
                 transaction.Start();
-                var result = func.Invoke(transaction);
+                var result = func.Invoke(transactionContext, transaction);
                 transaction.Commit();
                 return result;
             }
@@ -68,26 +68,40 @@
         }
 
         /// <inheritdoc />
-        public void RunInTransactionGroup(
-            Action action,
-            string transactionGroupName,
-            ITransactionContext? transactionContext = null)
+        public void RunInTransactionGroup<T>(
+            Action<T> action,
+            string name,
+            T? transactionContext = null)
+            where T : class, ITransactionContext
         {
-            RunInTransactionGroup(action.ToFunc(), transactionGroupName, transactionContext);
+            RunInTransactionGroup(action.ToFunc(), name, transactionContext);
         }
 
         /// <inheritdoc />
-        public T RunInTransactionGroup<T>(
-            Func<T> func,
-            string transactionGroupName,
-            ITransactionContext? transactionContext = null)
+        public TRes RunInTransactionGroup<TContext, TRes>(
+            Func<TContext, TRes> func,
+            string name,
+            TContext? context = null)
+            where TContext : class, ITransactionContext
         {
+            var transactionContext = context ?? _transactionFactory.GetDefaultContext<TContext>();
+            return RunInTransactionGroup((_, _) => func(transactionContext), name, transactionContext);
+        }
+
+        /// <inheritdoc />
+        public TRes RunInTransactionGroup<TContext, TRes>(
+            Func<TContext, ITransactionGroup, TRes> func,
+            string name,
+            TContext? context = null)
+            where TContext : class, ITransactionContext
+        {
+            var transactionContext = _transactionFactory.GetDefaultContext<TContext>();
             using var transactionGroup =
-                _transactionFactory.CreateTransactionGroup(transactionContext, transactionGroupName);
+                _transactionFactory.CreateTransactionGroup(transactionContext, name);
             try
             {
                 transactionGroup.Start();
-                var result = func.Invoke();
+                var result = func.Invoke(transactionContext, transactionGroup);
                 transactionGroup.Assimilate();
                 return result;
             }

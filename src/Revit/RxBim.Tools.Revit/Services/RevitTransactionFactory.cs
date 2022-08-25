@@ -24,21 +24,21 @@
         /// <inheritdoc />
         public ITransaction CreateTransaction(
             ITransactionContext? transactionContext = null,
-            string? transactionName = null)
+            string? name = null)
         {
             var document = GetRevitDocument(transactionContext);
-            var revitTransaction = new Transaction(document, transactionName ?? GetUniqueTransactionName());
+            var revitTransaction = new Transaction(document, name ?? GetUniqueTransactionName());
             return new RevitTransaction(revitTransaction, transactionContext ?? new TransactionContext(document));
         }
 
         /// <inheritdoc />
         public ITransactionGroup CreateTransactionGroup(
             ITransactionContext? transactionContext = null,
-            string? transactionGroupName = null)
+            string? name = null)
         {
             var revitDocument = GetRevitDocument(transactionContext);
             var transactionGroup =
-                new TransactionGroup(revitDocument, transactionGroupName ?? GetUniqueTransactionGroupName());
+                new TransactionGroup(revitDocument, name ?? GetUniqueTransactionGroupName());
             return new RevitTransactionGroup(transactionGroup,
                 transactionContext ?? new TransactionContext(revitDocument));
         }
