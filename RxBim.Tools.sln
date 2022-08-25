@@ -69,6 +69,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.TableBuilder.Revit", "src\Revit\RxBim.Tools.TableBuilder.Revit\RxBim.Tools.TableBuilder.Revit.csproj", "{F1303651-BD79-4949-94A2-2AD9ACF532F3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{5FDD1C3F-41CC-488C-886A-22D5FEBBA1CD}"
+	ProjectSection(SolutionItems) = preProject
+		src\Core\Directory.Build.Props = src\Core\Directory.Build.Props
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools", "src\Core\RxBim.Tools\RxBim.Tools.csproj", "{49AF6550-45C6-4CE6-9D0B-799A9A79FEC6}"
 EndProject
