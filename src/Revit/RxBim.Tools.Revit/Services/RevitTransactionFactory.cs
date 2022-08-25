@@ -3,6 +3,8 @@
     using System;
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
+    using Di;
+    using Extensions;
     using JetBrains.Annotations;
     using Models;
 
@@ -10,37 +12,41 @@
     [UsedImplicitly]
     internal class RevitTransactionFactory : ITransactionFactory
     {
-        private readonly UIApplication _application;
+        private readonly IServiceLocator _locator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RevitTransactionFactory"/> class.
         /// </summary>
         /// <param name="application"><see cref="UIApplication"/> instance.</param>
-        public RevitTransactionFactory(UIApplication application)
+        /// <param name="locator"><see cref="IServiceLocator"/> instance.</param>
+        public RevitTransactionFactory(UIApplication application, IServiceLocator locator)
         {
-            _application = application;
+            _locator = locator;
         }
 
         /// <inheritdoc />
-        public ITransaction CreateTransaction(
-            ITransactionContext? transactionContext = null,
-            string? name = null)
+        public ITransaction CreateTransaction<T>(T context, string? name = null)
+            where T : class, ITransactionContext
         {
-            var document = GetRevitDocument(transactionContext);
-            var revitTransaction = new Transaction(document, name ?? GetUniqueTransactionName());
-            return new RevitTransaction(revitTransaction, transactionContext ?? new TransactionContext(document));
+            var revitTransaction = new Transaction(context.GetDocument(), name ?? GetUniqueTransactionName());
+            return new RevitTransaction(revitTransaction);
         }
 
         /// <inheritdoc />
-        public ITransactionGroup CreateTransactionGroup(
-            ITransactionContext? transactionContext = null,
-            string? name = null)
+        public ITransactionGroup CreateTransactionGroup<T>(T context, string? name = null)
+            where T : class, ITransactionContext
         {
-            var revitDocument = GetRevitDocument(transactionContext);
             var transactionGroup =
-                new TransactionGroup(revitDocument, name ?? GetUniqueTransactionGroupName());
-            return new RevitTransactionGroup(transactionGroup,
-                transactionContext ?? new TransactionContext(revitDocument));
+                new TransactionGroup(context.GetDocument(), name ?? GetUniqueTransactionGroupName());
+            return new RevitTransactionGroup(transactionGroup);
+        }
+
+        /// <inheritdoc />
+        public T GetDefaultContext<T>()
+            where T : class, ITransactionContext
+        {
+            var service = _locator.GetService<ITransactionContextService<T>>();
+            return service.GetDefaultContext();
         }
 
         private string GetUniqueTransactionName()
@@ -51,14 +57,6 @@
         private string GetUniqueTransactionGroupName()
         {
             return $"TransactionGroup_{Guid.NewGuid()}";
-        }
-
-        private Document GetRevitDocument(ITransactionContext? context)
-        {
-            return context is null
-                ? _application.ActiveUIDocument.Document
-                : context.ContextObject as Document ??
-                  throw new ArgumentException("Must be a Revit document.", nameof(context.ContextObject));
         }
     }
 }

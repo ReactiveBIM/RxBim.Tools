@@ -1,45 +1,46 @@
 ﻿namespace RxBim.Tools.Autocad
 {
+    using Di;
     using JetBrains.Annotations;
 
     /// <inheritdoc />
     [UsedImplicitly]
     internal class AutocadTransactionFactory : ITransactionFactory
     {
-        private readonly IDocumentService _documentService;
+        private readonly IServiceLocator _locator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutocadTransactionFactory"/> class.
         /// </summary>
         /// <param name="documentService"><see cref="IDocumentService"/> instance.</param>
-        public AutocadTransactionFactory(IDocumentService documentService)
+        /// <param name="locator"><see cref="IServiceLocator"/> instance.</param>
+        public AutocadTransactionFactory(IDocumentService documentService, IServiceLocator locator)
         {
-            _documentService = documentService;
+            _locator = locator;
         }
 
         /// <inheritdoc />
-        public ITransaction CreateTransaction(
-            ITransactionContext? transactionContext = null,
-            string? name = null)
+        public ITransaction CreateTransaction<T>(T context, string? name = null)
+            where T : class, ITransactionContext
         {
-            var context = GetContext(transactionContext);
-            var acadTransaction = context.ToDatabase().TransactionManager.StartTransaction();
-            return new AutocadTransaction(acadTransaction, context);
+            var acadTransaction = context.GetTransactionManager().StartTransaction();
+            return new AutocadTransaction(acadTransaction);
         }
 
         /// <inheritdoc />
-        public ITransactionGroup CreateTransactionGroup(
-            ITransactionContext? transactionContext = null,
-            string? name = null)
+        public ITransactionGroup CreateTransactionGroup<T>(T context, string? name = null)
+            where T : class, ITransactionContext
         {
-            var context = GetContext(transactionContext);
-            var acadTransaction = context.ToDatabase().TransactionManager.StartTransaction();
+            var acadTransaction = context.GetTransactionManager().StartTransaction();
             return new AutocadTransactionGroup(acadTransaction, context);
         }
 
-        private ITransactionContext GetContext(ITransactionContext? transactionContext)
+        /// <inheritdoc />
+        public T GetDefaultContext<T>()
+            where T : class, ITransactionContext
         {
-            return transactionContext ?? _documentService.GetActiveDocument().ToTransactionContext();
+            var transactionContextFactory = _locator.GetService<ITransactionContextService<T>>();
+            return transactionContextFactory.GetDefaultContext();
         }
     }
 }

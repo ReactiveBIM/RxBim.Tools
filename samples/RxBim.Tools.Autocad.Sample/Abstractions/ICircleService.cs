@@ -18,10 +18,16 @@
         /// <summary>
         /// Adds a circle to current space.
         /// </summary>
+        /// <param name="context">Transaction context.</param>
         /// <param name="transaction">Transaction.</param>
         /// <param name="center">Center of circle.</param>
         /// <param name="radius">Radius of circle.</param>
         /// <param name="colorIndex">Color index of circle.</param>
-        ObjectId AddCircle(ITransaction transaction, Point3d center, double radius, int colorIndex);
+        ObjectId AddCircle(
+            ITransactionContext context,
+            ITransaction transaction,
+            Point3d center,
+            double radius,
+            int colorIndex);
     }
 }

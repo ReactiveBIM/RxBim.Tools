@@ -13,20 +13,15 @@
         /// Initializes a new instance of the <see cref="AutocadTransactionBase"/> class.
         /// </summary>
         /// <param name="transaction"><see cref="Transaction"/> instance.</param>
-        /// <param name="context"><see cref="ITransactionContext"/> instance.</param>
-        protected AutocadTransactionBase(Transaction transaction, ITransactionContext context)
+        protected AutocadTransactionBase(Transaction transaction)
         {
             Transaction = transaction;
-            Context = context;
         }
 
         /// <summary>
         /// Autocad transaction object.
         /// </summary>
         public Transaction Transaction { get; }
-
-        /// <inheritdoc />
-        public ITransactionContext Context { get; }
 
         /// <inheritdoc/>
         public void Dispose() => Transaction.Dispose();

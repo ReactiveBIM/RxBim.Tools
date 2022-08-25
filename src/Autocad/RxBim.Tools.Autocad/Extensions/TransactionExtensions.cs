@@ -11,11 +11,12 @@
         /// Appends new <see cref="Entity"/> to current space.
         /// </summary>
         /// <param name="transaction"><see cref="ITransaction"/> object.</param>
+        /// <param name="context"><see cref="ITransactionContext"/> object.</param>
         /// <param name="entity">New entity.</param>
-        public static ObjectId AppendToCurrentSpace(this ITransaction transaction, Entity entity)
+        public static ObjectId AppendToCurrentSpace(this ITransaction transaction, ITransactionContext context, Entity entity)
         {
             var acadTransaction = transaction.ToAcadTransaction();
-            var database = transaction.Context.ToDatabase();
+            var database = context.GetDatabase();
             var blockTableRecord = acadTransaction.GetObjectAs<BlockTableRecord>(database.CurrentSpaceId, true);
             var id = blockTableRecord.AppendEntity(entity);
             acadTransaction.AddNewlyCreatedDBObject(entity, true);

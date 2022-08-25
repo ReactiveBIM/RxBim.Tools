@@ -78,6 +78,13 @@
         }
 
         /// <inheritdoc />
+        public void RunInTransactionGroup<T>(Action<T, ITransactionGroup> action, string name, T? context = default(T?))
+            where T : class, ITransactionContext
+        {
+            RunInTransactionGroup(action.ToFunc(), name, context);
+        }
+
+        /// <inheritdoc />
         public TRes RunInTransactionGroup<TContext, TRes>(
             Func<TContext, TRes> func,
             string name,

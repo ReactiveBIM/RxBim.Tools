@@ -8,8 +8,8 @@
     internal class AutocadTransaction : AutocadTransactionBase
     {
         /// <inheritdoc />
-        public AutocadTransaction(Transaction transaction, ITransactionContext context)
-        : base(transaction, context)
+        public AutocadTransaction(Transaction transaction)
+        : base(transaction)
         {
         }
     }

@@ -20,14 +20,5 @@
             using var txtStylesTable = db.TextStyleTableId.OpenAs<TextStyleTable>();
             return txtStylesTable.Has(textStyleName) ? txtStylesTable[textStyleName] : db.Textstyle;
         }
-
-        /// <summary>
-        /// Returns <see cref="Database"/> wrapped to <see cref="ITransactionContext"/>.
-        /// </summary>
-        /// <param name="database"><see cref="Database"/> object.</param>
-        public static ITransactionContext ToTransactionContext(this Database database)
-        {
-            return new TransactionContext(database);
-        }
     }
 }

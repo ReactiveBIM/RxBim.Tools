@@ -18,6 +18,8 @@
             container.AddSingleton<ICommandLineService, CommandLineService>();
             container.AddSingleton<IElementsDisplay, ElementsDisplayService>();
             container.AddSingleton<IProblemElementsStorage, ProblemElementsStorage>();
+            container.AddSingleton<ITransactionContextService<DatabaseContext>, DatabaseContextService>();
+            container.AddSingleton<ITransactionContextService<DocumentContext>, DocumentContextService>();
             container.AddTransactionServices<AutocadTransactionFactory>();
             return container;
         }

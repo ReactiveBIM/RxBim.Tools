@@ -3,6 +3,7 @@
     using Abstractions;
     using Collectors;
     using Di;
+    using Models;
     using Services;
 
     /// <summary>
@@ -23,6 +24,7 @@
             container.AddSingleton<ISharedParameterService, SharedParameterService>();
             container.AddSingleton<IElementsCollector, ScopedElementsCollector>();
             container.AddSingleton<IScopedElementsCollector, ScopedElementsCollector>();
+            container.AddSingleton<ITransactionContextService<DocumentContext>, DocumentContextService>();
             container.AddTransactionServices<RevitTransactionFactory>();
             container.AddInstance(new RevitTask());
         }

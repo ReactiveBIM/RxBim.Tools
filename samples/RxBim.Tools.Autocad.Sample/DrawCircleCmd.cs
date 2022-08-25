@@ -28,20 +28,24 @@
                 return PluginResult.Cancelled;
 
             // Action with transaction param
-            transactionService.RunInTransaction(transaction => circleService.AddCircle(transaction, center, radius, 1));
+            transactionService.RunInTransaction<DatabaseContext>((context, transaction) =>
+                circleService.AddCircle(context, transaction, center, radius, 1));
 
             // Action with transaction param and context
-            transactionService.RunInTransaction(transaction => circleService.AddCircle(transaction,
+            transactionService.RunInTransaction((context, transaction) => circleService.AddCircle(context,
+                    transaction,
                     center.OffsetPoint(radius * 2, 0),
                     radius,
                     2),
-                context: database.ToTransactionContext());
+                context: new DatabaseContext(database));
 
             // Func<T> with transaction param
-            var id = transactionService.RunInTransaction(transaction => circleService.AddCircle(transaction,
-                center.OffsetPoint(radius * 6, 0),
-                radius,
-                4));
+            var id = transactionService.RunInTransaction<DatabaseContext, ObjectId>((context, transaction) =>
+                circleService.AddCircle(context,
+                    transaction,
+                    center.OffsetPoint(radius * 6, 0),
+                    radius,
+                    4));
 
             return id.IsFullyValid() ? PluginResult.Succeeded : PluginResult.Failed;
         }

@@ -82,7 +82,7 @@
                     SpecificationBoldLineId = 571482
                 };
 
-                return _transactionService.RunInTransactionGroup(() =>
+                return _transactionService.RunInTransactionGroup(_ =>
                     {
                         return DeleteViewScheduleIfExists(name)
                             .Map(() => _tableConverter.Convert(table, parameters))

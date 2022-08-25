@@ -50,6 +50,7 @@
 
         /// <inheritdoc />
         public ObjectId AddCircle(
+            ITransactionContext context,
             ITransaction transaction,
             Point3d center,
             double radius,
@@ -57,7 +58,7 @@
         {
             var circle = new Circle(center, Vector3d.ZAxis, radius);
             circle.ColorIndex = colorIndex;
-            return transaction.AppendToCurrentSpace(circle);
+            return transaction.AppendToCurrentSpace(context, circle);
         }
     }
 }

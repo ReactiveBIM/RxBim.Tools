@@ -7,7 +7,7 @@
     {
         /// <inheritdoc />
         public AutocadTransactionGroup(Transaction transaction, ITransactionContext context)
-            : base(transaction, context)
+            : base(transaction)
         {
         }
 
