@@ -1,7 +1,6 @@
 ﻿namespace RxBim.Command.TableBuilder.Autocad.Sample.Commands
 {
     using System.Collections.Generic;
-    using System.Linq;
     using Abstractions;
     using Autodesk.AutoCAD.ApplicationServices;
     using Autodesk.AutoCAD.DatabaseServices;

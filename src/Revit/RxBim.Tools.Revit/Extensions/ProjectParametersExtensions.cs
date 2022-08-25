@@ -4,7 +4,6 @@
     using System.IO;
     using System.Linq;
     using Autodesk.Revit.DB;
-    using Autodesk.Revit.UI;
 
     /// <summary>
     /// Расширения для параметров проекта
