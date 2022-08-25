@@ -12,6 +12,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\RxBim.Tools.TableBuilder.Excel\RxBim.Tools.TableBuilder.Excel.csproj" />
+    <ProjectReference Include="..\..\src\Excel\RxBim.Tools.TableBuilder.Excel\RxBim.Tools.TableBuilder.Excel.csproj" />
   </ItemGroup>  
 </Project>

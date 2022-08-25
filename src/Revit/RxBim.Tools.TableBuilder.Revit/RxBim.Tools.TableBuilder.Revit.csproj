@@ -20,7 +20,7 @@
     
     <ItemGroup>
         <ProjectReference Include="..\RxBim.Tools.Revit\RxBim.Tools.Revit.csproj" />
-        <ProjectReference Include="..\RxBim.Tools.TableBuilder\RxBim.Tools.TableBuilder.csproj" />
+        <ProjectReference Include="..\..\Core\RxBim.Tools.TableBuilder\RxBim.Tools.TableBuilder.csproj" />
     </ItemGroup>
 
     <PropertyGroup>

@@ -11,8 +11,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\RxBim.Tools.Autocad\RxBim.Tools.Autocad.csproj" />
-      <ProjectReference Include="..\..\src\RxBim.Tools\RxBim.Tools.csproj" />
+      <ProjectReference Include="..\..\src\Autocad\RxBim.Tools.Autocad\RxBim.Tools.Autocad.csproj" />
+      <ProjectReference Include="..\..\src\Core\RxBim.Tools\RxBim.Tools.csproj" />
     </ItemGroup>
 
 </Project>

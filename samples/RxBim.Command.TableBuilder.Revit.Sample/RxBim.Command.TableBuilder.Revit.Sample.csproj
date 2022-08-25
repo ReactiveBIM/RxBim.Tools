@@ -11,7 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\RxBim.Tools.TableBuilder.Revit\RxBim.Tools.TableBuilder.Revit.csproj" />
+      <ProjectReference Include="..\..\src\Revit\RxBim.Tools.TableBuilder.Revit\RxBim.Tools.TableBuilder.Revit.csproj" />
     </ItemGroup>
 
 </Project>

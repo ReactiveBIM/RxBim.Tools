@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\RxBim.Tools.Revit\RxBim.Tools.Revit.csproj" />
+    <ProjectReference Include="..\..\src\Revit\RxBim.Tools.Revit\RxBim.Tools.Revit.csproj" />
   </ItemGroup>
 
   <ItemGroup>
