@@ -2,18 +2,8 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <Nullable>enable</Nullable>
-        <RootNamespace>RxBim.Tools</RootNamespace>
+        <UseDi>true</UseDi>
     </PropertyGroup>
-
-    <ItemGroup>
-      <PackageReference Include="RxBim.Di" Version="1.1.0-dev005" />
-      <PackageReference Update="StyleCop.Analyzers" Version="1.2.0-beta.435">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
-      <PackageReference Remove="JetBrains.Annotations" />
-    </ItemGroup>
 
     <PropertyGroup>
         <Description>RxBim Tools Library</Description>

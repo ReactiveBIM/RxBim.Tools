@@ -1,26 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net472</TargetFramework>
-        <PlatformTarget>x64</PlatformTarget>
-        <AssemblyName>$(MSBuildProjectName).$(Version)</AssemblyName>
-        <Nullable>enable</Nullable>
         <RootNamespace>RxBim.Tools.TableBuilder</RootNamespace>
+        <UseDi>true</UseDi>
+        <UseWpf>true</UseWpf>
     </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="AutoCAD2019.Base" Version="1.0.3" ExcludeAssets="build; runtime" />
-        <PackageReference Include="RxBim.Di" Version="1.1.0-dev005" />
-        
-        <Reference Include="PresentationCore" />
-        
-        <PackageReference Update="JetBrains.Annotations" Version="2022.1.0" />
-        
-        <PackageReference Update="StyleCop.Analyzers" Version="1.2.0-beta.435">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-    </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\RxBim.Tools.Autocad\RxBim.Tools.Autocad.csproj" />

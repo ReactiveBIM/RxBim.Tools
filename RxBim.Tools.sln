@@ -13,6 +13,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RxBim.Tools.TableBuilder.Tests", "tests\RxBim.Tools.TableBuilder.Tests\RxBim.Tools.TableBuilder.Tests.csproj", "{4FE437B4-01EA-4D30-A530-2FD399CC8CF7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5339A0F1-1884-4682-BFD2-DE050B2E5D69}"
+	ProjectSection(SolutionItems) = preProject
+		src\Directory.Build.Props = src\Directory.Build.Props
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionFolder", "{AE4BB821-54AC-4573-BD68-5BE1C59D5D45}"
 	ProjectSection(SolutionItems) = preProject
@@ -42,6 +45,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.Autocad.Sample", "samples\RxBim.Tools.Autocad.Sample\RxBim.Tools.Autocad.Sample.csproj", "{C97FD9AF-9958-4235-BDB7-E9990295A822}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Autocad", "Autocad", "{52908352-0197-4C36-B128-0F2B31295257}"
+	ProjectSection(SolutionItems) = preProject
+		src\Autocad\Directory.Build.Props = src\Autocad\Directory.Build.Props
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.Autocad", "src\Autocad\RxBim.Tools.Autocad\RxBim.Tools.Autocad.csproj", "{8896AF9F-FDD6-4F2C-BEBF-6B871DDEF857}"
 EndProject
@@ -54,6 +60,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.TableBuilder.Excel", "src\Excel\RxBim.Tools.TableBuilder.Excel\RxBim.Tools.TableBuilder.Excel.csproj", "{D2C09CFF-9495-48E7-B7F4-9C7A1173EE64}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Revit", "Revit", "{25749E1A-2F5D-426C-8195-3AD7E649362B}"
+	ProjectSection(SolutionItems) = preProject
+		src\Revit\Directory.Build.Props = src\Revit\Directory.Build.Props
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.Revit", "src\Revit\RxBim.Tools.Revit\RxBim.Tools.Revit.csproj", "{899EF790-00C9-4B3F-B4D7-713E4C5339C2}"
 EndProject
