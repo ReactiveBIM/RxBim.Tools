@@ -24,13 +24,13 @@
             if (!entityService.GetEntity(out var entityId))
                 return PluginResult.Cancelled;
 
-            var layerName = transactionService.RunInTransaction<DatabaseContext, string>(_ =>
+            var layerName = transactionService.RunInDocumentTransaction(() =>
             {
                 var entity = entityId.GetObjectAs<Entity>();
                 return entity.Layer;
             });
 
-            var layerColorIndex = transactionService.RunInTransaction<DatabaseContext, int>((_, transaction) =>
+            var layerColorIndex = transactionService.RunInDatabaseTransaction(transaction =>
             {
                 var entity = transaction.GetObjectAs<Entity>(entityId);
                 return entity.ColorIndex;
