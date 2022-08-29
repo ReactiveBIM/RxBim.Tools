@@ -9,7 +9,6 @@
     /// Command.
     /// </summary>
     [RxBimCommandClass("RxBimToolsSampleDrawCircle")]
-    [PublicAPI]
     public class DrawCircleCmd : RxBimCommand
     {
         /// <summary>
@@ -18,6 +17,7 @@
         /// <param name="transactionService"><see cref="ITransactionService"/> instance.</param>
         /// <param name="transactionContextService"><see cref="ITransactionContextService{T}"/> instance.</param>
         /// <param name="circleService"><see cref="ICircleService"/> instance.</param>
+        [UsedImplicitly]
         public PluginResult ExecuteCommand(
             ITransactionService transactionService,
             ITransactionContextService<DatabaseContext> transactionContextService,

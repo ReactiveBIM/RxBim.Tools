@@ -11,7 +11,6 @@
     /// Command.
     /// </summary>
     [RxBimCommandClass("RxBimToolsSampleGetLayer")]
-    [PublicAPI]
     public class GetLayerCmd : RxBimCommand
     {
         /// <summary>
@@ -19,6 +18,7 @@
         /// </summary>
         /// <param name="entityService"><see cref="IEntityService"/> instance.</param>
         /// <param name="transactionService"><see cref="ITransactionService"/> instance.</param>
+        [UsedImplicitly]
         public PluginResult ExecuteCommand(IEntityService entityService, ITransactionService transactionService)
         {
             if (!entityService.GetEntity(out var entityId))

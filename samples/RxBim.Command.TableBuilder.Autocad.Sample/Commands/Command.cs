@@ -7,6 +7,7 @@
     using Autodesk.AutoCAD.EditorInput;
     using Autodesk.AutoCAD.Runtime;
     using CSharpFunctionalExtensions;
+    using JetBrains.Annotations;
     using RxBim.Command.Autocad;
     using Shared;
     using Tools.Autocad;
@@ -29,6 +30,7 @@
         /// <param name="selectionService"><see cref="IObjectsSelectionService"/> object.</param>
         /// <param name="commandLineService"><see cref="ICommandLineService"/> object.</param>
         /// <param name="doc"><see cref="Document"/> object.</param>>
+        [UsedImplicitly]
         public PluginResult ExecuteCommand(
             ITableDataService tableDataService,
             IAutocadTableConverter tableConverter,
