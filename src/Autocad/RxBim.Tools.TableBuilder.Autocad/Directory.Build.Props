@@ -1,7 +1,7 @@
 ﻿<Project>
     
     <PropertyGroup>
-        <ApiVersion>1.0.0-dev02</ApiVersion>
+        <ApiVersion>1.1.0-dev001</ApiVersion>
         <ReleaseNotes>Add IDocumentService. CommandLineService use IDocumentService.</ReleaseNotes>
     </PropertyGroup>
 

@@ -4,8 +4,10 @@
     using Autodesk.AutoCAD.DatabaseServices;
     using Autodesk.AutoCAD.EditorInput;
     using Autodesk.AutoCAD.Geometry;
+    using JetBrains.Annotations;
 
     /// <inheritdoc />
+    [UsedImplicitly]
     public class CircleService : ICircleService
     {
         private readonly Editor _editor;
@@ -62,13 +64,6 @@
             var circle = new Circle(center, Vector3d.ZAxis, radius);
             circle.ColorIndex = colorIndex;
             return transaction.AppendToCurrentSpace(context, circle);
-        }
-
-        /// <inheritdoc />
-        public ObjectId AddCircle(ITransaction transaction, Point3d center, double radius, int colorIndex)
-        {
-            var context = _transactionContextService.GetDefaultContext();
-            return AddCircle(context, transaction, center, radius, colorIndex);
         }
     }
 }
