@@ -1,17 +1,19 @@
 ﻿namespace RxBim.Tools.Autocad
 {
     using System;
+    using Autodesk.AutoCAD.ApplicationServices;
     using Autodesk.AutoCAD.DatabaseServices;
     using JetBrains.Annotations;
+    using TransactionManager = Autodesk.AutoCAD.DatabaseServices.TransactionManager;
 
     /// <summary>
     /// Extensions for <see cref="ITransactionContext"/>.
     /// </summary>
     [PublicAPI]
-    internal static class TransactionContextExtensions
+    public static class TransactionContextExtensions
     {
         /// <summary>
-        /// Returns <see cref="TransactionManager"/> for context.
+        /// Returns <see cref="Autodesk.AutoCAD.DatabaseServices.TransactionManager"/> for context.
         /// </summary>
         /// <param name="context"><see cref="ITransactionContext"/> object.</param>
         /// <exception cref="ArgumentException">
@@ -34,6 +36,24 @@
         public static Database GetDatabase(this ITransactionContext context)
         {
             return context.GetFromContext(x => x.ContextObject.Database, x => x.ContextObject);
+        }
+
+        /// <summary>
+        /// Returns <see cref="ITransactionContext"/> from database.
+        /// </summary>
+        /// <param name="database"><see cref="Database"/> object.</param>
+        public static ITransactionContext ToContext(this Database database)
+        {
+            return new DatabaseContext(database);
+        }
+
+        /// <summary>
+        /// Returns <see cref="ITransactionContext"/> from document.
+        /// </summary>
+        /// <param name="document"><see cref="Document"/> object.</param>
+        public static ITransactionContext ToContext(this Document document)
+        {
+            return new DocumentContext(document);
         }
 
         private static T GetFromContext<T>(

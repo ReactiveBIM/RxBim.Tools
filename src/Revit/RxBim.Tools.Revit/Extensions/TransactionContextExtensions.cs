@@ -2,11 +2,13 @@
 {
     using System;
     using Autodesk.Revit.DB;
+    using JetBrains.Annotations;
     using Models;
 
     /// <summary>
     /// Extensions for <see cref="ITransactionContext"/>.
     /// </summary>
+    [PublicAPI]
     public static class TransactionContextExtensions
     {
         /// <summary>
@@ -20,6 +22,15 @@
                 return documentContext.ContextObject;
 
             throw new ArgumentException($"Must be a {nameof(DocumentContext)}!", nameof(context));
+        }
+
+        /// <summary>
+        /// Returns <see cref="ITransactionContext"/> from document.
+        /// </summary>
+        /// <param name="document"><see cref="Document"/> object.</param>
+        public static ITransactionContext ToContext(this Document document)
+        {
+            return new DocumentContext(document);
         }
     }
 }

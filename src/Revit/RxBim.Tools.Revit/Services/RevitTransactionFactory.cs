@@ -2,7 +2,6 @@
 {
     using System;
     using Autodesk.Revit.DB;
-    using Autodesk.Revit.UI;
     using Di;
     using Extensions;
     using JetBrains.Annotations;
@@ -17,9 +16,8 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="RevitTransactionFactory"/> class.
         /// </summary>
-        /// <param name="application"><see cref="UIApplication"/> instance.</param>
         /// <param name="locator"><see cref="IServiceLocator"/> instance.</param>
-        public RevitTransactionFactory(UIApplication application, IServiceLocator locator)
+        public RevitTransactionFactory(IServiceLocator locator)
         {
             _locator = locator;
         }
@@ -28,7 +26,7 @@
         public ITransaction CreateTransaction<T>(T context, string? name = null)
             where T : class, ITransactionContext
         {
-            var revitTransaction = new Transaction(context.GetDocument(), name ?? GetUniqueTransactionName());
+            var revitTransaction = new Transaction(context.GetDocument(), name ?? $"Transaction_{Guid.NewGuid()}");
             return new RevitTransaction(revitTransaction);
         }
 
@@ -37,7 +35,7 @@
             where T : class, ITransactionContext
         {
             var transactionGroup =
-                new TransactionGroup(context.GetDocument(), name ?? GetUniqueTransactionGroupName());
+                new TransactionGroup(context.GetDocument(), name ?? $"TransactionGroup_{Guid.NewGuid()}");
             return new RevitTransactionGroup(transactionGroup);
         }
 
@@ -47,16 +45,6 @@
         {
             var service = _locator.GetService<ITransactionContextService<T>>();
             return service.GetDefaultContext();
-        }
-
-        private string GetUniqueTransactionName()
-        {
-            return $"Transaction_{Guid.NewGuid()}";
-        }
-
-        private string GetUniqueTransactionGroupName()
-        {
-            return $"TransactionGroup_{Guid.NewGuid()}";
         }
     }
 }

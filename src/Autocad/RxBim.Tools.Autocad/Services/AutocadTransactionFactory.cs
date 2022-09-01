@@ -39,8 +39,8 @@
         public T GetDefaultContext<T>()
             where T : class, ITransactionContext
         {
-            var transactionContextFactory = _locator.GetService<ITransactionContextService<T>>();
-            return transactionContextFactory.GetDefaultContext();
+            var contextService = _locator.GetService<ITransactionContextService<T>>();
+            return contextService.GetDefaultContext();
         }
     }
 }

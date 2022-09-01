@@ -1,7 +1,7 @@
 ﻿namespace RxBim.Tools
 {
     /// <summary>
-    /// <see cref="ITransactionContext"/> realisation for AutoCAD.
+    /// <see cref="ITransactionContext"/> realisation.
     /// </summary>
     public abstract class TransactionContext<T> : ITransactionContext
     {
