@@ -1,9 +1,8 @@
-﻿namespace RxBim.Tools.Revit.Services
+﻿namespace RxBim.Tools.Revit
 {
-    using Abstractions;
     using JetBrains.Annotations;
 
-    /// <inheritdoc cref="RxBim.Tools.Revit.Abstractions.IProblemElementsStorage" />
+    /// <inheritdoc cref="RxBim.Tools.Revit.IProblemElementsStorage" />
     [UsedImplicitly]
     internal class ProblemElementsStorage : ProblemElementsStorage<int>, IProblemElementsStorage
     {

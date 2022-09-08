@@ -1,4 +1,4 @@
-﻿namespace RxBim.Tools.Revit.Helpers
+﻿namespace RxBim.Tools.Revit
 {
     using System.Collections.Generic;
     using System.Globalization;

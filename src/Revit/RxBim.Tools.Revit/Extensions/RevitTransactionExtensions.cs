@@ -1,9 +1,8 @@
-﻿namespace RxBim.Tools.Revit.Extensions
+﻿namespace RxBim.Tools.Revit
 {
     using System;
     using Autodesk.Revit.DB;
     using JetBrains.Annotations;
-    using Models;
 
     /// <summary>
     /// Extensions for <see cref="ITransaction"/>.

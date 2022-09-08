@@ -1,8 +1,7 @@
-﻿namespace RxBim.Tools.Revit.Services
+﻿namespace RxBim.Tools.Revit
 {
     using Autodesk.Revit.UI;
     using JetBrains.Annotations;
-    using Models;
 
     /// <summary>
     /// The service for <see cref="DocumentContext"/>.

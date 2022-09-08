@@ -1,8 +1,7 @@
-﻿namespace RxBim.Tools.Revit.Extensions
+﻿namespace RxBim.Tools.Revit
 {
     using System.Collections.Generic;
     using Autodesk.Revit.DB;
-    using Helpers;
 
     /// <summary>
     /// Расширения для работы с семействами Revit

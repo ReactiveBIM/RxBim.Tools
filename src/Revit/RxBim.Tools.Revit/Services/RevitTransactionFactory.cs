@@ -1,11 +1,9 @@
-﻿namespace RxBim.Tools.Revit.Services
+﻿namespace RxBim.Tools.Revit
 {
     using System;
     using Autodesk.Revit.DB;
     using Di;
-    using Extensions;
     using JetBrains.Annotations;
-    using Models;
 
     /// <inheritdoc />
     [UsedImplicitly]

@@ -7,8 +7,7 @@
     using CSharpFunctionalExtensions;
     using JetBrains.Annotations;
     using Tools;
-    using Tools.Revit.Abstractions;
-    using Tools.Revit.Extensions;
+    using Tools.Revit;
     using Tools.TableBuilder;
     using Tools.TableBuilder.Styles;
     using Color = System.Drawing.Color;

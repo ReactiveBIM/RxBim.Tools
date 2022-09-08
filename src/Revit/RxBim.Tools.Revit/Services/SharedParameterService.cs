@@ -1,16 +1,13 @@
-﻿namespace RxBim.Tools.Revit.Services
+﻿namespace RxBim.Tools.Revit
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using Abstractions;
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
     using CSharpFunctionalExtensions;
-    using Extensions;
     using JetBrains.Annotations;
-    using Models;
     using Result = CSharpFunctionalExtensions.Result;
 
     /// <summary>

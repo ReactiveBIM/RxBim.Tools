@@ -1,4 +1,4 @@
-﻿namespace RxBim.Tools.Revit.Abstractions
+﻿namespace RxBim.Tools.Revit
 {
     /// <inheritdoc />
     public interface IElementsDisplay : IElementsDisplay<int>

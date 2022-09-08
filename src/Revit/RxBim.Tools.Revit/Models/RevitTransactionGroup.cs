@@ -1,4 +1,4 @@
-﻿namespace RxBim.Tools.Revit.Models
+﻿namespace RxBim.Tools.Revit
 {
     using Autodesk.Revit.DB;
 

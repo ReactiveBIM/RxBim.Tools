@@ -1,13 +1,10 @@
-﻿namespace RxBim.Tools.Revit.Collectors
+﻿namespace RxBim.Tools.Revit
 {
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using Abstractions;
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
-    using Extensions;
-    using Helpers;
     using JetBrains.Annotations;
 
     /// <summary>

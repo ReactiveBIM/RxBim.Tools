@@ -1,9 +1,8 @@
-﻿namespace RxBim.Tools.Revit.Abstractions
+﻿namespace RxBim.Tools.Revit
 {
     using System;
     using System.Collections.Generic;
     using Autodesk.Revit.DB;
-    using Models;
 
     /// <summary>
     /// Интерфейс коллектора элементов

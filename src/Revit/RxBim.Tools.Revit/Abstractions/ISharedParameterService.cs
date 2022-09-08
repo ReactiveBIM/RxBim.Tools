@@ -1,8 +1,7 @@
-﻿namespace RxBim.Tools.Revit.Abstractions
+﻿namespace RxBim.Tools.Revit
 {
     using Autodesk.Revit.DB;
     using CSharpFunctionalExtensions;
-    using Models;
 
     /// <summary>
     /// Сервис по работе с общими параметрами

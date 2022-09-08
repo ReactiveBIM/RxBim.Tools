@@ -1,10 +1,6 @@
 ﻿namespace RxBim.Tools.Revit
 {
-    using Abstractions;
-    using Collectors;
     using Di;
-    using Models;
-    using Services;
 
     /// <summary>
     /// Расширения для контейнера

@@ -4,7 +4,7 @@
     using System.Linq;
     using Autodesk.Revit.DB;
     using JetBrains.Annotations;
-    using Revit.Extensions;
+    using Revit;
     using Styles;
 
     /// <summary>
