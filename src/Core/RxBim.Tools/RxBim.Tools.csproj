@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>        
+        <UseDi>true</UseDi>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Description>RxBim Tools Library</Description>
+        <PackageId>RxBim.Tools</PackageId>
+        <PackageReleaseNotes>$(ReleaseNotes)</PackageReleaseNotes>
+    </PropertyGroup>
+
+</Project>

@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <RootNamespace>RxBim.Tools.TableBuilder</RootNamespace>
+        <UseDi>true</UseDi>
+        <UseWpf>true</UseWpf>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\RxBim.Tools.Autocad\RxBim.Tools.Autocad.csproj" />
+        <ProjectReference Include="..\..\Core\RxBim.Tools\RxBim.Tools.csproj" />
+        <ProjectReference Include="..\..\Core\RxBim.Tools.TableBuilder\RxBim.Tools.TableBuilder.csproj" />
+    </ItemGroup>
+
+    <PropertyGroup>
+        <Description>RxBim AutoCAD Table </Description>
+        <PackageId>RxBim.Tools.TableBuilder.Autocad</PackageId>
+        <PackageReleaseNotes>$(ReleaseNotes)</PackageReleaseNotes>
+    </PropertyGroup>
+</Project>

@@ -9,6 +9,7 @@
     using Tools.Autocad;
     using Tools.TableBuilder;
     using Tools.TableBuilder.Styles;
+    using Entity = Autodesk.AutoCAD.DatabaseServices.Entity;
     using Table = Tools.TableBuilder.Table;
 
     /// <inheritdoc />

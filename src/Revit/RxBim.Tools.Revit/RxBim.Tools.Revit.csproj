@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+    <PropertyGroup>       
+        <UseWPF>true</UseWPF>
+        <UseDi>true</UseDi>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CSharpFunctionalExtensions" Version="2.31.0" />
+        <PackageReference Include="RevitTask" Version="3.0.0" />
+    </ItemGroup>
+
+    <PropertyGroup>
+         <Description>RxBim Revit extensions Library</Description>
+        <PackageId>RxBim.Tools.Revit</PackageId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Windows.Markup.XmlnsPrefix">
+             <_Parameter1>https://bimteam.ru/RxBim/revit/abstractions</_Parameter1>
+            <_Parameter2>ra</_Parameter2>
+        </AssemblyAttribute>
+        <AssemblyAttribute Include="System.Windows.Markup.XmlnsDefinition">
+             <_Parameter1>https://bimteam.ru/RxBim/revit/abstractions</_Parameter1>
+             <_Parameter2>RxBim.Tools.Revit.Abstractions</_Parameter2>
+        </AssemblyAttribute>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Core\RxBim.Tools\RxBim.Tools.csproj" />
+      <ProjectReference Include="..\..\Core\RxBim.Tools.TableBuilder\RxBim.Tools.TableBuilder.csproj" />
+    </ItemGroup>
+
+</Project>

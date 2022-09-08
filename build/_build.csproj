@@ -13,11 +13,21 @@
 
   <ItemGroup>
     <PackageReference Include="BimLab.Nuke" Version="2022.2.0" />
-    <PackageReference Include="BimLab.Nuke.Nuget" Version="2022.3.0" />
-    <PackageReference Include="NuGet.CommandLine" Version="5.9.1">
+    <PackageReference Include="BimLab.Nuke.Nuget" Version="2022.4.0-dev001" />
+    <PackageReference Include="NuGet.CommandLine" Version="6.2.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Nuke.Common" Version="6.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\.github\workflows\CI.yml">
+      <Link>ci\CI.yml</Link>
+    </Content>
+    <Content Include="..\.github\workflows\Publish.yml">
+      <Link>ci\Publish.yml</Link>
+    </Content>
   </ItemGroup>
 
 </Project>

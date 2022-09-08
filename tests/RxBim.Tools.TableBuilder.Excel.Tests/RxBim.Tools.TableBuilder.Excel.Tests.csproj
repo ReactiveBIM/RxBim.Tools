@@ -1,11 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">    
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\RxBim.Tools.TableBuilder.Excel\RxBim.Tools.TableBuilder.Excel.csproj" />
+      <ProjectReference Include="..\..\src\Excel\RxBim.Tools.TableBuilder.Excel\RxBim.Tools.TableBuilder.Excel.csproj" />
     </ItemGroup>    
 
     <ItemGroup>
-      <PackageReference Include="RxBim.Di.SimpleInjector" Version="1.1.0-dev002" />
+      <PackageReference Include="RxBim.Di.SimpleInjector" Version="1.1.0-dev005" />
+      <PackageReference Update="coverlet.collector" Version="3.1.2">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Update="FluentAssertions" Version="6.7.0" />
+      <PackageReference Update="Microsoft.NET.Test.Sdk" Version="17.2.0" />
+      <PackageReference Update="xunit.runner.visualstudio" Version="2.4.5">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
     </ItemGroup>
 
 </Project>
