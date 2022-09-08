@@ -4,8 +4,10 @@
     using System.Collections.Generic;
     using System.Linq;
     using Autodesk.AutoCAD.DatabaseServices;
+    using JetBrains.Annotations;
 
     /// <inheritdoc />
+    [UsedImplicitly]
     internal class ElementsDisplayService : IElementsDisplay
     {
         private readonly IDocumentService _documentService;
