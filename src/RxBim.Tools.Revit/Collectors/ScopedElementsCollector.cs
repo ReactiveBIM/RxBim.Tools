@@ -7,8 +7,11 @@
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
     using Autodesk.Revit.UI.Selection;
+    using CSharpFunctionalExtensions;
+    using Extensions;
     using Helpers;
     using Models;
+    using Result = CSharpFunctionalExtensions.Result;
 
     /// <summary>
     /// Коллектор части элементов
@@ -34,6 +37,28 @@
 
         /// <inheritdoc/>
         public ScopeType Scope { get; private set; } = ScopeType.AllModel;
+        
+        /// <inheritdoc/>
+        public Result<List<T>> GetElementsByType<T>(
+            Predicate<T> filter = null,
+            Document doc = null,
+            bool ignoreScope = true,
+            bool includeSubFamilies = false,
+            bool getFailureResultIfEmpty = false,
+            string failureMessage = "В модели нее найдено элементов заданного типа и проходящих по фильтру")
+            where T : Element
+        {
+            var elements = GetFilteredElementCollector(doc, ignoreScope, includeSubFamilies)
+                .OfClassType<T>()
+                .ToList();
+
+            if (filter != null)
+                elements = elements.Where(filter.Invoke).ToList();
+
+            if (!elements.Any() && getFailureResultIfEmpty)
+                return Result.Failure<List<T>>(failureMessage);
+            return elements;
+        }
 
         /// <inheritdoc/>
         public FilteredElementCollector GetFilteredElementCollector(
@@ -224,24 +249,63 @@
         private IEnumerable<ElementId> GetSubFamilies(ElementId familyId)
         {
             var uiDoc = _uiApplication.ActiveUIDocument;
-            if (!(uiDoc.Document.GetElement(familyId) is FamilyInstance familyInstance))
-                yield break;
 
-            var subFamilyIds = familyInstance.GetSubComponentIds();
-            if (subFamilyIds == null)
-                yield break;
-
-            foreach (var subFamilyId in subFamilyIds)
+            switch (uiDoc.Document.GetElement(familyId))
             {
-                if (!(uiDoc.Document.GetElement(subFamilyId) is FamilyInstance))
-                    continue;
-
-                yield return subFamilyId;
-
-                foreach (var family in GetSubFamilies(subFamilyId))
+                case FamilyInstance familyInstance:
                 {
-                    yield return family;
+                    var subFamilyIds = familyInstance.GetSubComponentIds();
+                    if (subFamilyIds == null)
+                        yield break;
+
+                    foreach (var subFamilyId in subFamilyIds)
+                    {
+                        if (!(uiDoc.Document.GetElement(subFamilyId) is FamilyInstance))
+                            continue;
+
+                        yield return subFamilyId;
+
+                        foreach (var family in GetSubFamilies(subFamilyId))
+                        {
+                            yield return family;
+                        }
+                    }
+
+                    break;
                 }
+
+                case Group group:
+                {
+                    foreach (var memberId in group.GetMemberIds())
+                    {
+                        yield return memberId;
+                    }
+
+                    break;
+                }
+
+                case AssemblyInstance assembly:
+                {
+                    foreach (var memberId in assembly.GetMemberIds())
+                    {
+                        yield return memberId;
+                    }
+
+                    break;
+                }
+
+                case Wall { IsStackedWall: true } wall:
+                {
+                    foreach (var panelId in wall.GetDependentElements(new ElementClassFilter(typeof(Panel))))
+                    {
+                        yield return panelId;
+                    }
+                    
+                    break;
+                }
+
+                default:
+                    yield break;
             }
         }
     }

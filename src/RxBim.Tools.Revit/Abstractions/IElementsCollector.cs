@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using Autodesk.Revit.DB;
+    using CSharpFunctionalExtensions;
     using Models;
 
     /// <summary>
@@ -20,6 +21,26 @@
         /// <returns>Отфильтрованная коллекция элементов</returns>
         FilteredElementCollector GetFilteredElementCollector(
             Document doc = null, bool ignoreScope = false, bool includeSubFamilies = true);
+        
+        /// <summary>
+        /// Получает элементы по типу и фильтру
+        /// </summary>
+        /// <param name="filter">Фильтр для элементов</param>
+        /// <param name="doc">Документ из которого берутся элементы</param>
+        /// <param name="ignoreScope">Игнорировать ScopeType</param>
+        /// <param name="includeSubFamilies">Включать вложенные семейства</param>
+        /// <param name="getFailureResultIfEmpty">Выдавать отрицательный результат, если элементы не были найдены</param>
+        /// <param name="failureMessage">Текст отрицательного результата</param>
+        /// <typeparam name="T">Тип элементов получаемых при фильтрации</typeparam>
+        /// <returns>Список отфильтрованных элементов</returns>
+        public Result<List<T>> GetElementsByType<T>(
+            Predicate<T> filter = null,
+            Document doc = null,
+            bool ignoreScope = true,
+            bool includeSubFamilies = false,
+            bool getFailureResultIfEmpty = false,
+            string failureMessage = "В модели нее найдено элементов заданного типа и проходящих по фильтру")
+            where T : Element;
 
         /// <summary>
         /// Включает в Revit режим выбора элемента в модели текущего документа с учетом заданного фильтра
