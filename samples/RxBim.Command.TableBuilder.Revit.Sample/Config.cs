@@ -10,7 +10,7 @@
         /// <inheritdoc />
         public void Configure(IContainer container)
         {
-            container.AddRevitHelpers();
+            container.AddRevitTools();
             container.AddRevitTableBuilder();
         }
     }

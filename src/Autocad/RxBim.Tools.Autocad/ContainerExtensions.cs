@@ -11,7 +11,7 @@
         /// Adds AutoCAD services to the container.
         /// </summary>
         /// <param name="container"><see cref="IContainer"/> object.</param>
-        public static IContainer AddAutocadHelpers(this IContainer container)
+        public static IContainer AddAutocadTools(this IContainer container)
         {
             container.AddSingleton<IDocumentService, DocumentService>();
             container.AddSingleton<IObjectsSelectionService, ObjectsSelectionService>();

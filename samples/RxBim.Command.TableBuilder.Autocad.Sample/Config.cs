@@ -13,7 +13,7 @@
         public void Configure(IContainer container)
         {
             container
-                .AddAutocadHelpers()
+                .AddAutocadTools()
                 .AddAutocadTableBuilder()
                 .AddSingleton<ITableDataService, TableDataService>();
         }

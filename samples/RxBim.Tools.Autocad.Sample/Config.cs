@@ -10,7 +10,7 @@
         /// <inheritdoc />
         public void Configure(IContainer container)
         {
-            container.AddAutocadHelpers();
+            container.AddAutocadTools();
             container.AddSingleton<ICircleService, CircleService>();
             container.AddSingleton<IEntityService, EntityService>();
         }
