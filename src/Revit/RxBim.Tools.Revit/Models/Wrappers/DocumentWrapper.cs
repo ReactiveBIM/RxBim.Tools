@@ -1,5 +1,7 @@
 ﻿namespace RxBim.Tools.Revit;
 
+using System.Collections.Generic;
+using System.Linq;
 using Autodesk.Revit.DB;
 
 /// <summary>
@@ -19,4 +21,13 @@ public class DocumentWrapper : Wrapper<Document>, IDocumentWrapper
     /// <inheritdoc />
     public string Title
         => Object.Title;
+
+    /// <inheritdoc />
+    public IEnumerable<IViewSheetWrapper> ViewSheets
+        => new FilteredElementCollector(Object)
+            .WhereElementIsNotElementType()
+            .OfClass<ViewSheet>()
+            .Where(sheet => !sheet.IsPlaceholder
+                            && sheet.CanBePrinted)
+            .Select(viewSheet => viewSheet.Wrap());
 }

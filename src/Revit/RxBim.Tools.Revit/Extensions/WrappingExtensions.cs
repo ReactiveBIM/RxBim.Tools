@@ -20,4 +20,11 @@ public static class WrappingExtensions
     /// <param name="definitionFile"><see cref="DefinitionFile"/></param>
     public static IDefinitionFileWrapper Wrap(this DefinitionFile definitionFile)
         => new DefinitionFileWrapper(definitionFile);
+
+    /// <summary>
+    /// Wraps <see cref="ViewSheet"/>.
+    /// </summary>
+    /// <param name="viewSheet"><see cref="ViewSheet"/></param>
+    public static IViewSheetWrapper Wrap(this ViewSheet viewSheet)
+        => new ViewSheetWrapper(viewSheet);
 }

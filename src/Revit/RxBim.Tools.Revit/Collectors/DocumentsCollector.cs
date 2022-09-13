@@ -34,11 +34,12 @@
             document ??= GetCurrentDocument();
             var doc = document.Unwrap<Document>()!;
             var docWrappers = new FilteredElementCollector(doc)
-                .OfClass(typeof(RevitLinkInstance))
-                .Cast<RevitLinkInstance>()
+                .WhereElementIsElementType()
+                .OfCategory(BuiltInCategory.OST_RvtLinks)
+                .OfClass<RevitLinkInstance>()
                 .Where(l => IsNotNestedLib(l, doc))
                 .Select(l => l.GetLinkDocument())
-                .Where(d => d != null)
+                .Where(d => d is not null)
                 .Select(d => d.Wrap())
                 .ToList();
             docWrappers.Insert(0, document);
@@ -49,7 +50,7 @@
         {
             var linkType = (RevitLinkType)document.GetElement(linkInstance.GetTypeId());
             
-            return linkType.GetLinkedFileStatus() == LinkedFileStatus.Loaded
+            return linkType.GetLinkedFileStatus() is LinkedFileStatus.Loaded
                    && !linkType.IsNestedLink;
         }
     }

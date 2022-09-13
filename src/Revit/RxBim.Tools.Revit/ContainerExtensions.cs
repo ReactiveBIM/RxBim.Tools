@@ -15,7 +15,6 @@
         {
             container.AddSingleton<IProblemElementsStorage, ProblemElementsStorage>();
             container.AddSingleton<IDocumentsCollector, DocumentsCollector>();
-            container.AddSingleton<ISheetsCollector, SheetsCollector>();
             container.AddSingleton<IDefinitionFilesCollector, DefinitionFilesCollector>();
             container.AddSingleton<IElementsDisplay, ElementsDisplayService>();
             container.AddSingleton<ISharedParameterService, SharedParameterService>();
