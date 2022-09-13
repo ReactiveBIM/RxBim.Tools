@@ -24,6 +24,10 @@
         /// and <see cref="SharedParameterDefinition.DataType"/>)</param>
         /// <param name="document"><see cref="IDocumentWrapper"/>.
         /// If null, <see cref="IDefinitionFileWrapper"/> gets from current document.</param>
+        /// <exception cref="NotSetCategoriesForBindParameterException">
+        /// Thrown if not set categories for bind parameter in <see cref="SharedParameterCreateData"/>.</exception>
+        /// <exception cref="ParameterNotFoundException">
+        /// Thrown if not found parameter in <paramref name="definitionFile"/>.</exception>
         bool AddSharedParameter(
             IDefinitionFileWrapper definitionFile,
             SharedParameterInfo sharedParameterInfo,
@@ -49,6 +53,12 @@
         /// and their further setting after updating the binding.</param>
         /// <param name="document"><see cref="IDocumentWrapper"/>.
         /// If null, <see cref="IDefinitionFileWrapper"/> gets from current document.</param>
+        /// <exception cref="ParameterNotFoundException">
+        /// Thrown if not found parameter in any <paramref name="definitionFiles"/>.</exception>
+        /// <exception cref="MultipleParameterException">
+        /// Thrown if found several parameters in <paramref name="definitionFiles"/>.</exception>
+        /// <exception cref="NotSetCategoriesForBindParameterException">
+        /// Thrown if not set categories for bind parameter in <see cref="SharedParameterCreateData"/>.</exception>
         bool AddOrUpdateParameter(
             IEnumerable<IDefinitionFileWrapper> definitionFiles,
             SharedParameterInfo sharedParameterInfo,
