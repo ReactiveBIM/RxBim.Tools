@@ -26,7 +26,7 @@ public class DefinitionFilesCollector : IDefinitionFilesCollector
     public IDefinitionFileWrapper GetDefinitionFile(
         IDocumentWrapper? document = null)
     {
-        var doc = document?.UnWrap() ?? Document;
+        var doc = document?.Unwrap<Document>() ?? Document;
         var sharedParameterFilename = doc.Application.SharedParametersFilename;
 
         if (string.IsNullOrWhiteSpace(sharedParameterFilename))

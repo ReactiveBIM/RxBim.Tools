@@ -100,7 +100,7 @@
             bool fullMatch,
             IDocumentWrapper? document = null)
         {
-            var doc = document?.UnWrap() ?? Document;
+            var doc = document?.Unwrap<Document>() ?? Document;
             foreach (var sharedParameterElement in new FilteredElementCollector(doc)
                          .OfClass(typeof(SharedParameterElement))
                          .Cast<SharedParameterElement>())
@@ -138,7 +138,7 @@
             SharedParameterInfo sharedParameterInfo,
             bool fullMatch)
         {
-            var doc = document?.UnWrap() ?? Document;
+            var doc = document?.Unwrap<Document>() ?? Document;
             var categorySet = sharedParameterInfo
                 .CreateData
                 .CategoriesForBind
@@ -168,7 +168,7 @@
             IDocumentWrapper? document = null,
             bool isSavePastValues = false)
         {
-            var doc = document?.UnWrap() ?? Document;
+            var doc = document?.Unwrap<Document>() ?? Document;
             var parameterBindings = doc.ParameterBindings;
             var binding = (ElementBinding)parameterBindings.get_Item(definition);
             var existCategories = binding.Categories ?? new CategorySet();
@@ -223,7 +223,7 @@
             bool fullMatch,
             IDefinitionFileWrapper definitionFile)
         {
-            foreach (var defGroup in definitionFile.UnWrap().Groups)
+            foreach (var defGroup in definitionFile.Unwrap<DefinitionFile>()!.Groups)
             {
                 foreach (var def in defGroup.Definitions)
                 {
@@ -255,7 +255,7 @@
             string parameterName,
             IDocumentWrapper? document = null)
         {
-            var doc = document?.UnWrap() ?? Document;
+            var doc = document?.Unwrap<Document>() ?? Document;
             var map = doc.ParameterBindings;
             var it = map.ForwardIterator();
             it.Reset();

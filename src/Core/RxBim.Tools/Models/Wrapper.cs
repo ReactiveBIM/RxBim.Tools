@@ -19,4 +19,11 @@ public abstract class Wrapper<T> : IWrapper
     /// Wrapped object.
     /// </summary>
     public T Object { get; }
+
+    /// <inheritdoc />
+    public TWrap? Unwrap<TWrap>()
+        where TWrap : class
+    {
+        return Object as TWrap;
+    }
 }
