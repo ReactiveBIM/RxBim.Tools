@@ -15,4 +15,8 @@ public class DocumentWrapper : Wrapper<Document>, IDocumentWrapper
         : base(wrappedObject)
     {
     }
+
+    /// <inheritdoc />
+    public string Title
+        => Object.Title;
 }
