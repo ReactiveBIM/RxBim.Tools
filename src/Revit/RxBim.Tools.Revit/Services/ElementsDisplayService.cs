@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Abstractions;
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
     using JetBrains.Annotations;
@@ -24,15 +23,21 @@
         }
 
         /// <inheritdoc />
-        public void SetSelectedElements(IEnumerable<int> elementIds)
+        public void SetSelectedElements(IEnumerable<IIdentifier> elementIds)
         {
-            _uiApplication.ActiveUIDocument.Selection.SetElementIds(elementIds.Select(e => new ElementId(e)).ToList());
+            _uiApplication.ActiveUIDocument.Selection.SetElementIds(elementIds
+                .Select(e => new ElementId(e.Unwrap<int>()))
+                .ToList());
         }
 
         /// <inheritdoc />
-        public void SetSelectedElement(int elementId)
+        public void SetSelectedElement(IIdentifier elementId)
         {
-            _uiApplication.ActiveUIDocument.Selection.SetElementIds(new List<ElementId> { new ElementId(elementId) });
+            _uiApplication.ActiveUIDocument.Selection.SetElementIds(
+                new List<ElementId>
+                {
+                    new(elementId.Unwrap<int>())
+                });
         }
 
         /// <inheritdoc />
@@ -42,7 +47,7 @@
         }
 
         /// <inheritdoc />
-        public void Zoom(int elementId, double zoomFactor = 0.25)
+        public void Zoom(IIdentifier elementId, double zoomFactor = 0.25)
         {
             var activeView = _uiApplication.ActiveUIDocument.ActiveView;
             if (activeView == null)
@@ -57,7 +62,7 @@
 
             var document = activeView.Document;
 
-            var element = document.GetElement(new ElementId(elementId));
+            var element = document.GetElement(new ElementId(elementId.Unwrap<int>()));
             var boundingBox = element?.get_BoundingBox(null);
             if (boundingBox == null)
                 return;
