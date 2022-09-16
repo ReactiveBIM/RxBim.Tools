@@ -62,7 +62,7 @@
             return _transactionService.RunInTransaction(
                 () => AddSharedParameter(doc, definitionFile, sharedParameterInfo, fullMatch),
                 "Adding parameters",
-                new DocumentContextWrapper(doc));
+                new DocumentWrapper(doc));
         }
 
         /// <inheritdoc />

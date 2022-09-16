@@ -11,14 +11,14 @@
     public class CircleService : ICircleService
     {
         private readonly Editor _editor;
-        private readonly ITransactionContextService<DatabaseContextWrapper> _transactionContextService;
+        private readonly ITransactionContextService<DatabaseWrapper> _transactionContextService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CircleService"/> class.
         /// </summary>
         /// <param name="editor"><see cref="Editor"/> instance.</param>
         /// <param name="transactionContextService"><see cref="ITransactionContextService{T}"/> instance.</param>
-        public CircleService(Editor editor, ITransactionContextService<DatabaseContextWrapper> transactionContextService)
+        public CircleService(Editor editor, ITransactionContextService<DatabaseWrapper> transactionContextService)
         {
             _editor = editor;
             _transactionContextService = transactionContextService;

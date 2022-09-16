@@ -24,7 +24,7 @@
             container.AddSingleton<ISharedParameterService, SharedParameterService>();
             container.AddSingleton<IElementsCollector, ScopedElementsCollector>();
             container.AddSingleton<IScopedElementsCollector, ScopedElementsCollector>();
-            container.AddSingleton<ITransactionContextService<DocumentContextWrapper>, DocumentContextService>();
+            container.AddSingleton<ITransactionContextService<DocumentWrapper>, DocumentContextService>();
             container.AddTransactionServices<RevitTransactionFactory>();
             container.AddInstance(new RevitTask());
         }

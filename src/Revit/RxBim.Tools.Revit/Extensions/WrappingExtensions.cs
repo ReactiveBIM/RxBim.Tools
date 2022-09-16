@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Tools.Revit.Extensions
 {
+    using Abstractions;
     using Autodesk.Revit.DB;
     using Models;
 
@@ -15,6 +16,15 @@
         public static IIdentifierWrapper Wrap(this ElementId id)
         {
             return new ElementIdWrapper(id.IntegerValue);
+        }
+
+        /// <summary>
+        /// Returns <see cref="IDocumentWrapper"/> from document.
+        /// </summary>
+        /// <param name="document"><see cref="Document"/> object.</param>
+        public static IDocumentWrapper Wrap(this Document document)
+        {
+            return new DocumentWrapper(document);
         }
     }
 }

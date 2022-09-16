@@ -3,7 +3,7 @@
     using System;
 
     /// <summary>
-    /// Extensions for <see cref="ITransactionService"/> for <see cref="DocumentContextWrapper"/>.
+    /// Extensions for <see cref="ITransactionService"/> for <see cref="DocumentWrapper"/>.
     /// </summary>
     public static class DocumentTransactionServiceExtensions
     {
@@ -16,7 +16,7 @@
         public static void RunInDocumentTransaction(
             this ITransactionService transactionService,
             Action action,
-            DocumentContextWrapper? context = null)
+            DocumentWrapper? context = null)
         {
             transactionService.RunInTransaction(_ => action(), null, context);
         }
@@ -30,7 +30,7 @@
         public static void RunInDocumentTransaction(
             this ITransactionService transactionService,
             Action<ITransactionWrapper> action,
-            DocumentContextWrapper? context = null)
+            DocumentWrapper? context = null)
         {
             transactionService.RunInTransaction((_, x) => action(x), null, context);
         }
@@ -45,7 +45,7 @@
         public static T RunInDocumentTransaction<T>(
             this ITransactionService transactionService,
             Func<T> func,
-            DocumentContextWrapper? context = null)
+            DocumentWrapper? context = null)
         {
             return transactionService.RunInTransaction(_ => func(), null, context);
         }
@@ -60,7 +60,7 @@
         public static T RunInDocumentTransaction<T>(
             this ITransactionService transactionService,
             Func<ITransactionWrapper, T> func,
-            DocumentContextWrapper? context = null)
+            DocumentWrapper? context = null)
         {
             return transactionService.RunInTransaction((_, x) => func(x), null, context);
         }
@@ -74,7 +74,7 @@
         public static void RunInDocumentTransactionGroup(
             this ITransactionService transactionService,
             Action action,
-            DocumentContextWrapper? context = null)
+            DocumentWrapper? context = null)
         {
             transactionService.RunInTransactionGroup(_ => action(), string.Empty, context);
         }
@@ -88,7 +88,7 @@
         public static void RunInDocumentTransactionGroup(
             this ITransactionService transactionService,
             Action<ITransactionGroupWrapper> action,
-            DocumentContextWrapper? context = null)
+            DocumentWrapper? context = null)
         {
             transactionService.RunInTransactionGroup((_, x) => action(x), string.Empty, context);
         }
@@ -103,7 +103,7 @@
         public static T RunInDocumentTransactionGroup<T>(
             this ITransactionService transactionService,
             Func<T> func,
-            DocumentContextWrapper? context = null)
+            DocumentWrapper? context = null)
         {
             return transactionService.RunInTransactionGroup(_ => func(), string.Empty, context);
         }
@@ -118,7 +118,7 @@
         public static T RunInDocumentTransactionGroup<T>(
             this ITransactionService transactionService,
             Func<ITransactionGroupWrapper, T> func,
-            DocumentContextWrapper? context = null)
+            DocumentWrapper? context = null)
         {
             return transactionService.RunInTransactionGroup((_, x) => func(x), string.Empty, context);
         }
