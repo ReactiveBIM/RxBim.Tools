@@ -5,10 +5,10 @@
     using Models;
 
     /// <summary>
-    /// The service for <see cref="DocumentContext"/>.
+    /// The service for <see cref="DocumentContextWrapper"/>.
     /// </summary>
     [UsedImplicitly]
-    internal class DocumentContextService : ITransactionContextService<DocumentContext>
+    internal class DocumentContextService : ITransactionContextService<DocumentContextWrapper>
     {
         private readonly UIApplication _application;
 
@@ -22,9 +22,9 @@
         }
 
         /// <inheritdoc />
-        public DocumentContext GetDefaultContext()
+        public DocumentContextWrapper GetDefaultContext()
         {
-            return new DocumentContext(_application.ActiveUIDocument.Document);
+            return new DocumentContextWrapper(_application.ActiveUIDocument.Document);
         }
     }
 }

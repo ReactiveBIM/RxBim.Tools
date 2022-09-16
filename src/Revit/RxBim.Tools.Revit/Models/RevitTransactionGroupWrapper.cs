@@ -2,15 +2,15 @@
 {
     using Autodesk.Revit.DB;
 
-    /// <inheritdoc cref="RxBim.Tools.ITransaction" />
-    internal class RevitTransaction : Wrapper<Transaction>, ITransaction
+    /// <inheritdoc cref="ITransactionGroupWrapper" />
+    internal class RevitTransactionGroupWrapper : Wrapper<TransactionGroup>, ITransactionGroupWrapper
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RevitTransaction"/> class.
+        /// Initializes a new instance of the <see cref="RevitTransactionGroupWrapper"/> class.
         /// </summary>
-        /// <param name="transaction"><see cref="Transaction"/> instance.</param>
-        public RevitTransaction(Transaction transaction)
-            : base(transaction)
+        /// <param name="transactionGroup"><see cref="TransactionGroup"/> instance.</param>
+        public RevitTransactionGroupWrapper(TransactionGroup transactionGroup)
+            : base(transactionGroup)
         {
         }
 
@@ -39,9 +39,9 @@
         }
 
         /// <inheritdoc />
-        public void Commit()
+        public void Assimilate()
         {
-            Object.Commit();
+            Object.Assimilate();
         }
     }
 }

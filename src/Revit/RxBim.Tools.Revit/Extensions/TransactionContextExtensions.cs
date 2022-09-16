@@ -6,7 +6,7 @@
     using Models;
 
     /// <summary>
-    /// Extensions for <see cref="ITransactionContext"/>.
+    /// Extensions for <see cref="ITransactionContextWrapper"/>.
     /// </summary>
     [PublicAPI]
     public static class TransactionContextExtensions
@@ -14,23 +14,23 @@
         /// <summary>
         /// Returns <see cref="Document"/> from context.
         /// </summary>
-        /// <param name="context"><see cref="ITransactionContext"/> object.</param>
-        /// <exception cref="ArgumentException">If context is not <see cref="DocumentContext"/>.</exception>
-        public static Document GetDocument(this ITransactionContext context)
+        /// <param name="context"><see cref="ITransactionContextWrapper"/> object.</param>
+        /// <exception cref="ArgumentException">If context is not <see cref="DocumentContextWrapper"/>.</exception>
+        public static Document GetDocument(this ITransactionContextWrapper context)
         {
-            if (context is DocumentContext documentContext)
+            if (context is DocumentContextWrapper documentContext)
                 return documentContext.Unwrap<Document>();
 
-            throw new ArgumentException($"Must be a {nameof(DocumentContext)}!", nameof(context));
+            throw new ArgumentException($"Must be a {nameof(DocumentContextWrapper)}!", nameof(context));
         }
 
         /// <summary>
-        /// Returns <see cref="ITransactionContext"/> from document.
+        /// Returns <see cref="ITransactionContextWrapper"/> from document.
         /// </summary>
         /// <param name="document"><see cref="Document"/> object.</param>
-        public static ITransactionContext ToContext(this Document document)
+        public static ITransactionContextWrapper ToContext(this Document document)
         {
-            return new DocumentContext(document);
+            return new DocumentContextWrapper(document);
         }
     }
 }

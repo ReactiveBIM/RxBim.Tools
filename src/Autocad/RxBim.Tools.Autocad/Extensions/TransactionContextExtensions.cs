@@ -7,7 +7,7 @@
     using TransactionManager = Autodesk.AutoCAD.DatabaseServices.TransactionManager;
 
     /// <summary>
-    /// Extensions for <see cref="ITransactionContext"/>.
+    /// Extensions for <see cref="ITransactionContextWrapper"/>.
     /// </summary>
     [PublicAPI]
     public static class TransactionContextExtensions
@@ -15,11 +15,11 @@
         /// <summary>
         /// Returns <see cref="Autodesk.AutoCAD.DatabaseServices.TransactionManager"/> for context.
         /// </summary>
-        /// <param name="context"><see cref="ITransactionContext"/> object.</param>
+        /// <param name="context"><see cref="ITransactionContextWrapper"/> object.</param>
         /// <exception cref="ArgumentException">
-        /// If <paramref name="context"/> is not <see cref="DocumentContext"/> or <see cref="DatabaseContext"/>.
+        /// If <paramref name="context"/> is not <see cref="DocumentContextWrapper"/> or <see cref="DatabaseContextWrapper"/>.
         /// </exception>
-        public static TransactionManager GetTransactionManager(this ITransactionContext context)
+        public static TransactionManager GetTransactionManager(this ITransactionContextWrapper context)
         {
             return context.GetFromContext(
                 x => x.Unwrap<Document>().TransactionManager,
@@ -29,42 +29,42 @@
         /// <summary>
         /// Returns <see cref="Database"/> from context.
         /// </summary>
-        /// <param name="context"><see cref="ITransactionContext"/> object.</param>
+        /// <param name="context"><see cref="ITransactionContextWrapper"/> object.</param>
         /// <exception cref="ArgumentException">
-        /// If <paramref name="context"/> is not <see cref="DocumentContext"/> or <see cref="DatabaseContext"/>.
+        /// If <paramref name="context"/> is not <see cref="DocumentContextWrapper"/> or <see cref="DatabaseContextWrapper"/>.
         /// </exception>
-        public static Database GetDatabase(this ITransactionContext context)
+        public static Database GetDatabase(this ITransactionContextWrapper context)
         {
             return context.GetFromContext(x => x.Unwrap<Document>().Database, x => x.Unwrap<Database>());
         }
 
         /// <summary>
-        /// Returns <see cref="ITransactionContext"/> from database.
+        /// Returns <see cref="ITransactionContextWrapper"/> from database.
         /// </summary>
         /// <param name="database"><see cref="Database"/> object.</param>
-        public static ITransactionContext ToContext(this Database database)
+        public static ITransactionContextWrapper ToContext(this Database database)
         {
-            return new DatabaseContext(database);
+            return new DatabaseContextWrapper(database);
         }
 
         /// <summary>
-        /// Returns <see cref="ITransactionContext"/> from document.
+        /// Returns <see cref="ITransactionContextWrapper"/> from document.
         /// </summary>
         /// <param name="document"><see cref="Document"/> object.</param>
-        public static ITransactionContext ToContext(this Document document)
+        public static ITransactionContextWrapper ToContext(this Document document)
         {
-            return new DocumentContext(document);
+            return new DocumentContextWrapper(document);
         }
 
         private static T GetFromContext<T>(
-            this ITransactionContext context,
-            Func<DocumentContext, T> fromDocCx,
-            Func<DatabaseContext, T> fromDbCx)
+            this ITransactionContextWrapper context,
+            Func<DocumentContextWrapper, T> fromDocCx,
+            Func<DatabaseContextWrapper, T> fromDbCx)
         {
             return context switch
             {
-                DocumentContext document => fromDocCx(document),
-                DatabaseContext database => fromDbCx(database),
+                DocumentContextWrapper document => fromDocCx(document),
+                DatabaseContextWrapper database => fromDbCx(database),
                 _ => throw new ArgumentException("Unknown context type!", nameof(context))
             };
         }

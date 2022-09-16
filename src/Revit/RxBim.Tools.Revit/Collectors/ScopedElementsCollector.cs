@@ -7,6 +7,7 @@
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
     using Autodesk.Revit.UI.Selection;
+    using Extensions;
     using Helpers;
     using JetBrains.Annotations;
     using Models;
@@ -112,7 +113,7 @@
             if (_selectedElementsIds.ContainsKey(uiDoc.Document.Title))
             {
                 _elementsDisplay.SetSelectedElements(
-                    _selectedElementsIds[uiDoc.Document.Title].Select(e => e.IntegerValue).ToList());
+                    _selectedElementsIds[uiDoc.Document.Title].Select(e => e.Wrap()).ToList());
             }
         }
 

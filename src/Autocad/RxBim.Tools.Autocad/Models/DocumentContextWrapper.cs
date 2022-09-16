@@ -3,10 +3,10 @@
     using Autodesk.AutoCAD.ApplicationServices;
 
     /// <inheritdoc />
-    public class DocumentContext : TransactionContext<Document>
+    public class DocumentContextWrapper : TransactionContextWrapper<Document>
     {
         /// <inheritdoc />
-        public DocumentContext(Document contextObject)
+        public DocumentContextWrapper(Document contextObject)
             : base(contextObject)
         {
         }

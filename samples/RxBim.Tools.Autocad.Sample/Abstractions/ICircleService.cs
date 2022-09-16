@@ -19,13 +19,13 @@
         /// Adds a circle to current space.
         /// </summary>
         /// <param name="context">Transaction context.</param>
-        /// <param name="transaction">Transaction.</param>
+        /// <param name="transactionWrapper">Transaction.</param>
         /// <param name="center">Center of circle.</param>
         /// <param name="radius">Radius of circle.</param>
         /// <param name="colorIndex">Color index of circle.</param>
         ObjectId AddCircle(
-            ITransactionContext context,
-            ITransaction transaction,
+            ITransactionContextWrapper context,
+            ITransactionWrapper transactionWrapper,
             Point3d center,
             double radius,
             int colorIndex);

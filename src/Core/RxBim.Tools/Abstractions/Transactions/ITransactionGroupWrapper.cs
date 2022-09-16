@@ -1,9 +1,9 @@
 ﻿namespace RxBim.Tools
 {
     /// <summary>
-    /// Transaction group.
+    /// Transaction group wrapper.
     /// </summary>
-    public interface ITransactionGroup : ITransactionBase
+    public interface ITransactionGroupWrapper : ITransactionWrapperBase
     {
         /// <summary>
         /// Assimilates all inner transactions.

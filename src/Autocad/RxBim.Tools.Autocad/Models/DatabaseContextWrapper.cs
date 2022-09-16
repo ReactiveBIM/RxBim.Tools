@@ -3,10 +3,10 @@
     using Autodesk.AutoCAD.DatabaseServices;
 
     /// <inheritdoc />
-    public class DatabaseContext : TransactionContext<Database>
+    public class DatabaseContextWrapper : TransactionContextWrapper<Database>
     {
         /// <inheritdoc />
-        public DatabaseContext(Database contextObject)
+        public DatabaseContextWrapper(Database contextObject)
             : base(contextObject)
         {
         }

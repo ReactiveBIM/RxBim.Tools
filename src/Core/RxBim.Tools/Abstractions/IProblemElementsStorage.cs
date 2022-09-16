@@ -1,10 +1,12 @@
 ﻿namespace RxBim.Tools
 {
     using System.Collections.Generic;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Problem elements storage.
     /// </summary>
+    [PublicAPI]
     public interface IProblemElementsStorage<T>
         where T : struct
     {
