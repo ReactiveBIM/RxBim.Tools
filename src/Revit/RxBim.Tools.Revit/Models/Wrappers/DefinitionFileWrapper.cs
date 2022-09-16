@@ -5,7 +5,8 @@ using Autodesk.Revit.DB;
 /// <summary>
 /// Wrapped <see cref="DefinitionFile"/>.
 /// </summary>
-public class DefinitionFileWrapper : Wrapper<DefinitionFile>, IDefinitionFileWrapper
+public class DefinitionFileWrapper
+    : Wrapper<DefinitionFile>, IDefinitionFileWrapper
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="DefinitionFileWrapper"/> class.

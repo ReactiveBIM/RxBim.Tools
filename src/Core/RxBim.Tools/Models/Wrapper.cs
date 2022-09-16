@@ -1,10 +1,12 @@
 ﻿namespace RxBim.Tools;
 
+using JetBrains.Annotations;
+
 /// <summary>
 /// <see cref="IWrapper"/> realisation.
 /// </summary>
+[PublicAPI]
 public abstract class Wrapper<T> : IWrapper
-    where T : class
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="Wrapper{T}"/> class.
@@ -22,8 +24,9 @@ public abstract class Wrapper<T> : IWrapper
 
     /// <inheritdoc />
     public TWrap? Unwrap<TWrap>()
-        where TWrap : class
     {
-        return Object as TWrap;
+        return Object is TWrap obj
+            ? obj
+            : default;
     }
 }

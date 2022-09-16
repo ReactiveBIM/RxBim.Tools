@@ -23,7 +23,7 @@
         /// <see cref="SharedParameterDefinition.Guid"/>
         /// and <see cref="SharedParameterDefinition.DataType"/>)</param>
         /// <param name="document"><see cref="IDocumentWrapper"/>.
-        /// If null, <see cref="IDefinitionFileWrapper"/> gets from current document.</param>
+        /// If null, <see cref="IDocumentWrapper"/> gets from current document.</param>
         /// <exception cref="NotSetCategoriesForBindParameterException">
         /// Thrown if not set categories for bind parameter in <see cref="SharedParameterCreateData"/>.</exception>
         /// <exception cref="ParameterNotFoundException">

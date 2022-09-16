@@ -7,7 +7,8 @@ using Autodesk.Revit.DB;
 /// <summary>
 /// Wrapped <see cref="Document"/>.
 /// </summary>
-public class DocumentWrapper : Wrapper<Document>, IDocumentWrapper
+public class DocumentWrapper
+    : Wrapper<Document>, IDocumentWrapper
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="DocumentWrapper"/> class.
