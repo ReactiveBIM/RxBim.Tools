@@ -2,11 +2,13 @@
 {
     using Abstractions;
     using Autodesk.Revit.DB;
+    using JetBrains.Annotations;
     using Models;
 
     /// <summary>
     /// Wrapping extensions.
     /// </summary>
+    [PublicAPI]
     public static class WrappingExtensions
     {
         /// <summary>
@@ -16,6 +18,15 @@
         public static IIdentifierWrapper Wrap(this ElementId id)
         {
             return new ElementIdWrapper(id.IntegerValue);
+        }
+
+        /// <summary>
+        /// Returns <see cref="IIdentifierWrapper"/> from Revit element identifier value.
+        /// </summary>
+        /// <param name="id">Revit element identifier value.</param>
+        public static IIdentifierWrapper WrapToIdentifier(this int id)
+        {
+            return new ElementIdWrapper(id);
         }
 
         /// <summary>
