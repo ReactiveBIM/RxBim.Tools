@@ -3,7 +3,7 @@
     /// <summary>
     /// Transaction context.
     /// </summary>
-    public interface ITransactionContext
+    public interface ITransactionContext : IWrapper
     {
     }
 }

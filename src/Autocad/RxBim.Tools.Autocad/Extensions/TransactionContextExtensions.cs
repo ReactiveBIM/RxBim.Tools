@@ -22,8 +22,8 @@
         public static TransactionManager GetTransactionManager(this ITransactionContext context)
         {
             return context.GetFromContext(
-                x => x.ContextObject.TransactionManager,
-                x => x.ContextObject.TransactionManager);
+                x => x.Unwrap<Document>().TransactionManager,
+                x => x.Unwrap<Database>().TransactionManager);
         }
 
         /// <summary>
@@ -35,7 +35,7 @@
         /// </exception>
         public static Database GetDatabase(this ITransactionContext context)
         {
-            return context.GetFromContext(x => x.ContextObject.Database, x => x.ContextObject);
+            return context.GetFromContext(x => x.Unwrap<Document>().Database, x => x.Unwrap<Database>());
         }
 
         /// <summary>

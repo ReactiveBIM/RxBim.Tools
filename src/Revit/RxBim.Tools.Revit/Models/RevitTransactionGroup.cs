@@ -2,51 +2,46 @@
 {
     using Autodesk.Revit.DB;
 
-    /// <inheritdoc />
-    internal class RevitTransactionGroup : ITransactionGroup
+    /// <inheritdoc cref="RxBim.Tools.ITransactionGroup" />
+    internal class RevitTransactionGroup : Wrapper<TransactionGroup>, ITransactionGroup
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RevitTransactionGroup"/> class.
         /// </summary>
         /// <param name="transactionGroup"><see cref="TransactionGroup"/> instance.</param>
         public RevitTransactionGroup(TransactionGroup transactionGroup)
+            : base(transactionGroup)
         {
-            TransactionGroup = transactionGroup;
         }
-
-        /// <summary>
-        /// Revit transaction group.
-        /// </summary>
-        public TransactionGroup TransactionGroup { get; }
 
         /// <inheritdoc />
         public void Dispose()
         {
-            TransactionGroup.Dispose();
+            Object.Dispose();
         }
 
         /// <inheritdoc />
         public void Start()
         {
-            TransactionGroup.Start();
+            Object.Start();
         }
 
         /// <inheritdoc />
         public void RollBack()
         {
-            TransactionGroup.RollBack();
+            Object.RollBack();
         }
 
         /// <inheritdoc />
         public bool IsRolledBack()
         {
-            return TransactionGroup.GetStatus() == TransactionStatus.RolledBack;
+            return Object.GetStatus() == TransactionStatus.RolledBack;
         }
 
         /// <inheritdoc />
         public void Assimilate()
         {
-            TransactionGroup.Assimilate();
+            Object.Assimilate();
         }
     }
 }

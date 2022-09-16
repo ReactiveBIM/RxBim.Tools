@@ -2,51 +2,46 @@
 {
     using Autodesk.Revit.DB;
 
-    /// <inheritdoc />
-    internal class RevitTransaction : ITransaction
+    /// <inheritdoc cref="RxBim.Tools.ITransaction" />
+    internal class RevitTransaction : Wrapper<Transaction>, ITransaction
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RevitTransaction"/> class.
         /// </summary>
         /// <param name="transaction"><see cref="Transaction"/> instance.</param>
         public RevitTransaction(Transaction transaction)
+            : base(transaction)
         {
-            Transaction = transaction;
         }
-
-        /// <summary>
-        /// Revit transaction.
-        /// </summary>
-        public Transaction Transaction { get; }
 
         /// <inheritdoc />
         public void Dispose()
         {
-            Transaction.Dispose();
+            Object.Dispose();
         }
 
         /// <inheritdoc />
         public void Start()
         {
-            Transaction.Start();
+            Object.Start();
         }
 
         /// <inheritdoc />
         public void RollBack()
         {
-            Transaction.RollBack();
+            Object.RollBack();
         }
 
         /// <inheritdoc />
         public bool IsRolledBack()
         {
-            return Transaction.GetStatus() == TransactionStatus.RolledBack;
+            return Object.GetStatus() == TransactionStatus.RolledBack;
         }
 
         /// <inheritdoc />
         public void Commit()
         {
-            Transaction.Commit();
+            Object.Commit();
         }
     }
 }

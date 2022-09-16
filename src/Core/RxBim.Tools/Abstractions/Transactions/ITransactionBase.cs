@@ -5,7 +5,7 @@
     /// <summary>
     /// Base transaction object.
     /// </summary>
-    public interface ITransactionBase : IDisposable
+    public interface ITransactionBase : IDisposable, IWrapper
     {
         /// <summary>
         /// Starts.

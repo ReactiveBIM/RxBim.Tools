@@ -19,7 +19,7 @@
         public static Document GetDocument(this ITransactionContext context)
         {
             if (context is DocumentContext documentContext)
-                return documentContext.ContextObject;
+                return documentContext.Unwrap<Document>();
 
             throw new ArgumentException($"Must be a {nameof(DocumentContext)}!", nameof(context));
         }

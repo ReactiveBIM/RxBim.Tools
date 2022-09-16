@@ -15,7 +15,7 @@
         /// <param name="entity">New entity.</param>
         public static ObjectId AppendToCurrentSpace(this ITransaction transaction, ITransactionContext context, Entity entity)
         {
-            var acadTransaction = transaction.ToAcadTransaction();
+            var acadTransaction = transaction.Unwrap<Transaction>();
             var database = context.GetDatabase();
             var blockTableRecord = acadTransaction.GetObjectAs<BlockTableRecord>(database.CurrentSpaceId, true);
             var id = blockTableRecord.AppendEntity(entity);
@@ -46,7 +46,7 @@
             bool forceOpenOnLockedLayer = true)
             where T : DBObject
         {
-            return transaction.ToAcadTransaction().GetObjectAs<T>(id, forWrite, openErased, forceOpenOnLockedLayer);
+            return transaction.Unwrap<Transaction>().GetObjectAs<T>(id, forWrite, openErased, forceOpenOnLockedLayer);
         }
     }
 }

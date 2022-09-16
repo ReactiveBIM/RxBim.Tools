@@ -5,7 +5,7 @@
     /// <summary>
     /// Autocad transaction base.
     /// </summary>
-    internal abstract class AutocadTransactionBase : ITransaction
+    internal abstract class AutocadTransactionBase : Wrapper<Transaction>, ITransaction
     {
         private bool _isRolledBack;
 
@@ -14,17 +14,12 @@
         /// </summary>
         /// <param name="transaction"><see cref="Transaction"/> instance.</param>
         protected AutocadTransactionBase(Transaction transaction)
+            : base(transaction)
         {
-            Transaction = transaction;
         }
 
-        /// <summary>
-        /// Autocad transaction object.
-        /// </summary>
-        public Transaction Transaction { get; }
-
         /// <inheritdoc/>
-        public void Dispose() => Transaction.Dispose();
+        public void Dispose() => Object.Dispose();
 
         /// <inheritdoc />
         public void Start()
@@ -35,7 +30,7 @@
         /// <inheritdoc />
         public void RollBack()
         {
-            Transaction.Abort();
+            Object.Abort();
             _isRolledBack = true;
         }
 
@@ -43,6 +38,6 @@
         public bool IsRolledBack() => _isRolledBack;
 
         /// <inheritdoc />
-        public void Commit() => Transaction.Commit();
+        public void Commit() => Object.Commit();
     }
 }
