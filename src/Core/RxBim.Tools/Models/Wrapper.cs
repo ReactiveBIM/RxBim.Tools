@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Tools;
 
+using System;
 using JetBrains.Annotations;
 
 /// <summary>
@@ -23,10 +24,10 @@ public abstract class Wrapper<T> : IWrapper
     public T Object { get; }
 
     /// <inheritdoc />
-    public TWrap? Unwrap<TWrap>()
+    public TWrap Unwrap<TWrap>()
     {
         return Object is TWrap obj
             ? obj
-            : default;
+            : throw new InvalidCastException($"Can't cast wrapped object {typeof(T)} to {typeof(TWrap)}");
     }
 }
