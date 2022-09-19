@@ -5,10 +5,10 @@
 
     /// <inheritdoc cref="ITransactionWrapper" />
     [UsedImplicitly]
-    internal class AutocadTransactionWrapper : AutocadTransactionWrapperBase
+    internal class TransactionWrapper : TransactionWrapperBase
     {
         /// <inheritdoc />
-        public AutocadTransactionWrapper(Transaction transaction)
+        public TransactionWrapper(Transaction transaction)
         : base(transaction)
         {
         }

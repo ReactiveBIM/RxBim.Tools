@@ -3,13 +3,13 @@
     using Autodesk.Revit.DB;
 
     /// <inheritdoc cref="ITransactionGroupWrapper" />
-    internal class RevitTransactionGroupWrapper : Wrapper<TransactionGroup>, ITransactionGroupWrapper
+    internal class TransactionGroupWrapper : Wrapper<TransactionGroup>, ITransactionGroupWrapper
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RevitTransactionGroupWrapper"/> class.
+        /// Initializes a new instance of the <see cref="TransactionGroupWrapper"/> class.
         /// </summary>
         /// <param name="transactionGroup"><see cref="TransactionGroup"/> instance.</param>
-        public RevitTransactionGroupWrapper(TransactionGroup transactionGroup)
+        public TransactionGroupWrapper(TransactionGroup transactionGroup)
             : base(transactionGroup)
         {
         }

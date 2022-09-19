@@ -3,13 +3,13 @@
     using Autodesk.Revit.DB;
 
     /// <inheritdoc cref="ITransactionWrapper" />
-    internal class RevitTransactionWrapper : Wrapper<Transaction>, ITransactionWrapper
+    internal class TransactionWrapper : Wrapper<Transaction>, ITransactionWrapper
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RevitTransactionWrapper"/> class.
+        /// Initializes a new instance of the <see cref="TransactionWrapper"/> class.
         /// </summary>
         /// <param name="transaction"><see cref="Transaction"/> instance.</param>
-        public RevitTransactionWrapper(Transaction transaction)
+        public TransactionWrapper(Transaction transaction)
             : base(transaction)
         {
         }

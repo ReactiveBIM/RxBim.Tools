@@ -3,10 +3,10 @@
     /// <summary>
     /// Revit element identifier.
     /// </summary>
-    public class ElementIdWrapper : Wrapper<int>, IIdentifierWrapper
+    public class IdWrapper : Wrapper<int>, IIdWrapper
     {
         /// <inheritdoc />
-        public ElementIdWrapper(int wrappedObject)
+        public IdWrapper(int wrappedObject)
             : base(wrappedObject)
         {
         }

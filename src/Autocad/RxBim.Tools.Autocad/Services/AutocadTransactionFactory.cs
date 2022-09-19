@@ -24,7 +24,7 @@
             where T : class, ITransactionContextWrapper
         {
             var acadTransaction = context.GetTransactionManager().StartTransaction();
-            return new AutocadTransactionWrapper(acadTransaction);
+            return new TransactionWrapper(acadTransaction);
         }
 
         /// <inheritdoc />
@@ -32,7 +32,7 @@
             where T : class, ITransactionContextWrapper
         {
             var acadTransaction = context.GetTransactionManager().StartTransaction();
-            return new AutocadTransactionGroupWrapper(acadTransaction, context);
+            return new TransactionGroupWrapper(acadTransaction);
         }
 
         /// <inheritdoc />

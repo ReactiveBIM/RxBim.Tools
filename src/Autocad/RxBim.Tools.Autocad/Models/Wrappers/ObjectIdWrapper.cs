@@ -5,10 +5,10 @@
     /// <summary>
     /// Wrapper for <see cref="ObjectId"/>.
     /// </summary>
-    public class AutocadObjectIdWrapper : Wrapper<ObjectId>, IIdentifierWrapper
+    public class ObjectIdWrapper : Wrapper<ObjectId>, IIdWrapper
     {
         /// <inheritdoc />
-        public AutocadObjectIdWrapper(ObjectId wrappedObject)
+        public ObjectIdWrapper(ObjectId wrappedObject)
             : base(wrappedObject)
         {
         }

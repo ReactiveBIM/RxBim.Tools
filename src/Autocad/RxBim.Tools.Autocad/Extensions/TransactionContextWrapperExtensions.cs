@@ -45,7 +45,9 @@
             {
                 IDocumentWrapper document => fromDocCx(document.Unwrap<Document>()),
                 IDatabaseWrapper database => fromDbCx(database.Unwrap<Database>()),
-                _ => throw new ArgumentException("Unknown context type!", nameof(context))
+                _ => throw new ArgumentException(
+                    $"Unknown context type: {context.GetType().FullName}!",
+                    nameof(context))
             };
         }
     }

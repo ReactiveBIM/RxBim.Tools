@@ -12,21 +12,12 @@
     public static class WrappingExtensions
     {
         /// <summary>
-        /// Returns <see cref="IIdentifierWrapper"/> from <see cref="ElementId"/>.
+        /// Returns <see cref="IIdWrapper"/> from <see cref="ElementId"/>.
         /// </summary>
         /// <param name="id"><see cref="ElementId"/> object.</param>
-        public static IIdentifierWrapper Wrap(this ElementId id)
+        public static IIdWrapper Wrap(this ElementId id)
         {
-            return new ElementIdWrapper(id.IntegerValue);
-        }
-
-        /// <summary>
-        /// Returns <see cref="IIdentifierWrapper"/> from Revit element identifier value.
-        /// </summary>
-        /// <param name="id">Revit element identifier value.</param>
-        public static IIdentifierWrapper WrapToIdentifier(this int id)
-        {
-            return new ElementIdWrapper(id);
+            return new IdWrapper(id.IntegerValue);
         }
 
         /// <summary>

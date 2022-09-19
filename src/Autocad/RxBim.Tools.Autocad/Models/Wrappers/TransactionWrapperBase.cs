@@ -5,15 +5,15 @@
     /// <summary>
     /// Autocad transaction base.
     /// </summary>
-    internal abstract class AutocadTransactionWrapperBase : Wrapper<Transaction>, ITransactionWrapper
+    internal abstract class TransactionWrapperBase : Wrapper<Transaction>, ITransactionWrapper
     {
         private bool _isRolledBack;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AutocadTransactionWrapperBase"/> class.
+        /// Initializes a new instance of the <see cref="TransactionWrapperBase"/> class.
         /// </summary>
         /// <param name="transaction"><see cref="Transaction"/> instance.</param>
-        protected AutocadTransactionWrapperBase(Transaction transaction)
+        protected TransactionWrapperBase(Transaction transaction)
             : base(transaction)
         {
         }

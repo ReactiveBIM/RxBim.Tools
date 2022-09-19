@@ -23,7 +23,7 @@
         }
 
         /// <inheritdoc />
-        public void SetSelectedElements(IEnumerable<IIdentifierWrapper> elementIds)
+        public void SetSelectedElements(IEnumerable<IIdWrapper> elementIds)
         {
             _uiApplication.ActiveUIDocument.Selection.SetElementIds(elementIds
                 .Select(e => new ElementId(e.Unwrap<int>()))
@@ -31,7 +31,7 @@
         }
 
         /// <inheritdoc />
-        public void SetSelectedElement(IIdentifierWrapper elementId)
+        public void SetSelectedElement(IIdWrapper elementId)
         {
             _uiApplication.ActiveUIDocument.Selection.SetElementIds(
                 new List<ElementId>
@@ -47,7 +47,7 @@
         }
 
         /// <inheritdoc />
-        public void Zoom(IIdentifierWrapper elementId, double zoomFactor = 0.25)
+        public void Zoom(IIdWrapper elementId, double zoomFactor = 0.25)
         {
             var activeView = _uiApplication.ActiveUIDocument.ActiveView;
             if (activeView == null)

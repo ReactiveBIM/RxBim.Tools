@@ -27,7 +27,7 @@
             where T : class, ITransactionContextWrapper
         {
             var revitTransaction = new Transaction(context.GetDocument(), name ?? $"Transaction_{Guid.NewGuid()}");
-            return new RevitTransactionWrapper(revitTransaction);
+            return new TransactionWrapper(revitTransaction);
         }
 
         /// <inheritdoc />
@@ -36,7 +36,7 @@
         {
             var transactionGroup =
                 new TransactionGroup(context.GetDocument(), name ?? $"TransactionGroup_{Guid.NewGuid()}");
-            return new RevitTransactionGroupWrapper(transactionGroup);
+            return new TransactionGroupWrapper(transactionGroup);
         }
 
         /// <inheritdoc />

@@ -3,10 +3,10 @@
     using Autodesk.AutoCAD.DatabaseServices;
 
     /// <inheritdoc cref="ITransactionGroupWrapper" />
-    internal class AutocadTransactionGroupWrapper : AutocadTransactionWrapperBase, ITransactionGroupWrapper
+    internal class TransactionGroupWrapper : TransactionWrapperBase, ITransactionGroupWrapper
     {
         /// <inheritdoc />
-        public AutocadTransactionGroupWrapper(Transaction transaction, ITransactionContextWrapper context)
+        public TransactionGroupWrapper(Transaction transaction)
             : base(transaction)
         {
         }

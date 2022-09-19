@@ -11,12 +11,12 @@
     public static class WrappingExtensions
     {
         /// <summary>
-        /// Return <see cref="IIdentifierWrapper"/> from <see cref="ObjectId"/>.
+        /// Return <see cref="IIdWrapper"/> from <see cref="ObjectId"/>.
         /// </summary>
         /// <param name="id"><see cref="ObjectId"/> value.</param>
-        public static IIdentifierWrapper Wrap(this ObjectId id)
+        public static IIdWrapper Wrap(this ObjectId id)
         {
-            return new AutocadObjectIdWrapper(id);
+            return new ObjectIdWrapper(id);
         }
 
         /// <summary>
