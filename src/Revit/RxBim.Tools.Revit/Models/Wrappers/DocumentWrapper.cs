@@ -24,6 +24,10 @@ public class DocumentWrapper
         => Object.Title;
 
     /// <inheritdoc />
+    public IViewWrapper ActiveView
+        => Object.ActiveView.Wrap();
+
+    /// <inheritdoc />
     public IEnumerable<IViewSheetWrapper> ViewSheets
         => new FilteredElementCollector(Object)
             .WhereElementIsNotElementType()
@@ -31,4 +35,8 @@ public class DocumentWrapper
             .Where(sheet => !sheet.IsPlaceholder
                             && sheet.CanBePrinted)
             .Select(viewSheet => viewSheet.Wrap());
+
+    /// <inheritdoc />
+    public void Regenerate()
+        => Object.Regenerate();
 }

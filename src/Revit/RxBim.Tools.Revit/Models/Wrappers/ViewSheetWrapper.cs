@@ -6,7 +6,7 @@ using Autodesk.Revit.DB;
 /// Wrapped <see cref="ViewSheet"/>.
 /// </summary>
 public class ViewSheetWrapper
-    : ElementWrapper, IViewSheetWrapper
+    : ViewWrapper, IViewSheetWrapper
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="ViewSheetWrapper"/> class.

@@ -36,6 +36,13 @@ public static class WrappingExtensions
         => new ElementIdWrapper(elementId);
 
     /// <summary>
+    /// Wraps <see cref="View"/>
+    /// </summary>
+    /// <param name="view"><see cref="View"/></param>
+    public static IViewWrapper Wrap(this View view)
+        => new ViewWrapper(view);
+    
+    /// <summary>
     /// Wraps <see cref="ViewSheet"/>.
     /// </summary>
     /// <param name="viewSheet"><see cref="ViewSheet"/></param>
@@ -48,6 +55,34 @@ public static class WrappingExtensions
     /// <param name="viewSchedule"><see cref="ViewSchedule"/></param>
     public static IViewScheduleWrapper Wrap(this ViewSchedule viewSchedule)
         => new ViewScheduleWrapper(viewSchedule);
+
+    /// <summary>
+    /// Wraps <see cref="TableData"/>.
+    /// </summary>
+    /// <param name="tableData"><see cref="TableData"/></param>
+    public static ITableDataWrapper Wrap(this TableData tableData)
+        => new TableDataWrapper(tableData);
+
+    /// <summary>
+    /// Wraps <see cref="TableSectionData"/>.
+    /// </summary>
+    /// <param name="tableSectionData"><see cref="TableSectionData"/></param>
+    public static ITableSectionDataWrapper Wrap(this TableSectionData tableSectionData)
+        => new TableSectionDataWrapper(tableSectionData);
+
+    /// <summary>
+    /// Wraps <see cref="ScheduleDefinition"/>.
+    /// </summary>
+    /// <param name="scheduleDefinition"><see cref="ScheduleDefinition"/></param>
+    public static IScheduleDefinitionWrapper Wrap(this ScheduleDefinition scheduleDefinition)
+        => new ScheduleDefinitionWrapper(scheduleDefinition);
+
+    /// <summary>
+    /// Wraps <see cref="ScheduleField"/>.
+    /// </summary>
+    /// <param name="scheduleField"><see cref="ScheduleField"/></param>
+    public static IScheduleFieldWrapper Wrap(this ScheduleField scheduleField)
+        => new ScheduleFieldWrapper(scheduleField);
 
     /// <summary>
     /// Wraps <see cref="FilteredElementCollector"/>.

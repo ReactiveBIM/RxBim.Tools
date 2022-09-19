@@ -1,13 +1,12 @@
 ﻿namespace RxBim.Tools.Revit;
 
 using Autodesk.Revit.DB;
-using JetBrains.Annotations;
 
 /// <summary>
 /// Wrapped <see cref="ViewSchedule"/>.
 /// </summary>
 public class ViewScheduleWrapper
-    : ElementWrapper, IViewScheduleWrapper
+    : ViewWrapper, IViewScheduleWrapper
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="ViewScheduleWrapper"/> class.
@@ -17,4 +16,12 @@ public class ViewScheduleWrapper
         : base(wrappedObject)
     {
     }
+
+    /// <inheritdoc />
+    public IScheduleDefinitionWrapper Definition
+        => ((ViewSchedule)Object).Definition.Wrap();
+
+    /// <inheritdoc />
+    public ITableDataWrapper TableData
+        => ((ViewSchedule)Object).GetTableData().Wrap();
 }

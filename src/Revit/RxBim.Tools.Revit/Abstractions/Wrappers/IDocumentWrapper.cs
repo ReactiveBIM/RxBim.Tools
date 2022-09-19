@@ -15,7 +15,17 @@ public interface IDocumentWrapper : IWrapper
     string Title { get; }
     
     /// <summary>
+    /// Active view for the document.
+    /// </summary>
+    IViewWrapper ActiveView { get; }
+    
+    /// <summary>
     /// Collection of <see cref="IViewSheetWrapper"/> for this document.
     /// </summary>
     IEnumerable<IViewSheetWrapper> ViewSheets { get; }
+
+    /// <summary>
+    /// Updates the elements in the document to reflect all changes.
+    /// </summary>
+    void Regenerate();
 }
