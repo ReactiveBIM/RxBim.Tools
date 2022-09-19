@@ -1,4 +1,4 @@
-﻿namespace RxBim.Command.TableBuilder.Autocad.Sample.Commands
+﻿namespace RxBim.Tools.TableBuilder.Autocad.Sample.Commands
 {
     using System.Collections.Generic;
     using Abstractions;

@@ -1,4 +1,4 @@
-﻿namespace RxBim.Command.TableBuilder.Autocad.Sample.Abstractions
+﻿namespace RxBim.Tools.TableBuilder.Autocad.Sample.Abstractions
 {
     using System.Collections.Generic;
     using Autodesk.AutoCAD.DatabaseServices;

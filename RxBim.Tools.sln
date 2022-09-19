@@ -29,14 +29,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.csproj", "{E2EC9FDA-2F0E-4BD1-8F63-3787605ED60C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Command.TableBuilder.Autocad.Sample", "samples\RxBim.Command.TableBuilder.Autocad.Sample\RxBim.Command.TableBuilder.Autocad.Sample.csproj", "{BD814946-EDC4-45DC-AE70-57831679B706}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.TableBuilder.Autocad.Sample", "samples\RxBim.Tools.TableBuilder.Autocad.Sample\RxBim.Tools.TableBuilder.Autocad.Sample.csproj", "{BD814946-EDC4-45DC-AE70-57831679B706}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{EA1ADE6F-F986-4CF3-A953-5B3C25A5C3F0}"
 ProjectSection(SolutionItems) = preProject
 	samples\Directory.Build.Props = samples\Directory.Build.Props
 EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Command.TableBuilder.Revit.Sample", "samples\RxBim.Command.TableBuilder.Revit.Sample\RxBim.Command.TableBuilder.Revit.Sample.csproj", "{004DDE18-43BF-4D97-A5A6-8D4751E40B6C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.TableBuilder.Revit.Sample", "samples\RxBim.Tools.TableBuilder.Revit.Sample\RxBim.Tools.TableBuilder.Revit.Sample.csproj", "{004DDE18-43BF-4D97-A5A6-8D4751E40B6C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.TableBuilder.Excel.Tests", "tests\RxBim.Tools.TableBuilder.Excel.Tests\RxBim.Tools.TableBuilder.Excel.Tests.csproj", "{24FBE399-C806-4CB6-98DB-C71712B1C7B5}"
 EndProject

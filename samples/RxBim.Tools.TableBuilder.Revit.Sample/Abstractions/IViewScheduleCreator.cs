@@ -1,4 +1,4 @@
-﻿namespace RxBim.Command.TableBuilder.Revit.Sample.Abstractions
+﻿namespace RxBim.Tools.TableBuilder.Revit.Sample.Abstractions
 {
     using CSharpFunctionalExtensions;
 

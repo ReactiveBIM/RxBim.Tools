@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
     <ItemGroup>
         <ProjectReference Include="..\..\src\Autocad\RxBim.Tools.Autocad\RxBim.Tools.Autocad.csproj" />
         <ProjectReference Include="..\..\src\Autocad\RxBim.Tools.TableBuilder.Autocad\RxBim.Tools.TableBuilder.Autocad.csproj" />

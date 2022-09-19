@@ -1,4 +1,4 @@
-﻿namespace RxBim.Command.TableBuilder.Revit.Sample
+﻿namespace RxBim.Tools.TableBuilder.Revit.Sample
 {
     using Abstractions;
     using Autodesk.Revit.Attributes;

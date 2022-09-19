@@ -1,4 +1,4 @@
-﻿namespace RxBim.Command.TableBuilder.Autocad.Sample
+﻿namespace RxBim.Tools.TableBuilder.Autocad.Sample
 {
     using Abstractions;
     using Di;

@@ -1,4 +1,4 @@
-﻿namespace RxBim.Command.TableBuilder.Revit.Sample.Services
+﻿namespace RxBim.Tools.TableBuilder.Revit.Sample.Services
 {
     using System;
     using System.Linq;

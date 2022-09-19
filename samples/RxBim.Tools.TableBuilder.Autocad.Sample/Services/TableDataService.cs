@@ -1,4 +1,4 @@
-﻿namespace RxBim.Command.TableBuilder.Autocad.Sample.Services
+﻿namespace RxBim.Tools.TableBuilder.Autocad.Sample.Services
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -6,9 +6,9 @@
     using Autodesk.AutoCAD.DatabaseServices;
     using CSharpFunctionalExtensions;
     using JetBrains.Annotations;
+    using Styles;
     using Tools.Autocad;
     using Tools.TableBuilder;
-    using Tools.TableBuilder.Styles;
     using Entity = Autodesk.AutoCAD.DatabaseServices.Entity;
     using Table = Tools.TableBuilder.Table;
 
