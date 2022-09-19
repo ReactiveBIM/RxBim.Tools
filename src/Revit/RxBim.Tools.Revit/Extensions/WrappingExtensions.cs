@@ -22,11 +22,18 @@ public static class WrappingExtensions
         => new DefinitionFileWrapper(definitionFile);
 
     /// <summary>
-    /// Wraps <see cref="Element"/>
+    /// Wraps <see cref="Element"/>.
     /// </summary>
     /// <param name="element"><see cref="Element"/></param>
     public static IElementWrapper Wrap(this Element element)
         => new ElementWrapper(element);
+
+    /// <summary>
+    /// Wraps <see cref="ElementId"/>.
+    /// </summary>
+    /// <param name="elementId"><see cref="ElementId"/></param>
+    public static IObjectIdWrapper Wrap(this ElementId elementId)
+        => new ElementIdWrapper(elementId);
 
     /// <summary>
     /// Wraps <see cref="ViewSheet"/>.
@@ -34,6 +41,13 @@ public static class WrappingExtensions
     /// <param name="viewSheet"><see cref="ViewSheet"/></param>
     public static IViewSheetWrapper Wrap(this ViewSheet viewSheet)
         => new ViewSheetWrapper(viewSheet);
+
+    /// <summary>
+    /// Wraps <see cref="ViewSchedule"/>.
+    /// </summary>
+    /// <param name="viewSchedule"><see cref="ViewSchedule"/></param>
+    public static IViewScheduleWrapper Wrap(this ViewSchedule viewSchedule)
+        => new ViewScheduleWrapper(viewSchedule);
 
     /// <summary>
     /// Wraps <see cref="FilteredElementCollector"/>.

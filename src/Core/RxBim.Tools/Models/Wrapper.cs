@@ -28,6 +28,6 @@ public abstract class Wrapper<T> : IWrapper
     {
         return Object is TWrap obj
             ? obj
-            : throw new InvalidCastException($"Can't cast wrapped object {typeof(T)} to {typeof(TWrap)}");
+            : throw new InvalidCastException($"Can't cast wrapped object {typeof(T)} to {typeof(TWrap)}.");
     }
 }

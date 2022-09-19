@@ -9,6 +9,16 @@ using JetBrains.Annotations;
 public interface IElementWrapper : IWrapper
 {
     /// <summary>
+    /// Wrapped element Id.
+    /// </summary>
+    IObjectIdWrapper Id { get; }
+    
+    /// <summary>
+    /// Element name.
+    /// </summary>
+    string Name { get; }
+    
+    /// <summary>
     /// Specifies whether the .NET object represents a valid Revit entity.
     /// </summary>
     /// <remarks>

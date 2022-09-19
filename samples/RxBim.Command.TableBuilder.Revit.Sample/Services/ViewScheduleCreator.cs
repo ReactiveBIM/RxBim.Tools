@@ -16,7 +16,7 @@
     [UsedImplicitly]
     internal class ViewScheduleCreator : IViewScheduleCreator
     {
-        private readonly IScopedElementsCollector _scopedCollector;
+        private readonly IElementsCollector _elementsCollector;
         private readonly ITransactionService _transactionService;
         private readonly IViewScheduleTableConverter _tableConverter;
         private readonly Document _doc;
@@ -24,17 +24,17 @@
         /// <summary>
         /// ctor
         /// </summary>
-        /// <param name="scopedCollector"><see cref="IScopedElementsCollector"/></param>
+        /// <param name="elementsCollector"><see cref="IElementsCollector"/></param>
         /// <param name="transactionService"><see cref="ITransactionService"/></param>
         /// <param name="tableConverter">A converter to <see cref="ViewSchedule"/></param>
         /// <param name="doc"><see cref="Document"/></param>
         public ViewScheduleCreator(
-            IScopedElementsCollector scopedCollector,
+            IElementsCollector elementsCollector,
             ITransactionService transactionService,
             IViewScheduleTableConverter tableConverter,
             Document doc)
         {
-            _scopedCollector = scopedCollector;
+            _elementsCollector = elementsCollector;
             _transactionService = transactionService;
             _tableConverter = tableConverter;
             _doc = doc;
@@ -99,9 +99,9 @@
 
         private Result DeleteViewScheduleIfExists(string name)
         {
-            var existedScheduleId = _scopedCollector.GetFilteredElementCollector(ignoreScope: true)
+            var existedScheduleId = _elementsCollector.GetCollector()
                 .WhereElementIsNotElementType()
-                .OfType<ViewSchedule>()
+                .OfClass<IViewScheduleWrapper>()
                 .FirstOrDefault(x => x.Name.Contains(name))
                 ?.Id;
 
@@ -109,7 +109,7 @@
                 return Result.Success();
 
             _transactionService.RunInTransaction(
-                () => _doc.Delete(existedScheduleId),
+                () => _doc.Delete(existedScheduleId.Unwrap<ElementId>()),
                 nameof(DeleteViewScheduleIfExists));
 
             return Result.Success();

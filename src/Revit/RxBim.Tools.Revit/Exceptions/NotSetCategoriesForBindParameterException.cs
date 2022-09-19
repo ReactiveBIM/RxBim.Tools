@@ -13,7 +13,7 @@ public class NotSetCategoriesForBindParameterException : ParameterException
     /// </summary>
     /// <param name="parameterName">Definition parameter name.</param>
     public NotSetCategoriesForBindParameterException(string parameterName)
-        : base(parameterName, $"Not set categories for bind parameter {parameterName}")
+        : base(parameterName, $"Not set categories for bind parameter {parameterName}.")
     {
     }
 

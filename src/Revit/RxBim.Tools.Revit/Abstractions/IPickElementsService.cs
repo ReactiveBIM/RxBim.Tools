@@ -2,10 +2,12 @@
 
 using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 
 /// <summary>
 /// Service for pick elements on model.
 /// </summary>
+[UsedImplicitly]
 public interface IPickElementsService
 {
     /// <summary>

@@ -18,6 +18,14 @@ public class ElementWrapper
     }
 
     /// <inheritdoc />
+    public IObjectIdWrapper Id
+        => Object.Id.Wrap();
+
+    /// <inheritdoc />
+    public string Name
+        => Object.Name;
+
+    /// <inheritdoc />
     public bool IsValid
         => Object.IsValidObject;
 

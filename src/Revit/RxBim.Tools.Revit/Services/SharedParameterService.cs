@@ -223,7 +223,7 @@
             bool fullMatch,
             IDefinitionFileWrapper definitionFile)
         {
-            foreach (var defGroup in definitionFile.Unwrap<DefinitionFile>()!.Groups)
+            foreach (var defGroup in definitionFile.Unwrap<DefinitionFile>().Groups)
             {
                 foreach (var def in defGroup.Definitions)
                 {

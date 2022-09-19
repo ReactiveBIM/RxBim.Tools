@@ -19,7 +19,7 @@ public interface IFilteredElementScopeManager
     IReadOnlyCollection<FilteredElementScope> ScopesForIncludeSubElements { get; }
 
     /// <summary>
-    /// Sets <see cref="IElementsCollector.Scope"/>.
+    /// Sets <see cref="IFilteredElementScopeManager.Scope"/>.
     /// </summary>
     /// <param name="scope"><see cref="FilteredElementScope"/></param>
     IElementsCollector SetScope(FilteredElementScope scope);
