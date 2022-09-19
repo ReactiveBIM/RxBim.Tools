@@ -1,12 +1,14 @@
 ﻿namespace RxBim.Tools.Revit.Models
 {
+    using Autodesk.Revit.DB;
+
     /// <summary>
     /// Revit element identifier.
     /// </summary>
-    public class IdWrapper : Wrapper<int>, IIdWrapper
+    public class ElementIdWrapper : Wrapper<ElementId>, IObjectIdWrapper
     {
         /// <inheritdoc />
-        public IdWrapper(int wrappedObject)
+        public ElementIdWrapper(ElementId wrappedObject)
             : base(wrappedObject)
         {
         }

@@ -3,7 +3,7 @@
     /// <summary>
     /// Identifier wrapper.
     /// </summary>
-    public interface IIdWrapper : IWrapper
+    public interface IObjectIdWrapper : IWrapper
     {
     }
 }

@@ -20,7 +20,7 @@
         }
 
         /// <inheritdoc />
-        public void SetSelectedElements(IEnumerable<IIdWrapper> ids)
+        public void SetSelectedElements(IEnumerable<IObjectIdWrapper> ids)
         {
             var activeDocument = _documentService.GetActiveDocument();
             var activeDocumentDb = activeDocument.Database;
@@ -36,7 +36,7 @@
         }
 
         /// <inheritdoc />
-        public void SetSelectedElement(IIdWrapper id)
+        public void SetSelectedElement(IObjectIdWrapper id)
         {
             SetSelectedElements(new[] { id });
         }
@@ -48,7 +48,7 @@
         }
 
         /// <inheritdoc />
-        public void Zoom(IIdWrapper id, double zoomFactor = 0.25)
+        public void Zoom(IObjectIdWrapper id, double zoomFactor = 0.25)
         {
             var objId = id.Unwrap<ObjectId>();
             var activeDocument = _documentService.GetActiveDocument();

@@ -23,20 +23,20 @@
         }
 
         /// <inheritdoc />
-        public void SetSelectedElements(IEnumerable<IIdWrapper> elementIds)
+        public void SetSelectedElements(IEnumerable<IObjectIdWrapper> elementIds)
         {
             _uiApplication.ActiveUIDocument.Selection.SetElementIds(elementIds
-                .Select(e => new ElementId(e.Unwrap<int>()))
+                .Select(e => e.Unwrap<ElementId>())
                 .ToList());
         }
 
         /// <inheritdoc />
-        public void SetSelectedElement(IIdWrapper elementId)
+        public void SetSelectedElement(IObjectIdWrapper elementId)
         {
             _uiApplication.ActiveUIDocument.Selection.SetElementIds(
                 new List<ElementId>
                 {
-                    new(elementId.Unwrap<int>())
+                    elementId.Unwrap<ElementId>()
                 });
         }
 
@@ -47,7 +47,7 @@
         }
 
         /// <inheritdoc />
-        public void Zoom(IIdWrapper elementId, double zoomFactor = 0.25)
+        public void Zoom(IObjectIdWrapper elementId, double zoomFactor = 0.25)
         {
             var activeView = _uiApplication.ActiveUIDocument.ActiveView;
             if (activeView == null)
@@ -62,7 +62,7 @@
 
             var document = activeView.Document;
 
-            var element = document.GetElement(new ElementId(elementId.Unwrap<int>()));
+            var element = document.GetElement(elementId.Unwrap<ElementId>());
             var boundingBox = element?.get_BoundingBox(null);
             if (boundingBox == null)
                 return;

@@ -11,10 +11,10 @@
     public static class WrappingExtensions
     {
         /// <summary>
-        /// Return <see cref="IIdWrapper"/> from <see cref="ObjectId"/>.
+        /// Return <see cref="IObjectIdWrapper"/> from <see cref="ObjectId"/>.
         /// </summary>
         /// <param name="id"><see cref="ObjectId"/> value.</param>
-        public static IIdWrapper Wrap(this ObjectId id)
+        public static IObjectIdWrapper Wrap(this ObjectId id)
         {
             return new ObjectIdWrapper(id);
         }

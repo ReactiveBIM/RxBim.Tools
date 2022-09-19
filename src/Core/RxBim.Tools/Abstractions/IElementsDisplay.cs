@@ -13,13 +13,13 @@
         /// Makes the objects selected.
         /// </summary>
         /// <param name="ids">List of object identifiers.</param>
-        void SetSelectedElements(IEnumerable<IIdWrapper> ids);
+        void SetSelectedElements(IEnumerable<IObjectIdWrapper> ids);
 
         /// <summary>
         /// Makes an object selected.
         /// </summary>
         /// <param name="id">Object identifier.</param>
-        void SetSelectedElement(IIdWrapper id);
+        void SetSelectedElement(IObjectIdWrapper id);
 
         /// <summary>
         /// Resets the current selection of objects.
@@ -33,6 +33,6 @@
         /// <param name="zoomFactor">
         /// Factor by which to zoom in or out. Values greater than 1 zooms in, less than 1 zooms out.
         /// </param>
-        void Zoom(IIdWrapper id, double zoomFactor = 0.25);
+        void Zoom(IObjectIdWrapper id, double zoomFactor = 0.25);
     }
 }

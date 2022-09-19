@@ -12,12 +12,12 @@
     public static class WrappingExtensions
     {
         /// <summary>
-        /// Returns <see cref="IIdWrapper"/> from <see cref="ElementId"/>.
+        /// Returns <see cref="IObjectIdWrapper"/> from <see cref="ElementId"/>.
         /// </summary>
         /// <param name="id"><see cref="ElementId"/> object.</param>
-        public static IIdWrapper Wrap(this ElementId id)
+        public static IObjectIdWrapper Wrap(this ElementId id)
         {
-            return new IdWrapper(id.IntegerValue);
+            return new ElementIdWrapper(id);
         }
 
         /// <summary>
