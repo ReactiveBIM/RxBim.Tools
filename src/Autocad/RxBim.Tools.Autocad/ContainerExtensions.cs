@@ -13,15 +13,15 @@
         /// <param name="container"><see cref="IContainer"/> object.</param>
         public static IContainer AddAutocadHelpers(this IContainer container)
         {
-            container.AddSingleton<IDocumentService, DocumentService>();
-            container.AddSingleton<IObjectsSelectionService, ObjectsSelectionService>();
-            container.AddSingleton<ICommandLineService, CommandLineService>();
-            container.AddSingleton<IElementsDisplay, ElementsDisplayService>();
-            container.AddSingleton<IProblemElementsStorage, ProblemElementsStorage>();
-            container.AddSingleton<ITransactionContextService<DatabaseWrapper>, DatabaseContextService>();
-            container.AddSingleton<ITransactionContextService<DocumentWrapper>, DocumentContextService>();
-            container.AddTransactionServices<AutocadTransactionFactory>();
-            return container;
+            return container
+                .AddSingleton<IDocumentService, DocumentService>()
+                .AddSingleton<IObjectsSelectionService, ObjectsSelectionService>()
+                .AddSingleton<ICommandLineService, CommandLineService>()
+                .AddSingleton<IElementsDisplay, ElementsDisplayService>()
+                .AddSingleton<ITransactionContextService<DatabaseWrapper>, DatabaseContextService>()
+                .AddSingleton<ITransactionContextService<DocumentWrapper>, DocumentContextService>()
+                .AddTransactionServices<AutocadTransactionFactory>()
+                .AddToolsServices();
         }
     }
 }

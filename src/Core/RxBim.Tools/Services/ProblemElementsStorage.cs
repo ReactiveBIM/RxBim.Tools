@@ -6,33 +6,32 @@
 
     /// <inheritdoc />
     [UsedImplicitly]
-    public class ProblemElementsStorage<T> : IProblemElementsStorage<T>
-        where T : struct
+    internal class ProblemElementsStorage : IProblemElementsStorage
     {
-        private readonly Dictionary<string, List<T>> _storage = new();
+        private readonly Dictionary<string, List<IObjectIdWrapper>> _storage = new();
 
         /// <inheritdoc/>
-        public void AddProblemElement(T id, string problem)
+        public void AddProblemElement(IObjectIdWrapper id, string problem)
         {
             if (_storage.ContainsKey(problem))
                 _storage[problem].Add(id);
             else
-                _storage.Add(problem, new List<T> { id });
+                _storage.Add(problem, new List<IObjectIdWrapper> { id });
         }
 
         /// <inheritdoc/>
-        public IDictionary<string, IEnumerable<T>> GetCombinedProblems()
+        public IDictionary<string, IEnumerable<IObjectIdWrapper>> GetCombinedProblems()
         {
             return _storage.ToDictionary(
                 problem => problem.Key,
-                problem => new List<T>(problem.Value) as IEnumerable<T>);
+                problem => new List<IObjectIdWrapper>(problem.Value) as IEnumerable<IObjectIdWrapper>);
         }
 
         /// <inheritdoc/>
-        public IEnumerable<KeyValuePair<T, string>> GetProblems()
+        public IEnumerable<KeyValuePair<IObjectIdWrapper, string>> GetProblems()
         {
             return _storage.SelectMany(problem =>
-                problem.Value.Select(id => new KeyValuePair<T, string>(id, problem.Key)));
+                problem.Value.Select(id => new KeyValuePair<IObjectIdWrapper, string>(id, problem.Key)));
         }
 
         /// <inheritdoc/>
