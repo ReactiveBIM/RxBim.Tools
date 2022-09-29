@@ -94,6 +94,9 @@
         public void SaveAndResetSelectedElements()
         {
             var uiDoc = _uiApplication.ActiveUIDocument;
+            if (uiDoc is null)
+                return;
+            
             var selectedIds = uiDoc.Selection.GetElementIds().ToList();
             if (!selectedIds.Any())
                 return;
