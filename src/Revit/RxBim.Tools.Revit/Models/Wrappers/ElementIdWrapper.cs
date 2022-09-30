@@ -12,5 +12,9 @@
             : base(wrappedObject)
         {
         }
+
+        /// <inheritdoc />
+        public override string ToString()
+            => Object.IntegerValue.ToString();
     }
 }
