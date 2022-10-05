@@ -15,7 +15,6 @@
     <PropertyGroup>
         <ApplicationVersion>2019</ApplicationVersion>
         <Version>$(ApplicationVersion).$(ApiVersion)</Version>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
     
 </Project>
