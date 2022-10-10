@@ -62,7 +62,7 @@
                 var sheetCell = worksheet.Cell(sheetRowIndex, sheetColumnIndex);
 
                 SetData(sheetCell, cell.Content);
-                SetFormat(sheetCell, cell.Format);
+                SetFormat(sheetCell, cell.GetComposedFormat());
 
                 // Merge logic
                 if (!cell.Merged || cell.MergeArea == null || mergedCells.Exists(x => Equals(x, cell.MergeArea)))
