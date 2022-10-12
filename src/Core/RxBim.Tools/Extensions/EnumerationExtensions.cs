@@ -2,7 +2,7 @@
 {
     using System;
     using System.ComponentModel;
-    using System.Reflection;
+    using System.Linq;
     using JetBrains.Annotations;
 
     /// <summary>
@@ -19,8 +19,11 @@
         public static string GetEnumDescription<T>(this T value)
             where T : Enum
         {
-            return typeof(T).GetCustomAttribute(typeof(DescriptionAttribute)) is DescriptionAttribute atr
-                ? atr.Description
+            var fi = value.GetType().GetField(value.ToString());
+
+            return fi.GetCustomAttributes(typeof(DescriptionAttribute), false) is DescriptionAttribute[] attributes &&
+                   attributes.Any()
+                ? attributes.First().Description
                 : value.ToString();
         }
     }
