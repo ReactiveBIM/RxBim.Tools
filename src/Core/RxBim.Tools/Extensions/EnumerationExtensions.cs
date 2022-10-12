@@ -19,9 +19,9 @@
         public static string GetEnumDescription<T>(this T value)
             where T : Enum
         {
-            return typeof(T).GetCustomAttribute(typeof(DescriptionAttribute)) is not DescriptionAttribute atr
-                ? value.ToString()
-                : atr.Description;
+            return typeof(T).GetCustomAttribute(typeof(DescriptionAttribute)) is DescriptionAttribute atr
+                ? atr.Description
+                : value.ToString();
         }
     }
 }
