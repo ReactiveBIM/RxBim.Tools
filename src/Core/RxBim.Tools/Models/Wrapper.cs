@@ -24,7 +24,7 @@
         public T Object { get; }
 
         /// <inheritdoc />
-        public TWrap Unwrap<TWrap>()
+        public virtual TWrap Unwrap<TWrap>()
         {
             return Object is TWrap obj
                 ? obj
