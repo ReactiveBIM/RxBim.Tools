@@ -3,19 +3,19 @@
     using Autodesk.AutoCAD.DatabaseServices;
 
     /// <summary>
-    /// Extensions for <see cref="ITransaction"/>.
+    /// Extensions for <see cref="ITransactionWrapper"/>.
     /// </summary>
     public static class TransactionExtensions
     {
         /// <summary>
         /// Appends new <see cref="Entity"/> to current space.
         /// </summary>
-        /// <param name="transaction"><see cref="ITransaction"/> object.</param>
-        /// <param name="context"><see cref="ITransactionContext"/> object.</param>
+        /// <param name="transactionWrapper"><see cref="ITransactionWrapper"/> object.</param>
+        /// <param name="context"><see cref="ITransactionContextWrapper"/> object.</param>
         /// <param name="entity">New entity.</param>
-        public static ObjectId AppendToCurrentSpace(this ITransaction transaction, ITransactionContext context, Entity entity)
+        public static ObjectId AppendToCurrentSpace(this ITransactionWrapper transactionWrapper, ITransactionContextWrapper context, Entity entity)
         {
-            var acadTransaction = transaction.ToAcadTransaction();
+            var acadTransaction = transactionWrapper.Unwrap<Transaction>();
             var database = context.GetDatabase();
             var blockTableRecord = acadTransaction.GetObjectAs<BlockTableRecord>(database.CurrentSpaceId, true);
             var id = blockTableRecord.AppendEntity(entity);
@@ -26,7 +26,7 @@
         /// <summary>
         /// Returns an object opened using a transaction and cast to the given type
         /// </summary>
-        /// <param name="transaction"><see cref="ITransaction"/> object.</param>
+        /// <param name="transactionWrapper"><see cref="ITransactionWrapper"/> object.</param>
         /// <param name="id">Object ID.</param>
         /// <param name="forWrite">If true, the object is opened for writing. If false, opens for reading.</param>
         /// <param name="openErased">
@@ -39,14 +39,14 @@
         /// </param>
         /// <typeparam name="T">Object type.</typeparam>
         public static T GetObjectAs<T>(
-            this ITransaction transaction,
+            this ITransactionWrapper transactionWrapper,
             ObjectId id,
             bool forWrite = false,
             bool openErased = false,
             bool forceOpenOnLockedLayer = true)
             where T : DBObject
         {
-            return transaction.ToAcadTransaction().GetObjectAs<T>(id, forWrite, openErased, forceOpenOnLockedLayer);
+            return transactionWrapper.Unwrap<Transaction>().GetObjectAs<T>(id, forWrite, openErased, forceOpenOnLockedLayer);
         }
     }
 }

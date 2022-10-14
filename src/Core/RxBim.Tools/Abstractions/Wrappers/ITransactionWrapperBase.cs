@@ -3,9 +3,9 @@
     using System;
 
     /// <summary>
-    /// Base transaction object.
+    /// Base transaction wrapper.
     /// </summary>
-    public interface ITransactionBase : IDisposable
+    public interface ITransactionWrapperBase : IDisposable, IWrapper
     {
         /// <summary>
         /// Starts.

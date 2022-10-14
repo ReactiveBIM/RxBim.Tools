@@ -2,11 +2,11 @@
 {
     using Autodesk.AutoCAD.DatabaseServices;
 
-    /// <inheritdoc cref="RxBim.Tools.ITransactionGroup" />
-    internal class AutocadTransactionGroup : AutocadTransactionBase, ITransactionGroup
+    /// <inheritdoc cref="ITransactionGroupWrapper" />
+    internal class TransactionGroupWrapper : TransactionWrapperBase, ITransactionGroupWrapper
     {
         /// <inheritdoc />
-        public AutocadTransactionGroup(Transaction transaction, ITransactionContext context)
+        public TransactionGroupWrapper(Transaction transaction)
             : base(transaction)
         {
         }

@@ -20,24 +20,24 @@
         }
 
         /// <inheritdoc />
-        public ITransaction CreateTransaction<T>(T context, string? name = null)
-            where T : class, ITransactionContext
+        public ITransactionWrapper CreateTransaction<T>(T context, string? name = null)
+            where T : class, ITransactionContextWrapper
         {
             var acadTransaction = context.GetTransactionManager().StartTransaction();
-            return new AutocadTransaction(acadTransaction);
+            return new TransactionWrapper(acadTransaction);
         }
 
         /// <inheritdoc />
-        public ITransactionGroup CreateTransactionGroup<T>(T context, string? name = null)
-            where T : class, ITransactionContext
+        public ITransactionGroupWrapper CreateTransactionGroup<T>(T context, string? name = null)
+            where T : class, ITransactionContextWrapper
         {
             var acadTransaction = context.GetTransactionManager().StartTransaction();
-            return new AutocadTransactionGroup(acadTransaction, context);
+            return new TransactionGroupWrapper(acadTransaction);
         }
 
         /// <inheritdoc />
         public T GetDefaultContext<T>()
-            where T : class, ITransactionContext
+            where T : class, ITransactionContextWrapper
         {
             var contextService = _locator.GetService<ITransactionContextService<T>>();
             return contextService.GetDefaultContext();

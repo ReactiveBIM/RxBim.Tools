@@ -3,30 +3,32 @@
     using Abstractions;
     using Collectors;
     using Di;
+    using JetBrains.Annotations;
     using Models;
     using Services;
 
     /// <summary>
-    /// Расширения для контейнера
+    /// Extensions for <see cref="IContainer"/>.
     /// </summary>
+    [PublicAPI]
     public static class ContainerExtensions
     {
         /// <summary>
-        /// Добавляет сервисы работы с Revit в контейнер
+        /// Adds Revit services to the container.
         /// </summary>
-        /// <param name="container">контейнер</param>
-        public static void AddRevitHelpers(this IContainer container)
+        /// <param name="container"><see cref="IContainer"/> object.</param>
+        public static IContainer AddRevitHelpers(this IContainer container)
         {
-            container.AddSingleton<IProblemElementsStorage, ProblemElementsStorage>();
-            container.AddSingleton<IDocumentsCollector, DocumentsCollector>();
-            container.AddSingleton<ISheetsCollector, SheetsCollector>();
-            container.AddSingleton<IElementsDisplay, ElementsDisplayService>();
-            container.AddSingleton<ISharedParameterService, SharedParameterService>();
-            container.AddSingleton<IElementsCollector, ScopedElementsCollector>();
-            container.AddSingleton<IScopedElementsCollector, ScopedElementsCollector>();
-            container.AddSingleton<ITransactionContextService<DocumentContext>, DocumentContextService>();
-            container.AddTransactionServices<RevitTransactionFactory>();
-            container.AddInstance(new RevitTask());
+            return container.AddSingleton<IDocumentsCollector, DocumentsCollector>()
+                .AddSingleton<ISheetsCollector, SheetsCollector>()
+                .AddSingleton<IElementsDisplay, ElementsDisplayService>()
+                .AddSingleton<ISharedParameterService, SharedParameterService>()
+                .AddSingleton<IElementsCollector, ScopedElementsCollector>()
+                .AddSingleton<IScopedElementsCollector, ScopedElementsCollector>()
+                .AddSingleton<ITransactionContextService<DocumentWrapper>, DocumentContextService>()
+                .AddTransactionServices<RevitTransactionFactory>()
+                .AddInstance(new RevitTask())
+                .AddToolsServices();
         }
     }
 }

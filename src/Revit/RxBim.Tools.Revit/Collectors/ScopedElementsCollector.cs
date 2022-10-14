@@ -7,6 +7,7 @@
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
     using Autodesk.Revit.UI.Selection;
+    using Extensions;
     using Helpers;
     using JetBrains.Annotations;
     using Models;
@@ -93,6 +94,9 @@
         public void SaveAndResetSelectedElements()
         {
             var uiDoc = _uiApplication.ActiveUIDocument;
+            if (uiDoc is null)
+                return;
+            
             var selectedIds = uiDoc.Selection.GetElementIds().ToList();
             if (!selectedIds.Any())
                 return;
@@ -112,7 +116,7 @@
             if (_selectedElementsIds.ContainsKey(uiDoc.Document.Title))
             {
                 _elementsDisplay.SetSelectedElements(
-                    _selectedElementsIds[uiDoc.Document.Title].Select(e => e.IntegerValue).ToList());
+                    _selectedElementsIds[uiDoc.Document.Title].Select(e => e.Wrap()).ToList());
             }
         }
 

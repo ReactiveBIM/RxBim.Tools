@@ -1,7 +1,7 @@
 ﻿namespace RxBim.Tools
 {
     /// <summary>
-    /// Factory for <see cref="ITransaction"/>.
+    /// Factory for <see cref="ITransactionWrapper"/>.
     /// </summary>
     public interface ITransactionFactory
     {
@@ -13,8 +13,8 @@
         /// </param>
         /// <param name="name">Transaction name.</param>
         /// <typeparam name="T">Transaction context type.</typeparam>
-        ITransaction CreateTransaction<T>(T context, string? name = null)
-            where T : class, ITransactionContext;
+        ITransactionWrapper CreateTransaction<T>(T context, string? name = null)
+            where T : class, ITransactionContextWrapper;
 
         /// <summary>
         /// Returns new transaction group.
@@ -24,13 +24,13 @@
         /// </param>
         /// <param name="name">Transaction group name.</param>
         /// <typeparam name="T">Transaction context type.</typeparam>
-        ITransactionGroup CreateTransactionGroup<T>(T context, string? name = null)
-            where T : class, ITransactionContext;
+        ITransactionGroupWrapper CreateTransactionGroup<T>(T context, string? name = null)
+            where T : class, ITransactionContextWrapper;
 
         /// <summary>
         /// Returns default transaction context.
         /// </summary>
         T GetDefaultContext<T>()
-            where T : class, ITransactionContext;
+            where T : class, ITransactionContextWrapper;
     }
 }

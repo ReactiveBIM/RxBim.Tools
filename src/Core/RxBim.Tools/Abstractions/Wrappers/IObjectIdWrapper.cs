@@ -1,9 +1,9 @@
 ﻿namespace RxBim.Tools
 {
     /// <summary>
-    /// Transaction context.
+    /// Identifier wrapper.
     /// </summary>
-    public interface ITransactionContext
+    public interface IObjectIdWrapper : IWrapper
     {
     }
 }
