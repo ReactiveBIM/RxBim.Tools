@@ -1,39 +1,39 @@
 ﻿namespace RxBim.Command.TableBuilder.Autocad.Sample.Commands
 {
     using System.Collections.Generic;
-    using System.Linq;
     using Abstractions;
     using Autodesk.AutoCAD.ApplicationServices;
     using Autodesk.AutoCAD.DatabaseServices;
     using Autodesk.AutoCAD.EditorInput;
+    using Autodesk.AutoCAD.Runtime;
     using CSharpFunctionalExtensions;
+    using JetBrains.Annotations;
     using RxBim.Command.Autocad;
     using Shared;
-    using Tools.Autocad.Abstractions;
-    using Tools.Autocad.Extensions;
-    using Tools.Autocad.Serializers;
-    using Tools.TableBuilder.Abstractions;
-    using Tools.TableBuilder.Extensions;
+    using Tools.Autocad;
+    using Tools.TableBuilder;
     using Result = CSharpFunctionalExtensions.Result;
+    using Table = Autodesk.AutoCAD.DatabaseServices.Table;
 
     /// <inheritdoc />
-    [RxBimCommandClass("RxBimTableSample")]
+    [RxBimCommandClass("RxBimTableSample", CommandFlags.UsePickSet)]
     public class Command : RxBimCommand
     {
-        private IObjectsSelectionService _selectionService;
-        private ICommandLineService _commandLineService;
+        private IObjectsSelectionService _selectionService = null!;
+        private ICommandLineService _commandLineService = null!;
 
         /// <summary>
         /// Command execution
         /// </summary>
         /// <param name="tableDataService"><see cref="ITableDataService"/> object.</param>
-        /// <param name="tableSerializer"><see cref="ITableSerializer{T1, T2}"/> object.</param>
+        /// <param name="tableConverter"><see cref="ITableConverter{TParams,TResult,TSource}"/> object.</param>
         /// <param name="selectionService"><see cref="IObjectsSelectionService"/> object.</param>
         /// <param name="commandLineService"><see cref="ICommandLineService"/> object.</param>
         /// <param name="doc"><see cref="Document"/> object.</param>>
+        [UsedImplicitly]
         public PluginResult ExecuteCommand(
             ITableDataService tableDataService,
-            ITableSerializer<AutocadTableSerializerParameters, Table> tableSerializer,
+            IAutocadTableConverter tableConverter,
             IObjectsSelectionService selectionService,
             ICommandLineService commandLineService,
             Document doc)
@@ -41,7 +41,7 @@
             _commandLineService = commandLineService;
             _selectionService = selectionService;
 
-            var parameters = new AutocadTableSerializerParameters
+            var parameters = new AutocadTableConverterParameters
             {
                 TargetDatabase = doc.Database
             };
@@ -49,7 +49,7 @@
             Result.Try(
                 () => SelectObjects()
                     .Bind(tableDataService.GetTable)
-                    .Map(table => table.Serialize(tableSerializer, parameters))
+                    .Map(table => tableConverter.Convert(table, parameters))
                     .Tap(table => InsertTable(doc, table))
                     .OnFailure(ShowError))
                 .OnFailure(ShowError);
@@ -59,7 +59,7 @@
 
         private void ShowError(string error)
         {
-            _commandLineService?.WriteAsNewLine(error);
+            _commandLineService.WriteAsNewLine(error);
         }
 
         private void InsertTable(Document doc, Table table)
@@ -77,13 +77,10 @@
             }
         }
 
-        private Result<List<ObjectId>> SelectObjects()
+        private Result<IEnumerable<ObjectId>> SelectObjects()
         {
-            var selectResult = _selectionService?.RunSelection();
-            if (selectResult?.IsEmpty == true)
-                return Result.Failure<List<ObjectId>>("No objects selected.");
-
-            return selectResult?.SelectedObjects.ToList() ?? Result.Failure<List<ObjectId>>("Object selection error.");
+            var selectionResult = _selectionService.RunSelection();
+            return Result.SuccessIf(!selectionResult.IsEmpty, selectionResult.SelectedObjects, "Objects not selected");
         }
     }
 }

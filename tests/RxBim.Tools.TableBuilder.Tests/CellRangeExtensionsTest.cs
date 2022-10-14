@@ -1,8 +1,6 @@
 ﻿namespace RxBim.Tools.TableBuilder.Tests
 {
-    using Extensions;
     using FluentAssertions;
-    using Models;
     using Xunit;
 
     /// <summary>

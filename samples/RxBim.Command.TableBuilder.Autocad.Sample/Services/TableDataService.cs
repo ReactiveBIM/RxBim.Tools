@@ -5,18 +5,19 @@
     using Abstractions;
     using Autodesk.AutoCAD.DatabaseServices;
     using CSharpFunctionalExtensions;
-    using Tools.Autocad.Extensions;
-    using Tools.Autocad.Extensions.TableBuilder;
-    using Tools.Autocad.Serializers;
-    using Tools.TableBuilder.Models.Styles;
-    using Tools.TableBuilder.Services;
-    using Table = Tools.TableBuilder.Models.Table;
+    using JetBrains.Annotations;
+    using Tools.Autocad;
+    using Tools.TableBuilder;
+    using Tools.TableBuilder.Styles;
+    using Entity = Autodesk.AutoCAD.DatabaseServices.Entity;
+    using Table = Tools.TableBuilder.Table;
 
     /// <inheritdoc />
-    public class TableDataService : ITableDataService
+    [UsedImplicitly]
+    internal class TableDataService : ITableDataService
     {
         /// <inheritdoc />
-        public Result<Table> GetTable(List<ObjectId> ids)
+        public Result<Table> GetTable(IEnumerable<ObjectId> ids)
         {
             var tableBuilder = new TableBuilder();
 

@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Remove="JetBrains.Annotations" />
+      <PackageReference Include="RxBim.Command.Autocad" Version="2019.1.0.8" />
+      <PackageReference Include="RxBim.Di.SimpleInjector" Version="1.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Autocad\RxBim.Tools.Autocad\RxBim.Tools.Autocad.csproj" />
+      <ProjectReference Include="..\..\src\Core\RxBim.Tools\RxBim.Tools.csproj" />
+    </ItemGroup>
+
+</Project>

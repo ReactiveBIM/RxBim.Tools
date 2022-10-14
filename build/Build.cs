@@ -11,10 +11,10 @@ using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
-[CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
 [GitHubActions("CI",
     GitHubActionsImage.WindowsLatest,
+    FetchDepth = 0,
     OnPushBranches = new[] { DevelopBranch, FeatureBranches },
     InvokedTargets = new[] { nameof(Test), nameof(IPublish.Publish) },
     ImportSecrets = new[] { "NUGET_API_KEY", "ALL_PACKAGES" })]
@@ -24,11 +24,11 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
     InvokedTargets = new[] { nameof(Test) })]*/
 [GitHubActions("Publish",
     GitHubActionsImage.WindowsLatest,
+    FetchDepth = 0,
     OnPushBranches = new[] { MasterBranch, "release/**" },
     InvokedTargets = new[] { nameof(Test), nameof(IPublish.Publish) },
     ImportSecrets = new[] { "NUGET_API_KEY", "ALL_PACKAGES" })]
-partial class Build : NukeBuild,
-    IPublish
+class Build : NukeBuild, IPublish
 {
     const string MasterBranch = "master";
     const string DevelopBranch = "develop";
@@ -48,7 +48,6 @@ partial class Build : NukeBuild,
                 .Where(x => !IsDescendantPath(BuildProjectDirectory, x))
                 .ForEach(FileSystemTasks.DeleteDirectory);
         });
-    
 
     public Target Test => _ => _
         .Before(Clean)
@@ -59,8 +58,8 @@ partial class Build : NukeBuild,
                 .SetProjectFile(From<IHazSolution>().Solution.Path)
                 .SetConfiguration(From<IHazConfiguration>().Configuration));
         });
-    
-    private T From<T>()
-        where T : INukeBuild
-        => (T)(object)this;
+
+    T From<T>()
+        where T : INukeBuild =>
+        (T)(object)this;
 }

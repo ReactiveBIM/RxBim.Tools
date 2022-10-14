@@ -1,29 +1,40 @@
 ﻿<Project>
     <PropertyGroup>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>10</LangVersion>
+        <TreatWarningsAsErrors Condition="'$(Configuration)' == 'Release'">true</TreatWarningsAsErrors>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(ProjectName)' != '_build' And !'$(ProjectName.EndsWith(`Tests`))'">
+    <PropertyGroup Condition="!'$(ProjectName.EndsWith(`Tests`))'">
         <CodeAnalysisRuleSet>..\..\stylecop.ruleset</CodeAnalysisRuleSet>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
-    <ItemGroup Condition="'$(ProjectName)' != '_build' And !'$(ProjectName.EndsWith(`Tests`))'">
-        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+    <ItemGroup Condition="!'$(ProjectName.EndsWith(`Tests`))'">
+        <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.406">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="JetBrains.Annotations" Version="2022.1.0">
+            <ExcludeAssets>runtime</ExcludeAssets>
+            <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>        
+    </ItemGroup>
+    
+    <ItemGroup>
+        <PackageReference Condition=" '$(UseDi)' == 'true' " Include="RxBim.Di" Version="1.1.1"/>
     </ItemGroup>
 
     <PropertyGroup>
         <Company>pik-group.com</Company>
         <Authors>Reactive BIM</Authors>
         <Product>RxBim</Product>
-        <Copyright>Copyright ©2021 Reactive BIM</Copyright>
+        <Copyright>Copyright ©2022 Reactive BIM</Copyright>
         <PackageTags>BIM Plugin Framework</PackageTags>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
         <PackageProjectUrl>https://github.com/ReactiveBIM/RxBim</PackageProjectUrl>
         <RepositoryUrl>https://github.com/ReactiveBIM/RxBim.git</RepositoryUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <NoPackageAnalysis>true</NoPackageAnalysis>
     </PropertyGroup>
 

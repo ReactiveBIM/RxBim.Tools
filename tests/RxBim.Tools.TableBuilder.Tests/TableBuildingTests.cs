@@ -3,12 +3,9 @@
     using System.Collections.Generic;
     using System.Drawing;
     using System.Linq;
-    using Extensions;
+    using Content;
     using FluentAssertions;
-    using Models;
-    using Models.Contents;
-    using Models.Styles;
-    using Services;
+    using Styles;
     using Xunit;
 
     /// <summary>
@@ -285,7 +282,7 @@
         {
             public int Prop1 { get; set; }
 
-            public string Prop2 { get; set; }
+            public string Prop2 { get; set; } = string.Empty;
         }
     }
 }

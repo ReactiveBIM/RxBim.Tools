@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using Autodesk.AutoCAD.DatabaseServices;
     using CSharpFunctionalExtensions;
-    using Table = Tools.TableBuilder.Models.Table;
+    using Table = Tools.TableBuilder.Table;
 
     /// <summary>
     /// Data service for a table.
@@ -14,6 +14,6 @@
         /// Retrieving tabular data.
         /// </summary>
         /// <param name="ids">Drawing object identifiers.</param>
-        Result<Table> GetTable(List<ObjectId> ids);
+        Result<Table> GetTable(IEnumerable<ObjectId> ids);
     }
 }

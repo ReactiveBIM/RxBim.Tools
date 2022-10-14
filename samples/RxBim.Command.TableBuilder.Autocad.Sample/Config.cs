@@ -4,7 +4,7 @@
     using Di;
     using Services;
     using Tools.Autocad;
-    using Tools.Autocad.Extensions;
+    using Tools.TableBuilder;
 
     /// <inheritdoc />
     public class Config : ICommandConfiguration
@@ -14,7 +14,7 @@
         {
             container
                 .AddAutocadHelpers()
-                .AddAutocadTableSerializer()
+                .AddAutocadTableBuilder()
                 .AddSingleton<ITableDataService, TableDataService>();
         }
     }

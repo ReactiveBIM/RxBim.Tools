@@ -4,20 +4,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1B8A8578-7C3C-425C-B769-9E097411094F}"
+	ProjectSection(SolutionItems) = preProject
+		tests\Directory.Build.Props = tests\Directory.Build.Props
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RxBim.Tools.Revit.Tests", "tests\RxBim.Tools.Revit.Tests\RxBim.Tools.Revit.Tests.csproj", "{DE5198BA-8F65-4E9C-BE74-EDA541287ED6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RxBim.Tools.TableBuilder.Tests", "tests\RxBim.Tools.TableBuilder.Tests\RxBim.Tools.TableBuilder.Tests.csproj", "{4FE437B4-01EA-4D30-A530-2FD399CC8CF7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5339A0F1-1884-4682-BFD2-DE050B2E5D69}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RxBim.Tools.Autocad", "src\RxBim.Tools.Autocad\RxBim.Tools.Autocad.csproj", "{FB4ECB76-3001-4700-AF33-23779869E8CB}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RxBim.Tools.Civil", "src\RxBim.Tools.Civil\RxBim.Tools.Civil.csproj", "{CEE50942-6530-4BD9-9659-E9B82220A65A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RxBim.Tools.Revit", "src\RxBim.Tools.Revit\RxBim.Tools.Revit.csproj", "{2E1C3828-FC01-4C16-9282-85657BC2B860}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RxBim.Tools.TableBuilder", "src\RxBim.Tools.TableBuilder\RxBim.Tools.TableBuilder.csproj", "{A52F6AA2-2148-476D-9287-B8D29345DC82}"
+	ProjectSection(SolutionItems) = preProject
+		src\Directory.Build.Props = src\Directory.Build.Props
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionFolder", "{AE4BB821-54AC-4573-BD68-5BE1C59D5D45}"
 	ProjectSection(SolutionItems) = preProject
@@ -40,6 +38,45 @@ EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Command.TableBuilder.Revit.Sample", "samples\RxBim.Command.TableBuilder.Revit.Sample\RxBim.Command.TableBuilder.Revit.Sample.csproj", "{004DDE18-43BF-4D97-A5A6-8D4751E40B6C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.TableBuilder.Excel.Tests", "tests\RxBim.Tools.TableBuilder.Excel.Tests\RxBim.Tools.TableBuilder.Excel.Tests.csproj", "{24FBE399-C806-4CB6-98DB-C71712B1C7B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.TableBuilder.Excel.Sample", "samples\RxBim.Tools.TableBuilder.Excel.Sample\RxBim.Tools.TableBuilder.Excel.Sample.csproj", "{7F91C502-9B22-46E2-892F-B47AD3F8526C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.Autocad.Sample", "samples\RxBim.Tools.Autocad.Sample\RxBim.Tools.Autocad.Sample.csproj", "{C97FD9AF-9958-4235-BDB7-E9990295A822}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Autocad", "Autocad", "{52908352-0197-4C36-B128-0F2B31295257}"
+	ProjectSection(SolutionItems) = preProject
+		src\Autocad\Directory.Build.Props = src\Autocad\Directory.Build.Props
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.Autocad", "src\Autocad\RxBim.Tools.Autocad\RxBim.Tools.Autocad.csproj", "{8896AF9F-FDD6-4F2C-BEBF-6B871DDEF857}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.TableBuilder.Autocad", "src\Autocad\RxBim.Tools.TableBuilder.Autocad\RxBim.Tools.TableBuilder.Autocad.csproj", "{7B3997FE-B10C-4E3F-A02E-45417DC651DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.Civil", "src\Autocad\RxBim.Tools.Civil\RxBim.Tools.Civil.csproj", "{7410DD98-10E2-4AC0-A52F-3B731403092D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Excel", "Excel", "{751A08B0-4D8C-452F-96A2-F0644AB21AF0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.TableBuilder.Excel", "src\Excel\RxBim.Tools.TableBuilder.Excel\RxBim.Tools.TableBuilder.Excel.csproj", "{D2C09CFF-9495-48E7-B7F4-9C7A1173EE64}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Revit", "Revit", "{25749E1A-2F5D-426C-8195-3AD7E649362B}"
+	ProjectSection(SolutionItems) = preProject
+		src\Revit\Directory.Build.Props = src\Revit\Directory.Build.Props
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.Revit", "src\Revit\RxBim.Tools.Revit\RxBim.Tools.Revit.csproj", "{899EF790-00C9-4B3F-B4D7-713E4C5339C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.TableBuilder.Revit", "src\Revit\RxBim.Tools.TableBuilder.Revit\RxBim.Tools.TableBuilder.Revit.csproj", "{F1303651-BD79-4949-94A2-2AD9ACF532F3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{5FDD1C3F-41CC-488C-886A-22D5FEBBA1CD}"
+	ProjectSection(SolutionItems) = preProject
+		src\Core\Directory.Build.Props = src\Core\Directory.Build.Props
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools", "src\Core\RxBim.Tools\RxBim.Tools.csproj", "{49AF6550-45C6-4CE6-9D0B-799A9A79FEC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.TableBuilder", "src\Core\RxBim.Tools.TableBuilder\RxBim.Tools.TableBuilder.csproj", "{2B075800-69C0-458B-AE76-3E46689B687F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,22 +91,6 @@ Global
 		{4FE437B4-01EA-4D30-A530-2FD399CC8CF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FE437B4-01EA-4D30-A530-2FD399CC8CF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FE437B4-01EA-4D30-A530-2FD399CC8CF7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FB4ECB76-3001-4700-AF33-23779869E8CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FB4ECB76-3001-4700-AF33-23779869E8CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FB4ECB76-3001-4700-AF33-23779869E8CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FB4ECB76-3001-4700-AF33-23779869E8CB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CEE50942-6530-4BD9-9659-E9B82220A65A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CEE50942-6530-4BD9-9659-E9B82220A65A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CEE50942-6530-4BD9-9659-E9B82220A65A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CEE50942-6530-4BD9-9659-E9B82220A65A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2E1C3828-FC01-4C16-9282-85657BC2B860}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2E1C3828-FC01-4C16-9282-85657BC2B860}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2E1C3828-FC01-4C16-9282-85657BC2B860}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2E1C3828-FC01-4C16-9282-85657BC2B860}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A52F6AA2-2148-476D-9287-B8D29345DC82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A52F6AA2-2148-476D-9287-B8D29345DC82}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A52F6AA2-2148-476D-9287-B8D29345DC82}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A52F6AA2-2148-476D-9287-B8D29345DC82}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E2EC9FDA-2F0E-4BD1-8F63-3787605ED60C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E2EC9FDA-2F0E-4BD1-8F63-3787605ED60C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{004DDE18-43BF-4D97-A5A6-8D4751E40B6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -77,9 +98,53 @@ Global
 		{004DDE18-43BF-4D97-A5A6-8D4751E40B6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{004DDE18-43BF-4D97-A5A6-8D4751E40B6C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BD814946-EDC4-45DC-AE70-57831679B706}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BD814946-EDC4-45DC-AE70-57831679B706}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD814946-EDC4-45DC-AE70-57831679B706}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD814946-EDC4-45DC-AE70-57831679B706}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD814946-EDC4-45DC-AE70-57831679B706}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24FBE399-C806-4CB6-98DB-C71712B1C7B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24FBE399-C806-4CB6-98DB-C71712B1C7B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24FBE399-C806-4CB6-98DB-C71712B1C7B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24FBE399-C806-4CB6-98DB-C71712B1C7B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F91C502-9B22-46E2-892F-B47AD3F8526C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F91C502-9B22-46E2-892F-B47AD3F8526C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F91C502-9B22-46E2-892F-B47AD3F8526C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F91C502-9B22-46E2-892F-B47AD3F8526C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C97FD9AF-9958-4235-BDB7-E9990295A822}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C97FD9AF-9958-4235-BDB7-E9990295A822}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C97FD9AF-9958-4235-BDB7-E9990295A822}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C97FD9AF-9958-4235-BDB7-E9990295A822}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8896AF9F-FDD6-4F2C-BEBF-6B871DDEF857}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8896AF9F-FDD6-4F2C-BEBF-6B871DDEF857}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8896AF9F-FDD6-4F2C-BEBF-6B871DDEF857}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8896AF9F-FDD6-4F2C-BEBF-6B871DDEF857}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B3997FE-B10C-4E3F-A02E-45417DC651DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B3997FE-B10C-4E3F-A02E-45417DC651DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B3997FE-B10C-4E3F-A02E-45417DC651DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B3997FE-B10C-4E3F-A02E-45417DC651DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7410DD98-10E2-4AC0-A52F-3B731403092D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7410DD98-10E2-4AC0-A52F-3B731403092D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7410DD98-10E2-4AC0-A52F-3B731403092D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7410DD98-10E2-4AC0-A52F-3B731403092D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2C09CFF-9495-48E7-B7F4-9C7A1173EE64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2C09CFF-9495-48E7-B7F4-9C7A1173EE64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2C09CFF-9495-48E7-B7F4-9C7A1173EE64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2C09CFF-9495-48E7-B7F4-9C7A1173EE64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{899EF790-00C9-4B3F-B4D7-713E4C5339C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{899EF790-00C9-4B3F-B4D7-713E4C5339C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{899EF790-00C9-4B3F-B4D7-713E4C5339C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{899EF790-00C9-4B3F-B4D7-713E4C5339C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1303651-BD79-4949-94A2-2AD9ACF532F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1303651-BD79-4949-94A2-2AD9ACF532F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1303651-BD79-4949-94A2-2AD9ACF532F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1303651-BD79-4949-94A2-2AD9ACF532F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49AF6550-45C6-4CE6-9D0B-799A9A79FEC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49AF6550-45C6-4CE6-9D0B-799A9A79FEC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49AF6550-45C6-4CE6-9D0B-799A9A79FEC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49AF6550-45C6-4CE6-9D0B-799A9A79FEC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B075800-69C0-458B-AE76-3E46689B687F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B075800-69C0-458B-AE76-3E46689B687F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B075800-69C0-458B-AE76-3E46689B687F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B075800-69C0-458B-AE76-3E46689B687F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,12 +152,23 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{DE5198BA-8F65-4E9C-BE74-EDA541287ED6} = {1B8A8578-7C3C-425C-B769-9E097411094F}
 		{4FE437B4-01EA-4D30-A530-2FD399CC8CF7} = {1B8A8578-7C3C-425C-B769-9E097411094F}
-		{FB4ECB76-3001-4700-AF33-23779869E8CB} = {5339A0F1-1884-4682-BFD2-DE050B2E5D69}
-		{CEE50942-6530-4BD9-9659-E9B82220A65A} = {5339A0F1-1884-4682-BFD2-DE050B2E5D69}
-		{2E1C3828-FC01-4C16-9282-85657BC2B860} = {5339A0F1-1884-4682-BFD2-DE050B2E5D69}
-		{A52F6AA2-2148-476D-9287-B8D29345DC82} = {5339A0F1-1884-4682-BFD2-DE050B2E5D69}
 		{004DDE18-43BF-4D97-A5A6-8D4751E40B6C} = {EA1ADE6F-F986-4CF3-A953-5B3C25A5C3F0}
 		{BD814946-EDC4-45DC-AE70-57831679B706} = {EA1ADE6F-F986-4CF3-A953-5B3C25A5C3F0}
+		{24FBE399-C806-4CB6-98DB-C71712B1C7B5} = {1B8A8578-7C3C-425C-B769-9E097411094F}
+		{7F91C502-9B22-46E2-892F-B47AD3F8526C} = {EA1ADE6F-F986-4CF3-A953-5B3C25A5C3F0}
+		{C97FD9AF-9958-4235-BDB7-E9990295A822} = {EA1ADE6F-F986-4CF3-A953-5B3C25A5C3F0}
+		{52908352-0197-4C36-B128-0F2B31295257} = {5339A0F1-1884-4682-BFD2-DE050B2E5D69}
+		{8896AF9F-FDD6-4F2C-BEBF-6B871DDEF857} = {52908352-0197-4C36-B128-0F2B31295257}
+		{7B3997FE-B10C-4E3F-A02E-45417DC651DB} = {52908352-0197-4C36-B128-0F2B31295257}
+		{7410DD98-10E2-4AC0-A52F-3B731403092D} = {52908352-0197-4C36-B128-0F2B31295257}
+		{751A08B0-4D8C-452F-96A2-F0644AB21AF0} = {5339A0F1-1884-4682-BFD2-DE050B2E5D69}
+		{D2C09CFF-9495-48E7-B7F4-9C7A1173EE64} = {751A08B0-4D8C-452F-96A2-F0644AB21AF0}
+		{25749E1A-2F5D-426C-8195-3AD7E649362B} = {5339A0F1-1884-4682-BFD2-DE050B2E5D69}
+		{899EF790-00C9-4B3F-B4D7-713E4C5339C2} = {25749E1A-2F5D-426C-8195-3AD7E649362B}
+		{F1303651-BD79-4949-94A2-2AD9ACF532F3} = {25749E1A-2F5D-426C-8195-3AD7E649362B}
+		{5FDD1C3F-41CC-488C-886A-22D5FEBBA1CD} = {5339A0F1-1884-4682-BFD2-DE050B2E5D69}
+		{49AF6550-45C6-4CE6-9D0B-799A9A79FEC6} = {5FDD1C3F-41CC-488C-886A-22D5FEBBA1CD}
+		{2B075800-69C0-458B-AE76-3E46689B687F} = {5FDD1C3F-41CC-488C-886A-22D5FEBBA1CD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EA2C589E-5222-413E-AEDF-F8B9DA1ABC2F}
