@@ -23,13 +23,15 @@
         /// <inheritdoc />
         public void Start()
         {
-            Object.Start();
+            if (Object.GetStatus() != TransactionStatus.Started)
+                Object.Start();
         }
 
         /// <inheritdoc />
         public void RollBack()
         {
-            Object.RollBack();
+            if (!IsRolledBack())
+                Object.RollBack();
         }
 
         /// <inheritdoc />
@@ -41,7 +43,8 @@
         /// <inheritdoc />
         public void Commit()
         {
-            Object.Commit();
+            if (!IsRolledBack() || Object.GetStatus() != TransactionStatus.Committed)
+                Object.Commit();
         }
     }
 }

@@ -56,14 +56,12 @@
             {
                 transaction.Start();
                 var result = func.Invoke(transactionContext, transaction);
-                if (!transaction.IsRolledBack())
-                    transaction.Commit();
+                transaction.Commit();
                 return result;
             }
             catch (Exception)
             {
-                if (!transaction.IsRolledBack())
-                    transaction.RollBack();
+                transaction.RollBack();
                 throw;
             }
         }
@@ -110,14 +108,12 @@
             {
                 transactionGroup.Start();
                 var result = func.Invoke(transactionContext, transactionGroup);
-                if (!transactionGroup.IsRolledBack())
-                    transactionGroup.Assimilate();
+                transactionGroup.Assimilate();
                 return result;
             }
             catch (Exception)
             {
-                if (!transactionGroup.IsRolledBack())
-                    transactionGroup.RollBack();
+                transactionGroup.RollBack();
                 throw;
             }
         }
