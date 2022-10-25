@@ -110,7 +110,8 @@
             {
                 transactionGroup.Start();
                 var result = func.Invoke(transactionContext, transactionGroup);
-                transactionGroup.Assimilate();
+                if (!transactionGroup.IsRolledBack())
+                    transactionGroup.Assimilate();
                 return result;
             }
             catch (Exception)
