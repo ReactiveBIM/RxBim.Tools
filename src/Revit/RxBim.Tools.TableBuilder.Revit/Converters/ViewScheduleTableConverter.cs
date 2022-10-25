@@ -15,17 +15,17 @@
     internal class ViewScheduleTableConverter : IViewScheduleTableConverter
     {
         private const double FontRatio = 3.77951502;
-        private readonly Autodesk.Revit.UI.UIApplication _app;
+        private readonly Document _document;
         private readonly ITransactionService _transactionService;
 
         /// <summary>
         /// ctor.
         /// </summary>
-        /// <param name="app">An <see cref="Autodesk.Revit.UI.UIApplication"/> object.</param>
+        /// <param name="document">A <see cref="Document"/> object.</param>
         /// <param name="transactionService"> TransactionService </param>
-        public ViewScheduleTableConverter(Autodesk.Revit.UI.UIApplication app, ITransactionService transactionService)
+        public ViewScheduleTableConverter(Document document, ITransactionService transactionService)
         {
-            _app = app;
+            _document = document;
             _transactionService = transactionService;
         }
 
@@ -39,21 +39,19 @@
                     nameof(parameters));
             }
 
-            var document = _app.ActiveUIDocument.Document;
-
             return _transactionService.RunInTransaction(
                 () =>
                 {
                     var id = new ElementId((int)BuiltInCategory.OST_NurseCallDevices);
 
-                    var schedule = ViewSchedule.CreateSchedule(document, id);
+                    var schedule = ViewSchedule.CreateSchedule(_document, id);
                     schedule.Name = parameters.Name;
                     schedule.Definition.ShowHeaders = false;
 
                     var field = schedule.Definition
                         .GetSchedulableFields()
                         .FirstOrDefault(x =>
-                            x.GetName(document).ToUpper() == "URL");
+                            x.GetName(_document).ToUpper() == "URL");
 
                     if (field != null)
                     {
@@ -111,7 +109,7 @@
                     return schedule;
                 },
                 nameof(ViewScheduleTableConverter),
-                new DocumentWrapper(document));
+                new DocumentWrapper(_document));
         }
 
         private TableCellStyle GetCellStyle(
