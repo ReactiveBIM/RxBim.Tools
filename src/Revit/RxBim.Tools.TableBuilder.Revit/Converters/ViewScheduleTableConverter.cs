@@ -15,17 +15,14 @@
     internal class ViewScheduleTableConverter : IViewScheduleTableConverter
     {
         private const double FontRatio = 3.77951502;
-        private readonly Document _document;
         private readonly ITransactionService _transactionService;
 
         /// <summary>
         /// ctor.
         /// </summary>
-        /// <param name="document">A <see cref="Document"/> object.</param>
         /// <param name="transactionService"> TransactionService </param>
-        public ViewScheduleTableConverter(Document document, ITransactionService transactionService)
+        public ViewScheduleTableConverter(ITransactionService transactionService)
         {
-            _document = document;
             _transactionService = transactionService;
         }
 
