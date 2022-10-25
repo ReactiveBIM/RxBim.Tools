@@ -5,7 +5,6 @@
     using Autodesk.Revit.DB;
     using JetBrains.Annotations;
     using Revit.Extensions;
-    using Revit.Models;
     using Styles;
 
     /// <summary>
