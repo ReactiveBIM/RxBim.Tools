@@ -108,8 +108,7 @@
                     headerData.RemoveColumn(headerData.LastColumnNumber);
                     return schedule;
                 },
-                nameof(ViewScheduleTableConverter),
-                new DocumentWrapper(_document));
+                nameof(ViewScheduleTableConverter));
         }
 
         private TableCellStyle GetCellStyle(
