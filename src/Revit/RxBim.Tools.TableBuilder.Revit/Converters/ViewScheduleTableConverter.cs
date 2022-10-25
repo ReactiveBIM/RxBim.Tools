@@ -36,10 +36,10 @@
                     nameof(parameters));
             }
 
-            return _transactionService.RunInTransaction<ITransactionContextWrapper, ViewSchedule>(
+            return _transactionService.RunInTransaction<DocumentWrapper, ViewSchedule>(
                 (context, _) =>
                 {
-                    var document = context.Unwrap<Document>();
+                    var document = context.GetDocument();
                     var id = new ElementId((int)BuiltInCategory.OST_NurseCallDevices);
 
                     var schedule = ViewSchedule.CreateSchedule(document, id);
