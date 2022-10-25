@@ -14,7 +14,7 @@
         public static IContainer AddRevitTableBuilder(this IContainer container)
         {
             return container
-                .AddTransient<IViewScheduleTableConverter, ViewScheduleTableConverter>();
+                .AddSingleton<IViewScheduleTableConverter, ViewScheduleTableConverter>();
         }
     }
 }

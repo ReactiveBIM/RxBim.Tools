@@ -20,7 +20,7 @@
         /// <summary>
         /// ctor.
         /// </summary>
-        /// <param name="transactionService"> TransactionService </param>
+        /// <param name="transactionService"> <see cref="ITransactionService"/>. </param>
         public ViewScheduleTableConverter(ITransactionService transactionService)
         {
             _transactionService = transactionService;
