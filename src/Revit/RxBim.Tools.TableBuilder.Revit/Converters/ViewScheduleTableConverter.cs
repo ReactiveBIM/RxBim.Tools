@@ -5,6 +5,7 @@
     using Autodesk.Revit.DB;
     using JetBrains.Annotations;
     using Revit.Extensions;
+    using Revit.Models;
     using Styles;
 
     /// <summary>
@@ -15,14 +16,17 @@
     {
         private const double FontRatio = 3.77951502;
         private readonly Autodesk.Revit.UI.UIApplication _app;
+        private readonly ITransactionService _transactionService;
 
         /// <summary>
         /// ctor.
         /// </summary>
         /// <param name="app">An <see cref="Autodesk.Revit.UI.UIApplication"/> object.</param>
-        public ViewScheduleTableConverter(Autodesk.Revit.UI.UIApplication app)
+        /// <param name="transactionService"> TransactionService </param>
+        public ViewScheduleTableConverter(Autodesk.Revit.UI.UIApplication app, ITransactionService transactionService)
         {
             _app = app;
+            _transactionService = transactionService;
         }
 
         /// <inheritdoc />
@@ -37,76 +41,77 @@
 
             var document = _app.ActiveUIDocument.Document;
 
-            using var t = new Transaction(document);
-            t.Start(nameof(ViewScheduleTableConverter));
-
-            var id = new ElementId((int)BuiltInCategory.OST_NurseCallDevices);
-
-            var schedule = ViewSchedule.CreateSchedule(document, id);
-            schedule.Name = parameters.Name;
-            schedule.Definition.ShowHeaders = false;
-
-            var field = schedule.Definition
-                .GetSchedulableFields()
-                .FirstOrDefault(x =>
-                    x.GetName(document).ToUpper() == "URL");
-
-            if (field != null)
-            {
-                schedule.Definition.AddField(field).GridColumnWidth = table.Width.MmToFt();
-            }
-
-            var tableData = schedule.GetTableData();
-            var headerData = tableData.GetSectionData(SectionType.Header);
-
-            InsertCells(headerData, table.Rows.Count() - 1, table.Columns.Count());
-
-            var scheduleCol = headerData.FirstColumnNumber;
-
-            for (var col = 0;
-                col < table.Columns.Count();
-                col++, scheduleCol++)
-            {
-                var widthInFt = table.Columns[col].Width.MmToFt();
-                headerData.SetColumnWidth(scheduleCol, widthInFt);
-
-                var scheduleRow = headerData.FirstRowNumber;
-
-                for (var row = 0;
-                    row < table.Rows.Count();
-                    row++, scheduleRow++)
+            return _transactionService.RunInTransaction(
+                () =>
                 {
-                    var cell = table[row, col];
+                    var id = new ElementId((int)BuiltInCategory.OST_NurseCallDevices);
 
-                    var rowHeight = table.Rows[row].Height;
-                    const int defaultRowHeightInMm = 8;
-                    rowHeight = rowHeight > 0 ? rowHeight.MmToFt() : defaultRowHeightInMm.MmToFt();
+                    var schedule = ViewSchedule.CreateSchedule(document, id);
+                    schedule.Name = parameters.Name;
+                    schedule.Definition.ShowHeaders = false;
 
-                    headerData.SetRowHeight(scheduleRow, rowHeight);
-                    headerData.SetCellText(scheduleRow, scheduleCol, cell.Content.ValueObject?.ToString());
-                    headerData.SetCellStyle(scheduleRow,
-                        scheduleCol,
-                        GetCellStyle(cell.GetComposedFormat(), parameters));
-                }
-            }
+                    var field = schedule.Definition
+                        .GetSchedulableFields()
+                        .FirstOrDefault(x =>
+                            x.GetName(document).ToUpper() == "URL");
 
-            foreach (var mergeArea in table.MergeAreas)
-            {
-                var tableMergedCell = new TableMergedCell
-                {
-                    Bottom = mergeArea.BottomRow,
-                    Top = mergeArea.TopRow,
-                    Left = mergeArea.LeftColumn,
-                    Right = mergeArea.RightColumn
-                };
+                    if (field != null)
+                    {
+                        schedule.Definition.AddField(field).GridColumnWidth = table.Width.MmToFt();
+                    }
 
-                headerData.MergeCells(tableMergedCell);
-            }
+                    var tableData = schedule.GetTableData();
+                    var headerData = tableData.GetSectionData(SectionType.Header);
 
-            headerData.RemoveColumn(headerData.LastColumnNumber);
+                    InsertCells(headerData, table.Rows.Count() - 1, table.Columns.Count());
 
-            t.Commit();
-            return schedule;
+                    var scheduleCol = headerData.FirstColumnNumber;
+
+                    for (var col = 0;
+                         col < table.Columns.Count();
+                         col++, scheduleCol++)
+                    {
+                        var widthInFt = table.Columns[col].Width.MmToFt();
+                        headerData.SetColumnWidth(scheduleCol, widthInFt);
+
+                        var scheduleRow = headerData.FirstRowNumber;
+
+                        for (var row = 0;
+                             row < table.Rows.Count();
+                             row++, scheduleRow++)
+                        {
+                            var cell = table[row, col];
+
+                            var rowHeight = table.Rows[row].Height;
+                            const int defaultRowHeightInMm = 8;
+                            rowHeight = rowHeight > 0 ? rowHeight.MmToFt() : defaultRowHeightInMm.MmToFt();
+
+                            headerData.SetRowHeight(scheduleRow, rowHeight);
+                            headerData.SetCellText(scheduleRow, scheduleCol, cell.Content.ValueObject?.ToString());
+                            headerData.SetCellStyle(scheduleRow,
+                                scheduleCol,
+                                GetCellStyle(cell.GetComposedFormat(), parameters));
+                        }
+                    }
+
+                    foreach (var mergeArea in table.MergeAreas)
+                    {
+                        var tableMergedCell = new TableMergedCell
+                        {
+                            Bottom = mergeArea.BottomRow,
+                            Top = mergeArea.TopRow,
+                            Left = mergeArea.LeftColumn,
+                            Right = mergeArea.RightColumn
+                        };
+
+                        headerData.MergeCells(tableMergedCell);
+                    }
+
+                    headerData.RemoveColumn(headerData.LastColumnNumber);
+                    return schedule;
+                },
+                nameof(ViewScheduleTableConverter),
+                new DocumentWrapper(document));
         }
 
         private TableCellStyle GetCellStyle(
