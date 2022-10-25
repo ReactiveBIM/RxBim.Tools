@@ -56,7 +56,8 @@
             {
                 transaction.Start();
                 var result = func.Invoke(transactionContext, transaction);
-                transaction.Commit();
+                if (!transaction.IsRolledBack())
+                    transaction.Commit();
                 return result;
             }
             catch (Exception)
