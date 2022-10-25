@@ -36,8 +36,8 @@
                     nameof(parameters));
             }
 
-            return _transactionService.RunInTransaction(
-                (context) =>
+            return _transactionService.RunInTransaction<ITransactionContextWrapper, ViewSchedule>(
+                (context, _) =>
                 {
                     var document = context.Unwrap<Document>();
                     var id = new ElementId((int)BuiltInCategory.OST_NurseCallDevices);
