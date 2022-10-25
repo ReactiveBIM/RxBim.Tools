@@ -14,15 +14,15 @@
     internal class ViewScheduleTableConverter : IViewScheduleTableConverter
     {
         private const double FontRatio = 3.77951502;
-        private readonly Document _document;
+        private readonly Autodesk.Revit.UI.UIApplication _app;
 
         /// <summary>
         /// ctor.
         /// </summary>
-        /// <param name="document">A <see cref="Document"/> object.</param>
-        public ViewScheduleTableConverter(Document document)
+        /// <param name="app">An <see cref="Autodesk.Revit.UI.UIApplication"/> object.</param>
+        public ViewScheduleTableConverter(Autodesk.Revit.UI.UIApplication app)
         {
-            _document = document;
+            _app = app;
         }
 
         /// <inheritdoc />
@@ -35,19 +35,21 @@
                     nameof(parameters));
             }
 
-            using var t = new Transaction(_document);
+            var document = _app.ActiveUIDocument.Document;
+
+            using var t = new Transaction(document);
             t.Start(nameof(ViewScheduleTableConverter));
 
             var id = new ElementId((int)BuiltInCategory.OST_NurseCallDevices);
 
-            var schedule = ViewSchedule.CreateSchedule(_document, id);
+            var schedule = ViewSchedule.CreateSchedule(document, id);
             schedule.Name = parameters.Name;
             schedule.Definition.ShowHeaders = false;
 
             var field = schedule.Definition
                 .GetSchedulableFields()
                 .FirstOrDefault(x =>
-                    x.GetName(_document).ToUpper() == "URL");
+                    x.GetName(document).ToUpper() == "URL");
 
             if (field != null)
             {
