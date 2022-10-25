@@ -40,18 +40,19 @@
             }
 
             return _transactionService.RunInTransaction(
-                () =>
+                (context) =>
                 {
+                    var document = context.Unwrap<Document>();
                     var id = new ElementId((int)BuiltInCategory.OST_NurseCallDevices);
 
-                    var schedule = ViewSchedule.CreateSchedule(_document, id);
+                    var schedule = ViewSchedule.CreateSchedule(document, id);
                     schedule.Name = parameters.Name;
                     schedule.Definition.ShowHeaders = false;
 
                     var field = schedule.Definition
                         .GetSchedulableFields()
                         .FirstOrDefault(x =>
-                            x.GetName(_document).ToUpper() == "URL");
+                            x.GetName(document).ToUpper() == "URL");
 
                     if (field != null)
                     {
