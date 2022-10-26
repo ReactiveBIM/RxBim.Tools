@@ -36,6 +36,20 @@
         }
 
         /// <summary>
+        /// <inheritdoc cref="ITransactionService.RunInTransaction{T}(Action{T, ITransactionWrapper}, string, T)" path="/summary" />
+        /// </summary>
+        /// <param name="transactionService"><see cref="ITransactionService"/> object.</param>
+        /// <param name="action"><inheritdoc cref="ITransactionService.RunInTransaction{T}(Action{T, ITransactionWrapper}, string, T)" path="/param[@name='action']" /></param>
+        /// <param name="context"><inheritdoc cref="ITransactionService.RunInTransaction{T}(Action{T, ITransactionWrapper}, string, T)" path="/param[@name='context']" /></param>
+        public static void RunInDatabaseTransaction(
+            this ITransactionService transactionService,
+            Action<ITransactionContextWrapper, ITransactionWrapper> action,
+            IDatabaseWrapper? context = null)
+        {
+            transactionService.RunInTransaction(action, null, context);
+        }
+
+        /// <summary>
         /// <inheritdoc cref="ITransactionService.RunInTransaction{T1,T2}(Func{T1,T2}, string, T1)" path="/summary" />
         /// </summary>
         /// <param name="transactionService"><see cref="ITransactionService"/> object.</param>
@@ -63,6 +77,21 @@
             IDatabaseWrapper? context = null)
         {
             return transactionService.RunInTransaction((_, x) => func(x), null, context);
+        }
+
+        /// <summary>
+        /// <inheritdoc cref="ITransactionService.RunInTransaction{T1,T2}(Func{T1,ITransactionWrapper,T2}, string, T1)" path="/summary" />
+        /// </summary>
+        /// <param name="transactionService"><see cref="ITransactionService"/> object.</param>
+        /// <param name="func"><inheritdoc cref="ITransactionService.RunInTransaction{T1,T2}(Func{T1,ITransactionWrapper,T2}, string, T1)" path="/param[@name='func']" /></param>
+        /// <param name="context"><inheritdoc cref="ITransactionService.RunInTransaction{T1,T2}(Func{T1,ITransactionWrapper,T2}, string, T1)" path="/param[@name='context']" /></param>
+        /// <typeparam name="T"><inheritdoc cref="ITransactionService.RunInTransaction{T1,T2}(Func{T1,ITransactionWrapper,T2}, string, T1)" path="/typeparam[@name='TRes']" /></typeparam>
+        public static T RunInDatabaseTransaction<T>(
+            this ITransactionService transactionService,
+            Func<ITransactionContextWrapper, ITransactionWrapper, T> func,
+            IDatabaseWrapper? context = null)
+        {
+            return transactionService.RunInTransaction(func, null, context);
         }
 
         /// <summary>
