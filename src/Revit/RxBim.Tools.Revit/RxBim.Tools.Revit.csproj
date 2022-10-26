@@ -3,6 +3,7 @@
     <PropertyGroup>       
         <UseWPF>true</UseWPF>
         <UseDi>true</UseDi>
+        <Optimize>false</Optimize>
     </PropertyGroup>
 
     <ItemGroup>
