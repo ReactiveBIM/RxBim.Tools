@@ -16,7 +16,7 @@
         /// Returns <see cref="Document"/> from context.
         /// </summary>
         /// <param name="context"><see cref="ITransactionContextWrapper"/> object.</param>
-        /// <exception cref="ArgumentException">If context is not <see cref="DocumentWrapper"/>.</exception>
+        /// <exception cref="ArgumentException">If context is not <see cref="IDocumentWrapper"/>.</exception>
         public static Document GetDocument(this ITransactionContextWrapper context)
         {
             if (context is IDocumentWrapper documentContext)

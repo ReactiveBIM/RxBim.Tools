@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Tools.Revit.Services
 {
+    using Abstractions;
     using Autodesk.Revit.UI;
     using JetBrains.Annotations;
     using Models;
@@ -8,7 +9,7 @@
     /// The service for <see cref="DocumentWrapper"/>.
     /// </summary>
     [UsedImplicitly]
-    internal class DocumentContextService : ITransactionContextService<DocumentWrapper>
+    internal class DocumentContextService : ITransactionContextService<IDocumentWrapper>
     {
         private readonly UIApplication _application;
 
@@ -22,7 +23,7 @@
         }
 
         /// <inheritdoc />
-        public DocumentWrapper GetDefaultContext()
+        public IDocumentWrapper GetDefaultContext()
         {
             return new DocumentWrapper(_application.ActiveUIDocument.Document);
         }

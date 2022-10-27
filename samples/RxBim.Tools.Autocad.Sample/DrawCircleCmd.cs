@@ -28,7 +28,7 @@
                 return PluginResult.Cancelled;
 
             // Action with transaction param and context
-            transactionService.RunInTransaction<DatabaseWrapper>((context, transaction) =>
+            transactionService.RunInTransaction<IDatabaseWrapper>((context, transaction) =>
                 circleService.AddCircle(context, transaction, center, radius, 1));
 
             // Func with transaction param and context

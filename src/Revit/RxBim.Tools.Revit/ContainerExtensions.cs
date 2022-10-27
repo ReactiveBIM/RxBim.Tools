@@ -25,7 +25,8 @@
                 .AddSingleton<ISharedParameterService, SharedParameterService>()
                 .AddSingleton<IElementsCollector, ScopedElementsCollector>()
                 .AddSingleton<IScopedElementsCollector, ScopedElementsCollector>()
-                .AddSingleton<ITransactionContextService<DocumentWrapper>, DocumentContextService>()
+                .AddSingleton<ITransactionContextService<IDocumentWrapper>, DocumentContextService>()
+                .AddSingleton<ITransactionContextService<ITransactionContextWrapper>, DocumentContextService>()
                 .AddTransactionServices<RevitTransactionFactory>()
                 .AddInstance(new RevitTask())
                 .AddToolsServices();
