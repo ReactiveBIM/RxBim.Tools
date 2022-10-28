@@ -8,7 +8,7 @@
     public interface ITransactionWrapperBase : IDisposable, IWrapper
     {
         /// <summary>
-        /// Transaction status
+        /// Transaction status.
         /// </summary>
         TransactionStatusEnum Status { get; }
 
