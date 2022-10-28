@@ -5,7 +5,7 @@
 
     /// <inheritdoc />
     [UsedImplicitly]
-    public class AutocadTransactionFactory : ITransactionFactory
+    internal class AutocadTransactionFactory : ITransactionFactory
     {
         private readonly IServiceLocator _locator;
 
