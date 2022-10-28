@@ -6,6 +6,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\Autocad\RxBim.Tools.Autocad\RxBim.Tools.Autocad.csproj" />
+      <ProjectReference Include="..\..\src\Core\RxBim.Tools\RxBim.Tools.csproj" />
     </ItemGroup>
 
     <ItemGroup>

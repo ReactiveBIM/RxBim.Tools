@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Core\RxBim.Tools\RxBim.Tools.csproj" />
     <ProjectReference Include="..\..\src\Revit\RxBim.Tools.Revit\RxBim.Tools.Revit.csproj" />
   </ItemGroup>
 
