@@ -12,7 +12,7 @@
     {
         private readonly IContainer _container;
 
-        private RevitTransactionFactoryTests()
+        public RevitTransactionFactoryTests()
         {
             var mockContextService = new Mock<ITransactionContextService<IDocumentWrapper>>();
 
