@@ -56,12 +56,15 @@
             {
                 transaction.Start();
                 var result = func.Invoke(transactionContext, transaction);
-                transaction.Commit();
+
+                if (transaction.Status is not TransactionStatusEnum.Committed and not TransactionStatusEnum.RolledBack)
+                    transaction.Commit();
+
                 return result;
             }
             catch (Exception)
             {
-                if (!transaction.IsRolledBack())
+                if (transaction.Status != TransactionStatusEnum.RolledBack)
                     transaction.RollBack();
                 throw;
             }
@@ -109,12 +112,16 @@
             {
                 transactionGroup.Start();
                 var result = func.Invoke(transactionContext, transactionGroup);
-                transactionGroup.Assimilate();
+
+                if (transactionGroup.Status is not TransactionStatusEnum.Committed and
+                    not TransactionStatusEnum.RolledBack)
+                    transactionGroup.Assimilate();
+
                 return result;
             }
             catch (Exception)
             {
-                if (!transactionGroup.IsRolledBack())
+                if (transactionGroup.Status != TransactionStatusEnum.RolledBack)
                     transactionGroup.RollBack();
                 throw;
             }

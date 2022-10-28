@@ -18,8 +18,9 @@
                 .AddSingleton<IObjectsSelectionService, ObjectsSelectionService>()
                 .AddSingleton<ICommandLineService, CommandLineService>()
                 .AddSingleton<IElementsDisplay, ElementsDisplayService>()
-                .AddSingleton<ITransactionContextService<DatabaseWrapper>, DatabaseContextService>()
-                .AddSingleton<ITransactionContextService<DocumentWrapper>, DocumentContextService>()
+                .AddSingleton<ITransactionContextService<IDatabaseWrapper>, DatabaseContextService>()
+                .AddSingleton<ITransactionContextService<IDocumentWrapper>, DocumentContextService>()
+                .AddSingleton<ITransactionContextService<ITransactionContextWrapper>, DocumentContextService>()
                 .AddTransactionServices<AutocadTransactionFactory>()
                 .AddToolsServices();
         }

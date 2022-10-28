@@ -5,7 +5,6 @@
     using Autodesk.Revit.DB;
     using JetBrains.Annotations;
     using Revit.Extensions;
-    using Revit.Models;
     using Styles;
 
     /// <summary>
@@ -36,7 +35,7 @@
                     nameof(parameters));
             }
 
-            return _transactionService.RunInTransaction<DocumentWrapper, ViewSchedule>(
+            return _transactionService.RunInTransaction(
                 (context, _) =>
                 {
                     var document = context.GetDocument();

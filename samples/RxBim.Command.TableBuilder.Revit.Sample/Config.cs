@@ -1,6 +1,8 @@
 ﻿namespace RxBim.Command.TableBuilder.Revit.Sample
 {
+    using Abstractions;
     using Di;
+    using Services;
     using Tools.Revit;
     using Tools.TableBuilder;
 
@@ -12,6 +14,7 @@
         {
             container.AddRevitHelpers();
             container.AddRevitTableBuilder();
+            container.AddTransient<IViewScheduleCreator, ViewScheduleCreator>();
         }
     }
 }
