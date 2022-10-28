@@ -7,7 +7,7 @@
 
     /// <inheritdoc />
     [UsedImplicitly]
-    internal class DocumentService : IDocumentService
+    public class DocumentService : IDocumentService
     {
         /// <inheritdoc />
         public Document GetActiveDocument()

@@ -9,7 +9,7 @@
 
     /// <inheritdoc />
     [UsedImplicitly]
-    internal class RevitTransactionFactory : ITransactionFactory
+    public class RevitTransactionFactory : ITransactionFactory
     {
         private readonly IServiceLocator _locator;
 
