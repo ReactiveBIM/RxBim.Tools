@@ -2,6 +2,7 @@
 {
     using Abstractions;
     using Autodesk.Revit.UI;
+    using Extensions;
     using JetBrains.Annotations;
     using Models;
 
@@ -25,7 +26,7 @@
         /// <inheritdoc />
         public IDocumentWrapper GetDefaultContext()
         {
-            return new DocumentWrapper(_application.ActiveUIDocument.Document);
+            return _application.ActiveUIDocument.Document.Wrap();
         }
     }
 }

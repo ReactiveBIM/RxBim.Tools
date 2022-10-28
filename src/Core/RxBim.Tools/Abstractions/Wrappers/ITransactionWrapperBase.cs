@@ -8,6 +8,11 @@
     public interface ITransactionWrapperBase : IDisposable, IWrapper
     {
         /// <summary>
+        /// Transaction status
+        /// </summary>
+        TransactionStatusEnum Status { get; }
+
+        /// <summary>
         /// Starts.
         /// </summary>
         void Start();
@@ -20,6 +25,7 @@
         /// <summary>
         /// Returns true if all changes have been rolled back. Otherwise, returns false.
         /// </summary>
+        [Obsolete]
         bool IsRolledBack();
     }
 }

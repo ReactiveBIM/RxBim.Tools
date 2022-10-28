@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Tools.Autocad
 {
+    using System;
     using Autodesk.AutoCAD.DatabaseServices;
 
     /// <summary>
@@ -7,8 +8,6 @@
     /// </summary>
     internal abstract class TransactionWrapperBase : Wrapper<Transaction>, ITransactionWrapper
     {
-        private bool _isRolledBack;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="TransactionWrapperBase"/> class.
         /// </summary>
@@ -18,6 +17,9 @@
         {
         }
 
+        /// <inheritdoc />
+        public TransactionStatusEnum Status { get; private set; }
+
         /// <inheritdoc/>
         public void Dispose() => Object.Dispose();
 
@@ -25,19 +27,25 @@
         public void Start()
         {
             // Started on creation.
+            Status = TransactionStatusEnum.Started;
         }
 
         /// <inheritdoc />
         public void RollBack()
         {
             Object.Abort();
-            _isRolledBack = true;
+            Status = TransactionStatusEnum.RolledBack;
         }
 
         /// <inheritdoc />
-        public bool IsRolledBack() => _isRolledBack;
+        [Obsolete]
+        public bool IsRolledBack() => Status == TransactionStatusEnum.RolledBack;
 
         /// <inheritdoc />
-        public void Commit() => Object.Commit();
+        public void Commit()
+        {
+            Object.Commit();
+            Status = TransactionStatusEnum.Committed;
+        }
     }
 }

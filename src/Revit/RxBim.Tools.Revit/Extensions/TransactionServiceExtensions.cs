@@ -88,6 +88,16 @@
             transactionService.RunInTransactionGroup((_, x) => action(x), name, transactionContext);
         }
 
+        /// <inheritdoc cref="ITransactionService.RunInTransactionGroup{T}(Action{T,ITransactionGroupWrapper}, string, T)" />
+        public static void RunInTransactionGroup(
+            this ITransactionService transactionService,
+            Action<ITransactionContextWrapper, ITransactionGroupWrapper> action,
+            string name,
+            IDocumentWrapper? transactionContext = null)
+        {
+            transactionService.RunInTransactionGroup(action, name, transactionContext);
+        }
+
         /// <inheritdoc cref="ITransactionService.RunInTransactionGroup{T1,T2}(Func{T1,T2}, string, T1)" />
         public static T RunInTransactionGroup<T>(
             this ITransactionService transactionService,
@@ -106,6 +116,16 @@
             IDocumentWrapper? context = null)
         {
             return transactionService.RunInTransactionGroup((_, x) => func(x), name, context);
+        }
+
+        /// <inheritdoc cref="ITransactionService.RunInTransactionGroup{T1,T2}(Func{T1,ITransactionGroupWrapper,T2}, string, T1)" />
+        public static T RunInTransactionGroup<T>(
+            this ITransactionService transactionService,
+            Func<ITransactionContextWrapper, ITransactionGroupWrapper, T> func,
+            string name,
+            IDocumentWrapper? context = null)
+        {
+            return transactionService.RunInTransactionGroup(func, name, context);
         }
     }
 }
