@@ -1,5 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <NoWarn>CS1591,NU1701</NoWarn>
+        <MSBuildWarningsAsMessages>NU1702</MSBuildWarningsAsMessages>
+        <Configurations>Debug;Release</Configurations>
+    </PropertyGroup>
+    
     <ItemGroup>
       <ProjectReference Include="..\..\src\Autocad\RxBim.Tools.Autocad\RxBim.Tools.Autocad.csproj" />
       <ProjectReference Include="..\..\src\Core\RxBim.Tools\RxBim.Tools.csproj" />
