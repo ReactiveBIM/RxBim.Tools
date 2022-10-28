@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6</TargetFramework>        
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Autocad\RxBim.Tools.Autocad\RxBim.Tools.Autocad.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="RxBim.Di.SimpleInjector" Version="1.1.0" />
+    </ItemGroup>
+
+</Project>
