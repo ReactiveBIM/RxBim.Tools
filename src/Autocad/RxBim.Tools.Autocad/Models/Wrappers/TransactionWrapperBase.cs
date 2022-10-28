@@ -27,12 +27,16 @@
         public void Start()
         {
             // Started on creation.
-            Status = TransactionStatusEnum.Started;
+            if (Status == TransactionStatusEnum.Uninitialized)
+                Status = TransactionStatusEnum.Started;
         }
 
         /// <inheritdoc />
         public void RollBack()
         {
+            if (Status == TransactionStatusEnum.RolledBack)
+                return;
+
             Object.Abort();
             Status = TransactionStatusEnum.RolledBack;
         }
@@ -44,6 +48,9 @@
         /// <inheritdoc />
         public void Commit()
         {
+            if (Status == TransactionStatusEnum.Committed)
+                return;
+
             Object.Commit();
             Status = TransactionStatusEnum.Committed;
         }

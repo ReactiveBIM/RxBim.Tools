@@ -34,7 +34,8 @@
         /// <inheritdoc />
         public void RollBack()
         {
-            Object.RollBack();
+            if (Status != TransactionStatusEnum.RolledBack)
+                Object.RollBack();
         }
 
         /// <inheritdoc />
@@ -47,7 +48,8 @@
         /// <inheritdoc />
         public void Assimilate()
         {
-            Object.Assimilate();
+            if (Status != TransactionStatusEnum.Committed)
+                Object.Assimilate();
         }
     }
 }
