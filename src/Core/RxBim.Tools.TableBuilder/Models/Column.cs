@@ -7,6 +7,8 @@
     /// </summary>
     public class Column : CellsSet
     {
+        private double? _ownWidth;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Column"/> class.
         /// </summary>
@@ -35,7 +37,15 @@
         /// <summary>
         /// Own column width.
         /// </summary>
-        internal double? OwnWidth { get; set; }
+        internal double? OwnWidth
+        {
+            get => _ownWidth;
+            set
+            {
+                IsAdjustedToContent = false;
+                _ownWidth = value;
+            }
+        }
 
         /// <summary>
         /// Returns new <see cref="ColumnBuilder"/> for the column.

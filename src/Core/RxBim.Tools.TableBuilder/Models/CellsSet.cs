@@ -21,6 +21,11 @@
         /// </summary>
         public IReadOnlyList<Cell> Cells => _cells;
 
+        /// <summary>
+        /// Determines whether the size is adjusted according to the content.
+        /// </summary>
+        public bool IsAdjustedToContent { get; set; } = true;
+
         /// <inheritdoc />
         public override CellFormatStyle GetComposedFormat() => Format.Collect(Table.DefaultFormat);
 

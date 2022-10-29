@@ -7,6 +7,8 @@
     /// </summary>
     public class Row : CellsSet
     {
+        private double? _ownHeight;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Row"/> class.
         /// </summary>
@@ -35,7 +37,15 @@
         /// <summary>
         /// The height of the row.
         /// </summary>
-        internal double? OwnHeight { get; set; }
+        internal double? OwnHeight
+        {
+            get => _ownHeight;
+            set
+            {
+                IsAdjustedToContent = false;
+                _ownHeight = value;
+            }
+        }
 
         /// <summary>
         /// Returns new <see cref="RowBuilder"/> for the row.
