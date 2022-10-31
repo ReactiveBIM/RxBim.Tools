@@ -14,6 +14,7 @@
         {
         }
 
+        // TODO сделать отдельные builders
         /// <summary>
         /// Cell text format.
         /// </summary>
