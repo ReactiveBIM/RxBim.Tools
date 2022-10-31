@@ -165,7 +165,7 @@
         /// Modify format
         /// </summary>
         /// <param name="action">The modify action.</param>
-        internal void ModifyFormat(Action<CellFormatStyle> action)
+        public void ModifyFormat(Action<CellFormatStyle> action)
         {
             action(_format);
         }
