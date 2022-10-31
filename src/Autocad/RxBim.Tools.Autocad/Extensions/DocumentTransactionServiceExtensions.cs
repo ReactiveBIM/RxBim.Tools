@@ -16,7 +16,7 @@
         public static void RunInDocumentTransaction(
             this ITransactionService transactionService,
             Action action,
-            DocumentWrapper? context = null)
+            IDocumentWrapper? context = null)
         {
             transactionService.RunInTransaction(_ => action(), null, context);
         }
@@ -30,9 +30,23 @@
         public static void RunInDocumentTransaction(
             this ITransactionService transactionService,
             Action<ITransactionWrapper> action,
-            DocumentWrapper? context = null)
+            IDocumentWrapper? context = null)
         {
             transactionService.RunInTransaction((_, x) => action(x), null, context);
+        }
+
+        /// <summary>
+        /// <inheritdoc cref="ITransactionService.RunInTransaction{T}(Action{T, ITransactionWrapper}, string, T)" path="/summary" />
+        /// </summary>
+        /// <param name="transactionService"><see cref="ITransactionService"/> object.</param>
+        /// <param name="action"><inheritdoc cref="ITransactionService.RunInTransaction{T}(Action{T, ITransactionWrapper}, string, T)" path="/param[@name='action']" /></param>
+        /// <param name="context"><inheritdoc cref="ITransactionService.RunInTransaction{T}(Action{T, ITransactionWrapper}, string, T)" path="/param[@name='context']" /></param>
+        public static void RunInDocumentTransaction(
+            this ITransactionService transactionService,
+            Action<ITransactionContextWrapper, ITransactionWrapper> action,
+            IDocumentWrapper? context = null)
+        {
+            transactionService.RunInTransaction(action, null, context);
         }
 
         /// <summary>
@@ -45,9 +59,24 @@
         public static T RunInDocumentTransaction<T>(
             this ITransactionService transactionService,
             Func<T> func,
-            DocumentWrapper? context = null)
+            IDocumentWrapper? context = null)
         {
             return transactionService.RunInTransaction(_ => func(), null, context);
+        }
+
+        /// <summary>
+        /// <inheritdoc cref="ITransactionService.RunInTransaction{T1,T2}(Func{T1,T2}, string, T1)" path="/summary" />
+        /// </summary>
+        /// <param name="transactionService"><see cref="ITransactionService"/> object.</param>
+        /// <param name="func"><inheritdoc cref="ITransactionService.RunInTransaction{T1,T2}(Func{T1,T2}, string, T1)" path="/param[@name='func']" /></param>
+        /// <param name="context"><inheritdoc cref="ITransactionService.RunInTransaction{T1,T2}(Func{T1,T2}, string, T1)" path="/param[@name='context']" /></param>
+        /// <typeparam name="T"><inheritdoc cref="ITransactionService.RunInTransaction{T1,T2}(Func{T1,T2}, string, T1)" path="/typeparam[@name='TRes']" /></typeparam>
+        public static T RunInDocumentTransaction<T>(
+            this ITransactionService transactionService,
+            Func<IDocumentWrapper, ITransactionWrapper, T> func,
+            IDocumentWrapper? context = null)
+        {
+            return transactionService.RunInTransaction(func, null, context);
         }
 
         /// <summary>
@@ -60,7 +89,7 @@
         public static T RunInDocumentTransaction<T>(
             this ITransactionService transactionService,
             Func<ITransactionWrapper, T> func,
-            DocumentWrapper? context = null)
+            IDocumentWrapper? context = null)
         {
             return transactionService.RunInTransaction((_, x) => func(x), null, context);
         }
@@ -74,7 +103,7 @@
         public static void RunInDocumentTransactionGroup(
             this ITransactionService transactionService,
             Action action,
-            DocumentWrapper? context = null)
+            IDocumentWrapper? context = null)
         {
             transactionService.RunInTransactionGroup(_ => action(), string.Empty, context);
         }
@@ -88,7 +117,7 @@
         public static void RunInDocumentTransactionGroup(
             this ITransactionService transactionService,
             Action<ITransactionGroupWrapper> action,
-            DocumentWrapper? context = null)
+            IDocumentWrapper? context = null)
         {
             transactionService.RunInTransactionGroup((_, x) => action(x), string.Empty, context);
         }
@@ -103,7 +132,7 @@
         public static T RunInDocumentTransactionGroup<T>(
             this ITransactionService transactionService,
             Func<T> func,
-            DocumentWrapper? context = null)
+            IDocumentWrapper? context = null)
         {
             return transactionService.RunInTransactionGroup(_ => func(), string.Empty, context);
         }
@@ -118,7 +147,7 @@
         public static T RunInDocumentTransactionGroup<T>(
             this ITransactionService transactionService,
             Func<ITransactionGroupWrapper, T> func,
-            DocumentWrapper? context = null)
+            IDocumentWrapper? context = null)
         {
             return transactionService.RunInTransactionGroup((_, x) => func(x), string.Empty, context);
         }

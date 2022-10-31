@@ -6,7 +6,7 @@
     /// Service for <see cref="DatabaseWrapper"/>.
     /// </summary>
     [UsedImplicitly]
-    internal class DatabaseContextService : ITransactionContextService<DatabaseWrapper>
+    internal class DatabaseContextService : ITransactionContextService<IDatabaseWrapper>
     {
         private readonly IDocumentService _documentService;
 
@@ -20,9 +20,9 @@
         }
 
         /// <inheritdoc />
-        public DatabaseWrapper GetDefaultContext()
+        public IDatabaseWrapper GetDefaultContext()
         {
-            return new DatabaseWrapper(_documentService.GetActiveDocument().Database);
+            return _documentService.GetActiveDocument().Database.Wrap();
         }
     }
 }

@@ -6,7 +6,7 @@
     /// Service for <see cref="DocumentWrapper"/>.
     /// </summary>
     [UsedImplicitly]
-    internal class DocumentContextService : ITransactionContextService<DocumentWrapper>
+    internal class DocumentContextService : ITransactionContextService<IDocumentWrapper>
     {
         private readonly IDocumentService _documentService;
 
@@ -20,9 +20,9 @@
         }
 
         /// <inheritdoc />
-        public DocumentWrapper GetDefaultContext()
+        public IDocumentWrapper GetDefaultContext()
         {
-            return new DocumentWrapper(_documentService.GetActiveDocument());
+            return _documentService.GetActiveDocument().Wrap();
         }
     }
 }

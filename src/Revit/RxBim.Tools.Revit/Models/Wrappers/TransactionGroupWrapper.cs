@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Tools.Revit.Models
 {
+    using System;
     using Autodesk.Revit.DB;
 
     /// <inheritdoc cref="ITransactionGroupWrapper" />
@@ -15,6 +16,9 @@
         }
 
         /// <inheritdoc />
+        public TransactionStatusEnum Status => (TransactionStatusEnum)Object.GetStatus();
+
+        /// <inheritdoc />
         public void Dispose()
         {
             Object.Dispose();
@@ -23,16 +27,19 @@
         /// <inheritdoc />
         public void Start()
         {
-            Object.Start();
+            if (Status == TransactionStatusEnum.Uninitialized)
+                Object.Start();
         }
 
         /// <inheritdoc />
         public void RollBack()
         {
-            Object.RollBack();
+            if (Status != TransactionStatusEnum.RolledBack)
+                Object.RollBack();
         }
 
         /// <inheritdoc />
+        [Obsolete]
         public bool IsRolledBack()
         {
             return Object.GetStatus() == TransactionStatus.RolledBack;
@@ -41,7 +48,8 @@
         /// <inheritdoc />
         public void Assimilate()
         {
-            Object.Assimilate();
+            if (Status != TransactionStatusEnum.Committed)
+                Object.Assimilate();
         }
     }
 }
