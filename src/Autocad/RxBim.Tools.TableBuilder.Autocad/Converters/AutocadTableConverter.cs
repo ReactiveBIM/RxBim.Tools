@@ -50,8 +50,8 @@
                     var cellData = tableData[rowIndex, columnIndex];
 
                     var rowHeight = tableData.Rows[rowIndex].Height;
-                    rowHeight = rowHeight > 0 ? rowHeight : parameters.DefaultRowHeight;
-                    acadRow.Height = rowHeight;
+                    rowHeight = rowHeight is > 0 ? rowHeight : parameters.DefaultRowHeight;
+                    acadRow.Height = rowHeight.Value;
 
                     var format = cellData.GetComposedFormat();
                     SetCellStyle(acadCell, format, parameters);

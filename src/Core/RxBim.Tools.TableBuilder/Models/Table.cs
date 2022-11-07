@@ -44,7 +44,7 @@
         /// <summary>
         /// The height of the table.
         /// </summary>
-        public double Height => Math.Max(_rows.Sum(x => x.OwnHeight ?? 0), OwnHeight);
+        public double Height => Math.Max(_rows.Sum(x => x.Height ?? 0), OwnHeight);
 
         /// <summary>
         /// The default format for cells.

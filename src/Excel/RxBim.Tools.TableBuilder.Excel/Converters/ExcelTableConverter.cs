@@ -85,7 +85,7 @@
                 }
                 else
                 {
-                    row.Height = table.Rows[currentRowIndex].Height;
+                    row.Height = table.Rows[currentRowIndex].Height ?? table.GetAverageRowHeight();
                 }
             }
         }

@@ -67,7 +67,7 @@
         /// <param name="height">The height of the cell.</param>
         public CellBuilder SetHeight(double height)
         {
-            ObjectForBuild.Row.OwnHeight = height;
+            ObjectForBuild.Row.Height = height;
             return this;
         }
 

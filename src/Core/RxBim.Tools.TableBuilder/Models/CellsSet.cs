@@ -24,6 +24,7 @@
         /// <summary>
         /// Determines whether the size is adjusted according to the content.
         /// </summary>
+        /// <remarks>Default value is true.</remarks>
         public bool IsAdjustedToContent { get; set; } = true;
 
         /// <inheritdoc />

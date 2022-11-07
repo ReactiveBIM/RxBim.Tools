@@ -23,7 +23,7 @@
             if (height <= 0)
                 throw new ArgumentException("Must be a positive number.", nameof(height));
 
-            ObjectForBuild.OwnHeight = height;
+            ObjectForBuild.Height = height;
             return this;
         }
 
