@@ -118,17 +118,19 @@
         {
             var boldFormat = new CellFormatStyleBuilder()
                 .SetContentVerticalAlignment(CellContentVerticalAlignment.Middle)
-                .SetAllBorders(CellBorderType.Bold)
+                .SetBorders(builder => builder.SetAllBorders(CellBorderType.Bold))
                 .Build();
 
             var rowFormat = new CellFormatStyleBuilder()
                 .SetContentVerticalAlignment(CellContentVerticalAlignment.Middle)
-                .SetBorders(CellBorderType.Thin, CellBorderType.Thin, CellBorderType.Bold, CellBorderType.Bold)
+                .SetBorders(builder =>
+                    builder.SetBorders(CellBorderType.Thin, CellBorderType.Thin, CellBorderType.Bold, CellBorderType.Bold))
                 .Build();
 
             var lastRowFormat = new CellFormatStyleBuilder()
                 .SetContentVerticalAlignment(CellContentVerticalAlignment.Middle)
-                .SetBorders(CellBorderType.Thin, CellBorderType.Bold, CellBorderType.Bold, CellBorderType.Bold)
+                .SetBorders(builder =>
+                    builder.SetBorders(CellBorderType.Thin, CellBorderType.Bold, CellBorderType.Bold, CellBorderType.Bold))
                 .Build();
 
             SetFormat(boldFormat);
@@ -320,8 +322,7 @@
             }
         }
 
-        private List<Func<TSource, object>> GetSelectorList<TSource>(
-            IEnumerable<Func<TSource, object>> propertySelectors)
+        private List<Func<TSource, object>> GetSelectorList<TSource>(IEnumerable<Func<TSource, object>> propertySelectors)
         {
             var selectorList = propertySelectors.ToList();
             if (!selectorList.Any())

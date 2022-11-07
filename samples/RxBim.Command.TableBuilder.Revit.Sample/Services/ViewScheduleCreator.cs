@@ -62,11 +62,12 @@
                     .SetFormat(baseFormat)
                     .SetCellsFormat(
                         new CellFormatStyleBuilder()
+                            .SetBorders(builder => builder
                             .SetBorders(
                                 bottom: CellBorderType.Bold,
                                 left: CellBorderType.Bold,
                                 right: CellBorderType.Bold,
-                                top: CellBorderType.Bold)
+                                top: CellBorderType.Bold))
                             .Build(),
                         0,
                         0,

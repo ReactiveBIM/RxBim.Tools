@@ -18,7 +18,8 @@
             double? verticalMargins = null,
             double? horizontalMargins = null)
         {
-            return builder.SetContentMargins(verticalMargins, verticalMargins, horizontalMargins, horizontalMargins);
+            return builder.SetContentMargins(contentMarginsBuilder =>
+                contentMarginsBuilder.SetContentMargins(verticalMargins, verticalMargins, horizontalMargins, horizontalMargins));
         }
     }
 }

@@ -34,67 +34,22 @@
         /// <summary>
         /// Sets <see cref="CellFormatStyle.Borders"/>.
         /// </summary>
-        /// <param name="top">Top border type.</param>
-        /// <param name="bottom">Bottom border type.</param>
-        /// <param name="left">Left border type.</param>
-        /// <param name="right">Right border type.</param>
-        public CellFormatStyleBuilder SetBorders(
-            CellBorderType? top = null,
-            CellBorderType? bottom = null,
-            CellBorderType? left = null,
-            CellBorderType? right = null)
+        /// <param name="action">Action for text format.</param>
+        public CellFormatStyleBuilder SetBorders(Action<CellBordersBuilder> action)
         {
-            _format.Borders.Top = top;
-            _format.Borders.Bottom = bottom;
-            _format.Borders.Left = left;
-            _format.Borders.Right = right;
-            return this;
-        }
-
-        /// <summary>
-        /// Sets <see cref="CellFormatStyle.Borders"/>.
-        /// </summary>
-        /// <param name="typeForAll"><see cref="CellBorderType"/> value.</param>
-        public CellFormatStyleBuilder SetAllBorders(CellBorderType? typeForAll)
-        {
-            _format.Borders.Top =
-                _format.Borders.Bottom =
-                    _format.Borders.Left =
-                        _format.Borders.Right = typeForAll;
+            var builder = new CellBordersBuilder(_format.Borders);
+            action(builder);
             return this;
         }
 
         /// <summary>
         /// Sets <see cref="CellFormatStyle.ContentMargins"/>.
         /// </summary>
-        /// <param name="top">Top margin value.</param>
-        /// <param name="bottom">Bottom margin value.</param>
-        /// <param name="left">Left margin value.</param>
-        /// <param name="right">Right margin value.</param>
-        public CellFormatStyleBuilder SetContentMargins(
-            double? top = null,
-            double? bottom = null,
-            double? left = null,
-            double? right = null)
+        /// <param name="action">Action for text format.</param>
+        public CellFormatStyleBuilder SetContentMargins(Action<CellContentMarginsBuilder> action)
         {
-            _format.ContentMargins.Top = top;
-            _format.ContentMargins.Bottom = bottom;
-            _format.ContentMargins.Left = left;
-            _format.ContentMargins.Right = right;
-
-            return this;
-        }
-
-        /// <summary>
-        /// Sets <see cref="CellFormatStyle.ContentMargins"/>.
-        /// </summary>
-        /// <param name="marginsForAll">Margin value.</param>
-        public CellFormatStyleBuilder SetContentAllMargins(double? marginsForAll = null)
-        {
-            _format.ContentMargins.Top =
-                _format.ContentMargins.Bottom =
-                    _format.ContentMargins.Left =
-                        _format.ContentMargins.Right = marginsForAll;
+            var builder = new CellContentMarginsBuilder(_format.ContentMargins);
+            action(builder);
             return this;
         }
 
@@ -135,17 +90,18 @@
         /// <param name="additionalFormat">Additional another format.</param>
         public CellFormatStyleBuilder SetFromFormat(CellFormatStyle format, CellFormatStyle? additionalFormat = null)
         {
-            return SetBorders(
+            return SetBorders(bordersBuilder => bordersBuilder.SetBorders(
                     format.Borders.Top ?? additionalFormat?.Borders.Top,
                     format.Borders.Bottom ?? additionalFormat?.Borders.Bottom,
                     format.Borders.Left ?? additionalFormat?.Borders.Left,
-                    format.Borders.Right ?? additionalFormat?.Borders.Right)
+                    format.Borders.Right ?? additionalFormat?.Borders.Right))
                 .SetBackgroundColor(format.BackgroundColor ?? additionalFormat?.BackgroundColor)
-                .SetContentMargins(
-                    format.ContentMargins.Top ?? additionalFormat?.ContentMargins.Top,
-                    format.ContentMargins.Bottom ?? additionalFormat?.ContentMargins.Bottom,
-                    format.ContentMargins.Left ?? additionalFormat?.ContentMargins.Left,
-                    format.ContentMargins.Right ?? additionalFormat?.ContentMargins.Right)
+                .SetContentMargins(contentMarginsBuilder =>
+                    contentMarginsBuilder.SetContentMargins(
+                        format.ContentMargins.Top ?? additionalFormat?.ContentMargins.Top,
+                        format.ContentMargins.Bottom ?? additionalFormat?.ContentMargins.Bottom,
+                        format.ContentMargins.Left ?? additionalFormat?.ContentMargins.Left,
+                        format.ContentMargins.Right ?? additionalFormat?.ContentMargins.Right))
                 .SetContentHorizontalAlignment(
                     format.ContentHorizontalAlignment ?? additionalFormat?.ContentHorizontalAlignment)
                 .SetContentVerticalAlignment(
