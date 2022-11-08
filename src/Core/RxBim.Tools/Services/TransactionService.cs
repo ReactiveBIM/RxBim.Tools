@@ -55,7 +55,7 @@
             try
             {
                 transaction.Start();
-                var result = func.Invoke(transactionContext, transaction);
+                var result = func(transactionContext, transaction);
 
                 if (transaction.Status is not TransactionStatusEnum.Committed and not TransactionStatusEnum.RolledBack)
                     transaction.Commit();
@@ -111,7 +111,7 @@
             try
             {
                 transactionGroup.Start();
-                var result = func.Invoke(transactionContext, transactionGroup);
+                var result = func(transactionContext, transactionGroup);
 
                 if (transactionGroup.Status is not TransactionStatusEnum.Committed and
                     not TransactionStatusEnum.RolledBack)
