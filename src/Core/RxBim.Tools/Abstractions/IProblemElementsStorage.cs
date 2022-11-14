@@ -1,29 +1,30 @@
 ﻿namespace RxBim.Tools
 {
     using System.Collections.Generic;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Problem elements storage.
     /// </summary>
-    public interface IProblemElementsStorage<T>
-        where T : struct
+    [PublicAPI]
+    public interface IProblemElementsStorage
     {
         /// <summary>
         /// Adds the element with the problem to the store.
         /// </summary>
         /// <param name="id">Element ID.</param>
         /// <param name="problem">Problem description.</param>
-        void AddProblemElement(T id, string problem);
+        void AddProblemElement(IObjectIdWrapper id, string problem);
 
         /// <summary>
         /// Returns elements IDs combined by problem description.
         /// </summary>
-        IDictionary<string, IEnumerable<T>> GetCombinedProblems();
+        IDictionary<string, IEnumerable<IObjectIdWrapper>> GetCombinedProblems();
 
         /// <summary>
         /// Returns a collection of pairs from the storage: element ID and problem description.
         /// </summary>
-        IEnumerable<KeyValuePair<T, string>> GetProblems();
+        IEnumerable<KeyValuePair<IObjectIdWrapper, string>> GetProblems();
 
         /// <summary>
         /// Returns true if the store contains any element with a problem. Otherwise, returns false.

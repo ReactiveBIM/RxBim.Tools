@@ -11,14 +11,14 @@
     public class CircleService : ICircleService
     {
         private readonly Editor _editor;
-        private readonly ITransactionContextService<DatabaseContext> _transactionContextService;
+        private readonly ITransactionContextService<IDatabaseWrapper> _transactionContextService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CircleService"/> class.
         /// </summary>
         /// <param name="editor"><see cref="Editor"/> instance.</param>
         /// <param name="transactionContextService"><see cref="ITransactionContextService{T}"/> instance.</param>
-        public CircleService(Editor editor, ITransactionContextService<DatabaseContext> transactionContextService)
+        public CircleService(Editor editor, ITransactionContextService<IDatabaseWrapper> transactionContextService)
         {
             _editor = editor;
             _transactionContextService = transactionContextService;
@@ -55,15 +55,15 @@
 
         /// <inheritdoc />
         public ObjectId AddCircle(
-            ITransactionContext context,
-            ITransaction transaction,
+            ITransactionContextWrapper context,
+            ITransactionWrapper transactionWrapper,
             Point3d center,
             double radius,
             int colorIndex)
         {
             var circle = new Circle(center, Vector3d.ZAxis, radius);
             circle.ColorIndex = colorIndex;
-            return transaction.AppendToCurrentSpace(context, circle);
+            return transactionWrapper.AppendToCurrentSpace(context, circle);
         }
     }
 }

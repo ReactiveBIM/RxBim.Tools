@@ -22,11 +22,14 @@
         }
 
         /// <inheritdoc />
-        public void SetSelectedElements(IEnumerable<ObjectId> ids)
+        public void SetSelectedElements(IEnumerable<IObjectIdWrapper> ids)
         {
             var activeDocument = _documentService.GetActiveDocument();
             var activeDocumentDb = activeDocument.Database;
-            var activeDocIds = ids.Where(x => x.Database.Equals(activeDocumentDb)).ToArray();
+            var activeDocIds = ids
+                .Select(x => x.Unwrap<ObjectId>())
+                .Where(x => x.Database.Equals(activeDocumentDb))
+                .ToArray();
             if (!activeDocIds.Any())
                 return;
 
@@ -35,7 +38,7 @@
         }
 
         /// <inheritdoc />
-        public void SetSelectedElement(ObjectId id)
+        public void SetSelectedElement(IObjectIdWrapper id)
         {
             SetSelectedElements(new[] { id });
         }
@@ -47,17 +50,18 @@
         }
 
         /// <inheritdoc />
-        public void Zoom(ObjectId id, double zoomFactor = 0.25)
+        public void Zoom(IObjectIdWrapper id, double zoomFactor = 0.25)
         {
+            var objId = id.Unwrap<ObjectId>();
             var activeDocument = _documentService.GetActiveDocument();
-            if (!id.Database.Equals(activeDocument.Database))
+            if (!objId.Database.Equals(activeDocument.Database))
                 return;
 
             using var lockDocument = activeDocument.LockDocument();
 
             try
             {
-                using var ent = id.OpenAs<Entity>();
+                using var ent = objId.OpenAs<Entity>();
                 activeDocument.Editor.Zoom(ent.GeometricExtents.Zoom(zoomFactor));
             }
             catch (Exception e)

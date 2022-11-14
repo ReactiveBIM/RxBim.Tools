@@ -12,14 +12,22 @@
     public static class ContainerExtensions
     {
         /// <summary>
+        /// Adds tools services.
+        /// </summary>
+        /// <param name="container">The instance of <see cref="IContainer"/>.</param>
+        public static IContainer AddToolsServices(this IContainer container)
+        {
+            return container.AddSingleton<IProblemElementsStorage, ProblemElementsStorage>();
+        }
+
+        /// <summary>
         /// Adds transaction services.
         /// </summary>
         /// <param name="container">The instance of <see cref="IContainer"/>.</param>
         /// <typeparam name="TTransactionFactory">
         /// The type of <see cref="ITransactionFactory"/> implementation.
         /// </typeparam>
-        public static IContainer AddTransactionServices<TTransactionFactory>(
-            this IContainer container)
+        public static IContainer AddTransactionServices<TTransactionFactory>(this IContainer container)
             where TTransactionFactory : class, ITransactionFactory
         {
             return container

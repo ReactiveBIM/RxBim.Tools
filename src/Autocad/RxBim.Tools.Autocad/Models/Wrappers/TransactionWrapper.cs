@@ -3,12 +3,12 @@
     using Autodesk.AutoCAD.DatabaseServices;
     using JetBrains.Annotations;
 
-    /// <inheritdoc cref="RxBim.Tools.ITransaction" />
+    /// <inheritdoc cref="ITransactionWrapper" />
     [UsedImplicitly]
-    internal class AutocadTransaction : AutocadTransactionBase
+    internal class TransactionWrapper : TransactionWrapperBase
     {
         /// <inheritdoc />
-        public AutocadTransaction(Transaction transaction)
+        public TransactionWrapper(Transaction transaction)
         : base(transaction)
         {
         }

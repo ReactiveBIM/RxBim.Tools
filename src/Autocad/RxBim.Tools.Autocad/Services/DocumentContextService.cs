@@ -3,10 +3,10 @@
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Service for <see cref="DocumentContext"/>.
+    /// Service for <see cref="DocumentWrapper"/>.
     /// </summary>
     [UsedImplicitly]
-    internal class DocumentContextService : ITransactionContextService<DocumentContext>
+    internal class DocumentContextService : ITransactionContextService<IDocumentWrapper>
     {
         private readonly IDocumentService _documentService;
 
@@ -20,9 +20,9 @@
         }
 
         /// <inheritdoc />
-        public DocumentContext GetDefaultContext()
+        public IDocumentWrapper GetDefaultContext()
         {
-            return new DocumentContext(_documentService.GetActiveDocument());
+            return _documentService.GetActiveDocument().Wrap();
         }
     }
 }

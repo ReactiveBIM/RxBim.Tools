@@ -21,25 +21,25 @@
         }
 
         /// <inheritdoc />
-        public ITransaction CreateTransaction<T>(T context, string? name = null)
-            where T : class, ITransactionContext
+        public ITransactionWrapper CreateTransaction<T>(T context, string? name = null)
+            where T : class, ITransactionContextWrapper
         {
             var revitTransaction = new Transaction(context.GetDocument(), name ?? $"Transaction_{Guid.NewGuid()}");
-            return new RevitTransaction(revitTransaction);
+            return new TransactionWrapper(revitTransaction);
         }
 
         /// <inheritdoc />
-        public ITransactionGroup CreateTransactionGroup<T>(T context, string? name = null)
-            where T : class, ITransactionContext
+        public ITransactionGroupWrapper CreateTransactionGroup<T>(T context, string? name = null)
+            where T : class, ITransactionContextWrapper
         {
             var transactionGroup =
                 new TransactionGroup(context.GetDocument(), name ?? $"TransactionGroup_{Guid.NewGuid()}");
-            return new RevitTransactionGroup(transactionGroup);
+            return new TransactionGroupWrapper(transactionGroup);
         }
 
         /// <inheritdoc />
         public T GetDefaultContext<T>()
-            where T : class, ITransactionContext
+            where T : class, ITransactionContextWrapper
         {
             var service = _locator.GetService<ITransactionContextService<T>>();
             return service.GetDefaultContext();

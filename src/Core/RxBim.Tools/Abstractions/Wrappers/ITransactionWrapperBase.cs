@@ -3,10 +3,15 @@
     using System;
 
     /// <summary>
-    /// Base transaction object.
+    /// Base transaction wrapper.
     /// </summary>
-    public interface ITransactionBase : IDisposable
+    public interface ITransactionWrapperBase : IDisposable, IWrapper
     {
+        /// <summary>
+        /// Transaction status.
+        /// </summary>
+        TransactionStatusEnum Status { get; }
+
         /// <summary>
         /// Starts.
         /// </summary>
@@ -20,6 +25,7 @@
         /// <summary>
         /// Returns true if all changes have been rolled back. Otherwise, returns false.
         /// </summary>
+        [Obsolete]
         bool IsRolledBack();
     }
 }

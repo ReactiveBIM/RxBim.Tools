@@ -22,5 +22,11 @@
 
         /// <inheritdoc />
         public object? ValueObject => Value;
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return Value?.ToString() ?? base.ToString();
+        }
     }
 }

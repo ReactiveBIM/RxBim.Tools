@@ -1,28 +1,31 @@
 ﻿namespace RxBim.Tools.Revit
 {
     using Di;
+    using JetBrains.Annotations;
 
     /// <summary>
-    /// Расширения для контейнера
+    /// Extensions for <see cref="IContainer"/>.
     /// </summary>
+    [PublicAPI]
     public static class ContainerExtensions
     {
         /// <summary>
-        /// Добавляет сервисы работы с Revit в контейнер
+        /// Adds Revit services to the container.
         /// </summary>
-        /// <param name="container">контейнер</param>
-        public static void AddRevitTools(this IContainer container)
+        /// <param name="container"><see cref="IContainer"/> object.</param>
+        public static IContainer AddRevitTools(this IContainer container)
         {
-            container.AddSingleton<IProblemElementsStorage, ProblemElementsStorage>();
             container.AddSingleton<IDocumentsCollector, DocumentsCollector>();
-            container.AddSingleton<IDefinitionFilesCollector, DefinitionFilesCollector>();
-            container.AddSingleton<IElementsDisplay, ElementsDisplayService>();
-            container.AddSingleton<ISharedParameterService, SharedParameterService>();
-            container.AddSingleton<IElementsCollector, ElementsCollector>();
-            container.AddSingleton<IPickElementsService, PickElementsService>();
-            container.AddSingleton<ITransactionContextService<DocumentContext>, DocumentContextService>();
-            container.AddTransactionServices<RevitTransactionFactory>();
-            container.AddInstance(new RevitTask());
+                .AddSingleton<IDefinitionFilesCollector, DefinitionFilesCollector>();
+                .AddSingleton<IElementsDisplay, ElementsDisplayService>();
+                .AddSingleton<ISharedParameterService, SharedParameterService>();
+                .AddSingleton<IElementsCollector, ElementsCollector>();
+                .AddSingleton<IPickElementsService, PickElementsService>();
+                .AddSingleton<ITransactionContextService<IDocumentWrapper>, DocumentContextService>()
+                .AddSingleton<ITransactionContextService<ITransactionContextWrapper>, DocumentContextService>()
+                .AddTransactionServices<RevitTransactionFactory>();
+                .AddInstance(new RevitTask())
+                .AddToolsServices();
         }
     }
 }

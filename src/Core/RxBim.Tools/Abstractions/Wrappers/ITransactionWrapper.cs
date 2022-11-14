@@ -1,9 +1,9 @@
 ﻿namespace RxBim.Tools
 {
     /// <summary>
-    /// Transaction object.
+    /// Transaction wrapper.
     /// </summary>
-    public interface ITransaction : ITransactionBase
+    public interface ITransactionWrapper : ITransactionWrapperBase
     {
         /// <summary>
         /// Commits all changes.

@@ -20,14 +20,14 @@
 
         /// <inheritdoc />
         public void RunInTransaction<T>(Action<T> action, string? name = null, T? context = null)
-            where T : class, ITransactionContext
+            where T : class, ITransactionContextWrapper
         {
             RunInTransaction(action.ToFunc(), name, context);
         }
 
         /// <inheritdoc />
-        public void RunInTransaction<T>(Action<T, ITransaction> action, string? name = null, T? context = null)
-            where T : class, ITransactionContext
+        public void RunInTransaction<T>(Action<T, ITransactionWrapper> action, string? name = null, T? context = null)
+            where T : class, ITransactionContextWrapper
         {
             RunInTransaction(action.ToFunc(), name, context);
         }
@@ -37,7 +37,7 @@
             Func<TContext, TRes> func,
             string? name = null,
             TContext? context = null)
-            where TContext : class, ITransactionContext
+            where TContext : class, ITransactionContextWrapper
         {
             var transactionContext = context ?? _transactionFactory.GetDefaultContext<TContext>();
             return RunInTransaction((_, _) => func(transactionContext), name, transactionContext);
@@ -45,10 +45,10 @@
 
         /// <inheritdoc />
         public TRes RunInTransaction<TContext, TRes>(
-            Func<TContext, ITransaction, TRes> func,
+            Func<TContext, ITransactionWrapper, TRes> func,
             string? name = null,
             TContext? context = null)
-            where TContext : class, ITransactionContext
+            where TContext : class, ITransactionContextWrapper
         {
             var transactionContext = context ?? _transactionFactory.GetDefaultContext<TContext>();
             using var transaction = _transactionFactory.CreateTransaction(transactionContext, name);
@@ -56,12 +56,15 @@
             {
                 transaction.Start();
                 var result = func.Invoke(transactionContext, transaction);
-                transaction.Commit();
+
+                if (transaction.Status is not TransactionStatusEnum.Committed and not TransactionStatusEnum.RolledBack)
+                    transaction.Commit();
+
                 return result;
             }
             catch (Exception)
             {
-                if (!transaction.IsRolledBack())
+                if (transaction.Status != TransactionStatusEnum.RolledBack)
                     transaction.RollBack();
                 throw;
             }
@@ -72,14 +75,14 @@
             Action<T> action,
             string name,
             T? transactionContext = null)
-            where T : class, ITransactionContext
+            where T : class, ITransactionContextWrapper
         {
             RunInTransactionGroup(action.ToFunc(), name, transactionContext);
         }
 
         /// <inheritdoc />
-        public void RunInTransactionGroup<T>(Action<T, ITransactionGroup> action, string name, T? context = default(T?))
-            where T : class, ITransactionContext
+        public void RunInTransactionGroup<T>(Action<T, ITransactionGroupWrapper> action, string name, T? context = default(T?))
+            where T : class, ITransactionContextWrapper
         {
             RunInTransactionGroup(action.ToFunc(), name, context);
         }
@@ -89,7 +92,7 @@
             Func<TContext, TRes> func,
             string name,
             TContext? context = null)
-            where TContext : class, ITransactionContext
+            where TContext : class, ITransactionContextWrapper
         {
             var transactionContext = context ?? _transactionFactory.GetDefaultContext<TContext>();
             return RunInTransactionGroup((_, _) => func(transactionContext), name, transactionContext);
@@ -97,10 +100,10 @@
 
         /// <inheritdoc />
         public TRes RunInTransactionGroup<TContext, TRes>(
-            Func<TContext, ITransactionGroup, TRes> func,
+            Func<TContext, ITransactionGroupWrapper, TRes> func,
             string name,
             TContext? context = null)
-            where TContext : class, ITransactionContext
+            where TContext : class, ITransactionContextWrapper
         {
             var transactionContext = _transactionFactory.GetDefaultContext<TContext>();
             using var transactionGroup =
@@ -109,12 +112,16 @@
             {
                 transactionGroup.Start();
                 var result = func.Invoke(transactionContext, transactionGroup);
-                transactionGroup.Assimilate();
+
+                if (transactionGroup.Status is not TransactionStatusEnum.Committed and
+                    not TransactionStatusEnum.RolledBack)
+                    transactionGroup.Assimilate();
+
                 return result;
             }
             catch (Exception)
             {
-                if (!transactionGroup.IsRolledBack())
+                if (transactionGroup.Status != TransactionStatusEnum.RolledBack)
                     transactionGroup.RollBack();
                 throw;
             }

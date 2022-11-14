@@ -59,5 +59,11 @@
         /// <inheritdoc />
         public override CellFormatStyle GetComposedFormat() =>
             Format.Collect(Row.Format.Collect(Column.GetComposedFormat()));
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return Content.ToString();
+        }
     }
 }

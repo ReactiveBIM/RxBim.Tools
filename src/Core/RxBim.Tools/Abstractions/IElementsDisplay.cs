@@ -6,22 +6,20 @@
     /// <summary>
     /// Object display service.
     /// </summary>
-    /// <typeparam name="T">Object identifier type.</typeparam>
     [PublicAPI]
-    public interface IElementsDisplay<in T>
-        where T : struct
+    public interface IElementsDisplay
     {
         /// <summary>
         /// Makes the objects selected.
         /// </summary>
         /// <param name="ids">List of object identifiers.</param>
-        void SetSelectedElements(IEnumerable<T> ids);
+        void SetSelectedElements(IEnumerable<IObjectIdWrapper> ids);
 
         /// <summary>
         /// Makes an object selected.
         /// </summary>
         /// <param name="id">Object identifier.</param>
-        void SetSelectedElement(T id);
+        void SetSelectedElement(IObjectIdWrapper id);
 
         /// <summary>
         /// Resets the current selection of objects.
@@ -35,6 +33,6 @@
         /// <param name="zoomFactor">
         /// Factor by which to zoom in or out. Values greater than 1 zooms in, less than 1 zooms out.
         /// </param>
-        void Zoom(T id, double zoomFactor = 0.25);
+        void Zoom(IObjectIdWrapper id, double zoomFactor = 0.25);
     }
 }
