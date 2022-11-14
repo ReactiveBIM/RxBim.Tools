@@ -1,11 +1,7 @@
 ﻿namespace RxBim.Tools.Revit
 {
-    using Abstractions;
-    using Collectors;
     using Di;
     using JetBrains.Annotations;
-    using Models;
-    using Services;
 
     /// <summary>
     /// Extensions for <see cref="IContainer"/>.
@@ -17,14 +13,14 @@
         /// Adds Revit services to the container.
         /// </summary>
         /// <param name="container"><see cref="IContainer"/> object.</param>
-        public static IContainer AddRevitHelpers(this IContainer container)
+        public static IContainer AddRevitTools(this IContainer container)
         {
             return container.AddSingleton<IDocumentsCollector, DocumentsCollector>()
-                .AddSingleton<ISheetsCollector, SheetsCollector>()
+                .AddSingleton<IDefinitionFilesCollector, DefinitionFilesCollector>()
                 .AddSingleton<IElementsDisplay, ElementsDisplayService>()
                 .AddSingleton<ISharedParameterService, SharedParameterService>()
-                .AddSingleton<IElementsCollector, ScopedElementsCollector>()
-                .AddSingleton<IScopedElementsCollector, ScopedElementsCollector>()
+                .AddSingleton<IElementsCollector, ElementsCollector>()
+                .AddSingleton<IPickElementsService, PickElementsService>()
                 .AddSingleton<ITransactionContextService<IDocumentWrapper>, DocumentContextService>()
                 .AddSingleton<ITransactionContextService<ITransactionContextWrapper>, DocumentContextService>()
                 .AddTransactionServices<RevitTransactionFactory>()

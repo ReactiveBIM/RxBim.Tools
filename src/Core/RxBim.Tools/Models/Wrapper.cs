@@ -1,34 +1,33 @@
-﻿namespace RxBim.Tools
+﻿namespace RxBim.Tools;
+
+using System;
+using JetBrains.Annotations;
+
+/// <summary>
+/// <see cref="IWrapper"/> realisation.
+/// </summary>
+[PublicAPI]
+public abstract class Wrapper<T> : IWrapper
 {
-    using System;
-    using JetBrains.Annotations;
-
     /// <summary>
-    /// <see cref="IWrapper"/> realisation.
+    /// Initializes a new instance of the <see cref="Wrapper{T}"/> class.
     /// </summary>
-    [PublicAPI]
-    public abstract class Wrapper<T> : IWrapper
+    /// <param name="wrappedObject">Wrapped object.</param>
+    protected Wrapper(T wrappedObject)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Wrapper{T}"/> class.
-        /// </summary>
-        /// <param name="wrappedObject">Wrapped object.</param>
-        protected Wrapper(T wrappedObject)
-        {
-            Object = wrappedObject;
-        }
+        Object = wrappedObject;
+    }
+    
+    /// <summary>
+    /// Wrapped object.
+    /// </summary>
+    public T Object { get; }
 
-        /// <summary>
-        /// Wrapped object.
-        /// </summary>
-        public T Object { get; }
-
-        /// <inheritdoc />
-        public virtual TWrap Unwrap<TWrap>()
-        {
-            return Object is TWrap obj
-                ? obj
-                : throw new InvalidCastException($"Can't cast wrapped object {typeof(T)} to {typeof(TWrap)}");
-        }
+    /// <inheritdoc />
+    public TWrap Unwrap<TWrap>()
+    {
+        return Object is TWrap obj
+            ? obj
+            : throw new InvalidCastException($"Can't cast wrapped object {typeof(T)} to {typeof(TWrap)}.");
     }
 }

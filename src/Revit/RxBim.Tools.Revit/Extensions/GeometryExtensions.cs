@@ -1,4 +1,4 @@
-﻿namespace RxBim.Tools.Revit.Extensions
+﻿namespace RxBim.Tools.Revit
 {
     using System;
     using System.Collections.Generic;

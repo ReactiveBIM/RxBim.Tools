@@ -29,14 +29,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.csproj", "{E2EC9FDA-2F0E-4BD1-8F63-3787605ED60C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Command.TableBuilder.Autocad.Sample", "samples\RxBim.Command.TableBuilder.Autocad.Sample\RxBim.Command.TableBuilder.Autocad.Sample.csproj", "{BD814946-EDC4-45DC-AE70-57831679B706}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.TableBuilder.Autocad.Sample", "samples\RxBim.Tools.TableBuilder.Autocad.Sample\RxBim.Tools.TableBuilder.Autocad.Sample.csproj", "{BD814946-EDC4-45DC-AE70-57831679B706}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{EA1ADE6F-F986-4CF3-A953-5B3C25A5C3F0}"
 ProjectSection(SolutionItems) = preProject
 	samples\Directory.Build.Props = samples\Directory.Build.Props
 EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Command.TableBuilder.Revit.Sample", "samples\RxBim.Command.TableBuilder.Revit.Sample\RxBim.Command.TableBuilder.Revit.Sample.csproj", "{004DDE18-43BF-4D97-A5A6-8D4751E40B6C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.TableBuilder.Revit.Sample", "samples\RxBim.Tools.TableBuilder.Revit.Sample\RxBim.Tools.TableBuilder.Revit.Sample.csproj", "{004DDE18-43BF-4D97-A5A6-8D4751E40B6C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.TableBuilder.Excel.Tests", "tests\RxBim.Tools.TableBuilder.Excel.Tests\RxBim.Tools.TableBuilder.Excel.Tests.csproj", "{24FBE399-C806-4CB6-98DB-C71712B1C7B5}"
 EndProject
@@ -76,6 +76,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools", "src\Core\RxBim.Tools\RxBim.Tools.csproj", "{49AF6550-45C6-4CE6-9D0B-799A9A79FEC6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.TableBuilder", "src\Core\RxBim.Tools.TableBuilder\RxBim.Tools.TableBuilder.csproj", "{2B075800-69C0-458B-AE76-3E46689B687F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.Revit.TestablePlugin.Sample", "samples\RxBim.Tools.Revit.TestablePlugin.Sample\RxBim.Tools.Revit.TestablePlugin.Sample.csproj", "{BEDE88A0-24C6-4F18-A6E9-77E730E960AD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.Autocad.Tests", "tests\RxBim.Tools.Autocad.Tests\RxBim.Tools.Autocad.Tests.csproj", "{88D7E075-7346-4274-8BB5-5B79E6312775}"
 EndProject
@@ -147,6 +149,10 @@ Global
 		{2B075800-69C0-458B-AE76-3E46689B687F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B075800-69C0-458B-AE76-3E46689B687F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B075800-69C0-458B-AE76-3E46689B687F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEDE88A0-24C6-4F18-A6E9-77E730E960AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEDE88A0-24C6-4F18-A6E9-77E730E960AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEDE88A0-24C6-4F18-A6E9-77E730E960AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEDE88A0-24C6-4F18-A6E9-77E730E960AD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{88D7E075-7346-4274-8BB5-5B79E6312775}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{88D7E075-7346-4274-8BB5-5B79E6312775}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88D7E075-7346-4274-8BB5-5B79E6312775}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -175,6 +181,7 @@ Global
 		{5FDD1C3F-41CC-488C-886A-22D5FEBBA1CD} = {5339A0F1-1884-4682-BFD2-DE050B2E5D69}
 		{49AF6550-45C6-4CE6-9D0B-799A9A79FEC6} = {5FDD1C3F-41CC-488C-886A-22D5FEBBA1CD}
 		{2B075800-69C0-458B-AE76-3E46689B687F} = {5FDD1C3F-41CC-488C-886A-22D5FEBBA1CD}
+		{BEDE88A0-24C6-4F18-A6E9-77E730E960AD} = {EA1ADE6F-F986-4CF3-A953-5B3C25A5C3F0}
 		{88D7E075-7346-4274-8BB5-5B79E6312775} = {1B8A8578-7C3C-425C-B769-9E097411094F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

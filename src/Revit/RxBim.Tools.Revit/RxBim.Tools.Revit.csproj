@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="CSharpFunctionalExtensions" Version="2.34.3" />
         <PackageReference Include="RevitTask" Version="3.0.0" />
     </ItemGroup>
 
@@ -18,12 +17,12 @@
 
     <ItemGroup>
         <AssemblyAttribute Include="System.Windows.Markup.XmlnsPrefix">
-             <_Parameter1>https://bimteam.ru/RxBim/revit/abstractions</_Parameter1>
-            <_Parameter2>ra</_Parameter2>
+             <_Parameter1>https://bimteam.ru/RxBim/tools/revit</_Parameter1>
+            <_Parameter2>rxtr</_Parameter2>
         </AssemblyAttribute>
         <AssemblyAttribute Include="System.Windows.Markup.XmlnsDefinition">
-             <_Parameter1>https://bimteam.ru/RxBim/revit/abstractions</_Parameter1>
-             <_Parameter2>RxBim.Tools.Revit.Abstractions</_Parameter2>
+             <_Parameter1>https://bimteam.ru/RxBim/tools/revit</_Parameter1>
+             <_Parameter2>RxBim.Tools.Revit</_Parameter2>
         </AssemblyAttribute>
     </ItemGroup>
 

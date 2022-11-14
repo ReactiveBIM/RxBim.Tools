@@ -1,4 +1,4 @@
-﻿namespace RxBim.Tools.Revit.Extensions
+﻿namespace RxBim.Tools.Revit
 {
     using System.Linq;
     using Autodesk.Revit.DB;

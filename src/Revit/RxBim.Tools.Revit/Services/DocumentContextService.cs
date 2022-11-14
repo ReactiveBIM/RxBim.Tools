@@ -1,10 +1,7 @@
-﻿namespace RxBim.Tools.Revit.Services
+﻿namespace RxBim.Tools.Revit
 {
-    using Abstractions;
     using Autodesk.Revit.UI;
-    using Extensions;
     using JetBrains.Annotations;
-    using Models;
 
     /// <summary>
     /// The service for <see cref="DocumentWrapper"/>.

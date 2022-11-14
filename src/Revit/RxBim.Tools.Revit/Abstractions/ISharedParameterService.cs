@@ -1,109 +1,94 @@
-﻿namespace RxBim.Tools.Revit.Abstractions
+﻿namespace RxBim.Tools.Revit
 {
-    using Autodesk.Revit.DB;
-    using CSharpFunctionalExtensions;
-    using Models;
+    using System.Collections.Generic;
+    using JetBrains.Annotations;
 
     /// <summary>
-    /// Сервис по работе с общими параметрами
+    /// Shared parameters service.
     /// </summary>
+    [PublicAPI]
     public interface ISharedParameterService
     {
         /// <summary>
-        /// Добавление общего параметра из указанного ФОП в выбранный документ. Если параметр уже существует, то метод выйдет без
-        /// каких-либо действий над параметром. Проверка уже существующего параметра производится с учетом аргумента fullMatch.
-        /// Метод позволяет работать как в существующей транзакции, так и с созданием новой транзакции
+        /// Adds shared parameter from <see cref="IDefinitionFileWrapper"/>.
         /// </summary>
-        /// <remarks>Метод создает транзакцию</remarks>
-        /// <param name="definitionFile">ФОП</param>
-        /// <param name="sharedParameterInfo">Данные об общем параметре</param>
-        /// <param name="fullMatch">True - параметр ФОП должен совпасть со всеми заполненными
-        /// значениями sharedParameterInfo. False - параметр ищется только по имени
-        /// <para/>При поиске в ФОП, если задано true, происходит проверка по всем свойствам sharedParameterInfo, которые имеют значение
-        /// <para/>При поиске в текущем документе, если задано true, происходит проверка только по свойствам:
-        /// Имя, Guid, DataType. Если последние два имеют значение у sharedParameterInfo
-        /// </param>
-        /// <param name="useTransaction">Создавать транзакцию внутри метода</param>
-        /// <param name="document">Документ, в котором нужно добавить параметр.
-        /// при значении null параметр добавляется в текущий документ</param>
-        /// <returns>true - если параметр был добавлен</returns>
-        Result AddSharedParameter(
-            DefinitionFile definitionFile,
+        /// <remarks>If parameter already exists, returns true.
+        /// Verify exists parameter use <paramref name="fullMatch"/> argument.
+        /// Without transaction.</remarks>
+        /// <param name="definitionFile"><see cref="IDefinitionFileWrapper"/></param>
+        /// <param name="sharedParameterInfo"><see cref="SharedParameterInfo"/></param>
+        /// <param name="fullMatch">If true, find parameter by all required values from <see cref="SharedParameterDefinition"/>,
+        /// otherwise parameter find only by name.
+        /// (find in document only by <see cref="SharedParameterDefinition.ParameterName"/>,
+        /// <see cref="SharedParameterDefinition.Guid"/>
+        /// and <see cref="SharedParameterDefinition.DataType"/>)</param>
+        /// <param name="document"><see cref="IDocumentWrapper"/>.
+        /// If null, <see cref="IDocumentWrapper"/> gets from current document.</param>
+        /// <exception cref="NotSetCategoriesForBindParameterException">
+        /// Thrown if not set categories for bind parameter in <see cref="SharedParameterCreateData"/>.</exception>
+        /// <exception cref="ParameterNotFoundException">
+        /// Thrown if not found parameter in <paramref name="definitionFile"/>.</exception>
+        bool AddSharedParameter(
+            IDefinitionFileWrapper definitionFile,
             SharedParameterInfo sharedParameterInfo,
             bool fullMatch,
-            bool useTransaction = false,
-            Document? document = null);
+            IDocumentWrapper? document = null);
 
         /// <summary>
-        /// Метод добавляет общий параметр из указанного ФОП в выбранный документ,
-        /// дополняя привязки параметра категориями,
-        /// указанными в <paramref name="sharedParameterInfo"/>.
-        /// <see cref="SharedParameterCreateData.CategoriesForBind"/>.
-        /// Проверка на присутствие существующего параметра
-        /// производится с учетом аргумента fullMatch.
+        /// Adds shared parameter from <see cref="IDefinitionFileWrapper"/>,
+        /// or updates bindings for categories from <paramref name="sharedParameterInfo"/>
+        /// (<see cref="SharedParameterCreateData.CategoriesForBind"/>).
         /// </summary>
-        /// <remarks>Метод не создает транзакцию</remarks>
-        /// <param name="definitionFiles">Файлы общих параметров документа</param>
-        /// <param name="sharedParameterInfo">Данные об общем параметре</param>
-        /// <param name="fullMatch">True - параметр ФОП должен совпасть со всеми заполненными
-        /// значениями sharedParameterInfo. False - параметр ищется только по имени
-        /// <para/>При поиске в ФОП, если задано true, 
-        /// происходит проверка по всем свойствам sharedParameterInfo, 
-        /// которые имеют значение
-        /// <para/>При поиске в текущем документе,
-        /// если задано true, происходит проверка только по свойствам:
-        /// Имя, Guid, DataType. Если последние два имеют значение у sharedParameterInfo
-        /// </param>
-        /// <param name="isSavePastValues">Производит сохранение значений параметров элементов существующих привязанных категорий
-        /// и дальнейшую их установку после обновления биндинга.</param>
-        /// <param name="document">Документ, в котором нужно добавить параметр.
-        /// при значении null параметр добавляется в текущий документ</param>
-        /// <returns>true - если параметр был добавлен или обновлён</returns>
-        Result AddOrUpdateParameter(
-            DefinitionFile[] definitionFiles,
+        /// <remarks>Verify exists parameter use <paramref name="fullMatch"/> argument.
+        /// Without transaction.</remarks>
+        /// <param name="definitionFiles">Collection of <see cref="IDefinitionFileWrapper"/></param>
+        /// <param name="sharedParameterInfo"><see cref="SharedParameterInfo"/></param>
+        /// <param name="fullMatch">If true, find parameter by all required values from <see cref="SharedParameterDefinition"/>,
+        /// otherwise parameter find only by name.
+        /// (find in document only by <see cref="SharedParameterDefinition.ParameterName"/>,
+        /// <see cref="SharedParameterDefinition.Guid"/>
+        /// and <see cref="SharedParameterDefinition.DataType"/>)</param>
+        /// <param name="isSavePastValues">If true,
+        /// saves the values of the parameters of the elements of the existing linked categories
+        /// and their further setting after updating the binding.</param>
+        /// <param name="document"><see cref="IDocumentWrapper"/>.
+        /// If null, <see cref="IDefinitionFileWrapper"/> gets from current document.</param>
+        /// <exception cref="ParameterNotFoundException">
+        /// Thrown if not found parameter in any <paramref name="definitionFiles"/>.</exception>
+        /// <exception cref="MultipleParameterException">
+        /// Thrown if found several parameters in <paramref name="definitionFiles"/>.</exception>
+        /// <exception cref="NotSetCategoriesForBindParameterException">
+        /// Thrown if not set categories for bind parameter in <see cref="SharedParameterCreateData"/>.</exception>
+        bool AddOrUpdateParameter(
+            IEnumerable<IDefinitionFileWrapper> definitionFiles,
             SharedParameterInfo sharedParameterInfo,
             bool fullMatch,
             bool isSavePastValues = false,
-            Document? document = null);
+            IDocumentWrapper? document = null);
 
         /// <summary>
-        /// Проверка параметра, представленного экземпляром <see cref="SharedParameterElement"/>, на существование
-        /// в файле общих параметров
+        /// Exists parameter in <see cref="IDefinitionFileWrapper"/>.
         /// </summary>
-        /// <param name="definitionFile">ФОП</param>
-        /// <param name="sharedParameterInfo">Данные об общем параметре</param>
-        /// <param name="fullMatch">True - параметр ФОП должен совпасть со всеми заполненными
-        /// значениями sharedParameterInfo. False - параметр ищется только по имени</param>
-        Result ParameterExistsInDefinitionFile(
-            DefinitionFile definitionFile,
-            SharedParameterInfo sharedParameterInfo,
-            bool fullMatch);
+        /// <param name="definition"><see cref="SharedParameterDefinition"/></param>
+        /// <param name="fullMatch">If true, find parameter by all required values from <see cref="SharedParameterDefinition"/>,
+        /// otherwise parameter find only by name.</param>
+        /// <param name="definitionFile"><see cref="IDefinitionFileWrapper"/></param>
+        bool ExistsParameterInDefinitionFile(
+            SharedParameterDefinition definition,
+            bool fullMatch,
+            IDefinitionFileWrapper definitionFile);
 
         /// <summary>
-        /// Возвращает <see cref="DefinitionFile"/>, подключенный в выбранном документе
+        /// Exists parameter in <see cref="IDocumentWrapper"/>.
         /// </summary>
-        /// <param name="document">Документ, из которого требуется получить ФОП.
-        /// Если задано null, то ФОП будет браться из текущего документа</param>
-        Result<DefinitionFile> GetDefinitionFile(Document? document = null);
-
-        /// <summary>
-        /// Считывает файлы общих параметров используя информацию
-        /// из <see cref="SharedParameterFileSource"/>
-        /// </summary>
-        /// <param name="fileSource"><see cref="SharedParameterFileSource"/></param>
-        /// <param name="document">документ для считывания файлов
-        /// Если задано null, то ФОП будут браться из текущего документа</param>
-        DefinitionFile[] TryGetDefinitionFiles(SharedParameterFileSource fileSource, Document? document = null);
-
-        /// <summary>
-        /// Проверяет существование параметра в выбранном документе
-        /// </summary>
-        /// <param name="definition">Данные об общем параметре</param>
-        /// <param name="fullMatch">True - параметр должен совпасть со всеми заполненными значениями
-        /// sharedParameterInfo, доступными для проверки через SharedParameterElement (Имя, Guid, DataType).
-        /// False - параметр ищется только по имени</param>
-        /// <param name="document">документ для проверки.
-        /// Если задано null, то параметр проверяется в текущем документе</param>
-        bool ParameterExistsInDocument(SharedParameterDefinition definition, bool fullMatch, Document? document = null);
+        /// <param name="definition"><see cref="SharedParameterDefinition"/></param>
+        /// <param name="fullMatch">If true, find parameter by all required values from <see cref="SharedParameterDefinition"/>,
+        /// otherwise parameter find only by name.</param>
+        /// <param name="document"><see cref="IDocumentWrapper"/>.
+        /// If null, <see cref="IDefinitionFileWrapper"/> gets from current document.</param>
+        bool ExistsParameterInDocument(
+            SharedParameterDefinition definition,
+            bool fullMatch,
+            IDocumentWrapper? document = null);
     }
 }

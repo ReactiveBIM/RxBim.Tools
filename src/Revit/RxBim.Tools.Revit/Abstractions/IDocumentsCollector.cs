@@ -1,22 +1,23 @@
-﻿namespace RxBim.Tools.Revit.Abstractions
+﻿namespace RxBim.Tools.Revit
 {
     using System.Collections.Generic;
 
     /// <summary>
-    /// Интерфейс коллектора документов
+    /// Collector of <see cref="IDocumentWrapper"/>.
     /// </summary>
     public interface IDocumentsCollector
     {
         /// <summary>
-        /// Получить заголовок основного документа
+        /// Gets current opened <see cref="IDocumentWrapper"/>.
         /// </summary>
-        /// <returns></returns>
-        string GetMainDocumentTitle();
+        IDocumentWrapper GetCurrentDocument();
 
         /// <summary>
-        /// Получить заголовка всех документов, связанны с заданным (и его самого)
+        /// Gets all <see cref="IDocumentWrapper"/> 
         /// </summary>
-        /// <returns>Заголовки документов</returns>
-        IEnumerable<string> GetDocumentsTitles();
+        /// <param name="document">Main <see cref="IDocumentWrapper"/>.
+        /// If null, documents takes from current document.</param>
+        /// <remarks>Returns <see cref="IDocumentWrapper"/> from linked documents and insert main document.</remarks>
+        IEnumerable<IDocumentWrapper> GetAllDocuments(IDocumentWrapper? document = null);
     }
 }

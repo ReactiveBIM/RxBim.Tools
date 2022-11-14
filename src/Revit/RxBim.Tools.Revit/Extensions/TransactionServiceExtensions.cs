@@ -1,7 +1,6 @@
-﻿namespace RxBim.Tools.Revit.Extensions
+﻿namespace RxBim.Tools.Revit
 {
     using System;
-    using Abstractions;
 
     /// <summary>
     /// Extensions for <see cref="TransactionService"/>.

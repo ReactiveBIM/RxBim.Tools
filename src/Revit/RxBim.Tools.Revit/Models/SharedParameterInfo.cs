@@ -1,27 +1,43 @@
-﻿namespace RxBim.Tools.Revit.Models
+﻿namespace RxBim.Tools.Revit
 {
     using System;
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Информация об общем параметре
+    /// Shared parameter information.
     /// </summary>
     [PublicAPI]
-    public record SharedParameterInfo(
-        SharedParameterDefinition Definition,
-        SharedParameterCreateData CreateData)
+    public class SharedParameterInfo
     {
         /// <summary>
-        /// ctor
+        /// <see cref="SharedParameterDefinition"/>
         /// </summary>
-        /// <summary>
-        /// Данные общего параметра, описывающие его в ФОП
-        /// </summary>
-        public SharedParameterDefinition Definition { get; } = Definition ?? throw new NullReferenceException(nameof(Definition) + " not defined");
+        public SharedParameterDefinition Definition { get; } = new();
 
         /// <summary>
-        /// Данные для создания общего параметра в модели
+        /// <see cref="SharedParameterCreateData"/>
         /// </summary>
-        public SharedParameterCreateData CreateData { get; } = CreateData ?? throw new NullReferenceException(nameof(CreateData) + " not defined");
+        public SharedParameterCreateData CreateData { get; } = new();
+
+        /// <summary>
+        /// Sets <see cref="SharedParameterDefinition"/>.
+        /// </summary>
+        /// <param name="definitionAction"><see cref="SharedParameterDefinition"/></param>
+        public SharedParameterInfo SetDefinition(
+            Action<SharedParameterDefinition> definitionAction)
+        {
+            definitionAction(Definition);
+            return this;
+        }
+
+        /// <summary>
+        /// Sets <see cref="SharedParameterCreateData"/>.
+        /// </summary>
+        /// <param name="createDataAction"><see cref="SharedParameterCreateData"/></param>
+        public SharedParameterInfo SetCreateData(Action<SharedParameterCreateData> createDataAction)
+        {
+            createDataAction(CreateData);
+            return this;
+        }
     }
 }

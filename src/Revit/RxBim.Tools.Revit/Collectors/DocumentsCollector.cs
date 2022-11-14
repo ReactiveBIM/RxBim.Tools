@@ -1,58 +1,56 @@
-﻿namespace RxBim.Tools.Revit.Collectors
+﻿namespace RxBim.Tools.Revit
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Abstractions;
     using Autodesk.Revit.DB;
     using Autodesk.Revit.UI;
     using JetBrains.Annotations;
 
-    /// <summary>
-    /// Коллектор документов
-    /// </summary>
+    /// <inheritdoc />
     [UsedImplicitly]
     internal class DocumentsCollector : IDocumentsCollector
     {
         private readonly UIApplication _uiApplication;
 
         /// <summary>
-        /// ctor
+        /// Initializes a new instance of the <see cref="DocumentsCollector"/> class.
         /// </summary>
-        /// <param name="uiApplication">Current <see cref="UIApplication"/></param>
+        /// <param name="uiApplication"><see cref="UIApplication"/></param>
         public DocumentsCollector(UIApplication uiApplication)
         {
             _uiApplication = uiApplication;
         }
+        
+        /// <inheritdoc/>
+        public IDocumentWrapper GetCurrentDocument()
+        {
+            return _uiApplication.ActiveUIDocument.Document.Wrap();
+        }
 
         /// <inheritdoc/>
-        public IEnumerable<string> GetDocumentsTitles()
+        public IEnumerable<IDocumentWrapper> GetAllDocuments(
+            IDocumentWrapper? document = null)
         {
-            var doc = _uiApplication.ActiveUIDocument.Document;
-            var titles = new FilteredElementCollector(doc)
-                .OfClass(typeof(RevitLinkInstance))
-                .Cast<RevitLinkInstance>()
-                .Where(l => IsNotNestedLib(l))
+            document ??= GetCurrentDocument();
+            var doc = document.Unwrap<Document>()!;
+            var docWrappers = new FilteredElementCollector(doc)
+                .WhereElementIsElementType()
+                .OfCategory(BuiltInCategory.OST_RvtLinks)
+                .OfClass<RevitLinkInstance>()
+                .Where(l => IsNotNestedLib(l, doc))
                 .Select(l => l.GetLinkDocument())
-                .Where(d => d != null)
-                .Select(d => d.Title)
+                .Where(d => d is not null)
+                .Select(d => d.Wrap())
                 .ToList();
-            titles.Insert(0, doc.Title);
-
-            return titles;
+            docWrappers.Insert(0, document);
+            return docWrappers;
         }
 
-        /// <inheritdoc/>
-        public string GetMainDocumentTitle()
+        private bool IsNotNestedLib(RevitLinkInstance linkInstance, Document document)
         {
-            return _uiApplication.ActiveUIDocument.Document.Title;
-        }
-
-        private bool IsNotNestedLib(RevitLinkInstance linkInstance)
-        {
-            var linkType = (RevitLinkType)_uiApplication.ActiveUIDocument.Document
-                .GetElement(linkInstance.GetTypeId());
+            var linkType = (RevitLinkType)document.GetElement(linkInstance.GetTypeId());
             
-            return linkType.GetLinkedFileStatus() == LinkedFileStatus.Loaded
+            return linkType.GetLinkedFileStatus() is LinkedFileStatus.Loaded
                    && !linkType.IsNestedLink;
         }
     }

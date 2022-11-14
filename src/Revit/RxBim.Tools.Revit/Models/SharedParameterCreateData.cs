@@ -1,33 +1,73 @@
-﻿namespace RxBim.Tools.Revit.Models
+﻿namespace RxBim.Tools.Revit
 {
     using System.Collections.Generic;
+    using System.Linq;
     using Autodesk.Revit.DB;
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Данные для создания общего параметра в модели
+    /// Data for creating shared parameter in model.
     /// </summary>
     [PublicAPI]
     public class SharedParameterCreateData
     {
         /// <summary>
-        /// Коллекция категорий, представленных типом <see cref="BuiltInCategory"/>, для привязки параметра
+        /// Collection of <see cref="BuiltInCategory"/>, for parameter binding.
         /// </summary>
-        public List<BuiltInCategory>? CategoriesForBind { get; set; }
+        public IReadOnlyList<BuiltInCategory> CategoriesForBind { get; private set; } = new List<BuiltInCategory>();
         
         /// <summary>
-        /// Установить для параметров свойство "Значения могут меняться по экземплярам групп"
+        /// Allow "Values can vary by group instance" for parameter.
         /// </summary>
-        public bool AllowVaryBetweenGroups { get; set; }
+        public bool AllowVaryBetweenGroups { get; private set; }
 
         /// <summary>
-        /// True - параметр создается для экземпляра, False - для типа
+        /// Is create parameter for instance.
         /// </summary>
-        public bool IsCreateForInstance { get; set; } = true;
+        /// <remarks>If true, parameter create for instance, otherwise create for symbol.</remarks>
+        public bool IsCreateForInstance { get; private set; } = true;
 
         /// <summary>
-        /// Группа, в которую требуется добавить общие параметры
+        /// <see cref="BuiltInParameterGroup"/> in which add shared parameter.
         /// </summary>
-        public BuiltInParameterGroup ParameterGroup { get; set; } = BuiltInParameterGroup.INVALID;
+        public BuiltInParameterGroup ParameterGroup { get; private set; } = BuiltInParameterGroup.INVALID;
+
+        /// <summary>
+        /// Sets collection of <see cref="BuiltInCategory"/>, for parameter binding.
+        /// </summary>
+        /// <param name="categoriesForBind">Collection of <see cref="BuiltInCategory"/>, for parameter binding.</param>
+        public SharedParameterCreateData SetCategoriesForBind(IEnumerable<BuiltInCategory> categoriesForBind)
+        {
+            CategoriesForBind = categoriesForBind.ToList();
+            return this;
+        }
+
+        /// <summary>
+        /// Enables "Values can vary by group instance" for parameter.
+        /// </summary>
+        public SharedParameterCreateData EnableVaryBetweenGroups()
+        {
+            AllowVaryBetweenGroups = true;
+            return this;
+        }
+
+        /// <summary>
+        /// Enables create parameter for instance.
+        /// </summary>
+        public SharedParameterCreateData EnableCreateForInstance()
+        {
+            IsCreateForInstance = true;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets <see cref="BuiltInParameterGroup"/> in which add shared parameter.
+        /// </summary>
+        /// <param name="parameterGroup"><see cref="BuiltInParameterGroup"/> in which add shared parameter.</param>
+        public SharedParameterCreateData SetParameterGroup(BuiltInParameterGroup parameterGroup)
+        {
+            ParameterGroup = parameterGroup;
+            return this;
+        }
     }
 }

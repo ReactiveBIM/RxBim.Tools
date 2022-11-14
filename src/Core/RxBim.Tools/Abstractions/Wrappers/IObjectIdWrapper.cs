@@ -1,9 +1,8 @@
-﻿namespace RxBim.Tools
+﻿namespace RxBim.Tools;
+
+/// <summary>
+/// Wrapper for object Id.
+/// </summary>
+public interface IObjectIdWrapper : IWrapper
 {
-    /// <summary>
-    /// Identifier wrapper.
-    /// </summary>
-    public interface IObjectIdWrapper : IWrapper
-    {
-    }
 }
