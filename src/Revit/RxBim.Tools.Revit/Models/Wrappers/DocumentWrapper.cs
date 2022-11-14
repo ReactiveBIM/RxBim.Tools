@@ -25,7 +25,12 @@ public class DocumentWrapper
 
     /// <inheritdoc />
     public IViewWrapper ActiveView
-        => Object.ActiveView.Wrap();
+        => Object.ActiveView switch
+        {
+            ViewSheet viewSheet => viewSheet.Wrap(),
+            ViewSchedule viewSchedule => viewSchedule.Wrap(),
+            _ => Object.ActiveView.Wrap()
+        };
 
     /// <inheritdoc />
     public IEnumerable<IViewSheetWrapper> ViewSheets
