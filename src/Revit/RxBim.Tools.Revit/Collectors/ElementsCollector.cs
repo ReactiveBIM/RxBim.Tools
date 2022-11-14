@@ -94,7 +94,7 @@ public class ElementsCollector : IElementsCollector
         if (_selectedElementsIds.ContainsKey(Document.Title))
         {
             _elementsDisplay.SetSelectedElements(_selectedElementsIds[Document.Title]
-                .Select(e => e.IntegerValue)
+                .Select(e => e.Wrap())
                 .ToList());
         }
 

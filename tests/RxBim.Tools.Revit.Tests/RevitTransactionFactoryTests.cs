@@ -1,11 +1,9 @@
 ﻿namespace RxBim.Tools.Revit.Tests
 {
     using System;
-    using Abstractions;
     using Di;
     using FluentAssertions;
     using Moq;
-    using Services;
     using Xunit;
 
     public class RevitTransactionFactoryTests

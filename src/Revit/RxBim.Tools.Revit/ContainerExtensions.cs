@@ -15,15 +15,15 @@
         /// <param name="container"><see cref="IContainer"/> object.</param>
         public static IContainer AddRevitTools(this IContainer container)
         {
-            container.AddSingleton<IDocumentsCollector, DocumentsCollector>();
-                .AddSingleton<IDefinitionFilesCollector, DefinitionFilesCollector>();
-                .AddSingleton<IElementsDisplay, ElementsDisplayService>();
-                .AddSingleton<ISharedParameterService, SharedParameterService>();
-                .AddSingleton<IElementsCollector, ElementsCollector>();
-                .AddSingleton<IPickElementsService, PickElementsService>();
+            return container.AddSingleton<IDocumentsCollector, DocumentsCollector>()
+                .AddSingleton<IDefinitionFilesCollector, DefinitionFilesCollector>()
+                .AddSingleton<IElementsDisplay, ElementsDisplayService>()
+                .AddSingleton<ISharedParameterService, SharedParameterService>()
+                .AddSingleton<IElementsCollector, ElementsCollector>()
+                .AddSingleton<IPickElementsService, PickElementsService>()
                 .AddSingleton<ITransactionContextService<IDocumentWrapper>, DocumentContextService>()
                 .AddSingleton<ITransactionContextService<ITransactionContextWrapper>, DocumentContextService>()
-                .AddTransactionServices<RevitTransactionFactory>();
+                .AddTransactionServices<RevitTransactionFactory>()
                 .AddInstance(new RevitTask())
                 .AddToolsServices();
         }

@@ -7,7 +7,7 @@ using JetBrains.Annotations;
 /// Wrapper for Document type.
 /// </summary>
 [PublicAPI]
-public interface IDocumentWrapper : IWrapper
+public interface IDocumentWrapper : ITransactionContextWrapper
 {
     /// <summary>
     /// Document title.
