@@ -2,6 +2,8 @@
 {
     using Abstractions;
     using Autodesk.Revit.Attributes;
+    using Autodesk.Revit.UI;
+    using CSharpFunctionalExtensions;
     using RxBim.Command.Revit;
     using RxBim.Shared;
 
@@ -17,7 +19,8 @@
         public PluginResult ExecuteCommand(
             ICollapseSteelConsumptionStatementService collapseSteelConsumptionStatementService)
         {
-            collapseSteelConsumptionStatementService.Collapse();
+            collapseSteelConsumptionStatementService.Collapse()
+                .OnFailure(err => TaskDialog.Show("Error", err));
             return PluginResult.Succeeded;
         }
     }

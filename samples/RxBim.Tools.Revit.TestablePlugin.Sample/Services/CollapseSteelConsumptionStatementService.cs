@@ -40,7 +40,7 @@
 
             return Result.SuccessIf(
                 viewSchedule is not null && viewSchedule.Name.Contains(_pluginSettings.ScheduleName),
-                $"Open specification with name contains \"{_pluginSettings.ScheduleName}\"")
+                $"Open specification must contains \"{_pluginSettings.ScheduleName}\" in name")
                 .Map(() => FindCell(viewSchedule!.Definition))
                 .Ensure(
                     foundCell => foundCell.BorderCell is not 0,
