@@ -1,11 +1,12 @@
 ﻿namespace RxBim.Tools.TableBuilder;
 
+using Builders;
 using Styles;
 
 /// <summary>
 /// Builder for <see cref="CellContentMargins"/>.
 /// </summary>
-public class CellContentMarginsBuilder
+internal class CellContentMarginsBuilder : ICellContentMarginsBuilder
 {
     private readonly CellContentMargins _cellContentMargins;
 
@@ -18,37 +19,31 @@ public class CellContentMarginsBuilder
         _cellContentMargins = cellContentMargins;
     }
 
-    /// <summary>
-    /// Sets <see cref="CellFormatStyle.ContentMargins"/>.
-    /// </summary>
-    /// <param name="top">Top margin value.</param>
-    /// <param name="bottom">Bottom margin value.</param>
-    /// <param name="left">Left margin value.</param>
-    /// <param name="right">Right margin value.</param>
-    public CellContentMarginsBuilder SetContentMargins(
-        double? top = null,
-        double? bottom = null,
-        double? left = null,
-        double? right = null)
+    /// <inheritdoc/>
+    public ICellContentMarginsBuilder SetTopMargin(double? margin)
     {
-        _cellContentMargins.Top = top;
-        _cellContentMargins.Bottom = bottom;
-        _cellContentMargins.Left = left;
-        _cellContentMargins.Right = right;
-
+        _cellContentMargins.Top = margin;
         return this;
     }
 
-    /// <summary>
-    /// Sets <see cref="CellFormatStyle.ContentMargins"/>.
-    /// </summary>
-    /// <param name="marginsForAll">Margin value.</param>
-    public CellContentMarginsBuilder SetContentAllMargins(double? marginsForAll = null)
+    /// <inheritdoc/>
+    public ICellContentMarginsBuilder SetRightMargin(double? margin)
     {
-        _cellContentMargins.Top =
-            _cellContentMargins.Bottom =
-                _cellContentMargins.Left =
-                    _cellContentMargins.Right = marginsForAll;
+        _cellContentMargins.Right = margin;
+        return this;
+    }
+
+    /// <inheritdoc/>
+    public ICellContentMarginsBuilder SetBottomMargin(double? margin)
+    {
+        _cellContentMargins.Bottom = margin;
+        return this;
+    }
+
+    /// <inheritdoc/>
+    public ICellContentMarginsBuilder SetLeftMargin(double? margin)
+    {
+        _cellContentMargins.Left = margin;
         return this;
     }
 }

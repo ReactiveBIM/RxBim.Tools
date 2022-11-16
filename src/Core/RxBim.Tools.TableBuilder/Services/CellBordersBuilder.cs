@@ -1,11 +1,12 @@
 ﻿namespace RxBim.Tools.TableBuilder;
 
+using Builders;
 using Styles;
 
 /// <summary>
 /// Builder for <see cref="CellBorders"/>.
 /// </summary>
-public class CellBordersBuilder
+internal class CellBordersBuilder : ICellBordersBuilder
 {
     private readonly CellBorders _cellBorders;
 
@@ -18,36 +19,31 @@ public class CellBordersBuilder
         _cellBorders = cellBorders;
     }
 
-    /// <summary>
-    /// Sets <see cref="CellFormatStyle.Borders"/>.
-    /// </summary>
-    /// <param name="top">Top border type.</param>
-    /// <param name="bottom">Bottom border type.</param>
-    /// <param name="left">Left border type.</param>
-    /// <param name="right">Right border type.</param>
-    public CellBordersBuilder SetBorders(
-        CellBorderType? top = null,
-        CellBorderType? bottom = null,
-        CellBorderType? left = null,
-        CellBorderType? right = null)
+    /// <inheritdoc/>
+    public ICellBordersBuilder SetTopBorder(CellBorderType? cellBorderType)
     {
-        _cellBorders.Top = top;
-        _cellBorders.Bottom = bottom;
-        _cellBorders.Left = left;
-        _cellBorders.Right = right;
+        _cellBorders.Top = cellBorderType;
         return this;
     }
 
-    /// <summary>
-    /// Sets <see cref="CellFormatStyle.Borders"/>.
-    /// </summary>
-    /// <param name="typeForAll"><see cref="CellBorderType"/> value.</param>
-    public CellBordersBuilder SetAllBorders(CellBorderType? typeForAll)
+    /// <inheritdoc/>
+    public ICellBordersBuilder SetRightBorder(CellBorderType? cellBorderType)
     {
-        _cellBorders.Top =
-            _cellBorders.Bottom =
-                _cellBorders.Left =
-                    _cellBorders.Right = typeForAll;
+        _cellBorders.Right = cellBorderType;
+        return this;
+    }
+
+    /// <inheritdoc/>
+    public ICellBordersBuilder SetBottomBorder(CellBorderType? cellBorderType)
+    {
+        _cellBorders.Bottom = cellBorderType;
+        return this;
+    }
+
+    /// <inheritdoc/>
+    public ICellBordersBuilder SetLeftBorder(CellBorderType? cellBorderType)
+    {
+        _cellBorders.Left = cellBorderType;
         return this;
     }
 }

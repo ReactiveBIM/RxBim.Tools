@@ -3,6 +3,7 @@
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using Builders;
     using Content;
     using JetBrains.Annotations;
     using Styles;
@@ -174,7 +175,7 @@
         /// Sets format for the cell.
         /// </summary>
         /// <param name="action">Format building action.</param>
-        public CellBuilder SetFormat(Action<CellFormatStyleBuilder> action)
+        public CellBuilder SetFormat(Action<ICellFormatStyleBuilder> action)
         {
             SetToMergedArea(cell => action(new CellFormatStyleBuilder(cell.Format)));
             return this;
