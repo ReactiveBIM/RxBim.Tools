@@ -106,7 +106,7 @@
         /// <param name="document">документ для проверки.
         /// Если задано null, то параметр проверяется в текущем документе</param>
         bool ParameterExistsInDocument(SharedParameterDefinition definition, bool fullMatch, Document? document = null);
-        
+
         /// <summary>
         /// Проверяет существование параметра в выбранном документе
         /// </summary>
@@ -116,13 +116,14 @@
         /// False - параметр ищется только по имени</param>
         /// <param name="document">документ для проверки.
         /// Если задано null, то параметр проверяется в текущем документе</param>
-        /// <param name="sharedParameters">Коллекция <see cref="SharedParameterElement"/></param>
-        /// <param name="definition">Данные об общем параметре</param>
+        /// <param name="sharedParameters">Коллекция общих параметров <see cref="SharedParameterElement"/>. Если задано null,
+        /// получает общие параметры, доступные в проекте</param>
+        /// <param name="definitionFile">ФОП. Если задано null, берется ФОП из документа</param>
         Result ParameterExistsInDocument(
-            SharedParameterInfo? parameterInfo,
+            SharedParameterInfo parameterInfo,
             bool fullMatch,
             Document? document = null,
             IEnumerable<SharedParameterElement>? sharedParameters = null,
-            SharedParameterDefinition? definition = null);
+            DefinitionFile? definitionFile = null);
     }
 }

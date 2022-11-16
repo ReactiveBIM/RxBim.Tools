@@ -199,38 +199,34 @@
 
         /// <inheritdoc/>
         public Result ParameterExistsInDocument(
-            SharedParameterInfo? parameterInfo,
+            SharedParameterInfo parameterInfo,
             bool fullMatch,
             Document? document = null,
             IEnumerable<SharedParameterElement>? sharedParameters = null,
-            SharedParameterDefinition? definition = null)
+            DefinitionFile? definitionFile = null)
         {
             var doc = document ?? _uiApplication.ActiveUIDocument.Document;
-            var externalDefinition = GetSharedExternalDefinition(parameterInfo.Definition, false, GetDefinitionFile(doc).Value);
-            if (externalDefinition is null)
-                return Result.Failure($"Параметр {parameterInfo.Definition.ParameterName} не является актуальным (не соответствует ФОП)");
             var sharedParameter = (sharedParameters ?? new FilteredElementCollector(doc)
-                .OfClass(typeof(SharedParameterElement))
-                .Cast<SharedParameterElement>())
+                    .OfClass<SharedParameterElement>())
                 .FirstOrDefault(parameter =>
                     string.Equals(
                         parameterInfo.Definition.ParameterName,
                         parameter.Name,
                         StringComparison.InvariantCultureIgnoreCase));
             if (sharedParameter is null)
-                return Result.Failure($"Параметр {parameterInfo.Definition.ParameterName} отсутствует в проекте");
-            definition ??= new SharedParameterDefinition
-                {
-                    DataType = externalDefinition.ParameterType,
-                    Description = externalDefinition.Description,
-                    Guid = externalDefinition.GUID,
-                    OwnerGroupName = externalDefinition.OwnerGroup.Name,
-                    ParameterName = externalDefinition.Name,
-                    UserModifiable = externalDefinition.UserModifiable,
-                    Visible = externalDefinition.Visible
-                };
-            var sharedParameterInfo = new SharedParameterInfo(definition, parameterInfo.CreateData);
-            return IsFullMatch(doc, sharedParameterInfo, sharedParameter);
+                return Result.Failure($"{Environment.NewLine}Параметр {parameterInfo.Definition.ParameterName} отсутствует в проекте");
+
+            if (!fullMatch)
+                return Result.Success();
+
+            var externalDefinition = GetSharedExternalDefinition(parameterInfo.Definition, false, definitionFile ?? GetDefinitionFile(doc).Value);
+            if (externalDefinition is null)
+                return Result.Failure($"{Environment.NewLine}Параметр {parameterInfo.Definition.ParameterName} не является актуальным (не соответствует ФОП)");
+
+            parameterInfo.Definition.DataType ??= externalDefinition.ParameterType;
+            parameterInfo.Definition.Guid ??= externalDefinition.GUID;
+
+            return IsFullMatch(doc, parameterInfo, sharedParameter);
         }
 
         /// <inheritdoc />
@@ -429,36 +425,43 @@
             SharedParameterInfo sharedParameterInfo,
             SharedParameterElement sharedParameter)
         {
-            var missingCategories = new List<BuiltInCategory>();
+            var binding = doc.ParameterBindings.get_Item(sharedParameter.GetDefinition());
+
+            var missingCategories = new List<string>();
+            var builtInCategories = sharedParameterInfo.CreateData.CategoriesForBind;
+            if (builtInCategories is not null)
+            {
+                var existingCategories = doc.Settings.Categories.OfType<Category>()
+                    .Where(c => builtInCategories.Contains((BuiltInCategory)c.Id.IntegerValue))
+                    .ToDictionary(c => (BuiltInCategory)c.Id.IntegerValue, c => c);
+
+                var categories = ((ElementBinding)binding).Categories.OfType<Category>()
+                    .ToDictionary(i => (BuiltInCategory)i.Id.IntegerValue, i => i);
+
+                foreach (var validCategory in existingCategories)
+                {
+                    if (!categories.ContainsKey(validCategory.Key))
+                        missingCategories.Add(validCategory.Value.Name);
+                }
+            }
+
             var results = new List<Result>()
             {
                 Result.SuccessIf(
                     IsFullMatch(sharedParameterInfo.Definition, sharedParameter),
-                    $"Параметр {sharedParameter.Name} не является актуальным (не соответствует ФОП)"),
+                    $"{Environment.NewLine}Параметр {sharedParameter.Name} не является актуальным (не соответствует ФОП)"),
                 Result.SuccessIf(
                     () => sharedParameter.GetDefinition().VariesAcrossGroups ==
                           sharedParameterInfo.CreateData.AllowVaryBetweenGroups,
-                    $"Изменение значения параметра {sharedParameter.Name} по экземплярам группы не соответствуе заданному поведению"),
-                Result.SuccessIf(() =>
-                    {
-                        var categories = sharedParameterInfo.CreateData.CategoriesForBind;
-                        if (categories is null)
-                            return true;
-                        missingCategories = categories.Where(
-                            c => Category.GetCategory(doc, c) is null).ToList();
-                        return missingCategories.Any();
-                    },
-                    $"В параметре {sharedParameter.Name} отсутствуют следующие категории: {string.Join("; ", missingCategories)}"),
+                    $"{Environment.NewLine}Изменение значения параметра {sharedParameter.Name} по экземплярам группы не соответствуе заданному поведению"),
                 Result.SuccessIf(
-                    () =>
-                {
-                    var parameterBindings = doc.ParameterBindings;
-                    var binding = parameterBindings.get_Item(sharedParameter.GetDefinition());
-                    return sharedParameterInfo.CreateData.IsCreateForInstance
+                    () => !missingCategories.Any(),
+                    $"{Environment.NewLine}В параметре {sharedParameter.Name} отсутствуют следующие категории: {string.Join("; ", missingCategories)}"),
+                Result.SuccessIf(
+                    () => sharedParameterInfo.CreateData.IsCreateForInstance
                         ? binding is InstanceBinding
-                        : binding is TypeBinding;
-                },
-                    $"Параметр {sharedParameter.Name} не является заданным типом параметра (параметром экземпляра или параметром типа)")
+                        : binding is TypeBinding,
+                    $"{Environment.NewLine}Параметр {sharedParameter.Name} не является заданным типом параметра (параметром экземпляра или параметром типа)")
             };
             return Result.Combine(results);
         }
