@@ -21,8 +21,9 @@
 
             var data = GetTestData(assert);
 
-            Table result = new TableBuilder().SetWidth(100)
-                .AddRowsFromList(data, 0, 0, p => p.Prop1, p => p.Prop2);
+            var result = new TableBuilder().SetWidth(100)
+                .AddRowsFromList(data, 0, 0, p => p.Prop1, p => p.Prop2)
+                .Build();
 
             result.Rows.Count().Should().Be(assert);
             result.Columns.Count().Should().Be(2);
@@ -34,8 +35,9 @@
         {
             const int assert = 10;
             var data = GetTestData(assert);
-            Table result = new TableBuilder().SetWidth(100)
-                .AddColumnsFromList(data, 0, 0, p => p.Prop1, p => p.Prop2);
+            var result = new TableBuilder().SetWidth(100)
+                .AddColumnsFromList(data, 0, 0, p => p.Prop1, p => p.Prop2)
+                .Build();
             result.Rows.Count().Should().Be(2);
             result.Columns.Count().Should().Be(assert);
         }
@@ -46,8 +48,9 @@
         {
             const int assert = 10;
             var data = GetTestData(assert);
-            Table table = new TableBuilder().SetWidth(100)
-                .AddRowsFromList(data, 1, 1, p => p.Prop1, p => p.Prop2);
+            var table = new TableBuilder().SetWidth(100)
+                .AddRowsFromList(data, 1, 1, p => p.Prop1, p => p.Prop2)
+                .Build();
             table[0, 0].Content.ValueObject?.ToString().Should().BeEquivalentTo(string.Empty);
             table[0, 1].Content.ValueObject?.ToString().Should().BeEquivalentTo(string.Empty);
             table[1, 0].Content.ValueObject?.ToString().Should().BeEquivalentTo(string.Empty);
@@ -242,9 +245,10 @@
             const int colCount = 4;
             const int rowCount = 4;
 
-            Table table = new TableBuilder()
+            var table = new TableBuilder()
                 .AddColumn(count: colCount)
-                .AddRow(count: rowCount);
+                .AddRow(count: rowCount)
+                .Build();
 
             var nextMergedCell = ((CellBuilder)table.Rows.First().Cells.First()).MergeNext().ObjectForBuild;
             nextMergedCell.GetColumnIndex().Should().Be(1);

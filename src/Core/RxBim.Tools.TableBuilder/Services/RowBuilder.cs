@@ -2,11 +2,12 @@
 {
     using System;
     using System.Linq;
+    using Builders;
 
     /// <summary>
     /// The builder of a single <see cref="Row"/> of a <see cref="Table"/>.
     /// </summary>
-    public class RowBuilder : CellsSetBuilder<Row, RowBuilder>
+    public class RowBuilder : CellsSetBuilder<Row, RowBuilder>, IRowBuilder
     {
         /// <inheritdoc />
         public RowBuilder(Row row)
@@ -31,7 +32,7 @@
         /// Merges all cells in the row.
         /// </summary>
         /// <param name="action">Delegate, applied to the cells to be merged.</param>
-        public RowBuilder MergeRow(Action<CellBuilder, CellBuilder>? action = null)
+        public RowBuilder MergeRow(Action<ICellBuilder, ICellBuilder>? action = null)
         {
             ((CellBuilder)ObjectForBuild.Cells.First()).MergeNext(ObjectForBuild.Cells.Count() - 1, action);
             return this;

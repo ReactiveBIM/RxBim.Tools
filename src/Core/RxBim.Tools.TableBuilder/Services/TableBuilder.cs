@@ -3,13 +3,14 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Builders;
     using Content;
     using Styles;
 
     /// <summary>
     /// The builder of a <see cref="Table"/>.
     /// </summary>
-    public class TableBuilder
+    public class TableBuilder : ITableBuilder
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TableBuilder"/> class.
@@ -25,12 +26,8 @@
         /// </summary>
         private Table Table { get; }
 
-        /// <summary>
-        /// Returns the builder of a table cell by row and column index.
-        /// </summary>
-        /// <param name="row">Row index.</param>
-        /// <param name="column">Column index.</param>
-        public CellBuilder this[int row, int column] => new(Table[row, column]);
+        /// <inheritdoc />
+        public ICellBuilder this[int row, int column] => new CellBuilder(Table[row, column]);
 
         /// <summary>
         /// Returns the built <see cref="Table"/>.
@@ -41,54 +38,34 @@
             return builder.Build();
         }
 
-        /// <summary>
-        /// Returns collection of <see cref="RowBuilder"/> for table rows.
-        /// </summary>
-        public IEnumerable<RowBuilder> ToRows()
+        /// <inheritdoc />
+        public IEnumerable<IRowBuilder> ToRows()
         {
-            return Table.Rows.Select(row => (RowBuilder)row);
+            return Table.Rows.Select(row => new RowBuilder(row));
         }
 
-        /// <summary>
-        /// Returns collection of <see cref="ColumnBuilder"/> for table rows.
-        /// </summary>
-        public IEnumerable<ColumnBuilder> GetColumns()
+        /// <inheritdoc />
+        public IEnumerable<IColumnBuilder> GetColumns()
         {
-            return Table.Columns.Select(column => (ColumnBuilder)column);
+            return Table.Columns.Select(column => new ColumnBuilder(column));
         }
 
-        /// <summary>
-        /// Sets the default format for all cells.
-        /// </summary>
-        /// <param name="formatStyle">Format value.</param>
-        /// <returns>
-        /// Used if the cell doesn't have its own format and the default format is not set with a row or column.
-        /// </returns>
-        public TableBuilder SetFormat(CellFormatStyle formatStyle)
+        /// <inheritdoc />
+        public ITableBuilder SetFormat(CellFormatStyle formatStyle)
         {
             Table.DefaultFormat = formatStyle;
             return this;
         }
 
-        /// <summary>
-        /// Sets format for the table.
-        /// </summary>
-        /// <param name="action">Format building action.</param>
-        public TableBuilder SetFormat(Action<CellFormatStyleBuilder> action)
+        /// <inheritdoc />
+        public ITableBuilder SetFormat(Action<ICellFormatStyleBuilder> action)
         {
             action(new CellFormatStyleBuilder(Table.DefaultFormat));
             return this;
         }
 
-        /// <summary>
-        /// Sets the format for a range of cells.
-        /// </summary>
-        /// <param name="formatStyle">Format value.</param>
-        /// <param name="startRow">The starting row of the range of cells.</param>
-        /// <param name="startColumn">The starting column of the range of cells.</param>
-        /// <param name="rangeWidth">The width of the range of cells (number of columns).</param>
-        /// <param name="rangeHeight">The height of the range of cells (number of rows).</param>
-        public TableBuilder SetCellsFormat(
+        /// <inheritdoc />
+        public ITableBuilder SetCellsFormat(
             CellFormatStyle formatStyle,
             int startRow,
             int startColumn,
@@ -106,15 +83,8 @@
             return this;
         }
 
-        /// <summary>
-        /// Sets the standard format for the table.
-        /// </summary>
-        /// <param name="headerRowsCount">Table header rows count.</param>
-        /// <remarks>
-        /// All text centered, all header lines bold.
-        /// All horizontal borders between table rows are of standard thickness.
-        /// </remarks>
-        public TableBuilder SetTableStateStandardFormat(int headerRowsCount)
+        /// <inheritdoc />
+        public ITableBuilder SetTableStateStandardFormat(int headerRowsCount)
         {
             var boldFormat = new CellFormatStyleBuilder()
                 .SetContentVerticalAlignment(CellContentVerticalAlignment.Middle)
@@ -149,11 +119,8 @@
             return this;
         }
 
-        /// <summary>
-        /// Sets the width of the table.
-        /// </summary>
-        /// <param name="width">Width value/</param>
-        public TableBuilder SetWidth(double width)
+        /// <inheritdoc />
+        public ITableBuilder SetWidth(double width)
         {
             if (width <= 0)
                 throw new ArgumentException("Must be a positive number.", nameof(width));
@@ -161,11 +128,8 @@
             return this;
         }
 
-        /// <summary>
-        /// Sets the height of the table.
-        /// </summary>
-        /// <param name="height">Height value/</param>
-        public TableBuilder SetHeight(double height)
+        /// <inheritdoc />
+        public ITableBuilder SetHeight(double height)
         {
             if (height <= 0)
                 throw new ArgumentException("Must be a positive number.", nameof(height));
@@ -173,37 +137,20 @@
             return this;
         }
 
-        /// <summary>
-        /// Creates and adds rows to the table.
-        /// </summary>
-        /// <param name="action">The action to be taken on new rows.</param>
-        /// <param name="count">The number of rows to add.</param>
-        public TableBuilder AddRow(Action<RowBuilder>? action = null, int count = 1)
+        /// <inheritdoc />
+        public ITableBuilder AddRow(Action<IRowBuilder>? action = null, int count = 1)
         {
             for (; count > 0; count--)
             {
                 var newRow = Table.AddRow();
-                action?.Invoke(newRow);
+                action?.Invoke(new RowBuilder(newRow));
             }
 
             return this;
         }
 
-        /// <summary>
-        /// Fills table rows with values from a list.
-        /// </summary>
-        /// <param name="source">
-        /// A list is a source of values. The properties retrieved by the <paramref name="propertySelectors"/>
-        /// parameter of each individual item in this list will end up on a separate row.
-        /// </param>
-        /// <param name="rowIndex">The index of the initial row to fill.</param>
-        /// <param name="columnIndex">The index of the initial column to fill.</param>
-        /// <param name="propertySelectors">
-        /// Functions for getting values from a source list.
-        /// Each separate function retrieves the value for the cells in a particular column.
-        /// </param>
-        /// <typeparam name="TSource">The type of object in the source list.</typeparam>
-        public TableBuilder AddRowsFromList<TSource>(
+        /// <inheritdoc />
+        public ITableBuilder AddRowsFromList<TSource>(
             IEnumerable<TSource> source,
             int rowIndex,
             int columnIndex,
@@ -235,37 +182,20 @@
             return this;
         }
 
-        /// <summary>
-        /// Creates and adds columns to the table.
-        /// </summary>
-        /// <param name="action">The action to be taken on new columns.</param>
-        /// <param name="count">The number of columns to add.</param>
-        public TableBuilder AddColumn(Action<ColumnBuilder>? action = null, int count = 1)
+        /// <inheritdoc />
+        public ITableBuilder AddColumn(Action<IColumnBuilder>? action = null, int count = 1)
         {
             for (; count > 0; count--)
             {
                 var newColumn = Table.AddColumn();
-                action?.Invoke(newColumn);
+                action?.Invoke(new ColumnBuilder(newColumn));
             }
 
             return this;
         }
 
-        /// <summary>
-        /// Fills table columns with values from a list.
-        /// </summary>
-        /// <param name="source">
-        /// A list is a source of values. The properties retrieved by the <paramref name="propertySelectors"/>
-        /// parameter of each individual item in this list will end up on a separate column.
-        /// </param>
-        /// <param name="rowIndex">The index of the initial row to fill.</param>
-        /// <param name="columnIndex">The index of the initial column to fill.</param>
-        /// <param name="propertySelectors">
-        /// Functions for getting values from a source list.
-        /// Each separate function retrieves the value for the cells in a particular row.
-        /// </param>
-        /// <typeparam name="TSource">The type of object in the source list.</typeparam>
-        public TableBuilder AddColumnsFromList<TSource>(
+        /// <inheritdoc />
+        public ITableBuilder AddColumnsFromList<TSource>(
             IEnumerable<TSource> source,
             int rowIndex,
             int columnIndex,
@@ -296,9 +226,7 @@
             return this;
         }
 
-        /// <summary>
-        /// Returns the built <see cref="Table"/>.
-        /// </summary>
+        /// <inheritdoc />
         public Table Build()
         {
             return Table;
