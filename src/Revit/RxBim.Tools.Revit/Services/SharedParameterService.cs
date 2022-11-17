@@ -9,6 +9,7 @@
     using Autodesk.Revit.UI;
     using CSharpFunctionalExtensions;
     using Extensions;
+    using Helpers;
     using JetBrains.Annotations;
     using Models;
     using Result = CSharpFunctionalExtensions.Result;
@@ -206,27 +207,37 @@
             DefinitionFile? definitionFile = null)
         {
             var doc = document ?? _uiApplication.ActiveUIDocument.Document;
+            var definition = parameterInfo.Definition;
             var sharedParameter = (sharedParameters ?? new FilteredElementCollector(doc)
-                    .OfClass<SharedParameterElement>())
+                .OfClass<SharedParameterElement>())
                 .FirstOrDefault(parameter =>
                     string.Equals(
-                        parameterInfo.Definition.ParameterName,
+                        definition.ParameterName,
                         parameter.Name,
-                        StringComparison.InvariantCultureIgnoreCase));
+                        StringComparison.InvariantCulture));
             if (sharedParameter is null)
-                return Result.Failure($"{Environment.NewLine}Параметр {parameterInfo.Definition.ParameterName} отсутствует в проекте");
+                return Result.Failure($"Параметр {definition.ParameterName} отсутствует в проекте");
 
             if (!fullMatch)
                 return Result.Success();
 
-            var externalDefinition = GetSharedExternalDefinition(parameterInfo.Definition, false, definitionFile ?? GetDefinitionFile(doc).Value);
+            var actualDefinitionFile = definitionFile ?? GetDefinitionFile(doc).Value;
+            if (actualDefinitionFile is null)
+                return Result.Failure($"Не найден файл общих параметров");
+            var externalDefinition = GetSharedExternalDefinition(definition, false, actualDefinitionFile);
             if (externalDefinition is null)
-                return Result.Failure($"{Environment.NewLine}Параметр {parameterInfo.Definition.ParameterName} не является актуальным (не соответствует ФОП)");
+                return Result.Failure($"Параметр {definition.ParameterName} не является актуальным (не соответствует ФОП)");
 
-            parameterInfo.Definition.DataType ??= externalDefinition.ParameterType;
-            parameterInfo.Definition.Guid ??= externalDefinition.GUID;
+            var actualParameterInfo = new SharedParameterInfo(
+                new SharedParameterDefinition()
+                {
+                    ParameterName = definition.ParameterName,
+                    Guid = definition.Guid ?? externalDefinition.GUID,
+                    DataType = definition.DataType ?? externalDefinition.ParameterType
+                },
+                parameterInfo.CreateData);
 
-            return IsFullMatch(doc, parameterInfo, sharedParameter);
+            return IsFullMatch(doc, actualParameterInfo, sharedParameter);
         }
 
         /// <inheritdoc />
@@ -431,39 +442,33 @@
             var builtInCategories = sharedParameterInfo.CreateData.CategoriesForBind;
             if (builtInCategories is not null)
             {
-                var existingCategories = doc.Settings.Categories.OfType<Category>()
-                    .Where(c => builtInCategories.Contains((BuiltInCategory)c.Id.IntegerValue))
-                    .ToDictionary(c => (BuiltInCategory)c.Id.IntegerValue, c => c);
+                var categoriesForBind = doc.Settings.Categories.OfType<Category>()
+                    .Where(c => builtInCategories.Contains((BuiltInCategory)c.Id.IntegerValue)).ToHashSet(new CategoryIdComparer());
 
-                var categories = ((ElementBinding)binding).Categories.OfType<Category>()
-                    .ToDictionary(i => (BuiltInCategory)i.Id.IntegerValue, i => i);
-
-                foreach (var validCategory in existingCategories)
-                {
-                    if (!categories.ContainsKey(validCategory.Key))
-                        missingCategories.Add(validCategory.Value.Name);
-                }
+                var existingCategoriesInDoc = ((ElementBinding)binding).Categories.OfType<Category>().ToHashSet();
+                categoriesForBind.ExceptWith(existingCategoriesInDoc);
+                missingCategories.AddRange(categoriesForBind.Select(c => c.Name));
             }
 
             var results = new List<Result>()
             {
                 Result.SuccessIf(
                     IsFullMatch(sharedParameterInfo.Definition, sharedParameter),
-                    $"{Environment.NewLine}Параметр {sharedParameter.Name} не является актуальным (не соответствует ФОП)"),
+                    $"Параметр {sharedParameter.Name} не является актуальным (не соответствует ФОП)"),
                 Result.SuccessIf(
                     () => sharedParameter.GetDefinition().VariesAcrossGroups ==
                           sharedParameterInfo.CreateData.AllowVaryBetweenGroups,
-                    $"{Environment.NewLine}Изменение значения параметра {sharedParameter.Name} по экземплярам группы не соответствуе заданному поведению"),
+                    $"Изменение значения параметра {sharedParameter.Name} по экземплярам группы не соответствуе заданному поведению"),
                 Result.SuccessIf(
                     () => !missingCategories.Any(),
-                    $"{Environment.NewLine}В параметре {sharedParameter.Name} отсутствуют следующие категории: {string.Join("; ", missingCategories)}"),
+                    $"В параметре {sharedParameter.Name} отсутствуют следующие категории: {string.Join("; ", missingCategories)}"),
                 Result.SuccessIf(
                     () => sharedParameterInfo.CreateData.IsCreateForInstance
                         ? binding is InstanceBinding
                         : binding is TypeBinding,
-                    $"{Environment.NewLine}Параметр {sharedParameter.Name} не является заданным типом параметра (параметром экземпляра или параметром типа)")
+                    $"Параметр {sharedParameter.Name} не является заданным типом параметра (параметром экземпляра или параметром типа)")
             };
-            return Result.Combine(results);
+            return Result.Combine(results, $"{Environment.NewLine}");
         }
 
         private bool IsFullMatch(SharedParameterDefinition sharedParameterDefinition, ExternalDefinition externalDefinition)
