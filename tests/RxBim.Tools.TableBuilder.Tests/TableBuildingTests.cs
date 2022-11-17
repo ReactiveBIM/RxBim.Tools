@@ -7,6 +7,7 @@
     using FluentAssertions;
     using Styles;
     using Xunit;
+    using RxBim.Tools.TableBuilder;
 
     /// <summary>
     /// Tests for <see cref="TableBuilder"/>
@@ -85,7 +86,8 @@
             const int rowHeight = 95;
             var data = GetTestData(assert);
             var format = GetTestCellFormat();
-            Table table = new TableBuilder().SetWidth(100)
+            Table table = new TableBuilder()
+                .SetWidth(100)
                 .AddColumn(x => x.SetFormat(format).SetWidth(columnWidth))
                 .AddColumn(count: data.Count)
                 .AddRow(x => x.FromList(data).SetHeight(rowHeight));

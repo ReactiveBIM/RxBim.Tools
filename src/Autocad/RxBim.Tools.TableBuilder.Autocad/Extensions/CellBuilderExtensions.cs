@@ -16,11 +16,12 @@
         /// <param name="text">Content text value.</param>
         /// <param name="angle">Text rotation angle.</param>
         /// <param name="adjustCellSize"><see cref="AutocadTextCellContent.AdjustCellSize"/> property value.</param>
-        public static ICellBuilder SetAcadTableText(
-            this ICellBuilder builder,
+        public static ICellBuilder<T> SetAcadTableText<T>(
+            this ICellBuilder<T> builder,
             string text,
             RotationAngle angle = RotationAngle.Degrees000,
             bool adjustCellSize = false)
+            where T : TableItemBase
         {
             var content = new AutocadTextCellContent(text)
             {
