@@ -9,6 +9,7 @@
     using Autodesk.Revit.UI;
     using CSharpFunctionalExtensions;
     using Extensions;
+    using Helpers;
     using JetBrains.Annotations;
     using Models;
     using Result = CSharpFunctionalExtensions.Result;
@@ -195,6 +196,54 @@
             }
 
             return false;
+        }
+
+        /// <inheritdoc/>
+        public Result ParameterExistsInDocument(
+            SharedParameterInfo parameterInfo,
+            bool fullMatch,
+            Document? document = null,
+            IEnumerable<SharedParameterElement>? sharedParameters = null,
+            DefinitionFile? definitionFile = null)
+        {
+            var doc = document ?? _uiApplication.ActiveUIDocument.Document;
+            var definition = parameterInfo.Definition;
+            var sharedParameter = (sharedParameters ?? new FilteredElementCollector(doc)
+                .OfClass<SharedParameterElement>())
+                .FirstOrDefault(parameter =>
+                    string.Equals(
+                        definition.ParameterName,
+                        parameter.Name,
+                        StringComparison.InvariantCulture));
+            if (sharedParameter is null)
+                return Result.Failure($"Параметр {definition.ParameterName} отсутствует в проекте");
+
+            if (!fullMatch)
+                return Result.Success();
+
+            var actualDefinitionFile = definitionFile;
+            if (actualDefinitionFile is null)
+            {
+                var definitionFileResult = GetDefinitionFile(doc);
+                if (definitionFileResult.IsFailure)
+                    return definitionFileResult;
+                actualDefinitionFile = definitionFileResult.Value;
+            }
+
+            var externalDefinition = GetSharedExternalDefinition(definition, false, actualDefinitionFile);
+            if (externalDefinition is null)
+                return Result.Failure($"Параметр {definition.ParameterName} не является актуальным (не соответствует ФОП)");
+
+            var actualParameterInfo = new SharedParameterInfo(
+                new SharedParameterDefinition()
+                {
+                    ParameterName = definition.ParameterName,
+                    Guid = definition.Guid ?? externalDefinition.GUID,
+                    DataType = definition.DataType ?? externalDefinition.ParameterType
+                },
+                parameterInfo.CreateData);
+
+            return IsFullMatch(doc, actualParameterInfo, sharedParameter);
         }
 
         /// <inheritdoc />
@@ -386,6 +435,56 @@
                     // ignore
                 }
             }
+        }
+
+        /// <summary>
+        /// Проверка на соответствие параметра заданным в <see cref="SharedParameterInfo"/> параметрам.
+        /// Использует проверку IsFullMatch(SharedParameterDefinition, SharedParameterElement),
+        /// проверяет наличие заданных категорий в параметре,
+        /// проверяет возможность зменения значения параметра по экземплярам группы на соответствие заданной,
+        /// проверяет на соответствие заданному типу параметра (параметр экземпляра или параметр типа)
+        /// </summary>
+        /// <param name="doc">Текущий документ</param>
+        /// <param name="sharedParameterInfo">Данные об общем параметре</param>
+        /// <param name="sharedParameter">Экземпляр общего параметра</param>
+        private Result IsFullMatch(
+            Document doc,
+            SharedParameterInfo sharedParameterInfo,
+            SharedParameterElement sharedParameter)
+        {
+            var binding = doc.ParameterBindings.get_Item(sharedParameter.GetDefinition());
+
+            var missingCategories = new List<string>();
+            var builtInCategories = sharedParameterInfo.CreateData.CategoriesForBind;
+            if (builtInCategories is not null)
+            {
+                var categoriesForBind = doc.Settings.Categories.OfType<Category>()
+                    .Where(c => builtInCategories.Contains((BuiltInCategory)c.Id.IntegerValue)).ToHashSet(new CategoryIdComparer());
+
+                var existingCategoriesInDoc = ((ElementBinding)binding).Categories.OfType<Category>().ToHashSet();
+                categoriesForBind.ExceptWith(existingCategoriesInDoc);
+                missingCategories.AddRange(categoriesForBind.Select(c => c.Name));
+            }
+
+            var results = new List<Result>()
+            {
+                Result.SuccessIf(
+                    IsFullMatch(sharedParameterInfo.Definition, sharedParameter),
+                    $"Параметр {sharedParameter.Name} не является актуальным (не соответствует ФОП)"),
+                Result.SuccessIf(
+                    () => sharedParameter.GetDefinition().VariesAcrossGroups ==
+                          sharedParameterInfo.CreateData.AllowVaryBetweenGroups,
+                    $"Изменение значения параметра {sharedParameter.Name} по экземплярам группы не соответствуе заданному поведению"),
+                Result.SuccessIf(
+                    () => !missingCategories.Any(),
+                    $"В параметре {sharedParameter.Name} отсутствуют следующие категории: {string.Join("; ", missingCategories)}"),
+                Result.SuccessIf(
+                    () => sharedParameterInfo.CreateData.IsCreateForInstance
+                        ? binding is InstanceBinding
+                        : binding is TypeBinding,
+                    $"Параметр {sharedParameter.Name} не является заданным типом параметра (параметром экземпляра или параметром типа)")
+            };
+            return Result.Combine(results, $"{Environment.NewLine}");
         }
 
         private bool IsFullMatch(SharedParameterDefinition sharedParameterDefinition, ExternalDefinition externalDefinition)
