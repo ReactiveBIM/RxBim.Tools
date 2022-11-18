@@ -22,7 +22,7 @@
             if (width <= 0)
                 throw new ArgumentException("Must be a positive number.", nameof(width));
 
-            ObjectForBuild.OwnWidth = width;
+            ObjectForBuild.Width = width;
             return this;
         }
     }

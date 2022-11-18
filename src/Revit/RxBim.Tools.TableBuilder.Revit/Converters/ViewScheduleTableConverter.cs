@@ -66,7 +66,7 @@
                          col < table.Columns.Count();
                          col++, scheduleCol++)
                     {
-                        var widthInFt = table.Columns[col].Width.MmToFt();
+                        var widthInFt = (table.Columns[col].Width ?? table.GetAverageColumnWidth()).MmToFt();
                         headerData.SetColumnWidth(scheduleCol, widthInFt);
 
                         var scheduleRow = headerData.FirstRowNumber;

@@ -40,8 +40,8 @@
             {
                 var acadCol = acadTable.Columns[columnIndex];
                 var width = tableData.Columns[columnIndex].Width;
-                if (width > 0)
-                    acadCol.Width = width;
+                if (width is > 0)
+                    acadCol.Width = width.Value;
 
                 for (var rowIndex = 0; rowIndex < numRows; rowIndex++)
                 {

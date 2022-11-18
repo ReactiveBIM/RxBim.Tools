@@ -57,7 +57,7 @@
         /// <param name="width">The width of the cell.</param>
         public CellBuilder SetWidth(double width)
         {
-            ObjectForBuild.Column.OwnWidth = width;
+            ObjectForBuild.Column.Width = width;
             return this;
         }
 

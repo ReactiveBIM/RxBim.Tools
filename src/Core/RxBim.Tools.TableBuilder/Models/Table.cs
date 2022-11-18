@@ -39,7 +39,7 @@
         /// <summary>
         /// The width of the table.
         /// </summary>
-        public double Width => Math.Max(_columns.Sum(x => x.OwnWidth ?? 0), OwnWidth);
+        public double Width => Math.Max(_columns.Sum(x => x.Width ?? 0), OwnWidth);
 
         /// <summary>
         /// The height of the table.

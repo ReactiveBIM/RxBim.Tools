@@ -11,7 +11,6 @@ public static class TableExtensions
     /// Returns average row height.
     /// </summary>
     /// <param name="table"><see cref="Table"/></param>
-    /// <returns></returns>
     public static double GetAverageRowHeight(this Table table)
     {
         var rowsWithValues =
@@ -19,6 +18,20 @@ public static class TableExtensions
                 .Where(x => x.Height.HasValue)
                 .Select(x => x.Height!.Value)
                 .ToList();
-        return (table.Height - rowsWithValues.Sum()) / (table.Rows.Count() - rowsWithValues.Count);
+        return (table.Height - rowsWithValues.Sum()) / (table.Rows.Count - rowsWithValues.Count);
+    }
+    
+    /// <summary>
+    /// Returns average column width.
+    /// </summary>
+    /// <param name="table"><see cref="Table"/></param>
+    public static double GetAverageColumnWidth(this Table table)
+    {
+        var columnWithValues =
+            table.Columns
+                .Where(x => x.Width.HasValue)
+                .Select(x => x.Width!.Value)
+                .ToList();
+        return (table.Width - columnWithValues.Sum()) / (table.Columns.Count - columnWithValues.Count);
     }
 }

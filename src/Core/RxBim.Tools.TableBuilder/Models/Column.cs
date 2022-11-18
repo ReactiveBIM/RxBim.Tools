@@ -1,13 +1,11 @@
 ﻿namespace RxBim.Tools.TableBuilder
 {
-    using System.Linq;
-
     /// <summary>
     /// Table column data.
     /// </summary>
     public class Column : CellsSet
     {
-        private double? _ownWidth;
+        private double? _width;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Column"/> class.
@@ -21,29 +19,13 @@
         /// <summary>
         /// The width of the column.
         /// </summary>
-        public double Width
+        public double? Width
         {
-            get
-            {
-                if (OwnWidth.HasValue)
-                    return OwnWidth.Value;
-
-                var columnsWithValues =
-                    Table.Columns.Where(x => x.OwnWidth.HasValue).Select(x => x.OwnWidth!.Value).ToList();
-                return (Table.Width - columnsWithValues.Sum()) / (Table.Columns.Count() - columnsWithValues.Count);
-            }
-        }
-
-        /// <summary>
-        /// Own column width.
-        /// </summary>
-        internal double? OwnWidth
-        {
-            get => _ownWidth;
+            get => _width;
             set
             {
                 IsAdjustedToContent = false;
-                _ownWidth = value;
+                _width = value;
             }
         }
 

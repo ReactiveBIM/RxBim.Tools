@@ -33,7 +33,7 @@
                 }
                 else
                 {
-                    column.Width = table.Columns[currentColumnIndex].Width;
+                    column.Width = table.Columns[currentColumnIndex].Width ?? table.GetAverageColumnWidth();
                 }
 
                 FillRow(table, worksheet, currentColumnIndex, sheetColumnIndex, mergedCells);
