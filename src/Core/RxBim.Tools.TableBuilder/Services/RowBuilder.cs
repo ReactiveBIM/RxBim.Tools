@@ -1,6 +1,7 @@
 ﻿namespace RxBim.Tools.TableBuilder
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using Builders;
     using Styles;
@@ -47,6 +48,13 @@
         IRowBuilder<Cell> IRowBuilder<Cell>.SetFormat(Action<ICellFormatStyleBuilder> action)
         {
             SetFormat(action);
+            return this;
+        }
+
+        /// <inheritdoc />
+        IRowBuilder<Cell> IRowBuilder<Cell>.FromList<TSource>(IList<TSource> source, Action<ICellBuilder<Cell>>? cellsAction)
+        {
+            FromList(source, cellsAction);
             return this;
         }
     }

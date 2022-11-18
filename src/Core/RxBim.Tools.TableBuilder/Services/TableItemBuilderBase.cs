@@ -24,6 +24,6 @@
         /// <summary>
         /// Returns new <see cref="TableBuilder"/> for <see cref="Table"/> to be build.
         /// </summary>
-        public TableBuilder ToTable => new(ObjectForBuild.Table);
+        public TableBuilder ToTable() => new(ObjectForBuild.Table);
     }
 }

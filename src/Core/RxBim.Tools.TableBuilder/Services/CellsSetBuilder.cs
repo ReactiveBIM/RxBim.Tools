@@ -36,7 +36,7 @@
         /// <param name="source">List of items.</param>
         /// <param name="cellsAction">Delegate. Applies to all filled cells.</param>
         /// <typeparam name="TSource">The type of the list item.</typeparam>
-        public TBuilder FromList<TSource>(List<TSource> source, Action<ICellBuilder<Cell>>? cellsAction = null)
+        public TBuilder FromList<TSource>(IList<TSource> source, Action<ICellBuilder<Cell>>? cellsAction = null)
         {
             if (!source.Any())
                 return (TBuilder)this;

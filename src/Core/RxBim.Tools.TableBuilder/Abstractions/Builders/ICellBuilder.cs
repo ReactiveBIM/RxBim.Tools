@@ -17,7 +17,7 @@ public interface ICellBuilder<TItem>
     /// <summary>
     /// Returns new <see cref="TableBuilder"/> for <see cref="Table"/> to be build.
     /// </summary>
-    public TableBuilder ToTable { get; }
+    public TableBuilder ToTable();
 
     /// <summary>
     /// Returns a new <see cref="IRowBuilder"/> for the <see cref="Row"/> that the <see cref="Cell"/> is in.

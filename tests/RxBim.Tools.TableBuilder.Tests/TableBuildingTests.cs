@@ -86,11 +86,12 @@
             const int rowHeight = 95;
             var data = GetTestData(assert);
             var format = GetTestCellFormat();
-            Table table = new TableBuilder()
+            var table = new TableBuilder()
                 .SetWidth(100)
                 .AddColumn(x => x.SetFormat(format).SetWidth(columnWidth))
                 .AddColumn(count: data.Count)
-                .AddRow(x => x.FromList(data).SetHeight(rowHeight));
+                .AddRow(x => x.FromList(data).SetHeight(rowHeight))
+                .Build();
             table.Columns.First().GetComposedFormat().Should().BeEquivalentTo(format);
             table.Columns.First().Width.Should().Be(columnWidth);
             foreach (var x in table.Columns.First().Cells)
@@ -107,11 +108,12 @@
             const int rowHeight = 95;
             var data = GetTestData(assert);
             var format = GetTestCellFormat();
-            Table table = new TableBuilder()
+            var table = new TableBuilder()
                 .SetFormat(format)
                 .AddColumn(x => x.SetWidth(columnWidth))
                 .AddColumn(x => x.SetWidth(columnWidth), count: data.Count)
-                .AddRow(x => x.FromList(data).SetHeight(rowHeight));
+                .AddRow(x => x.FromList(data).SetHeight(rowHeight))
+                .Build();
             table.Columns.Select(e => e.GetComposedFormat()).Should().AllBeEquivalentTo(format);
             table.Columns.Select(e => e.Width).Should().AllBeEquivalentTo(columnWidth);
             table.Columns.SelectMany(e => e.Cells.Select(x => x.GetComposedFormat()))
@@ -131,11 +133,12 @@
             const int rowHeight = 95;
             var data = GetTestData(assert);
             var format = GetTestCellFormat();
-            Table table = new TableBuilder()
+            var table = new TableBuilder()
                 .AddColumn(x => x.SetWidth(columnWidth))
                 .AddColumn(x => x.SetWidth(columnWidth), count: data.Count)
                 .AddRow(x => x.FromList(data).SetHeight(rowHeight))
-                .SetCellsFormat(format, 0, 1, 2, 1);
+                .SetCellsFormat(format, 0, 1, 2, 1)
+                .Build();
             table.Columns.Skip(1)
                 .Take(2)
                 .SelectMany(x => x.Cells.Select(e => e.GetComposedFormat()))
@@ -269,7 +272,7 @@
                 .SetContentHorizontalAlignment(CellContentHorizontalAlignment.Left)
                 .SetContentVerticalAlignment(CellContentVerticalAlignment.Top)
                 .SetBorders(builder => builder
-                .SetBorders(left: CellBorderType.Hidden, bottom: CellBorderType.Hidden))
+                    .SetBorders(left: CellBorderType.Hidden, bottom: CellBorderType.Hidden))
                 .SetTextFormat(x => x
                     .SetBold(true)
                     .SetItalic(true)
