@@ -41,16 +41,7 @@ class Build : NukeBuild, IPublish
 
     public static int Main() => Execute<Build>(x => x.From<IPublish>().List);
 
-    Target Clean => _ => _
-        .Executes(() =>
-        {
-            GlobDirectories(From<IHazSolution>().Solution.Directory, "**/bin", "**/obj")
-                .Where(x => !IsDescendantPath(BuildProjectDirectory, x))
-                .ForEach(FileSystemTasks.DeleteDirectory);
-        });
-
     public Target Test => _ => _
-        .Before(Clean)
         .Before<IRestore>()
         .Executes(() =>
         {
