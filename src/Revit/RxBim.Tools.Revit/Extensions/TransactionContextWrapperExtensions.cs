@@ -4,7 +4,6 @@
     using Abstractions;
     using Autodesk.Revit.DB;
     using JetBrains.Annotations;
-    using Models;
 
     /// <summary>
     /// Extensions for <see cref="ITransactionContextWrapper"/>.

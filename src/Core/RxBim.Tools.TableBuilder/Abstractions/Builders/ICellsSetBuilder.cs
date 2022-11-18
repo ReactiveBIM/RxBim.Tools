@@ -13,5 +13,3 @@ public interface ICellsSetBuilder<TItem>
     /// </summary>
     public IEnumerable<ICellBuilder<TItem>> ToCells();
 }
-
-

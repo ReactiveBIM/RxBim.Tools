@@ -20,12 +20,12 @@ public interface ICellBuilder<TItem>
     public TableBuilder ToTable();
 
     /// <summary>
-    /// Returns a new <see cref="IRowBuilder"/> for the <see cref="Row"/> that the <see cref="Cell"/> is in.
+    /// Returns a new <see cref="IRowBuilder{TItem}"/> for the <see cref="Row"/> that the <see cref="Cell"/> is in.
     /// </summary>
     public IRowBuilder<TItem> ToRow();
 
     /// <summary>
-    /// Returns a new <see cref="IColumnBuilder"/> for the <see cref="Column"/> that the <see cref="Cell"/> is in.
+    /// Returns a new <see cref="IColumnBuilder{TItem}"/> for the <see cref="Column"/> that the <see cref="Cell"/> is in.
     /// </summary>
     public IColumnBuilder<TItem> ToColumn();
 
@@ -103,7 +103,7 @@ public interface ICellBuilder<TItem>
     /// Merges cells horizontally to the left.
     /// </summary>
     /// <param name="count">The number of cells to merge.</param>
-    /// <returns>Returns the <see cref="ICellBuilder"/> of the left cell of merged area.</returns>
+    /// <returns>Returns the <see cref="ICellBuilder{TItem}"/> of the left cell of merged area.</returns>
     public ICellBuilder<TItem> MergeLeft(int count = 1);
 
     /// <summary>
