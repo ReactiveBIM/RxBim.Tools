@@ -221,9 +221,15 @@
             if (!fullMatch)
                 return Result.Success();
 
-            var actualDefinitionFile = definitionFile ?? GetDefinitionFile(doc).Value;
+            var actualDefinitionFile = definitionFile;
             if (actualDefinitionFile is null)
-                return Result.Failure($"Не найден файл общих параметров");
+            {
+                var definitionFileResult = GetDefinitionFile(doc);
+                if (definitionFileResult.IsFailure)
+                    return definitionFileResult;
+                actualDefinitionFile = definitionFileResult.Value;
+            }
+
             var externalDefinition = GetSharedExternalDefinition(definition, false, actualDefinitionFile);
             if (externalDefinition is null)
                 return Result.Failure($"Параметр {definition.ParameterName} не является актуальным (не соответствует ФОП)");
@@ -431,6 +437,16 @@
             }
         }
 
+        /// <summary>
+        /// Проверка на соответствие параметра заданным в <see cref="SharedParameterInfo"/> параметрам.
+        /// Использует проверку IsFullMatch(SharedParameterDefinition, SharedParameterElement),
+        /// проверяет наличие заданных категорий в параметре,
+        /// проверяет возможность зменения значения параметра по экземплярам группы на соответствие заданной,
+        /// проверяет на соответствие заданному типу параметра (параметр экземпляра или параметр типа)
+        /// </summary>
+        /// <param name="doc">Текущий документ</param>
+        /// <param name="sharedParameterInfo">Данные об общем параметре</param>
+        /// <param name="sharedParameter">Экземпляр общего параметра</param>
         private Result IsFullMatch(
             Document doc,
             SharedParameterInfo sharedParameterInfo,
