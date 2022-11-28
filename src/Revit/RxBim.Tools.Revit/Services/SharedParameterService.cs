@@ -474,7 +474,7 @@
                 Result.SuccessIf(
                     () => sharedParameter.GetDefinition().VariesAcrossGroups ==
                           sharedParameterInfo.CreateData.AllowVaryBetweenGroups,
-                    $"Изменение значения параметра {sharedParameter.Name} по экземплярам группы не соответствуе заданному поведению"),
+                    $"Изменение значения параметра {sharedParameter.Name} по экземплярам группы не соответствует заданному поведению"),
                 Result.SuccessIf(
                     () => !missingCategories.Any(),
                     $"В параметре {sharedParameter.Name} отсутствуют следующие категории: {string.Join("; ", missingCategories)}"),
