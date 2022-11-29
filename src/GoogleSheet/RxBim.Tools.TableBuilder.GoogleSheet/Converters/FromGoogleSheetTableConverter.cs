@@ -165,7 +165,8 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         foreach (var googleBordersTypeProperty in googleProperties)
         {
             var googleBordersPropertyName = googleBordersTypeProperty.Name;
-            if (!properties.Any(cellProperty => cellProperty.Name.Equals(googleBordersPropertyName)))
+            if (!properties
+                    .Any(cellProperty => cellProperty.Name.Equals(googleBordersPropertyName)))
                 continue;
             var targetProperty = properties.FirstOrDefault(property => property.Name.Equals(googleBordersPropertyName));
             var border = googleBordersTypeProperty.GetValue(googleBorders) as Border;
