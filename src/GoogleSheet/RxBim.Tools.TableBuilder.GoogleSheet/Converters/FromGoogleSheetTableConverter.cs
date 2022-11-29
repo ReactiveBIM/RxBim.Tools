@@ -270,15 +270,18 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
             {
                 case "TOP":
                     cellBuilder
-                        .SetFormat(format => format.SetContentVerticalAlignment(CellContentVerticalAlignment.Top));
+                        .SetFormat(format => format
+                            .SetContentVerticalAlignment(CellContentVerticalAlignment.Top));
                     break;
                 case "MIDDLE":
                     cellBuilder
-                        .SetFormat(format => format.SetContentVerticalAlignment(CellContentVerticalAlignment.Middle));
+                        .SetFormat(format => format
+                            .SetContentVerticalAlignment(CellContentVerticalAlignment.Middle));
                     break;
                 case "BOTTOM":
                     cellBuilder
-                        .SetFormat(format => format.SetContentVerticalAlignment(CellContentVerticalAlignment.Bottom));
+                        .SetFormat(format => format
+                            .SetContentVerticalAlignment(CellContentVerticalAlignment.Bottom));
                     break;
             }
         }
