@@ -226,8 +226,12 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
             textFormat.SetBold(googleTextFormat.Bold ?? false);
             textFormat.SetItalic(googleTextFormat.Italic ?? false);
             textFormat.SetFontFamily(googleTextFormat.FontFamily);
-            var fontColor = ConvertArgb(googleTextFormat.ForegroundColor);
-            textFormat.SetTextColor(fontColor);
+            if (googleTextFormat.ForegroundColor != null)
+            {
+                var fontColor = ConvertArgb(googleTextFormat.ForegroundColor);
+                textFormat.SetTextColor(fontColor);
+            }
+
             textFormat.SetTextSize(googleTextFormat.FontSize);
             textFormat.SetWrapText(googleCellData.EffectiveFormat?.WrapStrategy.Equals("WRAP"));
         }));
@@ -291,11 +295,11 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         var greenChannel = LinearlyInterpolate(googleGreenChannel, 0.0, 1.0, 0.0, 255.0);
         var blueChannel = LinearlyInterpolate(googleBlueChannel, 0.0, 1.0, 0.0, 255.0);
 
-        return (Color.FromArgb(
+        return Color.FromArgb(
             System.Convert.ToInt32(alphaChannel),
             System.Convert.ToInt32(redChannel),
             System.Convert.ToInt32(greenChannel),
-            System.Convert.ToInt32(blueChannel)));
+            System.Convert.ToInt32(blueChannel));
     }
 
     private double LinearlyInterpolate(double x, double x0, double x1, double y0, double y1)
