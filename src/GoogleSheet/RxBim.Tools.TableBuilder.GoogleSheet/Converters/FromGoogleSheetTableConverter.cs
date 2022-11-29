@@ -1,4 +1,4 @@
-﻿namespace RxBim.Tools.TableBuilder.Converters;
+﻿namespace RxBim.Tools.TableBuilder;
 
 using System.Linq;
 using Google.Apis.Sheets.v4.Data;
@@ -196,17 +196,12 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
             .BackgroundColor;
         if (googleBackgroundColor == null)
             return;
-        var colorChannels = ConvertArgb(
+        var color = ConvertArgb(
             googleBackgroundColor.Alpha ?? 1.0,
             googleBackgroundColor.Red ?? 0.0,
             googleBackgroundColor.Green ?? 0.0,
             googleBackgroundColor.Blue ?? 0.0);
-        cellBuilder.SetFormat(format => format.SetBackgroundColor(
-            Color.FromArgb(
-                colorChannels.A,
-                colorChannels.R,
-                colorChannels.G,
-                colorChannels.B)));
+        cellBuilder.SetFormat(format => format.SetBackgroundColor(color));
     }
 
     private void CopyContentMargins(CellData googleCellData, CellBuilder cellBuilder)
@@ -239,13 +234,8 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
                 googleTextFormat.ForegroundColor.Alpha ?? 1.0,
                 googleTextFormat.ForegroundColor.Red ?? 0.0,
                 googleTextFormat.ForegroundColor.Green ?? 0.0,
-                googleTextFormat.ForegroundColor.Blue ?? 0);
-            textFormat.SetTextColor(
-                Color.FromArgb(
-                    fontColor.A,
-                    fontColor.R,
-                    fontColor.G,
-                    fontColor.B));
+                googleTextFormat.ForegroundColor.Blue ?? 0.0);
+            textFormat.SetTextColor(fontColor);
             textFormat.SetTextSize(googleTextFormat.FontSize);
             textFormat.SetWrapText(googleCellData.EffectiveFormat?.WrapStrategy.Equals("WRAP"));
         }));
@@ -298,18 +288,18 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         }
     }
 
-    private (int A, int R, int G, int B) ConvertArgb(double a, double r, double g, double b)
+    private Color ConvertArgb(double a, double r, double g, double b)
     {
         var alphaChannel = LinearlyInterpolate(a, 1.0, 0.0, 0.0, 255.0);
         var redChannel = LinearlyInterpolate(r, 0.0, 1.0, 0.0, 255.0);
         var greenChannel = LinearlyInterpolate(g, 0.0, 1.0, 0.0, 255.0);
         var blueChannel = LinearlyInterpolate(b, 0.0, 1.0, 0.0, 255.0);
 
-        return (
+        return (Color.FromArgb(
             System.Convert.ToInt32(alphaChannel),
             System.Convert.ToInt32(redChannel),
             System.Convert.ToInt32(greenChannel),
-            System.Convert.ToInt32(blueChannel));
+            System.Convert.ToInt32(blueChannel)));
     }
 
     private double LinearlyInterpolate(double x, double x0, double x1, double y0, double y1)
