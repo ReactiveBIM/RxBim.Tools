@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Tools.Revit.Abstractions
 {
+    using System.Collections.Generic;
     using Autodesk.Revit.DB;
     using CSharpFunctionalExtensions;
     using Models;
@@ -105,5 +106,24 @@
         /// <param name="document">документ для проверки.
         /// Если задано null, то параметр проверяется в текущем документе</param>
         bool ParameterExistsInDocument(SharedParameterDefinition definition, bool fullMatch, Document? document = null);
+
+        /// <summary>
+        /// Проверяет существование параметра в выбранном документе
+        /// </summary>
+        /// <param name="parameterInfo"><see cref="SharedParameterInfo"/></param>
+        /// <param name="fullMatch">True - параметр должен совпасть со всеми заполненными значениями
+        /// sharedParameterInfo, доступными для проверки через SharedParameterElement (Имя, Guid, DataType).
+        /// False - параметр ищется только по имени</param>
+        /// <param name="document">документ для проверки.
+        /// Если задано null, то параметр проверяется в текущем документе</param>
+        /// <param name="sharedParameters">Коллекция общих параметров <see cref="SharedParameterElement"/>. Если задано null,
+        /// получает общие параметры, доступные в проекте</param>
+        /// <param name="definitionFile">ФОП. Если задано null, берется ФОП из документа</param>
+        Result ParameterExistsInDocument(
+            SharedParameterInfo parameterInfo,
+            bool fullMatch,
+            Document? document = null,
+            IEnumerable<SharedParameterElement>? sharedParameters = null,
+            DefinitionFile? definitionFile = null);
     }
 }
