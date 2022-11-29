@@ -196,11 +196,7 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
             .BackgroundColor;
         if (googleBackgroundColor == null)
             return;
-        var color = ConvertArgb(
-            googleBackgroundColor.Alpha ?? 1.0,
-            googleBackgroundColor.Red ?? 0.0,
-            googleBackgroundColor.Green ?? 0.0,
-            googleBackgroundColor.Blue ?? 0.0);
+        var color = ConvertArgb(googleBackgroundColor);
         cellBuilder.SetFormat(format => format.SetBackgroundColor(color));
     }
 
@@ -230,11 +226,7 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
             textFormat.SetBold(googleTextFormat.Bold ?? false);
             textFormat.SetItalic(googleTextFormat.Italic ?? false);
             textFormat.SetFontFamily(googleTextFormat.FontFamily);
-            var fontColor = ConvertArgb(
-                googleTextFormat.ForegroundColor.Alpha ?? 1.0,
-                googleTextFormat.ForegroundColor.Red ?? 0.0,
-                googleTextFormat.ForegroundColor.Green ?? 0.0,
-                googleTextFormat.ForegroundColor.Blue ?? 0.0);
+            var fontColor = ConvertArgb(googleTextFormat.ForegroundColor);
             textFormat.SetTextColor(fontColor);
             textFormat.SetTextSize(googleTextFormat.FontSize);
             textFormat.SetWrapText(googleCellData.EffectiveFormat?.WrapStrategy.Equals("WRAP"));
@@ -288,12 +280,16 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         }
     }
 
-    private Color ConvertArgb(double a, double r, double g, double b)
+    private Color ConvertArgb(Google.Apis.Sheets.v4.Data.Color color)
     {
-        var alphaChannel = LinearlyInterpolate(a, 1.0, 0.0, 0.0, 255.0);
-        var redChannel = LinearlyInterpolate(r, 0.0, 1.0, 0.0, 255.0);
-        var greenChannel = LinearlyInterpolate(g, 0.0, 1.0, 0.0, 255.0);
-        var blueChannel = LinearlyInterpolate(b, 0.0, 1.0, 0.0, 255.0);
+        var googleAlphaChannel = color.Alpha ?? 1.0;
+        var googleRedChannel = color.Red ?? 0.0;
+        var googleGreenChannel = color.Green ?? 0.0;
+        var googleBlueChannel = color.Blue ?? 0.0;
+        var alphaChannel = LinearlyInterpolate(googleAlphaChannel, 1.0, 0.0, 0.0, 255.0);
+        var redChannel = LinearlyInterpolate(googleRedChannel, 0.0, 1.0, 0.0, 255.0);
+        var greenChannel = LinearlyInterpolate(googleGreenChannel, 0.0, 1.0, 0.0, 255.0);
+        var blueChannel = LinearlyInterpolate(googleBlueChannel, 0.0, 1.0, 0.0, 255.0);
 
         return (Color.FromArgb(
             System.Convert.ToInt32(alphaChannel),
