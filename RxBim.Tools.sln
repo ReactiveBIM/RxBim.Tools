@@ -79,6 +79,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.TableBuilder", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.Autocad.Tests", "tests\RxBim.Tools.Autocad.Tests\RxBim.Tools.Autocad.Tests.csproj", "{88D7E075-7346-4274-8BB5-5B79E6312775}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GoogleSheet", "GoogleSheet", "{64EF0FBD-52EC-4CC9-869D-48BED3874F25}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.TableBuilder.GoogleSheet", "src\GoogleSheet\RxBim.Tools.TableBuilder.GoogleSheet\RxBim.Tools.TableBuilder.GoogleSheet.csproj", "{746EDD26-1025-431E-8695-CFCACABDAD81}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.TableBuilder.GoogleSheet.Sample", "samples\RxBim.Tools.TableBuilder.GoogleSheet.Sample\RxBim.Tools.TableBuilder.GoogleSheet.Sample.csproj", "{502788B1-BD7A-46F4-BEA9-78B56B0E1784}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -151,6 +157,14 @@ Global
 		{88D7E075-7346-4274-8BB5-5B79E6312775}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88D7E075-7346-4274-8BB5-5B79E6312775}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88D7E075-7346-4274-8BB5-5B79E6312775}.Release|Any CPU.Build.0 = Release|Any CPU
+		{746EDD26-1025-431E-8695-CFCACABDAD81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{746EDD26-1025-431E-8695-CFCACABDAD81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{746EDD26-1025-431E-8695-CFCACABDAD81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{746EDD26-1025-431E-8695-CFCACABDAD81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{502788B1-BD7A-46F4-BEA9-78B56B0E1784}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{502788B1-BD7A-46F4-BEA9-78B56B0E1784}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{502788B1-BD7A-46F4-BEA9-78B56B0E1784}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{502788B1-BD7A-46F4-BEA9-78B56B0E1784}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -176,6 +190,9 @@ Global
 		{49AF6550-45C6-4CE6-9D0B-799A9A79FEC6} = {5FDD1C3F-41CC-488C-886A-22D5FEBBA1CD}
 		{2B075800-69C0-458B-AE76-3E46689B687F} = {5FDD1C3F-41CC-488C-886A-22D5FEBBA1CD}
 		{88D7E075-7346-4274-8BB5-5B79E6312775} = {1B8A8578-7C3C-425C-B769-9E097411094F}
+		{64EF0FBD-52EC-4CC9-869D-48BED3874F25} = {5339A0F1-1884-4682-BFD2-DE050B2E5D69}
+		{746EDD26-1025-431E-8695-CFCACABDAD81} = {64EF0FBD-52EC-4CC9-869D-48BED3874F25}
+		{502788B1-BD7A-46F4-BEA9-78B56B0E1784} = {EA1ADE6F-F986-4CF3-A953-5B3C25A5C3F0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EA2C589E-5222-413E-AEDF-F8B9DA1ABC2F}
