@@ -92,7 +92,7 @@
                     break;
 
                 default:
-                    cell.Value = content.ValueObject;
+                    cell.SetValue(content.ValueObject);
                     break;
             }
         }
