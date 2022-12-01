@@ -3,5 +3,6 @@
 
     <PropertyGroup>
         <Version>1.0.2</Version>
+        <PackageReleaseNotes>Fix SetValue for string type values, without format auto-detection.</PackageReleaseNotes>
     </PropertyGroup>
 </Project>
