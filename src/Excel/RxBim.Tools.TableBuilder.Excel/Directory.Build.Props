@@ -2,6 +2,7 @@
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
     <PropertyGroup>
-        <Version>1.0.1</Version>
+        <Version>1.0.2-dev01</Version>
+        <PackageReleaseNotes>Fix SetValue for string type values, without format auto-detection.</PackageReleaseNotes>
     </PropertyGroup>
 </Project>
