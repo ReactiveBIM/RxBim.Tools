@@ -67,8 +67,12 @@
         }
 
         /// <inheritdoc />
-        public ICellFormatStyleBuilder SetFromFormat(CellFormatStyle format, CellFormatStyle? defaultFormat = null)
+        public ICellFormatStyleBuilder SetFromFormat(
+            CellFormatStyle format,
+            CellFormatStyle? defaultFormat = null,
+            bool useNullValue = true)
         {
+            // TODO: Use useNullValue parameter
             return SetBorders(bordersBuilder => bordersBuilder.SetBorders(
                     format.Borders.Top ?? defaultFormat?.Borders.Top,
                     format.Borders.Bottom ?? defaultFormat?.Borders.Bottom,

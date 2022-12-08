@@ -50,7 +50,11 @@ public interface ICellFormatStyleBuilder
     /// </summary>
     /// <param name="format">Another format.</param>
     /// <param name="defaultFormat">Additional another format.</param>
-    public ICellFormatStyleBuilder SetFromFormat(CellFormatStyle format, CellFormatStyle? defaultFormat = null);
+    /// <param name="useNullValue">If true sets null value from <paramref name="format"/> and <paramref name="defaultFormat"/>.</param>
+    /// <remarks>Priority for the <paramref name="format"/>.
+    /// If property in <paramref name="format"/> is null sets property from <paramref name="defaultFormat"/>.</remarks>
+    public ICellFormatStyleBuilder SetFromFormat(
+        CellFormatStyle format, CellFormatStyle? defaultFormat = null, bool useNullValue = true);
 
     /// <summary>
     /// Returns the built <see cref="CellFormatStyle"/>.
