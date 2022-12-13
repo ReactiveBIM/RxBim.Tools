@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Tools.TableBuilder
 {
+    using System;
     using System.Drawing;
     using Builders;
     using JetBrains.Annotations;
@@ -67,20 +68,31 @@
         /// <inheritdoc />
         public ICellTextFormatStyleBuilder SetFromFormat(
             CellTextFormatStyle textFormat,
-            CellTextFormatStyle? additionalTextFormat = null)
+            CellTextFormatStyle? additionalTextFormat = null,
+            bool useNullValue = true)
         {
-            return SetBold(textFormat.Bold ?? additionalTextFormat?.Bold)
-                .SetItalic(textFormat.Italic ?? additionalTextFormat?.Italic)
-                .SetFontFamily(textFormat.FontFamily ?? additionalTextFormat?.FontFamily)
-                .SetTextColor(textFormat.TextColor ?? additionalTextFormat?.TextColor)
-                .SetTextSize(textFormat.TextSize ?? additionalTextFormat?.TextSize)
-                .SetWrapText(textFormat.WrapText ?? additionalTextFormat?.WrapText);
+            SetValue(textFormat.Bold, additionalTextFormat?.Bold, useNullValue, v => SetBold(v));
+            SetValue(textFormat.Italic, additionalTextFormat?.Italic, useNullValue, v => SetItalic(v));
+            SetValue(textFormat.FontFamily, additionalTextFormat?.FontFamily, useNullValue, v => SetFontFamily(v));
+            SetValue(textFormat.TextColor, additionalTextFormat?.TextColor, useNullValue, v => SetTextColor(v));
+            SetValue(textFormat.TextSize, additionalTextFormat?.TextSize, useNullValue, v => SetTextSize(v));
+            SetValue(textFormat.WrapText, additionalTextFormat?.WrapText, useNullValue, v => SetWrapText(v));
+            return this;
         }
 
         /// <inheritdoc />
         public CellTextFormatStyle Build()
         {
             return _textFormat;
+        }
+
+        private static void SetValue<T>(T? main, T? alternative, bool useNullValue, Action<T?> setValueAction)
+        {
+            var value = main ?? alternative;
+            if (main is not null || useNullValue)
+            {
+                setValueAction(value);
+            }
         }
     }
 }

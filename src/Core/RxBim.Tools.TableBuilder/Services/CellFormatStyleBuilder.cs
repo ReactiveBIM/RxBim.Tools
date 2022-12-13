@@ -72,30 +72,76 @@
             CellFormatStyle? defaultFormat = null,
             bool useNullValue = true)
         {
-            // TODO: Use useNullValue parameter
-            return SetBorders(bordersBuilder => bordersBuilder.SetBorders(
-                    format.Borders.Top ?? defaultFormat?.Borders.Top,
-                    format.Borders.Bottom ?? defaultFormat?.Borders.Bottom,
-                    format.Borders.Left ?? defaultFormat?.Borders.Left,
-                    format.Borders.Right ?? defaultFormat?.Borders.Right))
-                .SetBackgroundColor(format.BackgroundColor ?? defaultFormat?.BackgroundColor)
-                .SetContentMargins(contentMarginsBuilder =>
-                    contentMarginsBuilder.SetContentMargins(
-                        format.ContentMargins.Top ?? defaultFormat?.ContentMargins.Top,
-                        format.ContentMargins.Bottom ?? defaultFormat?.ContentMargins.Bottom,
-                        format.ContentMargins.Left ?? defaultFormat?.ContentMargins.Left,
-                        format.ContentMargins.Right ?? defaultFormat?.ContentMargins.Right))
-                .SetContentHorizontalAlignment(
-                    format.ContentHorizontalAlignment ?? defaultFormat?.ContentHorizontalAlignment)
-                .SetContentVerticalAlignment(
-                    format.ContentVerticalAlignment ?? defaultFormat?.ContentVerticalAlignment)
-                .SetTextFormat(x => x.SetFromFormat(format.TextFormat, defaultFormat?.TextFormat));
+            /*SetValue(format.Borders.Top,
+                defaultFormat?.Borders.Top,
+                useNullValue,
+                v => SetBorders(builder => builder.SetTopBorder(v)));*/
+
+            SetBorders(bordersBuilder =>
+            {
+                SetValue(format.Borders.Top,
+                    defaultFormat?.Borders.Top,
+                    useNullValue,
+                    v => bordersBuilder.SetTopBorder(v));
+                SetValue(format.Borders.Bottom,
+                    defaultFormat?.Borders.Bottom,
+                    useNullValue,
+                    v => bordersBuilder.SetBottomBorder(v));
+                SetValue(format.Borders.Left,
+                    defaultFormat?.Borders.Left,
+                    useNullValue,
+                    v => bordersBuilder.SetLeftBorder(v));
+                SetValue(format.Borders.Right,
+                    defaultFormat?.Borders.Right,
+                    useNullValue,
+                    v => bordersBuilder.SetRightBorder(v));
+            });
+            SetValue(format.BackgroundColor, defaultFormat?.BackgroundColor, useNullValue, v => SetBackgroundColor(v));
+            SetContentMargins(contentMarginsBuilder =>
+            {
+                SetValue(format.ContentMargins.Top,
+                    defaultFormat?.ContentMargins.Top,
+                    useNullValue,
+                    v => contentMarginsBuilder.SetTopMargin(v));
+                SetValue(format.ContentMargins.Bottom,
+                    defaultFormat?.ContentMargins.Bottom,
+                    useNullValue,
+                    v => contentMarginsBuilder.SetBottomMargin(v));
+                SetValue(format.ContentMargins.Left,
+                    defaultFormat?.ContentMargins.Left,
+                    useNullValue,
+                    v => contentMarginsBuilder.SetLeftMargin(v));
+                SetValue(format.ContentMargins.Right,
+                    defaultFormat?.ContentMargins.Right,
+                    useNullValue,
+                    v => contentMarginsBuilder.SetRightMargin(v));
+            });
+            SetValue(format.ContentHorizontalAlignment,
+                defaultFormat?.ContentHorizontalAlignment,
+                useNullValue,
+                v => SetContentHorizontalAlignment(v));
+            SetValue(format.ContentVerticalAlignment,
+                defaultFormat?.ContentVerticalAlignment,
+                useNullValue,
+                v => SetContentVerticalAlignment(v));
+
+            SetTextFormat(x => x.SetFromFormat(format.TextFormat, defaultFormat?.TextFormat, useNullValue));
+            return this;
         }
 
         /// <inheritdoc />
         public CellFormatStyle Build()
         {
             return _format;
+        }
+
+        private static void SetValue<T>(T? main, T? alternative, bool useNullValue, Action<T?> setValueAction)
+        {
+            var value = main ?? alternative;
+            if (main is not null || useNullValue)
+            {
+                setValueAction(value);
+            }
         }
     }
 }

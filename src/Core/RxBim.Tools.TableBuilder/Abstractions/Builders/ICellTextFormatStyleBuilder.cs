@@ -49,9 +49,11 @@ public interface ICellTextFormatStyleBuilder
     /// </summary>
     /// <param name="textFormat">Another format.</param>
     /// <param name="additionalTextFormat">Additional another format.</param>
+    /// <param name="useNullValue">If true sets null value from <paramref name="textFormat"/> and <paramref name="additionalTextFormat"/>.</param>
     public ICellTextFormatStyleBuilder SetFromFormat(
         CellTextFormatStyle textFormat,
-        CellTextFormatStyle? additionalTextFormat = null);
+        CellTextFormatStyle? additionalTextFormat = null,
+        bool useNullValue = true);
 
     /// <summary>
     /// Returns the built <see cref="CellTextFormatStyle"/>.
