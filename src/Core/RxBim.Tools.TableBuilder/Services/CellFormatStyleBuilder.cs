@@ -72,11 +72,6 @@
             CellFormatStyle? defaultFormat = null,
             bool useNullValue = true)
         {
-            /*SetValue(format.Borders.Top,
-                defaultFormat?.Borders.Top,
-                useNullValue,
-                v => SetBorders(builder => builder.SetTopBorder(v)));*/
-
             SetBorders(bordersBuilder =>
             {
                 SetValue(format.Borders.Top,
