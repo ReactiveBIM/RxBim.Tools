@@ -70,6 +70,16 @@
         /// <summary>
         /// Sets format for the cells set.
         /// </summary>
+        /// <param name="adjustToContent">Adjust to content value.</param>
+        public TBuilder SetAdjustToContent(bool adjustToContent)
+        {
+            ObjectForBuild.IsAdjustedToContent = adjustToContent;
+            return (TBuilder)this;
+        }
+
+        /// <summary>
+        /// Sets format for the cells set.
+        /// </summary>
         /// <param name="action">Format building action.</param>
         public TBuilder SetFormat(Action<ICellFormatStyleBuilder> action)
         {

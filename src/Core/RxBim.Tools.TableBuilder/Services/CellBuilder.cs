@@ -47,14 +47,14 @@
         /// <inheritdoc />
         public ICellBuilder<Cell> SetWidth(double width)
         {
-            ObjectForBuild.Column.OwnWidth = width;
+            ObjectForBuild.Column.Width = width;
             return this;
         }
 
         /// <inheritdoc />
         public ICellBuilder<Cell> SetHeight(double height)
         {
-            ObjectForBuild.Row.OwnHeight = height;
+            ObjectForBuild.Row.Height = height;
             return this;
         }
 

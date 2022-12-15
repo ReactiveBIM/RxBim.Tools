@@ -40,8 +40,8 @@
             {
                 var acadCol = acadTable.Columns[columnIndex];
                 var width = tableData.Columns[columnIndex].Width;
-                if (width > 0)
-                    acadCol.Width = width;
+                if (width is > 0)
+                    acadCol.Width = width.Value;
 
                 for (var rowIndex = 0; rowIndex < numRows; rowIndex++)
                 {
@@ -50,8 +50,8 @@
                     var cellData = tableData[rowIndex, columnIndex];
 
                     var rowHeight = tableData.Rows[rowIndex].Height;
-                    rowHeight = rowHeight > 0 ? rowHeight : parameters.DefaultRowHeight;
-                    acadRow.Height = rowHeight;
+                    rowHeight = rowHeight is > 0 ? rowHeight : parameters.DefaultRowHeight;
+                    acadRow.Height = rowHeight.Value;
 
                     var format = cellData.GetComposedFormat();
                     SetCellStyle(acadCell, format, parameters);
