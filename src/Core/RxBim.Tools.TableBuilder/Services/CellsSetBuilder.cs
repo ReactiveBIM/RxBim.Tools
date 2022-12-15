@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Builders;
     using Content;
     using Styles;
 
@@ -24,7 +25,7 @@
         /// <summary>
         /// Returns collection of <see cref="CellBuilder"/> for cells.
         /// </summary>
-        public IEnumerable<CellBuilder> ToCells()
+        public IEnumerable<ICellBuilder<Cell>> ToCells()
         {
             return ObjectForBuild.Cells.Select(x => (CellBuilder)x);
         }
@@ -35,7 +36,7 @@
         /// <param name="source">List of items.</param>
         /// <param name="cellsAction">Delegate. Applies to all filled cells.</param>
         /// <typeparam name="TSource">The type of the list item.</typeparam>
-        public TBuilder FromList<TSource>(List<TSource> source, Action<CellBuilder>? cellsAction = null)
+        public TBuilder FromList<TSource>(IList<TSource> source, Action<ICellBuilder<Cell>>? cellsAction = null)
         {
             if (!source.Any())
                 return (TBuilder)this;
@@ -70,7 +71,7 @@
         /// Sets format for the cells set.
         /// </summary>
         /// <param name="action">Format building action.</param>
-        public TBuilder SetFormat(Action<CellFormatStyleBuilder> action)
+        public TBuilder SetFormat(Action<ICellFormatStyleBuilder> action)
         {
             action(new CellFormatStyleBuilder(ObjectForBuild.Format));
             return (TBuilder)this;

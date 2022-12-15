@@ -5,7 +5,7 @@
     /// </summary>
     /// <typeparam name="TSource">The type of the source table.</typeparam>
     /// <typeparam name="TParams">The type of the converter parameters.</typeparam>
-    /// <typeparam name="TResult">The type of the convertion result.</typeparam>
+    /// <typeparam name="TResult">The type of the conversion result.</typeparam>
     public interface ITableConverter<in TSource, in TParams, out TResult>
     {
         /// <summary>
@@ -14,7 +14,7 @@
         /// </summary>
         /// <param name="table">
         /// The source table object.</param>
-        /// <param name="parameters">The covertion parameters.</param>
+        /// <param name="parameters">The conversion parameters.</param>
         /// <returns>A new <typeparamref name="TResult"/> object.</returns>
         TResult Convert(TSource table, TParams parameters);
     }

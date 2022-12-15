@@ -41,7 +41,7 @@ namespace RxBim.Tools.TableBuilder.Excel.Tests
                 .ToList();
 
             return new TableBuilder()
-                .AddRowsFromList(list, 0, 0, p => p.Prop1, p => p.Prop2);
+                .AddRowsFromList(list, 0, 0, p => p.Prop1, p => p.Prop2).Build();
         }
 
         private class RowData
