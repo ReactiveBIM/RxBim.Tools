@@ -1,6 +1,7 @@
 ﻿namespace RxBim.Tools.TableBuilder;
 
 using System.Linq;
+using Builders;
 using Google.Apis.Sheets.v4.Data;
 using JetBrains.Annotations;
 using Styles;
@@ -98,7 +99,7 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         return spreadsheet.Sheets.FirstOrDefault(sheet => sheet.Properties.Title.Equals(targetSheet.Properties.Title))!;
     }
 
-    private void CopyCellFormat(CellData googleCellData, CellBuilder cellBuilder)
+    private void CopyCellFormat(CellData googleCellData, ICellBuilder<Cell> cellBuilder)
     {
         CopyBordersFormat(googleCellData, cellBuilder);
         CopyBackgroundColor(googleCellData, cellBuilder);
@@ -147,7 +148,7 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         }
     }
 
-    private void CopyBordersFormat(CellData googleCellData, CellBuilder cellBuilder)
+    private void CopyBordersFormat(CellData googleCellData, ICellBuilder<Cell> cellBuilder)
     {
         var cellBorders = new CellBorders();
         var properties = cellBorders
@@ -185,11 +186,12 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
             }
         }
 
-        cellBuilder.SetFormat(format =>
-            format.SetBorders(cellBorders.Top, cellBorders.Bottom, cellBorders.Left, cellBorders.Right));
+        cellBuilder.SetFormat(format => format
+            .SetBorders(borderBuilder => borderBuilder
+                .SetBorders(cellBorders.Top, cellBorders.Bottom, cellBorders.Left, cellBorders.Right)));
     }
 
-    private void CopyBackgroundColor(CellData googleCellData, CellBuilder cellBuilder)
+    private void CopyBackgroundColor(CellData googleCellData, ICellBuilder<Cell> cellBuilder)
     {
         var googleBackgroundColor = googleCellData
             .EffectiveFormat?
@@ -200,21 +202,19 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         cellBuilder.SetFormat(format => format.SetBackgroundColor(color));
     }
 
-    private void CopyContentMargins(CellData googleCellData, CellBuilder cellBuilder)
+    private void CopyContentMargins(CellData googleCellData, ICellBuilder<Cell> cellBuilder)
     {
         var padding = googleCellData
             .EffectiveFormat?
             .Padding;
         if (padding == null)
             return;
-        cellBuilder.SetFormat(format => format.SetContentMargins(
-            padding.Top,
-            padding.Bottom,
-            padding.Left,
-            padding.Right));
+        cellBuilder.SetFormat(format => format
+            .SetContentMargins(marginBuilder => marginBuilder
+                    .SetContentMargins(padding.Top, padding.Bottom, padding.Left, padding.Right)));
     }
 
-    private void CopyTextFormat(CellData googleCellData, CellBuilder cellBuilder)
+    private void CopyTextFormat(CellData googleCellData, ICellBuilder<Cell> cellBuilder)
     {
         var googleTextFormat = googleCellData
             .EffectiveFormat?
@@ -237,7 +237,7 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         }));
     }
 
-    private void CopyAlignment(CellData googleCellData, CellBuilder cellBuilder)
+    private void CopyAlignment(CellData googleCellData, ICellBuilder<Cell> cellBuilder)
     {
         var horizontalAlignment = googleCellData
             .EffectiveFormat?
