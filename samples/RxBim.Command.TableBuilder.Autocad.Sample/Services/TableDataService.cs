@@ -46,7 +46,7 @@
                                 CellBorderType.Bold,
                                 CellBorderType.Hidden,
                                 CellBorderType.Hidden)))
-                    .ToCells()
+                    .Cells
                     .First()
                     .SetText("Selected object data table"))
                 .AddRow(r => r.SetHeight(35) // Header
@@ -54,7 +54,7 @@
                         .SetBorders(builder => builder
                             .SetAllBorders(CellBorderType.Bold))
                         .SetContentHorizontalAlignment(CellContentHorizontalAlignment.Center))
-                    .ToCells()
+                    .Cells
                     .First()
                     .SetAcadTableText(@"Object\Pclass", RotationAngle.Degrees090)
                     .Next()
@@ -71,7 +71,7 @@
                 {
                     using var entity = id.OpenAs<Entity>();
 
-                    row.ToCells()
+                    row.Cells
                         .First()
                         .SetText(entity.GetRXClass().Name)
                         .Next()
@@ -86,10 +86,18 @@
             }
 
             // First data row
-            tableBuilder.ToRows().ElementAt(2).SetFormat(x => x.SetBorders(builder => builder.SetBorders(top: CellBorderType.Bold)));
+            tableBuilder.Rows
+                .ElementAt(2)
+                .SetFormat(x => x
+                    .SetBorders(builder => builder
+                        .SetBorders(top: CellBorderType.Bold)));
 
             // Last row
-            tableBuilder.ToRows().Last().SetFormat(x => x.SetBorders(builder => builder.SetBorders(bottom: CellBorderType.Bold)));
+            tableBuilder.Rows
+                .Last()
+                .SetFormat(x => x
+                    .SetBorders(builder => builder
+                        .SetBorders(bottom: CellBorderType.Bold)));
 
             return tableBuilder.Build();
         }

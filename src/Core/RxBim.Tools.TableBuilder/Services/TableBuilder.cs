@@ -21,13 +21,30 @@
             Table = table ?? new Table();
         }
 
+        /// <inheritdoc />
+        public IEnumerable<IRowBuilder<Cell>> Rows
+            => Table.Rows.Select(row => new RowBuilder(row));
+
+        /// <inheritdoc />
+        public int RowsCount
+            => Table.Rows.Count;
+
+        /// <inheritdoc />
+        public IEnumerable<IColumnBuilder<Cell>> Columns
+            => Table.Columns.Select(column => new ColumnBuilder(column));
+
+        /// <inheritdoc />
+        public int ColumnsCount
+            => Table.Columns.Count;
+
         /// <summary>
         /// The table to be built.
         /// </summary>
         private Table Table { get; }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> this[int row, int column] => new CellBuilder(Table[row, column]);
+        public ICellBuilder<Cell> this[int row, int column]
+            => new CellBuilder(Table[row, column]);
 
         /// <summary>
         /// Returns the built <see cref="Table"/>.
@@ -36,18 +53,6 @@
         public static implicit operator Table(TableBuilder builder)
         {
             return builder.Build();
-        }
-
-        /// <inheritdoc />
-        public IEnumerable<IRowBuilder<Cell>> ToRows()
-        {
-            return Table.Rows.Select(row => new RowBuilder(row));
-        }
-
-        /// <inheritdoc />
-        public IEnumerable<IColumnBuilder<Cell>> GetColumns()
-        {
-            return Table.Columns.Select(column => new ColumnBuilder(column));
         }
 
         /// <inheritdoc />
@@ -93,28 +98,30 @@
 
             var rowFormat = new CellFormatStyleBuilder()
                 .SetContentVerticalAlignment(CellContentVerticalAlignment.Middle)
-                .SetBorders(builder =>
-                    builder.SetBorders(CellBorderType.Thin, CellBorderType.Thin, CellBorderType.Bold, CellBorderType.Bold))
+                .SetBorders(builder => builder
+                    .SetBorders(
+                        CellBorderType.Thin, CellBorderType.Thin, CellBorderType.Bold, CellBorderType.Bold))
                 .Build();
 
             var lastRowFormat = new CellFormatStyleBuilder()
                 .SetContentVerticalAlignment(CellContentVerticalAlignment.Middle)
-                .SetBorders(builder =>
-                    builder.SetBorders(CellBorderType.Thin, CellBorderType.Bold, CellBorderType.Bold, CellBorderType.Bold))
+                .SetBorders(builder => builder
+                    .SetBorders(
+                        CellBorderType.Thin, CellBorderType.Bold, CellBorderType.Bold, CellBorderType.Bold))
                 .Build();
 
             SetFormat(boldFormat);
 
-            if (Table.Rows.Count() > headerRowsCount + 1)
-            {
-                SetCellsFormat(rowFormat,
-                    headerRowsCount + 1,
-                    0,
-                    Table.Columns.Count(),
-                    Table.Rows.Count() - headerRowsCount);
-                foreach (var cell in Table.Rows.Last().Cells)
-                    ((CellBuilder)cell).SetFormat(lastRowFormat);
-            }
+            if (Table.Rows.Count() <= headerRowsCount + 1)
+                return this;
+            
+            SetCellsFormat(rowFormat,
+                headerRowsCount + 1,
+                0,
+                Table.Columns.Count(),
+                Table.Rows.Count() - headerRowsCount);
+            foreach (var cell in Table.Rows.Last().Cells)
+                ((CellBuilder)cell).SetFormat(lastRowFormat);
 
             return this;
         }
@@ -171,9 +178,7 @@
                 for (var r = 0; r < list.Count; r++)
                 {
                     var value = prop.Invoke(list[r]);
-                    matrix[r, c] = prop is ICellContent propContent
-                        ? propContent
-                        : new TextCellContent(value.ToString());
+                    matrix[r, c] = prop as ICellContent ?? new TextCellContent(value.ToString());
                 }
             }
 
@@ -215,9 +220,7 @@
                 for (var c = 0; c < list.Count; c++)
                 {
                     var value = prop.Invoke(list[c]);
-                    matrix[r, c] = prop is ICellContent propContent
-                        ? propContent
-                        : new TextCellContent(value.ToString());
+                    matrix[r, c] = prop as ICellContent ?? new TextCellContent(value.ToString());
                 }
             }
 

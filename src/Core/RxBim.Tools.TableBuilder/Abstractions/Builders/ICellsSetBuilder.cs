@@ -9,7 +9,7 @@ public interface ICellsSetBuilder<TItem>
     where TItem : TableItemBase
 {
     /// <summary>
-    /// Returns collection of <see cref="CellBuilder"/> for cells.
+    /// Collection of <see cref="CellBuilder"/> for cells.
     /// </summary>
-    public IEnumerable<ICellBuilder<TItem>> ToCells();
+    IEnumerable<ICellBuilder<TItem>> Cells { get; }
 }

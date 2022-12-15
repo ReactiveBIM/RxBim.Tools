@@ -14,13 +14,13 @@ public interface IRowBuilder<TItem> : ICellsSetBuilder<TItem>
     /// Sets the height of the row.
     /// </summary>
     /// <param name="height">Row height value.</param>
-    public IRowBuilder<TItem> SetHeight(double height);
+    IRowBuilder<TItem> SetHeight(double height);
 
     /// <summary>
     /// Merges all cells in the row.
     /// </summary>
     /// <param name="action">Delegate, applied to the cells to be merged.</param>
-    public IRowBuilder<TItem> MergeRow(Action<ICellBuilder<TItem>, ICellBuilder<TItem>>? action = null);
+    IRowBuilder<TItem> MergeRow(Action<ICellBuilder<TItem>, ICellBuilder<TItem>>? action = null);
 
     /// <summary>
     /// Sets format for the cells set.
@@ -40,5 +40,5 @@ public interface IRowBuilder<TItem> : ICellsSetBuilder<TItem>
     /// <param name="source">List of items.</param>
     /// <param name="cellsAction">Delegate. Applies to all filled cells.</param>
     /// <typeparam name="TSource">The type of the list item.</typeparam>
-    public IRowBuilder<TItem> FromList<TSource>(IList<TSource> source, Action<ICellBuilder<TItem>>? cellsAction = null);
+    IRowBuilder<TItem> FromList<TSource>(IList<TSource> source, Action<ICellBuilder<TItem>>? cellsAction = null);
 }

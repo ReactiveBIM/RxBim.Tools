@@ -31,7 +31,7 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
                 continue;
             for (var cellIndex = 0; cellIndex < cellsData.Count; cellIndex++)
             {
-                if (cellIndex >= builder.GetColumns().Count())
+                if (cellIndex >= builder.ColumnsCount)
                     builder.AddColumn();
                 var cellData = cellsData[cellIndex];
                 var builderCell = builder[rowIndex, cellIndex];
@@ -76,10 +76,10 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
                 || lastColumnsIndex == null)
                 continue;
             var startRow = builder
-                .ToRows()
+                .Rows
                 .ElementAt(startRowIndex.Value);
             var startCell = startRow
-                .ToCells()
+                .Cells
                 .ElementAt(startColumnIndex.Value);
             startCell.MergeNext(lastColumnsIndex.Value - startColumnIndex.Value - 1);
             startCell.MergeDown(lastRowIndex.Value - startRowIndex.Value - 1);
@@ -117,7 +117,7 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
             return;
 
         var tableBuilderRows = tableBuilder
-            .ToRows()
+            .Rows
             .ToList();
 
         for (var rowIndex = 0; rowIndex < sizes.Count && rowIndex < tableBuilderRows.Count; rowIndex++)
@@ -136,8 +136,7 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         if (sizes == null || !sizes.Any())
             return;
 
-        var tableBuilderColumns = tableBuilder
-            .GetColumns()
+        var tableBuilderColumns = tableBuilder.Columns
             .ToList();
 
         for (var columnIndex = 0; columnIndex < sizes.Count && columnIndex < tableBuilderColumns.Count; columnIndex++)
