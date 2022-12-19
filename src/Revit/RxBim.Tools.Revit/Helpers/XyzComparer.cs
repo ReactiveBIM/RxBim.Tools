@@ -1,31 +1,56 @@
 ﻿namespace RxBim.Tools.Revit.Helpers
 {
+    using System;
     using System.Collections.Generic;
     using Autodesk.Revit.DB;
 
     /// <summary>
     /// Comparer for <see cref="XYZ"/>.
     /// </summary>
-    public class XyzComparer : IComparer<XYZ>
+    public class XyzComparer : IEqualityComparer<XYZ>, IComparer<XYZ>
     {
-        private const double Tolerance = 0.0001;
-
-        /// <inheritdoc/>
-        public int Compare(XYZ x, XYZ y)
+        /// <inheritdoc />
+        public bool Equals(XYZ x, XYZ y)
         {
-            var compareValue = Compare(x.X, y.X);
-
-            if (compareValue != 0)
-                return compareValue;
-
-            compareValue = Compare(x.Y, y.Y);
-
-            return compareValue == 0 ? Compare(x.Z, y.Z) : compareValue;
+            if (ReferenceEquals(x, y))
+                return true;
+            if (ReferenceEquals(x, null))
+                return false;
+            if (ReferenceEquals(y, null))
+                return false;
+            if (x.GetType() != y.GetType())
+                return false;
+            return x.IsAlmostEqualTo(y);
         }
 
-        private static int Compare(double a, double b)
+        /// <inheritdoc />
+        public int GetHashCode(XYZ obj)
         {
-            return a.IsEqualTo(b, Tolerance) ? 0 : (a < b ? -1 : 1);
+            unchecked
+            {
+                var hashCode = Math.Round(obj.Z, 4).GetHashCode();
+                hashCode = (hashCode * 397) ^ Math.Round(obj.Y, 4).GetHashCode();
+                hashCode = (hashCode * 397) ^ Math.Round(obj.Z, 4).GetHashCode();
+                return hashCode;
+            }
+        }
+
+        /// <inheritdoc />
+        public int Compare(XYZ x, XYZ y)
+        {
+            if (ReferenceEquals(x, y))
+                return 0;
+            if (ReferenceEquals(null, y))
+                return 1;
+            if (ReferenceEquals(null, x))
+                return -1;
+            var zComparison = x.Z.CompareTo(y.Z);
+            if (zComparison != 0)
+                return zComparison;
+            var yComparison = x.Y.CompareTo(y.Y);
+            if (yComparison != 0)
+                return yComparison;
+            return x.X.CompareTo(y.X);
         }
     }
 }
