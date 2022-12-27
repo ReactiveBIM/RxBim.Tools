@@ -187,9 +187,9 @@
                     return parameter.Set(UnitUtils.ConvertToInternalUnits(dValue, parameter.DisplayUnitType));
 
                 case StorageType.ElementId:
-                    if ((value as ElementId) is null)
+                    if (value is not ElementId idValue)
                         return false;
-                    return parameter.Set((ElementId)value);
+                    return parameter.Set(idValue);
             }
 
             return false;
