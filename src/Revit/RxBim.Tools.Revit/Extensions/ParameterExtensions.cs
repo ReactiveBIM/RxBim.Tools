@@ -177,12 +177,12 @@
                     return parameter.Set(value.ToString());
 
                 case StorageType.Integer:
-                    if (!(value is int iValue) && !int.TryParse(value.ToString(), out iValue))
+                    if (value is not int iValue && !int.TryParse(value.ToString(), out iValue))
                         return false;
                     return parameter.Set(iValue);
 
                 case StorageType.Double:
-                    if (!(value is double dValue) && !double.TryParse(value.ToString(), out dValue))
+                    if (value is not double dValue && !double.TryParse(value.ToString(), out dValue))
                         return false;
                     return parameter.Set(UnitUtils.ConvertToInternalUnits(dValue, parameter.DisplayUnitType));
 
