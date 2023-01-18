@@ -134,10 +134,12 @@
             var blockContent = cell.Contents[0];
             blockContent.IsAutoScale = blockData.AutoScale;
 
-            if (!blockData.AutoScale && blockData.Scale > 0)
+            if (blockData is { AutoScale: false, Scale: > 0 })
                 blockContent.Scale = blockData.Scale;
 
             blockContent.Rotation = blockData.Rotation;
+
+            AddText(cell, blockData.Text);
         }
 
         private void SetCellStyle(Autodesk.AutoCAD.DatabaseServices.Cell cell, CellFormatStyle format, AutocadTableConverterParameters parameters)
@@ -222,6 +224,15 @@
                        format.ContentVerticalAlignment == CellContentVerticalAlignment.Top => CellAlignment.TopRight,
                 _ => null
             };
+        }
+
+        private void AddText(Autodesk.AutoCAD.DatabaseServices.Cell cell, string? text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return;
+
+            cell.Contents.InsertAt(0);
+            cell.Contents[0].TextString = text;
         }
     }
 }

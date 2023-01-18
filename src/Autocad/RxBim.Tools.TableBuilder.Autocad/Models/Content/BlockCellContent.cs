@@ -22,5 +22,10 @@ namespace RxBim.Tools.TableBuilder
         /// Scale value.
         /// </summary>
         public double Scale { get; set; }
+
+        /// <summary>
+        /// The text to be added to the cell with the block.
+        /// </summary>
+        public string? Text { get; set; }
     }
 }
