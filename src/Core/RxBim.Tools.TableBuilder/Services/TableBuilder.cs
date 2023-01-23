@@ -23,7 +23,7 @@
 
         /// <inheritdoc />
         public IEnumerable<IRowBuilder<Cell>> Rows
-            => Table.Rows.Select(row => new RowBuilder(row));
+            => Table.Rows.Select(row => (RowBuilder)row);
 
         /// <inheritdoc />
         public int RowsCount
@@ -31,7 +31,7 @@
 
         /// <inheritdoc />
         public IEnumerable<IColumnBuilder<Cell>> Columns
-            => Table.Columns.Select(column => new ColumnBuilder(column));
+            => Table.Columns.Select(column => (ColumnBuilder)column);
 
         /// <inheritdoc />
         public int ColumnsCount
@@ -112,14 +112,15 @@
 
             SetFormat(boldFormat);
 
-            if (Table.Rows.Count() <= headerRowsCount + 1)
+            if (RowsCount <= headerRowsCount + 1)
                 return this;
             
             SetCellsFormat(rowFormat,
                 headerRowsCount + 1,
                 0,
-                Table.Columns.Count(),
-                Table.Rows.Count() - headerRowsCount);
+                ColumnsCount,
+                RowsCount - headerRowsCount);
+            
             foreach (var cell in Table.Rows.Last().Cells)
                 ((CellBuilder)cell).SetFormat(lastRowFormat);
 
@@ -240,8 +241,8 @@
             int column,
             ICellContent[,] matrix)
         {
-            var diffRows = row + matrix.GetLength(0) - Table.Rows.Count();
-            var diffCols = column + matrix.GetLength(1) - Table.Columns.Count();
+            var diffRows = row + matrix.GetLength(0) - RowsCount;
+            var diffCols = column + matrix.GetLength(1) - ColumnsCount;
 
             AddRow(count: diffRows);
             AddColumn(count: diffCols);
