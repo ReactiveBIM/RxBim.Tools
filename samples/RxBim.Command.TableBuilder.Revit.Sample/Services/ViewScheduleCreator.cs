@@ -73,8 +73,13 @@
                         0,
                         columnsCount,
                         1);
-                tableBuilder.ToRows().Skip(1).ToList().ForEach(row => row.SetHeight(10));
-                tableBuilder.GetColumns().ToList().ForEach(col => col.SetWidth(30));
+                tableBuilder.Rows
+                    .Skip(1)
+                    .ToList()
+                    .ForEach(row => row.SetHeight(10));
+                tableBuilder.Columns
+                    .ToList()
+                    .ForEach(col => col.SetWidth(30));
 
                 var table = tableBuilder.Build();
                 var parameters = new ViewScheduleTableConverterParameters

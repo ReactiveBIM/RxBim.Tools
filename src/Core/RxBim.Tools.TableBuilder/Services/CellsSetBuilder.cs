@@ -25,11 +25,9 @@
         /// <summary>
         /// Returns collection of <see cref="CellBuilder"/> for cells.
         /// </summary>
-        public IEnumerable<ICellBuilder<Cell>> ToCells()
-        {
-            return ObjectForBuild.Cells.Select(x => (CellBuilder)x);
-        }
-
+        public IEnumerable<ICellBuilder<Cell>> Cells
+            => ObjectForBuild.Cells.Select(x => (CellBuilder)x);
+        
         /// <summary>
         /// Fills cells with text values from list items.
         /// </summary>

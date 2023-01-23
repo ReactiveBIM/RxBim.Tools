@@ -199,9 +199,9 @@
             var table = new TableBuilder()
                 .AddColumn(count: colCount)
                 .AddRow(count: rowCount)
-                .ToRows()
+                .Rows
                 .First()
-                .ToCells()
+                .Cells
                 .First()
                 .MergeNext(colCount - 1)
                 .MergeDown(rowCount - 1)
@@ -227,9 +227,9 @@
             Table table = new TableBuilder()
                 .AddColumn(count: colCount)
                 .AddRow(count: rowCount)
-                .ToRows()
+                .Rows
                 .First()
-                .ToCells()
+                .Cells
                 .First()
                 .MergeNext(colCount - 1)
                 .MergeDown(rowCount - 1)

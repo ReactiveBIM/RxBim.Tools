@@ -7,25 +7,35 @@ using Styles;
 /// <summary>
 /// The builder of a <see cref="Table"/>.
 /// </summary>
-public interface ITableBuilder<TItem>
+public interface ITableBuilder<TItem> : IBuilder<Table>
     where TItem : TableItemBase
 {
+    /// <summary>
+    /// Collection of <see cref="RowBuilder"/> for table rows.
+    /// </summary>
+    IEnumerable<IRowBuilder<TItem>> Rows { get; }
+    
+    /// <summary>
+    /// Gets table rows count.
+    /// </summary>
+    int RowsCount { get; }
+
+    /// <summary>
+    /// Collection of <see cref="ColumnBuilder"/> for table rows.
+    /// </summary>
+    IEnumerable<IColumnBuilder<TItem>> Columns { get; }
+    
+    /// <summary>
+    /// Gets table columns count.
+    /// </summary>
+    int ColumnsCount { get; }
+    
     /// <summary>
     /// Returns the builder of a table cell by row and column index.
     /// </summary>
     /// <param name="row">Row index.</param>
     /// <param name="column">Column index.</param>
-    public ICellBuilder<TItem> this[int row, int column] { get; }
-
-    /// <summary>
-    /// Returns collection of <see cref="RowBuilder"/> for table rows.
-    /// </summary>
-    public IEnumerable<IRowBuilder<TItem>> ToRows();
-
-    /// <summary>
-    /// Returns collection of <see cref="ColumnBuilder"/> for table rows.
-    /// </summary>
-    public IEnumerable<IColumnBuilder<TItem>> GetColumns();
+    ICellBuilder<TItem> this[int row, int column] { get; }
 
     /// <summary>
     /// Sets the default format for all cells.
@@ -132,9 +142,4 @@ public interface ITableBuilder<TItem>
         int rowIndex,
         int columnIndex,
         params Func<TSource, object>[] propertySelectors);
-
-    /// <summary>
-    /// Returns the built <see cref="Table"/>.
-    /// </summary>
-    public Table Build();
 }
