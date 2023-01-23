@@ -2,7 +2,6 @@
 {
     using System;
     using Autodesk.AutoCAD.DatabaseServices;
-    using Builders;
 
     /// <summary>
     /// Extensions for <see cref="CellBuilder"/>

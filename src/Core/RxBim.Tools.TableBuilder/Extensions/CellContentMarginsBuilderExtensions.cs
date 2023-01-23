@@ -1,8 +1,5 @@
 ﻿namespace RxBim.Tools.TableBuilder;
 
-using Builders;
-using Styles;
-
 /// <summary>
 /// Extensions for <see cref="ICellContentMarginsBuilder"/>.
 /// </summary>

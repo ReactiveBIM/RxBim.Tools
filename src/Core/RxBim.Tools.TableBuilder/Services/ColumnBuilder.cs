@@ -1,8 +1,6 @@
 ﻿namespace RxBim.Tools.TableBuilder
 {
     using System;
-    using Builders;
-    using Styles;
 
     /// <summary>
     /// The builder of a single <see cref="Column"/> of a <see cref="Table"/>.

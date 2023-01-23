@@ -1,8 +1,7 @@
-﻿namespace RxBim.Tools.TableBuilder.Builders;
+﻿namespace RxBim.Tools.TableBuilder;
 
 using System;
 using System.Collections.Generic;
-using Styles;
 
 /// <summary>
 /// The builder of a <see cref="Table"/>.

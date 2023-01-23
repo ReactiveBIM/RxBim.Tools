@@ -2,10 +2,7 @@
 {
     using System;
     using System.Linq;
-    using Builders;
-    using Content;
     using JetBrains.Annotations;
-    using Styles;
 
     /// <summary>
     /// The builder of a single <see cref="Cell"/> of a <see cref="Table"/>.

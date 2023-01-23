@@ -1,6 +1,4 @@
-﻿namespace RxBim.Tools.TableBuilder.Builders;
-
-using Styles;
+﻿namespace RxBim.Tools.TableBuilder;
 
 /// <summary>
 /// Builder for <see cref="CellBorders"/>.

@@ -3,8 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Builders;
-    using Styles;
 
     /// <summary>
     /// The builder of a single <see cref="Row"/> of a <see cref="Table"/>.

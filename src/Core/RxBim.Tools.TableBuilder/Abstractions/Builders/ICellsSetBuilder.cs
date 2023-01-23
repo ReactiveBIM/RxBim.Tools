@@ -1,4 +1,4 @@
-﻿namespace RxBim.Tools.TableBuilder.Builders;
+﻿namespace RxBim.Tools.TableBuilder;
 
 using System.Collections.Generic;
 

@@ -3,9 +3,7 @@
     using System.Collections.Generic;
     using System.Drawing;
     using System.Linq;
-    using Content;
     using FluentAssertions;
-    using Styles;
     using Xunit;
     using RxBim.Tools.TableBuilder;
 

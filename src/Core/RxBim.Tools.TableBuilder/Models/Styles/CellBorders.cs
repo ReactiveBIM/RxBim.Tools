@@ -1,4 +1,4 @@
-﻿namespace RxBim.Tools.TableBuilder.Styles
+﻿namespace RxBim.Tools.TableBuilder
 {
     /// <summary>
     /// Line types for cell borders.

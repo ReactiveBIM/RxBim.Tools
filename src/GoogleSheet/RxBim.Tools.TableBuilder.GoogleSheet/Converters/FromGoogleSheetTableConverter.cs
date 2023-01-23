@@ -1,10 +1,8 @@
 ﻿namespace RxBim.Tools.TableBuilder;
 
 using System.Linq;
-using Builders;
 using Google.Apis.Sheets.v4.Data;
 using JetBrains.Annotations;
-using Styles;
 using Color = System.Drawing.Color;
 
 /// <summary>

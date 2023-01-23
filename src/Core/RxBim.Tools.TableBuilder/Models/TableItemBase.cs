@@ -1,7 +1,5 @@
 ﻿namespace RxBim.Tools.TableBuilder
 {
-    using Styles;
-
     /// <summary>
     /// The base class of the table item.
     /// </summary>

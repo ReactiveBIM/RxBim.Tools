@@ -3,9 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Builders;
-    using Content;
-    using Styles;
 
     /// <summary>
     /// The builder of a <see cref="Table"/>.
