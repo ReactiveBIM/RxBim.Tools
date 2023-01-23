@@ -13,17 +13,17 @@ public interface IColumnBuilder<TItem> : ICellsSetBuilder<TItem>
     /// Sets the width of the column.
     /// </summary>
     /// <param name="width">Column width.</param>
-    public IColumnBuilder<TItem> SetWidth(double width);
+    IColumnBuilder<TItem> SetWidth(double width);
     
     /// <summary>
     /// Sets format for the cells set.
     /// </summary>
     /// <param name="format">Format value.</param>
-    public IColumnBuilder<TItem> SetFormat(CellFormatStyle format);
+    IColumnBuilder<TItem> SetFormat(CellFormatStyle format);
 
     /// <summary>
     /// Sets format for the cells set.
     /// </summary>
     /// <param name="action">Format building action.</param>
-    public IColumnBuilder<TItem> SetFormat(Action<ICellFormatStyleBuilder> action);
+    IColumnBuilder<TItem> SetFormat(Action<ICellFormatStyleBuilder> action);
 }

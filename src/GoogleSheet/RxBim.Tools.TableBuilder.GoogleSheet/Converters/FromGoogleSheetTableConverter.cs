@@ -20,33 +20,34 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
 
         var builder = new TableBuilder();
         var sheetData = sheet.Data.FirstOrDefault();
+        
         if (sheetData?.RowData == null)
             return builder.Build();
+        
         for (var rowIndex = 0; rowIndex < sheetData.RowData.Count; rowIndex++)
         {
             builder.AddRow();
+            
             var rowData = sheetData.RowData[rowIndex];
             var cellsData = rowData.Values;
+            
             if (cellsData == null)
                 continue;
+            
             for (var cellIndex = 0; cellIndex < cellsData.Count; cellIndex++)
             {
-                if (cellIndex >= builder.GetColumns().Count())
+                if (cellIndex >= builder.ColumnsCount)
                     builder.AddColumn();
+                
                 var cellData = cellsData[cellIndex];
                 var builderCell = builder[rowIndex, cellIndex];
+                
                 if (cellData.EffectiveValue?.BoolValue.HasValue ?? false)
-                {
                     builderCell.SetValue(cellData.EffectiveValue.BoolValue.Value);
-                }
                 else if (cellData.EffectiveValue?.NumberValue.HasValue ?? false)
-                {
                     builderCell.SetValue(cellData.EffectiveValue.NumberValue.Value);
-                }
                 else
-                {
                     builderCell.SetValue(cellData.FormattedValue);
-                }
 
                 CopyCellFormat(cellData, builderCell);
             }
@@ -64,23 +65,27 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
     {
         if (sheet.Merges == null || !sheet.Merges.Any())
             return;
+        
         foreach (var sheetMerge in sheet.Merges)
         {
             var startRowIndex = sheetMerge.StartRowIndex;
             var startColumnIndex = sheetMerge.StartColumnIndex;
             var lastRowIndex = sheetMerge.EndRowIndex;
             var lastColumnsIndex = sheetMerge.EndColumnIndex;
+            
             if (startRowIndex == null
                 || startColumnIndex == null
                 || lastRowIndex == null
                 || lastColumnsIndex == null)
                 continue;
+            
             var startRow = builder
-                .ToRows()
+                .Rows
                 .ElementAt(startRowIndex.Value);
             var startCell = startRow
-                .ToCells()
+                .Cells
                 .ElementAt(startColumnIndex.Value);
+            
             startCell.MergeNext(lastColumnsIndex.Value - startColumnIndex.Value - 1);
             startCell.MergeDown(lastRowIndex.Value - startRowIndex.Value - 1);
         }
@@ -91,11 +96,15 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         var targetSheet =
             spreadsheet.Sheets.FirstOrDefault(sheet => sheet.Properties.Title.Equals(parameters.SheetName)) ??
             spreadsheet.Sheets.FirstOrDefault()!;
+        
         if (targetSheet.Data != null)
             return targetSheet;
+        
         var spreadsheetRequest = parameters.SheetsService.Spreadsheets.Get(spreadsheet.SpreadsheetId);
         spreadsheetRequest.IncludeGridData = true;
+        
         spreadsheet = spreadsheetRequest.Execute();
+        
         return spreadsheet.Sheets.FirstOrDefault(sheet => sheet.Properties.Title.Equals(targetSheet.Properties.Title))!;
     }
 
@@ -113,11 +122,12 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         var sizes = gridData.RowMetadata?
             .Select(metadata => metadata.PixelSize)
             .ToList();
+        
         if (sizes == null || !sizes.Any())
             return;
 
         var tableBuilderRows = tableBuilder
-            .ToRows()
+            .Rows
             .ToList();
 
         for (var rowIndex = 0; rowIndex < sizes.Count && rowIndex < tableBuilderRows.Count; rowIndex++)
@@ -133,11 +143,11 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         var sizes = gridData.ColumnMetadata?
             .Select(metadata => metadata.PixelSize)
             .ToList();
+        
         if (sizes == null || !sizes.Any())
             return;
 
-        var tableBuilderColumns = tableBuilder
-            .GetColumns()
+        var tableBuilderColumns = tableBuilder.Columns
             .ToList();
 
         for (var columnIndex = 0; columnIndex < sizes.Count && columnIndex < tableBuilderColumns.Count; columnIndex++)
@@ -158,19 +168,25 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         var googleBorders = googleCellData
             .EffectiveFormat?
             .Borders;
+        
         if (googleBorders == null)
             return;
+        
         var googleProperties = googleBorders
             .GetType()
             .GetProperties();
+        
         foreach (var googleBordersTypeProperty in googleProperties)
         {
             var googleBordersPropertyName = googleBordersTypeProperty.Name;
+            
             if (!properties.Any(cellProperty => cellProperty.Name.Equals(googleBordersPropertyName)))
                 continue;
+            
             var targetProperty = properties.FirstOrDefault(property => property.Name.Equals(googleBordersPropertyName));
             var border = googleBordersTypeProperty.GetValue(googleBorders) as Border;
             var borderStyle = border?.Style;
+            
             switch (borderStyle)
             {
                 case "SOLID_MEDIUM":
@@ -196,8 +212,10 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         var googleBackgroundColor = googleCellData
             .EffectiveFormat?
             .BackgroundColor;
+        
         if (googleBackgroundColor == null)
             return;
+        
         var color = ConvertArgb(googleBackgroundColor);
         cellBuilder.SetFormat(format => format.SetBackgroundColor(color));
     }
@@ -207,8 +225,10 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         var padding = googleCellData
             .EffectiveFormat?
             .Padding;
+        
         if (padding == null)
             return;
+        
         cellBuilder.SetFormat(format => format
             .SetContentMargins(marginBuilder => marginBuilder
                     .SetContentMargins(padding.Top, padding.Bottom, padding.Left, padding.Right)));
@@ -219,13 +239,16 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         var googleTextFormat = googleCellData
             .EffectiveFormat?
             .TextFormat;
+        
         if (googleTextFormat == null)
             return;
+        
         cellBuilder.SetFormat(format => format.SetTextFormat(textFormat =>
         {
             textFormat.SetBold(googleTextFormat.Bold ?? false);
             textFormat.SetItalic(googleTextFormat.Italic ?? false);
             textFormat.SetFontFamily(googleTextFormat.FontFamily);
+            
             if (googleTextFormat.ForegroundColor != null)
             {
                 var fontColor = ConvertArgb(googleTextFormat.ForegroundColor);
@@ -242,6 +265,7 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         var horizontalAlignment = googleCellData
             .EffectiveFormat?
             .HorizontalAlignment;
+        
         if (horizontalAlignment != null)
         {
             switch (horizontalAlignment)
@@ -264,26 +288,27 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         var verticalAlignment = googleCellData
             .EffectiveFormat?
             .VerticalAlignment;
-        if (verticalAlignment != null)
+
+        if (verticalAlignment == null)
+            return;
+        
+        switch (verticalAlignment)
         {
-            switch (verticalAlignment)
-            {
-                case "TOP":
-                    cellBuilder
-                        .SetFormat(format => format
-                            .SetContentVerticalAlignment(CellContentVerticalAlignment.Top));
-                    break;
-                case "MIDDLE":
-                    cellBuilder
-                        .SetFormat(format => format
-                            .SetContentVerticalAlignment(CellContentVerticalAlignment.Middle));
-                    break;
-                case "BOTTOM":
-                    cellBuilder
-                        .SetFormat(format => format
-                            .SetContentVerticalAlignment(CellContentVerticalAlignment.Bottom));
-                    break;
-            }
+            case "TOP":
+                cellBuilder
+                    .SetFormat(format => format
+                        .SetContentVerticalAlignment(CellContentVerticalAlignment.Top));
+                break;
+            case "MIDDLE":
+                cellBuilder
+                    .SetFormat(format => format
+                        .SetContentVerticalAlignment(CellContentVerticalAlignment.Middle));
+                break;
+            case "BOTTOM":
+                cellBuilder
+                    .SetFormat(format => format
+                        .SetContentVerticalAlignment(CellContentVerticalAlignment.Bottom));
+                break;
         }
     }
 
@@ -293,6 +318,7 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         var googleRedChannel = color.Red ?? 0.0;
         var googleGreenChannel = color.Green ?? 0.0;
         var googleBlueChannel = color.Blue ?? 0.0;
+        
         var alphaChannel = LinearlyInterpolate(googleAlphaChannel, 1.0, 0.0, 0.0, 255.0);
         var redChannel = LinearlyInterpolate(googleRedChannel, 0.0, 1.0, 0.0, 255.0);
         var greenChannel = LinearlyInterpolate(googleGreenChannel, 0.0, 1.0, 0.0, 255.0);
@@ -308,9 +334,7 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
     private double LinearlyInterpolate(double x, double x0, double x1, double y0, double y1)
     {
         if (x1 - x0 == 0)
-        {
             return (y0 + y1) / 2;
-        }
 
         return y0 + (x - x0) * (y1 - y0) / (x1 - x0);
     }

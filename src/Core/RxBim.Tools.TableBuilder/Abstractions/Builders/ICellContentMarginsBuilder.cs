@@ -11,23 +11,23 @@ public interface ICellContentMarginsBuilder
     /// Sets the top margin.
     /// </summary>
     /// <param name="margin">Margin value.</param>
-    public ICellContentMarginsBuilder SetTopMargin(double? margin);
+    ICellContentMarginsBuilder SetTopMargin(double? margin);
 
     /// <summary>
     /// Sets the right margin.
     /// </summary>
     /// <param name="margin">Margin value.</param>
-    public ICellContentMarginsBuilder SetRightMargin(double? margin);
+    ICellContentMarginsBuilder SetRightMargin(double? margin);
 
     /// <summary>
     /// Sets the bottom margin.
     /// </summary>
     /// <param name="margin">Margin value.</param>
-    public ICellContentMarginsBuilder SetBottomMargin(double? margin);
+    ICellContentMarginsBuilder SetBottomMargin(double? margin);
 
     /// <summary>
     /// Sets the left margin.
     /// </summary>
     /// <param name="margin">Margin value.</param>
-    public ICellContentMarginsBuilder SetLeftMargin(double? margin);
+    ICellContentMarginsBuilder SetLeftMargin(double? margin);
 }
