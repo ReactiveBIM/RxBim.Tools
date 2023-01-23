@@ -106,7 +106,7 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         return spreadsheet.Sheets.FirstOrDefault(sheet => sheet.Properties.Title.Equals(targetSheet.Properties.Title))!;
     }
 
-    private void CopyCellFormat(CellData googleCellData, ICellBuilder<Cell> cellBuilder)
+    private void CopyCellFormat(CellData googleCellData, ICellBuilder cellBuilder)
     {
         CopyBordersFormat(googleCellData, cellBuilder);
         CopyBackgroundColor(googleCellData, cellBuilder);
@@ -156,7 +156,7 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         }
     }
 
-    private void CopyBordersFormat(CellData googleCellData, ICellBuilder<Cell> cellBuilder)
+    private void CopyBordersFormat(CellData googleCellData, ICellBuilder cellBuilder)
     {
         var cellBorders = new CellBorders();
         var properties = cellBorders
@@ -205,7 +205,7 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
                 .SetBorders(cellBorders.Top, cellBorders.Bottom, cellBorders.Left, cellBorders.Right)));
     }
 
-    private void CopyBackgroundColor(CellData googleCellData, ICellBuilder<Cell> cellBuilder)
+    private void CopyBackgroundColor(CellData googleCellData, ICellBuilder cellBuilder)
     {
         var googleBackgroundColor = googleCellData
             .EffectiveFormat?
@@ -218,7 +218,7 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         cellBuilder.SetFormat(format => format.SetBackgroundColor(color));
     }
 
-    private void CopyContentMargins(CellData googleCellData, ICellBuilder<Cell> cellBuilder)
+    private void CopyContentMargins(CellData googleCellData, ICellBuilder cellBuilder)
     {
         var padding = googleCellData
             .EffectiveFormat?
@@ -232,7 +232,7 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
                     .SetContentMargins(padding.Top, padding.Bottom, padding.Left, padding.Right)));
     }
 
-    private void CopyTextFormat(CellData googleCellData, ICellBuilder<Cell> cellBuilder)
+    private void CopyTextFormat(CellData googleCellData, ICellBuilder cellBuilder)
     {
         var googleTextFormat = googleCellData
             .EffectiveFormat?
@@ -258,7 +258,7 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         }));
     }
 
-    private void CopyAlignment(CellData googleCellData, ICellBuilder<Cell> cellBuilder)
+    private void CopyAlignment(CellData googleCellData, ICellBuilder cellBuilder)
     {
         var horizontalAlignment = googleCellData
             .EffectiveFormat?
