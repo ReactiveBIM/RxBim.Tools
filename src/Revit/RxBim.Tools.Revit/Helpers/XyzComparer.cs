@@ -9,6 +9,8 @@
     /// </summary>
     public class XyzComparer : IEqualityComparer<XYZ>, IComparer<XYZ>
     {
+        private const double Tolerance = 0.0001;
+
         /// <inheritdoc />
         public bool Equals(XYZ x, XYZ y)
         {
@@ -18,9 +20,7 @@
                 return false;
             if (ReferenceEquals(y, null))
                 return false;
-            if (x.GetType() != y.GetType())
-                return false;
-            return x.IsAlmostEqualTo(y);
+            return Compare(x, y) == 0;
         }
 
         /// <inheritdoc />
@@ -28,7 +28,7 @@
         {
             unchecked
             {
-                var hashCode = Math.Round(obj.Z, 4).GetHashCode();
+                var hashCode = Math.Round(obj.X, 4).GetHashCode();
                 hashCode = (hashCode * 397) ^ Math.Round(obj.Y, 4).GetHashCode();
                 hashCode = (hashCode * 397) ^ Math.Round(obj.Z, 4).GetHashCode();
                 return hashCode;
@@ -44,13 +44,20 @@
                 return 1;
             if (ReferenceEquals(null, x))
                 return -1;
-            var zComparison = x.Z.CompareTo(y.Z);
-            if (zComparison != 0)
-                return zComparison;
-            var yComparison = x.Y.CompareTo(y.Y);
-            if (yComparison != 0)
-                return yComparison;
-            return x.X.CompareTo(y.X);
+
+            var compareValue = GetCompareValue(x.X, y.X);
+
+            if (compareValue != 0)
+                return compareValue;
+
+            compareValue = GetCompareValue(x.Y, y.Y);
+
+            return compareValue == 0 ? GetCompareValue(x.Z, y.Z) : compareValue;
+        }
+
+        private int GetCompareValue(double a, double b)
+        {
+            return a.IsEqualTo(b, Tolerance) ? 0 : a < b ? -1 : 1;
         }
     }
 }
