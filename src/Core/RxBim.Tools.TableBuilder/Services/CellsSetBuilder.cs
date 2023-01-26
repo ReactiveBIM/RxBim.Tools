@@ -3,9 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Builders;
-    using Content;
-    using Styles;
 
     /// <summary>
     /// The builder of a <see cref="CellsSet"/> of a <see cref="Table"/>.
@@ -25,7 +22,7 @@
         /// <summary>
         /// Returns collection of <see cref="CellBuilder"/> for cells.
         /// </summary>
-        public IEnumerable<ICellBuilder<Cell>> Cells
+        public IEnumerable<ICellBuilder> Cells
             => ObjectForBuild.Cells.Select(x => (CellBuilder)x);
         
         /// <summary>
@@ -34,7 +31,7 @@
         /// <param name="source">List of items.</param>
         /// <param name="cellsAction">Delegate. Applies to all filled cells.</param>
         /// <typeparam name="TSource">The type of the list item.</typeparam>
-        public TBuilder FromList<TSource>(IList<TSource> source, Action<ICellBuilder<Cell>>? cellsAction = null)
+        public TBuilder FromList<TSource>(IList<TSource> source, Action<ICellBuilder>? cellsAction = null)
         {
             if (!source.Any())
                 return (TBuilder)this;

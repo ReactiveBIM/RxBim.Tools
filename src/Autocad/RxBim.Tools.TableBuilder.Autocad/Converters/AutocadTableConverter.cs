@@ -4,9 +4,7 @@
     using System.Linq;
     using Autodesk.AutoCAD.Colors;
     using Autodesk.AutoCAD.DatabaseServices;
-    using Content;
     using JetBrains.Annotations;
-    using Styles;
 
     /// <summary>
     /// Defines a class of a converter that renders a <see cref="Autodesk.AutoCAD.DatabaseServices.Table"/> object in Autocad.

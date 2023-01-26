@@ -1,7 +1,6 @@
 ﻿namespace RxBim.Tools.TableBuilder
 {
     using System.Collections.Generic;
-    using Styles;
 
     /// <summary>
     /// Base class for a set of cells.

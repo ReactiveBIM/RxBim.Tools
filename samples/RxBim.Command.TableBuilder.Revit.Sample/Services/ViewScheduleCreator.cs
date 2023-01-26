@@ -10,7 +10,6 @@
     using Tools.Revit.Abstractions;
     using Tools.Revit.Extensions;
     using Tools.TableBuilder;
-    using Tools.TableBuilder.Styles;
     using Color = System.Drawing.Color;
 
     /// <inheritdoc />

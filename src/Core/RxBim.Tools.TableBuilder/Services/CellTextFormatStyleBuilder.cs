@@ -2,9 +2,7 @@
 {
     using System;
     using System.Drawing;
-    using Builders;
     using JetBrains.Annotations;
-    using Styles;
 
     /// <summary>
     /// Builder for <see cref="CellTextFormatStyle"/>

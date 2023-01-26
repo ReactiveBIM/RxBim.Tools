@@ -1,4 +1,4 @@
-﻿namespace RxBim.Tools.TableBuilder.Content
+﻿namespace RxBim.Tools.TableBuilder
 {
     /// <inheritdoc />
     public class ObjectCellContent : CellContent<object>

@@ -2,16 +2,13 @@
 {
     using System;
     using System.Linq;
-    using Builders;
-    using Content;
     using JetBrains.Annotations;
-    using Styles;
 
     /// <summary>
     /// The builder of a single <see cref="Cell"/> of a <see cref="Table"/>.
     /// </summary>
     [PublicAPI]
-    public class CellBuilder : TableItemBuilderBase<Cell, CellBuilder>, ICellBuilder<Cell>
+    public class CellBuilder : TableItemBuilderBase<Cell, CellBuilder>, ICellBuilder
     {
         /// <inheritdoc />
         public CellBuilder(Cell cell)
@@ -26,103 +23,103 @@
         }
 
         /// <inheritdoc />
-        public IRowBuilder<Cell> ToRow()
+        public IRowBuilder ToRow()
         {
             return new RowBuilder(ObjectForBuild.Row);
         }
 
         /// <inheritdoc />
-        public IColumnBuilder<Cell> ToColumn()
+        public IColumnBuilder ToColumn()
         {
             return new ColumnBuilder(ObjectForBuild.Column);
         }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> SetContent(ICellContent data)
+        public ICellBuilder SetContent(ICellContent data)
         {
             SetToMergedArea(cell => cell.Content = data);
             return this;
         }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> SetWidth(double width)
+        public ICellBuilder SetWidth(double width)
         {
             ObjectForBuild.Column.Width = width;
             return this;
         }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> SetHeight(double height)
+        public ICellBuilder SetHeight(double height)
         {
             ObjectForBuild.Row.Height = height;
             return this;
         }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> SetText(string text)
+        public ICellBuilder SetText(string text)
         {
             SetContent(new TextCellContent(text));
             return this;
         }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> SetValue(object value)
+        public ICellBuilder SetValue(object value)
         {
             SetContent(new ObjectCellContent(value));
             return this;
         }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> Next(int step = 1)
+        public ICellBuilder Next(int step = 1)
         {
             return GetNextCellBuilder(Direction.Next, step);
         }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> Down(int step = 1)
+        public ICellBuilder Down(int step = 1)
         {
             return GetNextCellBuilder(Direction.Down, step);
         }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> Previous(int step = 1)
+        public ICellBuilder Previous(int step = 1)
         {
             return GetPreviousCellBuilder(ObjectForBuild.Row, step);
         }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> Up(int step = 1)
+        public ICellBuilder Up(int step = 1)
         {
             return GetPreviousCellBuilder(ObjectForBuild.Column, step);
         }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> MergeNext(int count = 1, Action<ICellBuilder<Cell>, ICellBuilder<Cell>>? action = null)
+        public ICellBuilder MergeNext(int count = 1, Action<ICellBuilder, ICellBuilder>? action = null)
         {
             return MergeInternal(count, Direction.Next, action);
         }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> MergeDown(int count = 1, Action<ICellBuilder<Cell>, ICellBuilder<Cell>>? action = null)
+        public ICellBuilder MergeDown(int count = 1, Action<ICellBuilder, ICellBuilder>? action = null)
         {
             return MergeInternal(count, Direction.Down, action);
         }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> MergeLeft(int count = 1)
+        public ICellBuilder MergeLeft(int count = 1)
         {
             return Previous(count).MergeNext(count).Previous(count);
         }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> SetFormat(CellFormatStyle format)
+        public ICellBuilder SetFormat(CellFormatStyle format)
         {
             SetToMergedArea(cell => new CellFormatStyleBuilder(cell.Format).SetFromFormat(format));
             return this;
         }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> SetFormat(Action<ICellFormatStyleBuilder> action)
+        public ICellBuilder SetFormat(Action<ICellFormatStyleBuilder> action)
         {
             SetToMergedArea(cell => action(new CellFormatStyleBuilder(cell.Format)));
             return this;

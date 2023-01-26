@@ -1,7 +1,5 @@
 ﻿namespace RxBim.Tools.TableBuilder
 {
-    using Styles;
-
     /// <summary>
     /// Extensions for <see cref="CellFormatStyle"/>
     /// </summary>

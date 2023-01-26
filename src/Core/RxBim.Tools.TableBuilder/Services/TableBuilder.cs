@@ -3,14 +3,11 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Builders;
-    using Content;
-    using Styles;
 
     /// <summary>
     /// The builder of a <see cref="Table"/>.
     /// </summary>
-    public class TableBuilder : ITableBuilder<Cell>
+    public class TableBuilder : ITableBuilder
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TableBuilder"/> class.
@@ -22,7 +19,7 @@
         }
 
         /// <inheritdoc />
-        public IEnumerable<IRowBuilder<Cell>> Rows
+        public IEnumerable<IRowBuilder> Rows
             => Table.Rows.Select(row => (RowBuilder)row);
 
         /// <inheritdoc />
@@ -30,7 +27,7 @@
             => Table.Rows.Count;
 
         /// <inheritdoc />
-        public IEnumerable<IColumnBuilder<Cell>> Columns
+        public IEnumerable<IColumnBuilder> Columns
             => Table.Columns.Select(column => (ColumnBuilder)column);
 
         /// <inheritdoc />
@@ -43,7 +40,7 @@
         private Table Table { get; }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> this[int row, int column]
+        public ICellBuilder this[int row, int column]
             => new CellBuilder(Table[row, column]);
 
         /// <summary>
@@ -56,21 +53,21 @@
         }
 
         /// <inheritdoc />
-        public ITableBuilder<Cell> SetFormat(CellFormatStyle formatStyle)
+        public ITableBuilder SetFormat(CellFormatStyle formatStyle)
         {
             Table.DefaultFormat = formatStyle;
             return this;
         }
 
         /// <inheritdoc />
-        public ITableBuilder<Cell> SetFormat(Action<ICellFormatStyleBuilder> action)
+        public ITableBuilder SetFormat(Action<ICellFormatStyleBuilder> action)
         {
             action(new CellFormatStyleBuilder(Table.DefaultFormat));
             return this;
         }
 
         /// <inheritdoc />
-        public ITableBuilder<Cell> SetCellsFormat(
+        public ITableBuilder SetCellsFormat(
             CellFormatStyle formatStyle,
             int startRow,
             int startColumn,
@@ -89,7 +86,7 @@
         }
 
         /// <inheritdoc />
-        public ITableBuilder<Cell> SetTableStateStandardFormat(int headerRowsCount)
+        public ITableBuilder SetTableStateStandardFormat(int headerRowsCount)
         {
             var boldFormat = new CellFormatStyleBuilder()
                 .SetContentVerticalAlignment(CellContentVerticalAlignment.Middle)
@@ -128,7 +125,7 @@
         }
 
         /// <inheritdoc />
-        public ITableBuilder<Cell> SetWidth(double width)
+        public ITableBuilder SetWidth(double width)
         {
             if (width <= 0)
                 throw new ArgumentException("Must be a positive number.", nameof(width));
@@ -137,7 +134,7 @@
         }
 
         /// <inheritdoc />
-        public ITableBuilder<Cell> SetHeight(double height)
+        public ITableBuilder SetHeight(double height)
         {
             if (height <= 0)
                 throw new ArgumentException("Must be a positive number.", nameof(height));
@@ -146,7 +143,7 @@
         }
 
         /// <inheritdoc />
-        public ITableBuilder<Cell> AddRow(Action<IRowBuilder<Cell>>? action = null, int count = 1)
+        public ITableBuilder AddRow(Action<IRowBuilder>? action = null, int count = 1)
         {
             for (; count > 0; count--)
             {
@@ -158,7 +155,7 @@
         }
 
         /// <inheritdoc />
-        public ITableBuilder<Cell> AddRowsFromList<TSource>(
+        public ITableBuilder AddRowsFromList<TSource>(
             IEnumerable<TSource> source,
             int rowIndex,
             int columnIndex,
@@ -189,7 +186,7 @@
         }
 
         /// <inheritdoc />
-        public ITableBuilder<Cell> AddColumn(Action<IColumnBuilder<Cell>>? action = null, int count = 1)
+        public ITableBuilder AddColumn(Action<IColumnBuilder>? action = null, int count = 1)
         {
             for (; count > 0; count--)
             {
@@ -201,7 +198,7 @@
         }
 
         /// <inheritdoc />
-        public ITableBuilder<Cell> AddColumnsFromList<TSource>(
+        public ITableBuilder AddColumnsFromList<TSource>(
             IEnumerable<TSource> source,
             int rowIndex,
             int columnIndex,

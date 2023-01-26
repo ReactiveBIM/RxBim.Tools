@@ -1,8 +1,5 @@
 ﻿namespace RxBim.Tools.TableBuilder
 {
-    using Content;
-    using Styles;
-
     /// <summary>
     /// Table cell data.
     /// </summary>
