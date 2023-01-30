@@ -3,7 +3,7 @@
     /// <summary>
     /// Base class of the table item builder.
     /// </summary>
-    public abstract class TableItemBuilderBase<TItem, TBuilder>
+    public abstract class TableItemBuilderBase<TItem, TBuilder> : IBuilder<TItem>
         where TBuilder : TableItemBuilderBase<TItem, TBuilder>
         where TItem : TableItemBase
     {
@@ -25,5 +25,11 @@
         /// Returns new <see cref="TableBuilder"/> for <see cref="Table"/> to be build.
         /// </summary>
         public TableBuilder ToTable() => new(ObjectForBuild.Table);
+
+        /// <inheritdoc />
+        public TItem Build()
+        {
+            return ObjectForBuild;
+        }
     }
 }
