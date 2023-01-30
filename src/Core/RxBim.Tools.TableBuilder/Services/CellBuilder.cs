@@ -125,6 +125,12 @@
             return this;
         }
 
+        /// <inheritdoc />
+        public Cell Build()
+        {
+            return ObjectForBuild;
+        }
+
         private CellBuilder GetNextCellBuilder(Direction direction, int step)
         {
             var cellsSet = direction == Direction.Next ? (CellsSet)ObjectForBuild.Row : ObjectForBuild.Column;

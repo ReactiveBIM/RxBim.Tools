@@ -24,5 +24,13 @@
         /// Right margin size.
         /// </summary>
         public double? Right { get; set; }
+
+        /// <summary>
+        /// Creates a copy of this object.
+        /// </summary>
+        public CellContentMargins Clone()
+        {
+            return (CellContentMargins)MemberwiseClone();
+        }
     }
 }

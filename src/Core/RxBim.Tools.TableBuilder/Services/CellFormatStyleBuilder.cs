@@ -16,7 +16,7 @@
         /// <param name="format">Format for build.</param>
         public CellFormatStyleBuilder(CellFormatStyle? format = null)
         {
-            _format = format ?? new CellFormatStyle();
+            _format = format?.Clone() ?? new CellFormatStyle();
         }
 
         /// <inheritdoc />

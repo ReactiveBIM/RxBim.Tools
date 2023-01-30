@@ -5,7 +5,7 @@ using System;
 /// <summary>
 /// The builder of a single <see cref="Column"/> of a <see cref="Table"/>.
 /// </summary>
-public interface IColumnBuilder : ICellsSetBuilder
+public interface IColumnBuilder : ICellsSetBuilder, IBuilder<Column>
 {
     /// <summary>
     /// Sets the width of the column.

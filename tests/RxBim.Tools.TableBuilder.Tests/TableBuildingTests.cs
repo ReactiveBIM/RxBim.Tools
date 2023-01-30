@@ -69,7 +69,7 @@
                 var cellData = cell.Content.ValueObject?.ToString();
                 var srcData = data[r - 1];
                 cellData.Should().BeEquivalentTo(srcData.Prop1.ToString());
-                var rightCell = ((CellBuilder)cell).Next().ObjectForBuild;
+                var rightCell = ((CellBuilder)cell).Next().Build();
                 cellData = rightCell.Content.ValueObject?.ToString();
                 cellData.Should().BeEquivalentTo(srcData.Prop2);
             }
@@ -253,13 +253,13 @@
                 .AddRow(count: rowCount)
                 .Build();
 
-            var nextMergedCell = ((CellBuilder)table.Rows.First().Cells.First()).MergeNext().ObjectForBuild;
+            var nextMergedCell = ((CellBuilder)table.Rows.First().Cells.First()).MergeNext().Build();
             nextMergedCell.GetColumnIndex().Should().Be(1);
 
-            var downMergedCell = ((CellBuilder)table.Columns.Last().Cells.First()).MergeDown().ObjectForBuild;
+            var downMergedCell = ((CellBuilder)table.Columns.Last().Cells.First()).MergeDown().Build();
             downMergedCell.Row.GetIndex().Should().Be(1);
 
-            var leftMergedCell = ((CellBuilder)table.Rows.Last().Cells[1]).MergeLeft().ObjectForBuild;
+            var leftMergedCell = ((CellBuilder)table.Rows.Last().Cells[1]).MergeLeft().Build();
             leftMergedCell.GetColumnIndex().Should().Be(0);
         }
 

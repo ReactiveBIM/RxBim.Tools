@@ -6,7 +6,7 @@ using System.Collections.Generic;
 /// <summary>
 /// The builder of a single <see cref="Row"/> of a <see cref="Table"/>.
 /// </summary>
-public interface IRowBuilder : ICellsSetBuilder
+public interface IRowBuilder : ICellsSetBuilder, IBuilder<Row>
 {
     /// <summary>
     /// Sets the height of the row.

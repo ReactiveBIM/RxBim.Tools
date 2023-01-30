@@ -55,5 +55,11 @@
             FromList(source, cellsAction);
             return this;
         }
+
+        /// <inheritdoc />
+        public Row Build()
+        {
+            return ObjectForBuild;
+        }
     }
 }

@@ -24,5 +24,13 @@
         /// Right border line type.
         /// </summary>
         public CellBorderType? Right { get; set; }
+
+        /// <summary>
+        /// Creates a copy of this object.
+        /// </summary>
+        public CellBorders Clone()
+        {
+            return (CellBorders)MemberwiseClone();
+        }
     }
 }

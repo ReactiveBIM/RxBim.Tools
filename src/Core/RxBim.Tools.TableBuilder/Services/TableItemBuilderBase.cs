@@ -19,7 +19,7 @@
         /// <summary>
         /// Returns the object to be built.
         /// </summary>
-        public TItem ObjectForBuild { get; }
+        protected TItem ObjectForBuild { get; }
 
         /// <summary>
         /// Returns new <see cref="TableBuilder"/> for <see cref="Table"/> to be build.

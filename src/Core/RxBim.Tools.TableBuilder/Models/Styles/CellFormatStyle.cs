@@ -17,17 +17,17 @@
         /// <summary>
         /// Cell text format.
         /// </summary>
-        public CellTextFormatStyle TextFormat { get; } = new();
+        public CellTextFormatStyle TextFormat { get; private set; } = new();
 
         /// <summary>
         /// Line types for borders.
         /// </summary>
-        public CellBorders Borders { get; } = new();
+        public CellBorders Borders { get; private set; } = new();
 
         /// <summary>
         /// Margins from borders to content.
         /// </summary>
-        public CellContentMargins ContentMargins { get; } = new();
+        public CellContentMargins ContentMargins { get; private set; } = new();
 
         /// <summary>
         /// The background color for a cell.
@@ -43,5 +43,17 @@
         /// The vertical alignment of the contents of a cell.
         /// </summary>
         public CellContentVerticalAlignment? ContentVerticalAlignment { get; set; }
+
+        /// <summary>
+        /// Creates a copy of this object.
+        /// </summary>
+        public CellFormatStyle Clone()
+        {
+            var clone = (CellFormatStyle)MemberwiseClone();
+            clone.TextFormat = clone.TextFormat.Clone();
+            clone.Borders = clone.Borders.Clone();
+            clone.ContentMargins = clone.ContentMargins.Clone();
+            return clone;
+        }
     }
 }

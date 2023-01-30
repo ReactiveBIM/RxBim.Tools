@@ -5,13 +5,8 @@ using System;
 /// <summary>
 /// The builder of a single <see cref="Cell"/> of a <see cref="Table"/>.
 /// </summary>
-public interface ICellBuilder
+public interface ICellBuilder : IBuilder<Cell>
 {
-    /// <summary>
-    /// Returns the object to be built.
-    /// </summary>
-    Cell ObjectForBuild { get; }
-
     /// <summary>
     /// Returns new <see cref="TableBuilder"/> for <see cref="Table"/> to be build.
     /// </summary>
