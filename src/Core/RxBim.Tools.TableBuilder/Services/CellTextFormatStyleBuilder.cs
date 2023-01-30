@@ -18,7 +18,7 @@
         /// <param name="textFormat">Format for build.</param>
         public CellTextFormatStyleBuilder(CellTextFormatStyle? textFormat = null)
         {
-            _textFormat = textFormat?.Clone() ?? new CellTextFormatStyle();
+            _textFormat = textFormat ?? new CellTextFormatStyle();
         }
 
         /// <inheritdoc />
