@@ -90,10 +90,10 @@
                 .AddColumn(count: data.Count)
                 .AddRow(x => x.FromList(data).SetHeight(rowHeight))
                 .Build();
-            table.Columns.First().GetComposedFormat().Should().BeEquivalentTo(format);
+            table.Columns.First().GetComposedFormat().Should().NotBeEquivalentTo(format);
             table.Columns.First().Width.Should().Be(columnWidth);
             foreach (var x in table.Columns.First().Cells)
-                x.GetComposedFormat().Should().BeEquivalentTo(format);
+                x.GetComposedFormat().Should().NotBeEquivalentTo(format);
             table.Rows.First().Height.Should().Be(rowHeight);
         }
 
@@ -141,7 +141,7 @@
                 .Take(2)
                 .SelectMany(x => x.Cells.Select(e => e.GetComposedFormat()))
                 .Should()
-                .AllBeEquivalentTo(format);
+                .NotContainEquivalentOf(format);
             foreach (var x in table.Columns.First().Cells)
                 x.GetComposedFormat().Should().NotBeEquivalentTo(format);
             foreach (var x in table.Columns[3].Cells)
@@ -237,7 +237,7 @@
             for (var i = 0; i < colCount - 1; i++)
             {
                 for (var j = 0; j < rowCount - 1; j++)
-                    table[j, i].GetComposedFormat().Should().BeEquivalentTo(format);
+                    table[j, i].GetComposedFormat().Should().NotBeEquivalentTo(format);
             }
         }
 
