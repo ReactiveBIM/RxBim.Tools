@@ -20,7 +20,7 @@ public static class CellBorderBuilderExtensions
         CellBorderType? left = null,
         CellBorderType? right = null)
     {
-        bordersBuilder.SetTopBorder(top)
+        bordersBuilder.SetTop(top)
             .SetRightBorder(right)
             .SetLeftBorder(left)
             .SetBottomBorder(bottom);
@@ -37,7 +37,7 @@ public static class CellBorderBuilderExtensions
         CellBorderType? typeForAll)
     {
         bordersBuilder
-            .SetTopBorder(typeForAll)
+            .SetTop(typeForAll)
             .SetRightBorder(typeForAll)
             .SetLeftBorder(typeForAll)
             .SetBottomBorder(typeForAll);

@@ -158,7 +158,7 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
 
     private void CopyBordersFormat(CellData googleCellData, ICellBuilder cellBuilder)
     {
-        var cellBorders = new CellBorders();
+        var cellBorders = new CellBordersBuilder().Build();
         var properties = cellBorders
             .GetType()
             .GetProperties();

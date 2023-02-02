@@ -6,31 +6,30 @@
     public class CellBorders
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="CellBorders"/> class.
+        /// </summary>
+        internal CellBorders()
+        {
+        }
+        
+        /// <summary>
         /// Top border line type.
         /// </summary>
-        public CellBorderType? Top { get; set; }
+        public CellBorderType? Top { get; internal set; }
 
         /// <summary>
         /// Bottom border line type.
         /// </summary>
-        public CellBorderType? Bottom { get; set; }
+        public CellBorderType? Bottom { get; internal set; }
 
         /// <summary>
         /// Left border line type.
         /// </summary>
-        public CellBorderType? Left { get; set; }
+        public CellBorderType? Left { get; internal set; }
 
         /// <summary>
         /// Right border line type.
         /// </summary>
-        public CellBorderType? Right { get; set; }
-
-        /// <summary>
-        /// Creates a copy of this object.
-        /// </summary>
-        public CellBorders Clone()
-        {
-            return (CellBorders)MemberwiseClone();
-        }
+        public CellBorderType? Right { get; internal set; }
     }
 }

@@ -15,7 +15,7 @@
         /// <param name="table">The <see cref="Table"/> to be built.</param>
         public TableBuilder(Table? table = null)
         {
-            Table = table ?? new Table();
+            Table = table?.Copy() ?? new Table();
         }
 
         /// <inheritdoc />
@@ -55,7 +55,7 @@
         /// <inheritdoc />
         public ITableBuilder SetFormat(CellFormatStyle formatStyle)
         {
-            Table.DefaultFormat = formatStyle;
+            Table.DefaultFormat = formatStyle.Copy();
             return this;
         }
 
@@ -230,7 +230,7 @@
         /// <inheritdoc />
         public Table Build()
         {
-            return Table;
+            return Table.Copy();
         }
 
         private void FromMatrix(

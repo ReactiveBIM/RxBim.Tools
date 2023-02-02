@@ -3,7 +3,7 @@
 /// <summary>
 /// Builder for <see cref="CellBorders"/>.
 /// </summary>
-internal class CellBordersBuilder : ICellBordersBuilder
+public class CellBordersBuilder : ICellBordersBuilder
 {
     private readonly CellBorders _cellBorders;
 
@@ -11,13 +11,13 @@ internal class CellBordersBuilder : ICellBordersBuilder
     /// Initializes a new instance of the <see cref="CellBordersBuilder"/> class.
     /// </summary>
     /// <param name="cellBorders"><see cref="CellBorders"/></param>
-    public CellBordersBuilder(CellBorders cellBorders)
+    public CellBordersBuilder(CellBorders? cellBorders = null)
     {
-        _cellBorders = cellBorders;
+        _cellBorders = cellBorders?.Copy() ?? new CellBorders();
     }
 
     /// <inheritdoc/>
-    public ICellBordersBuilder SetTopBorder(CellBorderType? cellBorderType)
+    public ICellBordersBuilder SetTop(CellBorderType? cellBorderType)
     {
         _cellBorders.Top = cellBorderType;
         return this;
@@ -42,5 +42,11 @@ internal class CellBordersBuilder : ICellBordersBuilder
     {
         _cellBorders.Left = cellBorderType;
         return this;
+    }
+
+    /// <inheritdoc/>
+    public CellBorders Build()
+    {
+        return _cellBorders.Copy();
     }
 }

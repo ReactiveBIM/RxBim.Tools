@@ -13,7 +13,7 @@
         /// <param name="objectForBuild">The object to be built.</param>
         protected TableItemBuilderBase(TItem objectForBuild)
         {
-            ObjectForBuild = objectForBuild;
+            ObjectForBuild = objectForBuild.Copy();
         }
 
         /// <summary>
@@ -29,7 +29,7 @@
         /// <inheritdoc />
         public TItem Build()
         {
-            return ObjectForBuild;
+            return ObjectForBuild.Copy();
         }
     }
 }

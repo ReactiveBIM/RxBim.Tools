@@ -11,9 +11,9 @@ internal class CellContentMarginsBuilder : ICellContentMarginsBuilder
     /// Initializes a new instance of the <see cref="CellContentMarginsBuilder"/> class.
     /// </summary>
     /// <param name="cellContentMargins"><see cref="CellContentMargins"/>.</param>
-    public CellContentMarginsBuilder(CellContentMargins cellContentMargins)
+    public CellContentMarginsBuilder(CellContentMargins? cellContentMargins)
     {
-        _cellContentMargins = cellContentMargins;
+        _cellContentMargins = cellContentMargins?.Copy() ?? new CellContentMargins();
     }
 
     /// <inheritdoc/>
@@ -42,5 +42,11 @@ internal class CellContentMarginsBuilder : ICellContentMarginsBuilder
     {
         _cellContentMargins.Left = margin;
         return this;
+    }
+
+    /// <inheritdoc/>
+    public CellContentMargins Build()
+    {
+        return _cellContentMargins.Copy();
     }
 }

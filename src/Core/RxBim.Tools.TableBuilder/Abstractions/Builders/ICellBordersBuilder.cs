@@ -3,13 +3,13 @@
 /// <summary>
 /// Builder for <see cref="CellBorders"/>.
 /// </summary>
-public interface ICellBordersBuilder
+public interface ICellBordersBuilder : IBuilder<CellBorders>
 {
     /// <summary>
     /// Sets the top border.
     /// </summary>
     /// <param name="cellBorderType"><see cref="CellBorderType"/></param>
-    ICellBordersBuilder SetTopBorder(CellBorderType? cellBorderType);
+    ICellBordersBuilder SetTop(CellBorderType? cellBorderType);
 
     /// <summary>
     /// Sets the right border.

@@ -22,7 +22,7 @@
         public double? Width
         {
             get => _width;
-            set
+            internal set
             {
                 IsAdjustedToContent = false;
                 _width = value;

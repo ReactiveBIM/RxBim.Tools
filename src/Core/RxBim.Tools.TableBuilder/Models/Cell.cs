@@ -36,13 +36,13 @@
         /// <summary>
         /// Cell content.
         /// </summary>
-        public ICellContent Content { get; set; } = TextCellContent.Empty;
+        public ICellContent Content { get; internal set; } = TextCellContent.Empty;
 
         /// <summary>
         /// Merge area in which this cell is used.
         /// </summary>
         /// <remarks>If is null, this cell is not used in merging cells.</remarks>
-        public CellRange? MergeArea { get; set; }
+        public CellRange? MergeArea { get; internal set; }
 
         /// <summary>
         /// Returns new <see cref="CellBuilder"/> for the cell.

@@ -3,7 +3,7 @@
 /// <summary>
 /// Builder for <see cref="CellContentMargins"/>.
 /// </summary>
-public interface ICellContentMarginsBuilder
+public interface ICellContentMarginsBuilder : IBuilder<CellContentMargins>
 {
     /// <summary>
     /// Sets the top margin.
