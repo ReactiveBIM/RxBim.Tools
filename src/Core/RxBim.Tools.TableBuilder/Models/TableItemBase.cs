@@ -22,7 +22,7 @@
         /// <summary>
         /// Own object format.
         /// </summary>
-        public CellFormatStyle Format { get; } = new();
+        public CellFormatStyle Format { get; internal set; } = new();
 
         /// <summary>
         /// Returns a composite format from the object's own format and the object formats that this object belongs to.

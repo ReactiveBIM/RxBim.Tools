@@ -23,22 +23,23 @@
             tableBuilder
                 .SetFormat(x => x
                     .SetBorders(builder =>
-                        builder.SetBorders(CellBorderType.Thin, CellBorderType.Thin, CellBorderType.Bold, CellBorderType.Bold))
+                        builder.SetBorders(
+                            CellBorderType.Thin, CellBorderType.Thin, CellBorderType.Bold, CellBorderType.Bold))
                     .SetContentHorizontalAlignment(CellContentHorizontalAlignment.Center)
                     .SetContentVerticalAlignment(CellContentVerticalAlignment.Middle))
                 .AddColumn(x => x.SetWidth(60))
-                .AddColumn(x => x.SetWidth(80).SetFormat(f => f
-                    .SetContentVerticalHorizontalMargins(horizontalMargins: 1)
-                    .SetContentHorizontalAlignment(CellContentHorizontalAlignment.Left)))
+                .AddColumn(x => x.SetWidth(80)
+                    .SetFormat(f => f
+                        .SetContentVerticalHorizontalMargins(horizontalMargins: 1)
+                        .SetContentHorizontalAlignment(CellContentHorizontalAlignment.Left)))
                 .AddColumn(x => x.SetWidth(50))
                 .AddColumn(x => x.SetWidth(40))
+
+                // Title
                 .AddRow(r => r
                     .SetHeight(15)
-                    .MergeRow() // Title
+                    .MergeRow()
                     .SetFormat(x => x
-                        .SetContentHorizontalAlignment(CellContentHorizontalAlignment.Center)
-                        .SetContentVerticalAlignment(CellContentVerticalAlignment.Bottom)
-                        .SetContentVerticalHorizontalMargins(1)
                         .SetBorders(builder => builder
                             .SetBorders(
                                 CellBorderType.Hidden,
@@ -48,7 +49,10 @@
                     .Cells
                     .First()
                     .SetText("Selected object data table"))
-                .AddRow(r => r.SetHeight(35) // Header
+
+                // Header
+                .AddRow(r => r
+                    .SetHeight(35)
                     .SetFormat(f => f
                         .SetBorders(builder => builder
                             .SetAllBorders(CellBorderType.Bold))

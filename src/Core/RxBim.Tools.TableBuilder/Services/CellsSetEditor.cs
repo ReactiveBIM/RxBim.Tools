@@ -58,7 +58,9 @@
         /// <param name="format">Format value.</param>
         public TBuilder SetFormat(CellFormatStyle format)
         {
-            new CellFormatStyleBuilder(ObjectForBuild.Format).SetFromFormat(format);
+            var builder = new CellFormatStyleBuilder(ObjectForBuild.Format);
+            builder.SetFromFormat(format);
+            ObjectForBuild.Format = builder.Build();
             return (TBuilder)this;
         }
 
@@ -78,7 +80,9 @@
         /// <param name="action">Format building action.</param>
         public TBuilder SetFormat(Action<ICellFormatStyleBuilder> action)
         {
-            action(new CellFormatStyleBuilder(ObjectForBuild.Format));
+            var builder = new CellFormatStyleBuilder(ObjectForBuild.Format);
+            action(builder);
+            ObjectForBuild.Format = builder.Build();
             return (TBuilder)this;
         }
     }

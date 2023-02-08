@@ -62,7 +62,9 @@
         /// <inheritdoc />
         public ITableBuilder SetFormat(Action<ICellFormatStyleBuilder> action)
         {
-            action(new CellFormatStyleBuilder(Table.DefaultFormat));
+            var builder = new CellFormatStyleBuilder(Table.DefaultFormat);
+            action(builder);
+            Table.DefaultFormat = builder.Build();
             return this;
         }
 

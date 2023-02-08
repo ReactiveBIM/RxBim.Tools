@@ -114,14 +114,24 @@
         /// <inheritdoc />
         public ICellEditor SetFormat(CellFormatStyle format)
         {
-            SetToMergedArea(cell => new CellFormatStyleBuilder(cell.Format).SetFromFormat(format));
+            SetToMergedArea(cell =>
+            {
+                var builder = new CellFormatStyleBuilder(cell.Format);
+                builder.SetFromFormat(format);
+                cell.Format = builder.Build();
+            });
             return this;
         }
 
         /// <inheritdoc />
         public ICellEditor SetFormat(Action<ICellFormatStyleBuilder> action)
         {
-            SetToMergedArea(cell => action(new CellFormatStyleBuilder(cell.Format)));
+            SetToMergedArea(cell =>
+            {
+                var builder = new CellFormatStyleBuilder(cell.Format);
+                action(builder);
+                cell.Format = builder.Build();
+            });
             return this;
         }
 
