@@ -19,16 +19,16 @@
         }
 
         /// <inheritdoc />
-        public IEnumerable<IRowBuilder> Rows
-            => Table.Rows.Select(row => (RowBuilder)row);
+        public IEnumerable<IRowEditor> Rows
+            => Table.Rows.Select(row => new RowEditor(row));
 
         /// <inheritdoc />
         public int RowsCount
             => Table.Rows.Count;
 
         /// <inheritdoc />
-        public IEnumerable<IColumnBuilder> Columns
-            => Table.Columns.Select(column => (ColumnBuilder)column);
+        public IEnumerable<IColumnEditor> Columns
+            => Table.Columns.Select(column => new ColumnEditor(column));
 
         /// <inheritdoc />
         public int ColumnsCount
@@ -40,8 +40,8 @@
         private Table Table { get; }
 
         /// <inheritdoc />
-        public ICellBuilder this[int row, int column]
-            => new CellBuilder(Table[row, column]);
+        public ICellEditor this[int row, int column]
+            => new CellEditor(Table[row, column]);
 
         /// <summary>
         /// Returns the built <see cref="Table"/>.
@@ -119,7 +119,7 @@
                 RowsCount - headerRowsCount);
             
             foreach (var cell in Table.Rows.Last().Cells)
-                ((CellBuilder)cell).SetFormat(lastRowFormat);
+                new CellEditor(cell).SetFormat(lastRowFormat);
 
             return this;
         }
@@ -143,12 +143,12 @@
         }
 
         /// <inheritdoc />
-        public ITableBuilder AddRow(Action<IRowBuilder>? action = null, int count = 1)
+        public ITableBuilder AddRow(Action<IRowEditor>? action = null, int count = 1)
         {
             for (; count > 0; count--)
             {
                 var newRow = Table.AddRow();
-                action?.Invoke(new RowBuilder(newRow));
+                action?.Invoke(new RowEditor(newRow));
             }
 
             return this;
@@ -186,12 +186,12 @@
         }
 
         /// <inheritdoc />
-        public ITableBuilder AddColumn(Action<IColumnBuilder>? action = null, int count = 1)
+        public ITableBuilder AddColumn(Action<IColumnEditor>? action = null, int count = 1)
         {
             for (; count > 0; count--)
             {
                 var newColumn = Table.AddColumn();
-                action?.Invoke(new ColumnBuilder(newColumn));
+                action?.Invoke(new ColumnEditor(newColumn));
             }
 
             return this;

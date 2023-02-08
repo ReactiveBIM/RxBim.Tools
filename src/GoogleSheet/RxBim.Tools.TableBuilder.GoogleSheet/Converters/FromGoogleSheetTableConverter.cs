@@ -106,13 +106,13 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         return spreadsheet.Sheets.FirstOrDefault(sheet => sheet.Properties.Title.Equals(targetSheet.Properties.Title))!;
     }
 
-    private void CopyCellFormat(CellData googleCellData, ICellBuilder cellBuilder)
+    private void CopyCellFormat(CellData googleCellData, ICellEditor cellEditor)
     {
-        CopyBordersFormat(googleCellData, cellBuilder);
-        CopyBackgroundColor(googleCellData, cellBuilder);
-        CopyContentMargins(googleCellData, cellBuilder);
-        CopyTextFormat(googleCellData, cellBuilder);
-        CopyAlignment(googleCellData, cellBuilder);
+        CopyBordersFormat(googleCellData, cellEditor);
+        CopyBackgroundColor(googleCellData, cellEditor);
+        CopyContentMargins(googleCellData, cellEditor);
+        CopyTextFormat(googleCellData, cellEditor);
+        CopyAlignment(googleCellData, cellEditor);
     }
 
     private void CopyRowFormats(GridData gridData, TableBuilder tableBuilder)
@@ -156,7 +156,7 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         }
     }
 
-    private void CopyBordersFormat(CellData googleCellData, ICellBuilder cellBuilder)
+    private void CopyBordersFormat(CellData googleCellData, ICellEditor cellEditor)
     {
         var cellBorders = new CellBordersBuilder().Build();
         var properties = cellBorders
@@ -200,12 +200,12 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
             }
         }
 
-        cellBuilder.SetFormat(format => format
+        cellEditor.SetFormat(format => format
             .SetBorders(borderBuilder => borderBuilder
                 .SetBorders(cellBorders.Top, cellBorders.Bottom, cellBorders.Left, cellBorders.Right)));
     }
 
-    private void CopyBackgroundColor(CellData googleCellData, ICellBuilder cellBuilder)
+    private void CopyBackgroundColor(CellData googleCellData, ICellEditor cellEditor)
     {
         var googleBackgroundColor = googleCellData
             .EffectiveFormat?
@@ -215,10 +215,10 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
             return;
         
         var color = ConvertArgb(googleBackgroundColor);
-        cellBuilder.SetFormat(format => format.SetBackgroundColor(color));
+        cellEditor.SetFormat(format => format.SetBackgroundColor(color));
     }
 
-    private void CopyContentMargins(CellData googleCellData, ICellBuilder cellBuilder)
+    private void CopyContentMargins(CellData googleCellData, ICellEditor cellEditor)
     {
         var padding = googleCellData
             .EffectiveFormat?
@@ -227,12 +227,12 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         if (padding == null)
             return;
         
-        cellBuilder.SetFormat(format => format
+        cellEditor.SetFormat(format => format
             .SetContentMargins(marginBuilder => marginBuilder
                     .SetContentMargins(padding.Top, padding.Bottom, padding.Left, padding.Right)));
     }
 
-    private void CopyTextFormat(CellData googleCellData, ICellBuilder cellBuilder)
+    private void CopyTextFormat(CellData googleCellData, ICellEditor cellEditor)
     {
         var googleTextFormat = googleCellData
             .EffectiveFormat?
@@ -241,7 +241,7 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         if (googleTextFormat == null)
             return;
         
-        cellBuilder.SetFormat(format => format.SetTextFormat(textFormat =>
+        cellEditor.SetFormat(format => format.SetTextFormat(textFormat =>
         {
             textFormat.SetBold(googleTextFormat.Bold ?? false);
             textFormat.SetItalic(googleTextFormat.Italic ?? false);
@@ -258,7 +258,7 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         }));
     }
 
-    private void CopyAlignment(CellData googleCellData, ICellBuilder cellBuilder)
+    private void CopyAlignment(CellData googleCellData, ICellEditor cellEditor)
     {
         var horizontalAlignment = googleCellData
             .EffectiveFormat?
@@ -269,15 +269,15 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
             switch (horizontalAlignment)
             {
                 case "LEFT":
-                    cellBuilder.SetFormat(format =>
+                    cellEditor.SetFormat(format =>
                         format.SetContentHorizontalAlignment(CellContentHorizontalAlignment.Left));
                     break;
                 case "RIGHT":
-                    cellBuilder.SetFormat(format =>
+                    cellEditor.SetFormat(format =>
                         format.SetContentHorizontalAlignment(CellContentHorizontalAlignment.Right));
                     break;
                 case "CENTER":
-                    cellBuilder.SetFormat(format =>
+                    cellEditor.SetFormat(format =>
                         format.SetContentHorizontalAlignment(CellContentHorizontalAlignment.Center));
                     break;
             }
@@ -293,17 +293,17 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         switch (verticalAlignment)
         {
             case "TOP":
-                cellBuilder
+                cellEditor
                     .SetFormat(format => format
                         .SetContentVerticalAlignment(CellContentVerticalAlignment.Top));
                 break;
             case "MIDDLE":
-                cellBuilder
+                cellEditor
                     .SetFormat(format => format
                         .SetContentVerticalAlignment(CellContentVerticalAlignment.Middle));
                 break;
             case "BOTTOM":
-                cellBuilder
+                cellEditor
                     .SetFormat(format => format
                         .SetContentVerticalAlignment(CellContentVerticalAlignment.Bottom));
                 break;

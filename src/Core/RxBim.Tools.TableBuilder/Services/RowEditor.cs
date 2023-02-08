@@ -7,10 +7,10 @@
     /// <summary>
     /// The builder of a single <see cref="Row"/> of a <see cref="Table"/>.
     /// </summary>
-    public class RowBuilder : CellsSetBuilder<Row, RowBuilder>, IRowBuilder
+    internal class RowEditor : CellsSetEditor<Row, RowEditor>, IRowEditor
     {
         /// <inheritdoc />
-        public RowBuilder(Row row)
+        public RowEditor(Row row)
             : base(row)
         {
         }
@@ -19,7 +19,7 @@
         /// Sets the height of the row.
         /// </summary>
         /// <param name="height">Row height value.</param>
-        public IRowBuilder SetHeight(double height)
+        public IRowEditor SetHeight(double height)
         {
             if (height <= 0)
                 throw new ArgumentException("Must be a positive number.", nameof(height));
@@ -29,28 +29,28 @@
         }
 
         /// <inheritdoc />
-        public IRowBuilder MergeRow(Action<ICellBuilder, ICellBuilder>? action = null)
+        public IRowEditor MergeRow(Action<ICellEditor, ICellEditor>? action = null)
         {
-            ((CellBuilder)ObjectForBuild.Cells.First()).MergeNext(ObjectForBuild.Cells.Count() - 1, action);
+            new CellEditor(ObjectForBuild.Cells.First()).MergeNext(ObjectForBuild.Cells.Count() - 1, action);
             return this;
         }
 
         /// <inheritdoc />
-        IRowBuilder IRowBuilder.SetFormat(CellFormatStyle format)
+        IRowEditor IRowEditor.SetFormat(CellFormatStyle format)
         {
             SetFormat(format);
             return this;
         }
 
         /// <inheritdoc />
-        IRowBuilder IRowBuilder.SetFormat(Action<ICellFormatStyleBuilder> action)
+        IRowEditor IRowEditor.SetFormat(Action<ICellFormatStyleBuilder> action)
         {
             SetFormat(action);
             return this;
         }
 
         /// <inheritdoc />
-        IRowBuilder IRowBuilder.FromList<TSource>(IList<TSource> source, Action<ICellBuilder>? cellsAction)
+        IRowEditor IRowEditor.FromList<TSource>(IList<TSource> source, Action<ICellEditor>? cellsAction)
         {
             FromList(source, cellsAction);
             return this;

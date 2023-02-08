@@ -5,10 +5,10 @@
     /// <summary>
     /// The builder of a single <see cref="Column"/> of a <see cref="Table"/>.
     /// </summary>
-    public class ColumnBuilder : CellsSetBuilder<Column, ColumnBuilder>, IColumnBuilder
+    internal class ColumnEditor : CellsSetEditor<Column, ColumnEditor>, IColumnEditor
     {
         /// <inheritdoc />
-        public ColumnBuilder(Column column)
+        public ColumnEditor(Column column)
             : base(column)
         {
         }
@@ -17,7 +17,7 @@
         /// Sets the width of the column.
         /// </summary>
         /// <param name="width">Column width.</param>
-        public IColumnBuilder SetWidth(double width)
+        public IColumnEditor SetWidth(double width)
         {
             if (width <= 0)
                 throw new ArgumentException("Must be a positive number.", nameof(width));
@@ -27,14 +27,14 @@
         }
 
         /// <inheritdoc />
-        IColumnBuilder IColumnBuilder.SetFormat(CellFormatStyle format)
+        IColumnEditor IColumnEditor.SetFormat(CellFormatStyle format)
         {
             SetFormat(format);
             return this;
         }
 
         /// <inheritdoc />
-        IColumnBuilder IColumnBuilder.SetFormat(Action<ICellFormatStyleBuilder> action)
+        IColumnEditor IColumnEditor.SetFormat(Action<ICellFormatStyleBuilder> action)
         {
             SetFormat(action);
             return this;
