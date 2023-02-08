@@ -135,6 +135,18 @@
             return this;
         }
 
+        /// <inheritdoc />
+        public int GetColumnIndex()
+        {
+            return ObjectForBuild.GetColumnIndex();
+        }
+
+        /// <inheritdoc />
+        public int GetRowIndex()
+        {
+            return ObjectForBuild.GetRowIndex();
+        }
+
         private CellEditor GetNextCellBuilder(Direction direction, int step)
         {
             var cellsSet = direction == Direction.Next ? (CellsSet)ObjectForBuild.Row : ObjectForBuild.Column;

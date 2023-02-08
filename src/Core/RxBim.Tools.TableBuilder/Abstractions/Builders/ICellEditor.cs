@@ -105,4 +105,14 @@ public interface ICellEditor
     /// </summary>
     /// <param name="action">Format building action.</param>
     ICellEditor SetFormat(Action<ICellFormatStyleBuilder> action);
+
+    /// <summary>
+    /// Returns the zero-based index of a cell in a table row.
+    /// </summary>
+    int GetColumnIndex();
+
+    /// <summary>
+    /// Returns the zero-based index of a cell in a table column.
+    /// </summary>
+    int GetRowIndex();
 }

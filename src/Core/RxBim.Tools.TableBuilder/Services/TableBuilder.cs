@@ -80,7 +80,9 @@
             {
                 foreach (var cell in column.Cells.Skip(startRow).Take(rangeHeight))
                 {
-                    new CellFormatStyleBuilder(cell.Format).SetFromFormat(formatStyle);
+                    var builder = new CellFormatStyleBuilder(cell.Format);
+                    builder.SetFromFormat(formatStyle);
+                    cell.Format = builder.Build();
                 }
             }
 

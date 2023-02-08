@@ -210,7 +210,7 @@
             for (var i = 0; i < colCount; i++)
             {
                 for (var j = 0; j < rowCount; j++)
-                    table[j, i].Content.Should().Be(cellValue);
+                    table[j, i].Content.Should().BeEquivalentTo(cellValue);
             }
         }
 
@@ -253,18 +253,14 @@
                 .AddColumn(count: colCount)
                 .AddRow(count: rowCount)
                 .Build();
-            
-            var nextMergedCell = table.Rows.First().Cells.First();
-            // TODO: add get index for CellEditor
-            new CellEditor(table.Rows.First().Cells.First()).MergeNext();
+
+            var nextMergedCell = new CellEditor(table.Rows.First().Cells.First()).MergeNext();
             nextMergedCell.GetColumnIndex().Should().Be(1);
 
-            var downMergedCell = table.Columns.Last().Cells.First();
-            new CellEditor(table.Columns.Last().Cells.First()).MergeDown();
-            downMergedCell.Row.GetIndex().Should().Be(1);
+            var downMergedCell = new CellEditor(table.Columns.Last().Cells.First()).MergeDown();
+            downMergedCell.GetRowIndex().Should().Be(1);
 
-            var leftMergedCell = table.Rows.Last().Cells[1];
-            new CellEditor(table.Rows.Last().Cells[1]).MergeLeft();
+            var leftMergedCell = new CellEditor(table.Rows.Last().Cells[1]).MergeLeft();
             leftMergedCell.GetColumnIndex().Should().Be(0);
         }
 
