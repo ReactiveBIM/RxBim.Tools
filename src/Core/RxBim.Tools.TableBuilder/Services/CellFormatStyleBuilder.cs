@@ -82,15 +82,15 @@
                 SetValue(format.Borders.Bottom,
                     defaultFormat?.Borders.Bottom,
                     useNullValue,
-                    v => bordersBuilder.SetBottomBorder(v));
+                    v => bordersBuilder.SetBottom(v));
                 SetValue(format.Borders.Left,
                     defaultFormat?.Borders.Left,
                     useNullValue,
-                    v => bordersBuilder.SetLeftBorder(v));
+                    v => bordersBuilder.SetLeft(v));
                 SetValue(format.Borders.Right,
                     defaultFormat?.Borders.Right,
                     useNullValue,
-                    v => bordersBuilder.SetRightBorder(v));
+                    v => bordersBuilder.SetRight(v));
             });
             SetValue(
                 format.BackgroundColor, defaultFormat?.BackgroundColor, useNullValue, v => SetBackgroundColor(v));
@@ -99,19 +99,19 @@
                 SetValue(format.ContentMargins.Top,
                     defaultFormat?.ContentMargins.Top,
                     useNullValue,
-                    v => contentMarginsBuilder.SetTopMargin(v));
+                    v => contentMarginsBuilder.SetTop(v));
                 SetValue(format.ContentMargins.Bottom,
                     defaultFormat?.ContentMargins.Bottom,
                     useNullValue,
-                    v => contentMarginsBuilder.SetBottomMargin(v));
+                    v => contentMarginsBuilder.SetBottom(v));
                 SetValue(format.ContentMargins.Left,
                     defaultFormat?.ContentMargins.Left,
                     useNullValue,
-                    v => contentMarginsBuilder.SetLeftMargin(v));
+                    v => contentMarginsBuilder.SetLeft(v));
                 SetValue(format.ContentMargins.Right,
                     defaultFormat?.ContentMargins.Right,
                     useNullValue,
-                    v => contentMarginsBuilder.SetRightMargin(v));
+                    v => contentMarginsBuilder.SetRight(v));
             });
             SetValue(format.ContentHorizontalAlignment,
                 defaultFormat?.ContentHorizontalAlignment,

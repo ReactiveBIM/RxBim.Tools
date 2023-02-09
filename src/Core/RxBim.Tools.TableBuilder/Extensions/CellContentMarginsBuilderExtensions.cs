@@ -21,10 +21,10 @@ public static class CellContentMarginsBuilderExtensions
         double? right = null)
     {
         cellContentMarginsBuilder
-            .SetBottomMargin(bottom)
-            .SetLeftMargin(left)
-            .SetRightMargin(right)
-            .SetTopMargin(top);
+            .SetBottom(bottom)
+            .SetLeft(left)
+            .SetRight(right)
+            .SetTop(top);
         return cellContentMarginsBuilder;
     }
 
@@ -38,10 +38,10 @@ public static class CellContentMarginsBuilderExtensions
         double? marginsForAll = null)
     {
         cellContentMarginsBuilder
-            .SetBottomMargin(marginsForAll)
-            .SetLeftMargin(marginsForAll)
-            .SetRightMargin(marginsForAll)
-            .SetTopMargin(marginsForAll);
+            .SetBottom(marginsForAll)
+            .SetLeft(marginsForAll)
+            .SetRight(marginsForAll)
+            .SetTop(marginsForAll);
         return cellContentMarginsBuilder;
     }
 }

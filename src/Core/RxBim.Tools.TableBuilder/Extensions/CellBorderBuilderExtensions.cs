@@ -21,9 +21,9 @@ public static class CellBorderBuilderExtensions
         CellBorderType? right = null)
     {
         bordersBuilder.SetTop(top)
-            .SetRightBorder(right)
-            .SetLeftBorder(left)
-            .SetBottomBorder(bottom);
+            .SetRight(right)
+            .SetLeft(left)
+            .SetBottom(bottom);
         return bordersBuilder;
     }
 
@@ -38,9 +38,9 @@ public static class CellBorderBuilderExtensions
     {
         bordersBuilder
             .SetTop(typeForAll)
-            .SetRightBorder(typeForAll)
-            .SetLeftBorder(typeForAll)
-            .SetBottomBorder(typeForAll);
+            .SetRight(typeForAll)
+            .SetLeft(typeForAll)
+            .SetBottom(typeForAll);
         return bordersBuilder;
     }
 }

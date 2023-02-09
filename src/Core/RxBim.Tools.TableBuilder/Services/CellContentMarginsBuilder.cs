@@ -17,28 +17,28 @@ internal class CellContentMarginsBuilder : ICellContentMarginsBuilder
     }
 
     /// <inheritdoc/>
-    public ICellContentMarginsBuilder SetTopMargin(double? margin)
+    public ICellContentMarginsBuilder SetTop(double? margin)
     {
         _cellContentMargins.Top = margin;
         return this;
     }
 
     /// <inheritdoc/>
-    public ICellContentMarginsBuilder SetRightMargin(double? margin)
+    public ICellContentMarginsBuilder SetRight(double? margin)
     {
         _cellContentMargins.Right = margin;
         return this;
     }
 
     /// <inheritdoc/>
-    public ICellContentMarginsBuilder SetBottomMargin(double? margin)
+    public ICellContentMarginsBuilder SetBottom(double? margin)
     {
         _cellContentMargins.Bottom = margin;
         return this;
     }
 
     /// <inheritdoc/>
-    public ICellContentMarginsBuilder SetLeftMargin(double? margin)
+    public ICellContentMarginsBuilder SetLeft(double? margin)
     {
         _cellContentMargins.Left = margin;
         return this;

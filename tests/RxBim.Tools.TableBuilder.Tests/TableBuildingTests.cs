@@ -270,8 +270,7 @@
                 .SetBackgroundColor(Color.Bisque)
                 .SetContentHorizontalAlignment(CellContentHorizontalAlignment.Left)
                 .SetContentVerticalAlignment(CellContentVerticalAlignment.Top)
-                .SetBorders(builder => builder
-                    .SetBorders(left: CellBorderType.Hidden, bottom: CellBorderType.Hidden))
+                .SetBorders(left: CellBorderType.Hidden, bottom: CellBorderType.Hidden)
                 .SetTextFormat(x => x
                     .SetBold(true)
                     .SetItalic(true)

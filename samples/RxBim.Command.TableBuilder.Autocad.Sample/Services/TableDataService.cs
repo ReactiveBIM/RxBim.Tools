@@ -22,9 +22,7 @@
 
             tableBuilder
                 .SetFormat(x => x
-                    .SetBorders(builder =>
-                        builder.SetBorders(
-                            CellBorderType.Thin, CellBorderType.Thin, CellBorderType.Bold, CellBorderType.Bold))
+                    .SetBorders(CellBorderType.Thin, CellBorderType.Thin, CellBorderType.Bold, CellBorderType.Bold)
                     .SetContentHorizontalAlignment(CellContentHorizontalAlignment.Center)
                     .SetContentVerticalAlignment(CellContentVerticalAlignment.Middle))
                 .AddColumn(x => x.SetWidth(60))
@@ -40,12 +38,11 @@
                     .SetHeight(15)
                     .MergeRow()
                     .SetFormat(x => x
-                        .SetBorders(builder => builder
-                            .SetBorders(
-                                CellBorderType.Hidden,
-                                CellBorderType.Bold,
-                                CellBorderType.Hidden,
-                                CellBorderType.Hidden)))
+                        .SetBorders(
+                            CellBorderType.Hidden,
+                            CellBorderType.Bold,
+                            CellBorderType.Hidden,
+                            CellBorderType.Hidden))
                     .Cells
                     .First()
                     .SetText("Selected object data table"))
@@ -54,8 +51,7 @@
                 .AddRow(r => r
                     .SetHeight(35)
                     .SetFormat(f => f
-                        .SetBorders(builder => builder
-                            .SetAllBorders(CellBorderType.Bold))
+                        .SetAllBorders(CellBorderType.Bold)
                         .SetContentHorizontalAlignment(CellContentHorizontalAlignment.Center))
                     .Cells
                     .First()
@@ -91,16 +87,12 @@
             // First data row
             tableBuilder.Rows
                 .ElementAt(2)
-                .SetFormat(x => x
-                    .SetBorders(builder => builder
-                        .SetBorders(top: CellBorderType.Bold)));
+                .SetFormat(x => x.SetBorders(top: CellBorderType.Bold));
 
             // Last row
             tableBuilder.Rows
                 .Last()
-                .SetFormat(x => x
-                    .SetBorders(builder => builder
-                        .SetBorders(bottom: CellBorderType.Bold)));
+                .SetFormat(x => x.SetBorders(bottom: CellBorderType.Bold));
 
             return tableBuilder.Build();
         }

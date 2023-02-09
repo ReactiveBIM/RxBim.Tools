@@ -24,21 +24,21 @@ public class CellBordersBuilder : ICellBordersBuilder
     }
 
     /// <inheritdoc/>
-    public ICellBordersBuilder SetRightBorder(CellBorderType? cellBorderType)
+    public ICellBordersBuilder SetRight(CellBorderType? cellBorderType)
     {
         _cellBorders.Right = cellBorderType;
         return this;
     }
 
     /// <inheritdoc/>
-    public ICellBordersBuilder SetBottomBorder(CellBorderType? cellBorderType)
+    public ICellBordersBuilder SetBottom(CellBorderType? cellBorderType)
     {
         _cellBorders.Bottom = cellBorderType;
         return this;
     }
 
     /// <inheritdoc/>
-    public ICellBordersBuilder SetLeftBorder(CellBorderType? cellBorderType)
+    public ICellBordersBuilder SetLeft(CellBorderType? cellBorderType)
     {
         _cellBorders.Left = cellBorderType;
         return this;

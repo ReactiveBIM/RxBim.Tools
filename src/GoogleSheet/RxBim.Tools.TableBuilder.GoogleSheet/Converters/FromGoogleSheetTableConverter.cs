@@ -18,28 +18,28 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
 
         var builder = new TableBuilder();
         var sheetData = sheet.Data.FirstOrDefault();
-        
+
         if (sheetData?.RowData == null)
             return builder.Build();
-        
+
         for (var rowIndex = 0; rowIndex < sheetData.RowData.Count; rowIndex++)
         {
             builder.AddRow();
-            
+
             var rowData = sheetData.RowData[rowIndex];
             var cellsData = rowData.Values;
-            
+
             if (cellsData == null)
                 continue;
-            
+
             for (var cellIndex = 0; cellIndex < cellsData.Count; cellIndex++)
             {
                 if (cellIndex >= builder.ColumnsCount)
                     builder.AddColumn();
-                
+
                 var cellData = cellsData[cellIndex];
                 var builderCell = builder[rowIndex, cellIndex];
-                
+
                 if (cellData.EffectiveValue?.BoolValue.HasValue ?? false)
                     builderCell.SetValue(cellData.EffectiveValue.BoolValue.Value);
                 else if (cellData.EffectiveValue?.NumberValue.HasValue ?? false)
@@ -63,27 +63,27 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
     {
         if (sheet.Merges == null || !sheet.Merges.Any())
             return;
-        
+
         foreach (var sheetMerge in sheet.Merges)
         {
             var startRowIndex = sheetMerge.StartRowIndex;
             var startColumnIndex = sheetMerge.StartColumnIndex;
             var lastRowIndex = sheetMerge.EndRowIndex;
             var lastColumnsIndex = sheetMerge.EndColumnIndex;
-            
+
             if (startRowIndex == null
                 || startColumnIndex == null
                 || lastRowIndex == null
                 || lastColumnsIndex == null)
                 continue;
-            
+
             var startRow = builder
                 .Rows
                 .ElementAt(startRowIndex.Value);
             var startCell = startRow
                 .Cells
                 .ElementAt(startColumnIndex.Value);
-            
+
             startCell.MergeNext(lastColumnsIndex.Value - startColumnIndex.Value - 1);
             startCell.MergeDown(lastRowIndex.Value - startRowIndex.Value - 1);
         }
@@ -94,15 +94,15 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         var targetSheet =
             spreadsheet.Sheets.FirstOrDefault(sheet => sheet.Properties.Title.Equals(parameters.SheetName)) ??
             spreadsheet.Sheets.FirstOrDefault()!;
-        
+
         if (targetSheet.Data != null)
             return targetSheet;
-        
+
         var spreadsheetRequest = parameters.SheetsService.Spreadsheets.Get(spreadsheet.SpreadsheetId);
         spreadsheetRequest.IncludeGridData = true;
-        
+
         spreadsheet = spreadsheetRequest.Execute();
-        
+
         return spreadsheet.Sheets.FirstOrDefault(sheet => sheet.Properties.Title.Equals(targetSheet.Properties.Title))!;
     }
 
@@ -120,7 +120,7 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         var sizes = gridData.RowMetadata?
             .Select(metadata => metadata.PixelSize)
             .ToList();
-        
+
         if (sizes == null || !sizes.Any())
             return;
 
@@ -141,7 +141,7 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         var sizes = gridData.ColumnMetadata?
             .Select(metadata => metadata.PixelSize)
             .ToList();
-        
+
         if (sizes == null || !sizes.Any())
             return;
 
@@ -158,33 +158,33 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
 
     private void CopyBordersFormat(CellData googleCellData, ICellEditor cellEditor)
     {
+        var googleBorders = googleCellData
+            .EffectiveFormat?
+            .Borders;
+
+        if (googleBorders == null)
+            return;
+
+        var googleProperties = googleBorders
+            .GetType()
+            .GetProperties();
+
         var cellBorders = new CellBordersBuilder().Build();
         var properties = cellBorders
             .GetType()
             .GetProperties();
 
-        var googleBorders = googleCellData
-            .EffectiveFormat?
-            .Borders;
-        
-        if (googleBorders == null)
-            return;
-        
-        var googleProperties = googleBorders
-            .GetType()
-            .GetProperties();
-        
         foreach (var googleBordersTypeProperty in googleProperties)
         {
             var googleBordersPropertyName = googleBordersTypeProperty.Name;
-            
+
             if (!properties.Any(cellProperty => cellProperty.Name.Equals(googleBordersPropertyName)))
                 continue;
-            
+
             var targetProperty = properties.FirstOrDefault(property => property.Name.Equals(googleBordersPropertyName));
             var border = googleBordersTypeProperty.GetValue(googleBorders) as Border;
             var borderStyle = border?.Style;
-            
+
             switch (borderStyle)
             {
                 case "SOLID_MEDIUM":
@@ -201,8 +201,7 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         }
 
         cellEditor.SetFormat(format => format
-            .SetBorders(borderBuilder => borderBuilder
-                .SetBorders(cellBorders.Top, cellBorders.Bottom, cellBorders.Left, cellBorders.Right)));
+            .SetBorders(cellBorders.Top, cellBorders.Bottom, cellBorders.Left, cellBorders.Right));
     }
 
     private void CopyBackgroundColor(CellData googleCellData, ICellEditor cellEditor)
@@ -210,10 +209,10 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         var googleBackgroundColor = googleCellData
             .EffectiveFormat?
             .BackgroundColor;
-        
+
         if (googleBackgroundColor == null)
             return;
-        
+
         var color = ConvertArgb(googleBackgroundColor);
         cellEditor.SetFormat(format => format.SetBackgroundColor(color));
     }
@@ -223,13 +222,12 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         var padding = googleCellData
             .EffectiveFormat?
             .Padding;
-        
+
         if (padding == null)
             return;
-        
+
         cellEditor.SetFormat(format => format
-            .SetContentMargins(marginBuilder => marginBuilder
-                    .SetContentMargins(padding.Top, padding.Bottom, padding.Left, padding.Right)));
+            .SetContentMargins(padding.Top, padding.Bottom, padding.Left, padding.Right));
     }
 
     private void CopyTextFormat(CellData googleCellData, ICellEditor cellEditor)
@@ -237,16 +235,16 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         var googleTextFormat = googleCellData
             .EffectiveFormat?
             .TextFormat;
-        
+
         if (googleTextFormat == null)
             return;
-        
+
         cellEditor.SetFormat(format => format.SetTextFormat(textFormat =>
         {
             textFormat.SetBold(googleTextFormat.Bold ?? false);
             textFormat.SetItalic(googleTextFormat.Italic ?? false);
             textFormat.SetFontFamily(googleTextFormat.FontFamily);
-            
+
             if (googleTextFormat.ForegroundColor != null)
             {
                 var fontColor = ConvertArgb(googleTextFormat.ForegroundColor);
@@ -263,7 +261,7 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         var horizontalAlignment = googleCellData
             .EffectiveFormat?
             .HorizontalAlignment;
-        
+
         if (horizontalAlignment != null)
         {
             switch (horizontalAlignment)
@@ -289,7 +287,7 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
 
         if (verticalAlignment == null)
             return;
-        
+
         switch (verticalAlignment)
         {
             case "TOP":
@@ -316,7 +314,7 @@ public class FromGoogleSheetTableConverter : IFromGoogleSheetTableConverter
         var googleRedChannel = color.Red ?? 0.0;
         var googleGreenChannel = color.Green ?? 0.0;
         var googleBlueChannel = color.Blue ?? 0.0;
-        
+
         var alphaChannel = LinearlyInterpolate(googleAlphaChannel, 1.0, 0.0, 0.0, 255.0);
         var redChannel = LinearlyInterpolate(googleRedChannel, 0.0, 1.0, 0.0, 255.0);
         var greenChannel = LinearlyInterpolate(googleGreenChannel, 0.0, 1.0, 0.0, 255.0);

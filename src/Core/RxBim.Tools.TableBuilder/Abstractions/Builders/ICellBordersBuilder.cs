@@ -15,17 +15,17 @@ public interface ICellBordersBuilder : IBuilder<CellBorders>
     /// Sets the right border.
     /// </summary>
     /// <param name="cellBorderType"><see cref="CellBorderType"/></param>
-    ICellBordersBuilder SetRightBorder(CellBorderType? cellBorderType);
+    ICellBordersBuilder SetRight(CellBorderType? cellBorderType);
 
     /// <summary>
     /// Sets the bottom border.
     /// </summary>
     /// <param name="cellBorderType"><see cref="CellBorderType"/></param>
-    ICellBordersBuilder SetBottomBorder(CellBorderType? cellBorderType);
+    ICellBordersBuilder SetBottom(CellBorderType? cellBorderType);
 
     /// <summary>
     /// Sets the left border.
     /// </summary>
     /// <param name="cellBorderType"><see cref="CellBorderType"/></param>
-    ICellBordersBuilder SetLeftBorder(CellBorderType? cellBorderType);
+    ICellBordersBuilder SetLeft(CellBorderType? cellBorderType);
 }

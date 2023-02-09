@@ -94,21 +94,17 @@
         {
             var boldFormat = new CellFormatStyleBuilder()
                 .SetContentVerticalAlignment(CellContentVerticalAlignment.Middle)
-                .SetBorders(builder => builder.SetAllBorders(CellBorderType.Bold))
+                .SetAllBorders(CellBorderType.Bold)
                 .Build();
 
             var rowFormat = new CellFormatStyleBuilder()
                 .SetContentVerticalAlignment(CellContentVerticalAlignment.Middle)
-                .SetBorders(builder => builder
-                    .SetBorders(
-                        CellBorderType.Thin, CellBorderType.Thin, CellBorderType.Bold, CellBorderType.Bold))
+                .SetBorders(CellBorderType.Thin, CellBorderType.Thin, CellBorderType.Bold, CellBorderType.Bold)
                 .Build();
 
             var lastRowFormat = new CellFormatStyleBuilder()
                 .SetContentVerticalAlignment(CellContentVerticalAlignment.Middle)
-                .SetBorders(builder => builder
-                    .SetBorders(
-                        CellBorderType.Thin, CellBorderType.Bold, CellBorderType.Bold, CellBorderType.Bold))
+                .SetBorders(CellBorderType.Thin, CellBorderType.Bold, CellBorderType.Bold, CellBorderType.Bold)
                 .Build();
 
             SetFormat(boldFormat);
