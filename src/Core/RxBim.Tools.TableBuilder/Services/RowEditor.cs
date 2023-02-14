@@ -55,5 +55,11 @@
             FromList(source, cellsAction);
             return this;
         }
+
+        /// <inheritdoc />
+        public int GetRowIndex()
+        {
+            return ObjectForBuild.GetIndex();
+        }
     }
 }

@@ -39,4 +39,9 @@ public interface IRowEditor : ICellsSetEditor
     /// <param name="cellsAction">Delegate. Applies to all filled cells.</param>
     /// <typeparam name="TSource">The type of the list item.</typeparam>
     IRowEditor FromList<TSource>(IList<TSource> source, Action<ICellEditor>? cellsAction = null);
+
+    /// <summary>
+    /// Returns the index of this row in the table.
+    /// </summary>
+    int GetRowIndex();
 }

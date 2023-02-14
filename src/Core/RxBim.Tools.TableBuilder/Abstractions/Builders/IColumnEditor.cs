@@ -24,4 +24,9 @@ public interface IColumnEditor : ICellsSetEditor
     /// </summary>
     /// <param name="action">Format building action.</param>
     IColumnEditor SetFormat(Action<ICellFormatStyleBuilder> action);
+
+    /// <summary>
+    /// Returns the index of this column in the table.
+    /// </summary>
+    int GetColumnIndex();
 }

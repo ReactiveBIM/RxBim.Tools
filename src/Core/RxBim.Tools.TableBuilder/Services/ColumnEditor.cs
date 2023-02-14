@@ -39,5 +39,11 @@
             SetFormat(action);
             return this;
         }
+
+        /// <inheritdoc />
+        public int GetColumnIndex()
+        {
+            return ObjectForBuild.GetIndex();
+        }
     }
 }
