@@ -12,7 +12,7 @@
         /// <param name="bottomRow"><see cref="BottomRow"/></param>
         /// <param name="leftColumn"><see cref="LeftColumn"/></param>
         /// <param name="rightColumn"><see cref="RightColumn"/></param>
-        internal CellRange(int topRow, int bottomRow, int leftColumn, int rightColumn)
+        public CellRange(int topRow, int bottomRow, int leftColumn, int rightColumn)
         {
             TopRow = topRow;
             BottomRow = bottomRow;

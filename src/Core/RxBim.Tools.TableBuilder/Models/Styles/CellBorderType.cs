@@ -1,4 +1,4 @@
-﻿namespace RxBim.Tools.TableBuilder.Styles
+﻿namespace RxBim.Tools.TableBuilder
 {
     /// <summary>
     /// The line type of a table cell border.

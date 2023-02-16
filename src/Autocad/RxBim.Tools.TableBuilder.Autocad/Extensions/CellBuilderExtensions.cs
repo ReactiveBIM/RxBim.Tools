@@ -2,26 +2,24 @@
 {
     using System;
     using Autodesk.AutoCAD.DatabaseServices;
-    using Builders;
 
     /// <summary>
-    /// Extensions for <see cref="CellBuilder"/>
+    /// Extensions for <see cref="CellEditor"/>
     /// </summary>
     public static class CellBuilderExtensions
     {
         /// <summary>
         /// Sets the rotated text content.
         /// </summary>
-        /// <param name="builder"><see cref="CellBuilder"/> object.</param>
+        /// <param name="editor"><see cref="CellEditor"/> object.</param>
         /// <param name="text">Content text value.</param>
         /// <param name="angle">Text rotation angle.</param>
         /// <param name="adjustCellSize"><see cref="AutocadTextCellContent.AdjustCellSize"/> property value.</param>
-        public static ICellBuilder<T> SetAcadTableText<T>(
-            this ICellBuilder<T> builder,
+        public static ICellEditor SetAcadTableText(
+            this ICellEditor editor,
             string text,
             RotationAngle angle = RotationAngle.Degrees000,
             bool adjustCellSize = false)
-            where T : TableItemBase
         {
             var content = new AutocadTextCellContent(text)
             {
@@ -36,7 +34,7 @@
                 },
                 AdjustCellSize = adjustCellSize
             };
-            return builder.SetContent(content);
+            return editor.SetContent(content);
         }
     }
 }

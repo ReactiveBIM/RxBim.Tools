@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Styles;
 
     /// <summary>
     /// Table data.
@@ -49,7 +48,7 @@
         /// <summary>
         /// The default format for cells.
         /// </summary>
-        public CellFormatStyle DefaultFormat { get; set; } = new();
+        public CellFormatStyle DefaultFormat { get; internal set; } = new();
 
         /// <summary>
         /// Own width.

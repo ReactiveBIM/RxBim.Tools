@@ -2,8 +2,6 @@
 {
     using System;
     using System.Drawing;
-    using Builders;
-    using Styles;
 
     /// <summary>
     /// Builder for <see cref="CellFormatStyle"/>.
@@ -18,7 +16,7 @@
         /// <param name="format">Format for build.</param>
         public CellFormatStyleBuilder(CellFormatStyle? format = null)
         {
-            _format = format ?? new CellFormatStyle();
+            _format = format?.Copy() ?? new CellFormatStyle();
         }
 
         /// <inheritdoc />
@@ -26,6 +24,7 @@
         {
             var builder = new CellTextFormatStyleBuilder(_format.TextFormat);
             action(builder);
+            _format.TextFormat = builder.Build();
             return this;
         }
 
@@ -34,6 +33,7 @@
         {
             var builder = new CellBordersBuilder(_format.Borders);
             action(builder);
+            _format.Borders = builder.Build();
             return this;
         }
 
@@ -42,6 +42,7 @@
         {
             var builder = new CellContentMarginsBuilder(_format.ContentMargins);
             action(builder);
+            _format.ContentMargins = builder.Build();
             return this;
         }
 
@@ -77,39 +78,40 @@
                 SetValue(format.Borders.Top,
                     defaultFormat?.Borders.Top,
                     useNullValue,
-                    v => bordersBuilder.SetTopBorder(v));
+                    v => bordersBuilder.SetTop(v));
                 SetValue(format.Borders.Bottom,
                     defaultFormat?.Borders.Bottom,
                     useNullValue,
-                    v => bordersBuilder.SetBottomBorder(v));
+                    v => bordersBuilder.SetBottom(v));
                 SetValue(format.Borders.Left,
                     defaultFormat?.Borders.Left,
                     useNullValue,
-                    v => bordersBuilder.SetLeftBorder(v));
+                    v => bordersBuilder.SetLeft(v));
                 SetValue(format.Borders.Right,
                     defaultFormat?.Borders.Right,
                     useNullValue,
-                    v => bordersBuilder.SetRightBorder(v));
+                    v => bordersBuilder.SetRight(v));
             });
-            SetValue(format.BackgroundColor, defaultFormat?.BackgroundColor, useNullValue, v => SetBackgroundColor(v));
+            SetValue(
+                format.BackgroundColor, defaultFormat?.BackgroundColor, useNullValue, v => SetBackgroundColor(v));
             SetContentMargins(contentMarginsBuilder =>
             {
                 SetValue(format.ContentMargins.Top,
                     defaultFormat?.ContentMargins.Top,
                     useNullValue,
-                    v => contentMarginsBuilder.SetTopMargin(v));
+                    v => contentMarginsBuilder.SetTop(v));
                 SetValue(format.ContentMargins.Bottom,
                     defaultFormat?.ContentMargins.Bottom,
                     useNullValue,
-                    v => contentMarginsBuilder.SetBottomMargin(v));
+                    v => contentMarginsBuilder.SetBottom(v));
                 SetValue(format.ContentMargins.Left,
                     defaultFormat?.ContentMargins.Left,
                     useNullValue,
-                    v => contentMarginsBuilder.SetLeftMargin(v));
+                    v => contentMarginsBuilder.SetLeft(v));
                 SetValue(format.ContentMargins.Right,
                     defaultFormat?.ContentMargins.Right,
                     useNullValue,
-                    v => contentMarginsBuilder.SetRightMargin(v));
+                    v => contentMarginsBuilder.SetRight(v));
             });
             SetValue(format.ContentHorizontalAlignment,
                 defaultFormat?.ContentHorizontalAlignment,
@@ -120,14 +122,16 @@
                 useNullValue,
                 v => SetContentVerticalAlignment(v));
 
-            SetTextFormat(x => x.SetFromFormat(format.TextFormat, defaultFormat?.TextFormat, useNullValue));
+            SetTextFormat(x => x.SetFromFormat(
+                format.TextFormat, defaultFormat?.TextFormat, useNullValue));
+            
             return this;
         }
 
         /// <inheritdoc />
         public CellFormatStyle Build()
         {
-            return _format;
+            return _format.Copy();
         }
 
         private static void SetValue<T>(T? main, T? alternative, bool useNullValue, Action<T?> setValueAction)

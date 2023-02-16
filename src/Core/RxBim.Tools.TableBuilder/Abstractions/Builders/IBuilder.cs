@@ -1,4 +1,4 @@
-﻿namespace RxBim.Tools.TableBuilder.Builders;
+﻿namespace RxBim.Tools.TableBuilder;
 
 /// <summary>
 /// Generic builder <typeparamref name="T"/>.

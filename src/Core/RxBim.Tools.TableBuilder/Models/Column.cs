@@ -22,20 +22,11 @@
         public double? Width
         {
             get => _width;
-            set
+            internal set
             {
                 IsAdjustedToContent = false;
                 _width = value;
             }
-        }
-
-        /// <summary>
-        /// Returns new <see cref="ColumnBuilder"/> for the column.
-        /// </summary>
-        /// <param name="row"><see cref="Column"/> object.</param>
-        public static implicit operator ColumnBuilder(Column row)
-        {
-            return new ColumnBuilder(row);
         }
     }
 }

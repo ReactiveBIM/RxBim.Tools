@@ -1,16 +1,14 @@
 ﻿namespace RxBim.Tools.TableBuilder
 {
     using System;
-    using Builders;
-    using Styles;
 
     /// <summary>
     /// The builder of a single <see cref="Column"/> of a <see cref="Table"/>.
     /// </summary>
-    public class ColumnBuilder : CellsSetBuilder<Column, ColumnBuilder>, IColumnBuilder<Cell>
+    internal class ColumnEditor : CellsSetEditor<Column, ColumnEditor>, IColumnEditor
     {
         /// <inheritdoc />
-        public ColumnBuilder(Column column)
+        public ColumnEditor(Column column)
             : base(column)
         {
         }
@@ -19,7 +17,7 @@
         /// Sets the width of the column.
         /// </summary>
         /// <param name="width">Column width.</param>
-        public IColumnBuilder<Cell> SetWidth(double width)
+        public IColumnEditor SetWidth(double width)
         {
             if (width <= 0)
                 throw new ArgumentException("Must be a positive number.", nameof(width));
@@ -29,17 +27,23 @@
         }
 
         /// <inheritdoc />
-        IColumnBuilder<Cell> IColumnBuilder<Cell>.SetFormat(CellFormatStyle format)
+        IColumnEditor IColumnEditor.SetFormat(CellFormatStyle format)
         {
             SetFormat(format);
             return this;
         }
 
         /// <inheritdoc />
-        IColumnBuilder<Cell> IColumnBuilder<Cell>.SetFormat(Action<ICellFormatStyleBuilder> action)
+        IColumnEditor IColumnEditor.SetFormat(Action<ICellFormatStyleBuilder> action)
         {
             SetFormat(action);
             return this;
+        }
+
+        /// <inheritdoc />
+        public int GetColumnIndex()
+        {
+            return ObjectForBuild.GetIndex();
         }
     }
 }
