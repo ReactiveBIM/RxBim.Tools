@@ -5,10 +5,10 @@ using System.Collections.Generic;
 /// <summary>
 /// The builder of a <see cref="CellsSet"/> of a <see cref="Table"/>.
 /// </summary>
-public interface ICellsSetBuilder
+public interface ICellsSetEditor
 {
     /// <summary>
-    /// Collection of <see cref="CellBuilder"/> for cells.
+    /// Collection of <see cref="CellEditor"/> for cells.
     /// </summary>
-    IEnumerable<ICellBuilder> Cells { get; }
+    IEnumerable<ICellEditor> Cells { get; }
 }

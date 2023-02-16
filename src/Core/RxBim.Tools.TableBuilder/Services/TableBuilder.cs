@@ -15,20 +15,20 @@
         /// <param name="table">The <see cref="Table"/> to be built.</param>
         public TableBuilder(Table? table = null)
         {
-            Table = table ?? new Table();
+            Table = table?.Copy() ?? new Table();
         }
 
         /// <inheritdoc />
-        public IEnumerable<IRowBuilder> Rows
-            => Table.Rows.Select(row => (RowBuilder)row);
+        public IEnumerable<IRowEditor> Rows
+            => Table.Rows.Select(row => new RowEditor(row));
 
         /// <inheritdoc />
         public int RowsCount
             => Table.Rows.Count;
 
         /// <inheritdoc />
-        public IEnumerable<IColumnBuilder> Columns
-            => Table.Columns.Select(column => (ColumnBuilder)column);
+        public IEnumerable<IColumnEditor> Columns
+            => Table.Columns.Select(column => new ColumnEditor(column));
 
         /// <inheritdoc />
         public int ColumnsCount
@@ -40,8 +40,8 @@
         private Table Table { get; }
 
         /// <inheritdoc />
-        public ICellBuilder this[int row, int column]
-            => new CellBuilder(Table[row, column]);
+        public ICellEditor this[int row, int column]
+            => new CellEditor(Table[row, column]);
 
         /// <summary>
         /// Returns the built <see cref="Table"/>.
@@ -55,14 +55,16 @@
         /// <inheritdoc />
         public ITableBuilder SetFormat(CellFormatStyle formatStyle)
         {
-            Table.DefaultFormat = formatStyle;
+            Table.DefaultFormat = formatStyle.Copy();
             return this;
         }
 
         /// <inheritdoc />
         public ITableBuilder SetFormat(Action<ICellFormatStyleBuilder> action)
         {
-            action(new CellFormatStyleBuilder(Table.DefaultFormat));
+            var builder = new CellFormatStyleBuilder(Table.DefaultFormat);
+            action(builder);
+            Table.DefaultFormat = builder.Build();
             return this;
         }
 
@@ -78,7 +80,9 @@
             {
                 foreach (var cell in column.Cells.Skip(startRow).Take(rangeHeight))
                 {
-                    new CellFormatStyleBuilder(cell.Format).SetFromFormat(formatStyle);
+                    var builder = new CellFormatStyleBuilder(cell.Format);
+                    builder.SetFromFormat(formatStyle);
+                    cell.Format = builder.Build();
                 }
             }
 
@@ -90,21 +94,17 @@
         {
             var boldFormat = new CellFormatStyleBuilder()
                 .SetContentVerticalAlignment(CellContentVerticalAlignment.Middle)
-                .SetBorders(builder => builder.SetAllBorders(CellBorderType.Bold))
+                .SetAllBorders(CellBorderType.Bold)
                 .Build();
 
             var rowFormat = new CellFormatStyleBuilder()
                 .SetContentVerticalAlignment(CellContentVerticalAlignment.Middle)
-                .SetBorders(builder => builder
-                    .SetBorders(
-                        CellBorderType.Thin, CellBorderType.Thin, CellBorderType.Bold, CellBorderType.Bold))
+                .SetBorders(CellBorderType.Thin, CellBorderType.Thin, CellBorderType.Bold, CellBorderType.Bold)
                 .Build();
 
             var lastRowFormat = new CellFormatStyleBuilder()
                 .SetContentVerticalAlignment(CellContentVerticalAlignment.Middle)
-                .SetBorders(builder => builder
-                    .SetBorders(
-                        CellBorderType.Thin, CellBorderType.Bold, CellBorderType.Bold, CellBorderType.Bold))
+                .SetBorders(CellBorderType.Thin, CellBorderType.Bold, CellBorderType.Bold, CellBorderType.Bold)
                 .Build();
 
             SetFormat(boldFormat);
@@ -119,7 +119,7 @@
                 RowsCount - headerRowsCount);
             
             foreach (var cell in Table.Rows.Last().Cells)
-                ((CellBuilder)cell).SetFormat(lastRowFormat);
+                new CellEditor(cell).SetFormat(lastRowFormat);
 
             return this;
         }
@@ -143,12 +143,12 @@
         }
 
         /// <inheritdoc />
-        public ITableBuilder AddRow(Action<IRowBuilder>? action = null, int count = 1)
+        public ITableBuilder AddRow(Action<IRowEditor>? action = null, int count = 1)
         {
             for (; count > 0; count--)
             {
                 var newRow = Table.AddRow();
-                action?.Invoke(new RowBuilder(newRow));
+                action?.Invoke(new RowEditor(newRow));
             }
 
             return this;
@@ -186,12 +186,12 @@
         }
 
         /// <inheritdoc />
-        public ITableBuilder AddColumn(Action<IColumnBuilder>? action = null, int count = 1)
+        public ITableBuilder AddColumn(Action<IColumnEditor>? action = null, int count = 1)
         {
             for (; count > 0; count--)
             {
                 var newColumn = Table.AddColumn();
-                action?.Invoke(new ColumnBuilder(newColumn));
+                action?.Invoke(new ColumnEditor(newColumn));
             }
 
             return this;
@@ -230,7 +230,7 @@
         /// <inheritdoc />
         public Table Build()
         {
-            return Table;
+            return Table.Copy();
         }
 
         private void FromMatrix(

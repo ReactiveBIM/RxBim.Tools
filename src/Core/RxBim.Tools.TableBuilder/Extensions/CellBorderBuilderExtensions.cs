@@ -20,10 +20,10 @@ public static class CellBorderBuilderExtensions
         CellBorderType? left = null,
         CellBorderType? right = null)
     {
-        bordersBuilder.SetTopBorder(top)
-            .SetRightBorder(right)
-            .SetLeftBorder(left)
-            .SetBottomBorder(bottom);
+        bordersBuilder.SetTop(top)
+            .SetRight(right)
+            .SetLeft(left)
+            .SetBottom(bottom);
         return bordersBuilder;
     }
 
@@ -37,10 +37,10 @@ public static class CellBorderBuilderExtensions
         CellBorderType? typeForAll)
     {
         bordersBuilder
-            .SetTopBorder(typeForAll)
-            .SetRightBorder(typeForAll)
-            .SetLeftBorder(typeForAll)
-            .SetBottomBorder(typeForAll);
+            .SetTop(typeForAll)
+            .SetRight(typeForAll)
+            .SetLeft(typeForAll)
+            .SetBottom(typeForAll);
         return bordersBuilder;
     }
 }

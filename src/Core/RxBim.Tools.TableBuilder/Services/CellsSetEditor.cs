@@ -8,22 +8,22 @@
     /// The builder of a <see cref="CellsSet"/> of a <see cref="Table"/>.
     /// </summary>
     /// <typeparam name="TSet">Type of <see cref="CellsSet"/> implementation.</typeparam>
-    /// <typeparam name="TBuilder">Type of <see cref="CellsSetBuilder{TSet,TBuilder}"/> implementation.</typeparam>
-    public abstract class CellsSetBuilder<TSet, TBuilder> : TableItemBuilderBase<TSet, TBuilder>
+    /// <typeparam name="TBuilder">Type of <see cref="CellsSetEditor{TSet,TBuilder}"/> implementation.</typeparam>
+    internal abstract class CellsSetEditor<TSet, TBuilder> : TableItemEditorBase<TSet, TBuilder>
         where TSet : CellsSet
-        where TBuilder : CellsSetBuilder<TSet, TBuilder>
+        where TBuilder : CellsSetEditor<TSet, TBuilder>
     {
         /// <inheritdoc />
-        protected CellsSetBuilder(TSet set)
+        protected CellsSetEditor(TSet set)
             : base(set)
         {
         }
 
         /// <summary>
-        /// Returns collection of <see cref="CellBuilder"/> for cells.
+        /// Returns collection of <see cref="CellEditor"/> for cells.
         /// </summary>
-        public IEnumerable<ICellBuilder> Cells
-            => ObjectForBuild.Cells.Select(x => (CellBuilder)x);
+        public IEnumerable<ICellEditor> Cells
+            => ObjectForBuild.Cells.Select(cell => new CellEditor(cell));
         
         /// <summary>
         /// Fills cells with text values from list items.
@@ -31,7 +31,7 @@
         /// <param name="source">List of items.</param>
         /// <param name="cellsAction">Delegate. Applies to all filled cells.</param>
         /// <typeparam name="TSource">The type of the list item.</typeparam>
-        public TBuilder FromList<TSource>(IList<TSource> source, Action<ICellBuilder>? cellsAction = null)
+        public TBuilder FromList<TSource>(IList<TSource> source, Action<ICellEditor>? cellsAction = null)
         {
             if (!source.Any())
                 return (TBuilder)this;
@@ -44,7 +44,7 @@
 
             for (var i = 0; i < source.Count; i++)
             {
-                CellBuilder cell = ObjectForBuild.Cells[i];
+                var cell = new CellEditor(ObjectForBuild.Cells[i]);
                 cell.SetContent(new TextCellContent(source[i]?.ToString() ?? string.Empty));
                 cellsAction?.Invoke(cell);
             }
@@ -58,7 +58,9 @@
         /// <param name="format">Format value.</param>
         public TBuilder SetFormat(CellFormatStyle format)
         {
-            new CellFormatStyleBuilder(ObjectForBuild.Format).SetFromFormat(format);
+            var builder = new CellFormatStyleBuilder(ObjectForBuild.Format);
+            builder.SetFromFormat(format);
+            ObjectForBuild.Format = builder.Build();
             return (TBuilder)this;
         }
 
@@ -78,7 +80,9 @@
         /// <param name="action">Format building action.</param>
         public TBuilder SetFormat(Action<ICellFormatStyleBuilder> action)
         {
-            action(new CellFormatStyleBuilder(ObjectForBuild.Format));
+            var builder = new CellFormatStyleBuilder(ObjectForBuild.Format);
+            action(builder);
+            ObjectForBuild.Format = builder.Build();
             return (TBuilder)this;
         }
     }

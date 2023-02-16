@@ -22,20 +22,11 @@
         public double? Height
         {
             get => _height;
-            set
+            internal set
             {
                 IsAdjustedToContent = false;
                 _height = value;
             }
-        }
-
-        /// <summary>
-        /// Returns new <see cref="RowBuilder"/> for the row.
-        /// </summary>
-        /// <param name="row"><see cref="Row"/> object.</param>
-        public static implicit operator RowBuilder(Row row)
-        {
-            return new RowBuilder(row);
         }
     }
 }

@@ -36,22 +36,13 @@
         /// <summary>
         /// Cell content.
         /// </summary>
-        public ICellContent Content { get; set; } = TextCellContent.Empty;
+        public ICellContent Content { get; internal set; } = TextCellContent.Empty;
 
         /// <summary>
         /// Merge area in which this cell is used.
         /// </summary>
         /// <remarks>If is null, this cell is not used in merging cells.</remarks>
-        public CellRange? MergeArea { get; set; }
-
-        /// <summary>
-        /// Returns new <see cref="CellBuilder"/> for the cell.
-        /// </summary>
-        /// <param name="cell"><see cref="Cell"/> object.</param>
-        public static implicit operator CellBuilder(Cell cell)
-        {
-            return new CellBuilder(cell);
-        }
+        public CellRange? MergeArea { get; internal set; }
 
         /// <inheritdoc />
         public override CellFormatStyle GetComposedFormat() =>

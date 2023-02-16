@@ -9,9 +9,9 @@ using System.Collections.Generic;
 public interface ITableBuilder : IBuilder<Table>
 {
     /// <summary>
-    /// Collection of <see cref="RowBuilder"/> for table rows.
+    /// Collection of <see cref="RowEditor"/> for table rows.
     /// </summary>
-    IEnumerable<IRowBuilder> Rows { get; }
+    IEnumerable<IRowEditor> Rows { get; }
     
     /// <summary>
     /// Gets table rows count.
@@ -19,9 +19,9 @@ public interface ITableBuilder : IBuilder<Table>
     int RowsCount { get; }
 
     /// <summary>
-    /// Collection of <see cref="ColumnBuilder"/> for table rows.
+    /// Collection of <see cref="ColumnEditor"/> for table rows.
     /// </summary>
-    IEnumerable<IColumnBuilder> Columns { get; }
+    IEnumerable<IColumnEditor> Columns { get; }
     
     /// <summary>
     /// Gets table columns count.
@@ -33,7 +33,7 @@ public interface ITableBuilder : IBuilder<Table>
     /// </summary>
     /// <param name="row">Row index.</param>
     /// <param name="column">Column index.</param>
-    ICellBuilder this[int row, int column] { get; }
+    ICellEditor this[int row, int column] { get; }
 
     /// <summary>
     /// Sets the default format for all cells.
@@ -92,7 +92,7 @@ public interface ITableBuilder : IBuilder<Table>
     /// </summary>
     /// <param name="action">The action to be taken on new rows.</param>
     /// <param name="count">The number of rows to add.</param>
-    public ITableBuilder AddRow(Action<IRowBuilder>? action = null, int count = 1);
+    public ITableBuilder AddRow(Action<IRowEditor>? action = null, int count = 1);
 
     /// <summary>
     /// Fills table rows with values from a list.
@@ -119,7 +119,7 @@ public interface ITableBuilder : IBuilder<Table>
     /// </summary>
     /// <param name="action">The action to be taken on new columns.</param>
     /// <param name="count">The number of columns to add.</param>
-    public ITableBuilder AddColumn(Action<IColumnBuilder>? action = null, int count = 1);
+    public ITableBuilder AddColumn(Action<IColumnEditor>? action = null, int count = 1);
 
     /// <summary>
     /// Fills table columns with values from a list.

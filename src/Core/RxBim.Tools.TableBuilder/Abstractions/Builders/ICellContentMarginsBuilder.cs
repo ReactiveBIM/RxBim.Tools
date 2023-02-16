@@ -3,29 +3,29 @@
 /// <summary>
 /// Builder for <see cref="CellContentMargins"/>.
 /// </summary>
-public interface ICellContentMarginsBuilder
+public interface ICellContentMarginsBuilder : IBuilder<CellContentMargins>
 {
     /// <summary>
     /// Sets the top margin.
     /// </summary>
     /// <param name="margin">Margin value.</param>
-    ICellContentMarginsBuilder SetTopMargin(double? margin);
+    ICellContentMarginsBuilder SetTop(double? margin);
 
     /// <summary>
     /// Sets the right margin.
     /// </summary>
     /// <param name="margin">Margin value.</param>
-    ICellContentMarginsBuilder SetRightMargin(double? margin);
+    ICellContentMarginsBuilder SetRight(double? margin);
 
     /// <summary>
     /// Sets the bottom margin.
     /// </summary>
     /// <param name="margin">Margin value.</param>
-    ICellContentMarginsBuilder SetBottomMargin(double? margin);
+    ICellContentMarginsBuilder SetBottom(double? margin);
 
     /// <summary>
     /// Sets the left margin.
     /// </summary>
     /// <param name="margin">Margin value.</param>
-    ICellContentMarginsBuilder SetLeftMargin(double? margin);
+    ICellContentMarginsBuilder SetLeft(double? margin);
 }

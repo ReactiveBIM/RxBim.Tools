@@ -48,7 +48,7 @@
         /// <summary>
         /// The default format for cells.
         /// </summary>
-        public CellFormatStyle DefaultFormat { get; set; } = new();
+        public CellFormatStyle DefaultFormat { get; internal set; } = new();
 
         /// <summary>
         /// Own width.

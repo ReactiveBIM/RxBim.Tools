@@ -24,7 +24,7 @@
         /// Determines whether the size is adjusted according to the content.
         /// </summary>
         /// <remarks>Default value is true.</remarks>
-        public bool IsAdjustedToContent { get; set; } = true;
+        public bool IsAdjustedToContent { get; internal set; } = true;
 
         /// <inheritdoc />
         public override CellFormatStyle GetComposedFormat() => Format.Collect(Table.DefaultFormat);
