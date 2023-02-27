@@ -1,7 +1,5 @@
 ﻿namespace RxBim.Tools.TableBuilder.Tests;
 
-using System.Reflection;
-using FluentAssertions;
 using MoreLinq.Extensions;
 using Xunit;
 
@@ -24,6 +22,6 @@ public class BuildTests
         var firstCell = innerTable!.Rows[0].Cells[0];
         var firstCell2 = innerTable.Columns[0].Cells[0];
         object.ReferenceEquals(firstCell, firstCell2).Should().BeTrue();*/
-        var table = tableBuilder.Build();
+        var _ = tableBuilder.Build();
     }
 }

@@ -1,10 +1,6 @@
 ﻿namespace RxBim.Tools.TableBuilder.Excel.Tests;
 
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using ClosedXML.Excel;
-using Di;
+using System.Diagnostics;
 using Xunit;
 
 public class ForwardBackConvertTests : TestsBase
@@ -13,6 +9,7 @@ public class ForwardBackConvertTests : TestsBase
     [InlineData("ApartmentsDduReport.xlsx")]
     public void ForwardBackConvertTest(string excelFileName)
     {
+        Debug.Print(excelFileName);
         // todo
         /*var excelPath = new FileInfo(Assembly.GetExecutingAssembly().Location)
             .Directory!
@@ -40,7 +37,7 @@ public class ForwardBackConvertTests : TestsBase
         File.Delete(tempFile);*/
     }
 
-    private XLWorkbook GetXlWorkbook(string path)
+    /*private XLWorkbook GetXlWorkbook(string path)
     {
         using var fileStream = new FileStream(
             path,
@@ -49,5 +46,5 @@ public class ForwardBackConvertTests : TestsBase
             FileShare.Read);
         var excelTable = new XLWorkbook(fileStream);
         return excelTable;
-    }
+    }*/
 }
