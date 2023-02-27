@@ -35,6 +35,8 @@ public class ForwardBackConvertTests : TestsBase
         createdWorkBook.SaveAs(tempFile);
 
         // TODO add asserts
+        
+        File.Delete(tempFile);
     }
 
     private XLWorkbook GetXlWorkbook(string path)

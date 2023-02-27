@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 
 /// <summary>
@@ -20,10 +21,10 @@ public static class CloneableExtensions
     {
         if (type == typeof(string))
             return true;
-        
+
         return type.IsValueType & type.IsPrimitive;
     }
-    
+
     /// <summary>
     /// Copies object.
     /// </summary>
@@ -32,7 +33,7 @@ public static class CloneableExtensions
     {
         return InternalCopy(originalObject, new Dictionary<object, object>(new ReferenceEqualityComparer()))!;
     }
-    
+
     /// <summary>
     /// Copies object.
     /// </summary>
@@ -42,11 +43,12 @@ public static class CloneableExtensions
     {
         return (T)Copy((object)original!);
     }
-    
+
     private static object? InternalCopy(object? originalObject, IDictionary<object, object> visited)
     {
         if (originalObject is null)
             return null;
+        Debug.Print($"{originalObject.GetType()} {originalObject} [{(originalObject as Cell)?.GetRowIndex()} {(originalObject as Cell)?.GetColumnIndex()}]");
         var typeToReflect = originalObject.GetType();
         if (IsPrimitive(typeToReflect))
             return originalObject;
@@ -54,7 +56,7 @@ public static class CloneableExtensions
             return visited[originalObject];
         if (typeof(Delegate).IsAssignableFrom(typeToReflect))
             throw new InvalidCastException();
-        
+
         var cloneObject = CloneMethod.Invoke(originalObject, null);
         if (typeToReflect.IsArray)
         {
@@ -62,24 +64,27 @@ public static class CloneableExtensions
             if (IsPrimitive(arrayType!) == false)
             {
                 var clonedArray = (Array)cloneObject;
-                clonedArray.ForEach((array, indices) => 
+                clonedArray.ForEach((array, indices) =>
                     array.SetValue(InternalCopy(clonedArray.GetValue(indices), visited), indices));
             }
         }
-        
+
         visited.Add(originalObject, cloneObject);
         CopyFields(originalObject, visited, cloneObject, typeToReflect);
         RecursiveCopyBaseTypePrivateFields(originalObject, visited, cloneObject, typeToReflect);
-        
+
         return cloneObject;
     }
-    
+
     private static void RecursiveCopyBaseTypePrivateFields(
-        object originalObject, IDictionary<object, object> visited, object cloneObject, Type typeToReflect)
+        object originalObject,
+        IDictionary<object, object> visited,
+        object cloneObject,
+        Type typeToReflect)
     {
         if (typeToReflect.BaseType == null)
             return;
-        
+
         RecursiveCopyBaseTypePrivateFields(originalObject, visited, cloneObject, typeToReflect.BaseType);
         CopyFields(
             originalObject,
@@ -89,22 +94,23 @@ public static class CloneableExtensions
             BindingFlags.Instance | BindingFlags.NonPublic,
             info => info.IsPrivate);
     }
-    
+
     private static void CopyFields(
         object originalObject,
         IDictionary<object, object> visited,
         object cloneObject,
         IReflect typeToReflect,
-        BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy,
+        BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public |
+                                    BindingFlags.FlattenHierarchy,
         Func<FieldInfo, bool>? filter = null)
     {
         foreach (var fieldInfo in typeToReflect.GetFields(bindingFlags))
         {
-            if (filter != null && filter(fieldInfo) == false) 
+            if (filter != null && filter(fieldInfo) == false)
                 continue;
-            if (IsPrimitive(fieldInfo.FieldType)) 
+            if (IsPrimitive(fieldInfo.FieldType))
                 continue;
-            
+
             var originalFieldValue = fieldInfo.GetValue(originalObject);
             var clonedFieldValue = InternalCopy(originalFieldValue, visited);
             fieldInfo.SetValue(cloneObject, clonedFieldValue);
