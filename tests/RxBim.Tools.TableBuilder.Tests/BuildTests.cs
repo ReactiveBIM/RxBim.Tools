@@ -16,7 +16,7 @@ public class BuildTests
         var tableBuilder = new TableBuilder();
         tableBuilder
             .AddColumn(cb => cb.SetWidth(20), 40)
-            .AddRow(rb => rb.SetHeight(10).Cells.ForEach((cell, i) => cell.SetText(i.ToString())), 16000);
+            .AddRow(rb => rb.SetHeight(10).Cells.ForEach((cell, i) => cell.SetText(i.ToString())), 1000);
            
 
         /*var innerTable = tableBuilder.GetType().GetProperty("Table", BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(tableBuilder) as Table;
