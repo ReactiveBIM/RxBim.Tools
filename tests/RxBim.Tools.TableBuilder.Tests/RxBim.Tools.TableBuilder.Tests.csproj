@@ -4,8 +4,4 @@
       <ProjectReference Include="..\..\src\Core\RxBim.Tools.TableBuilder\RxBim.Tools.TableBuilder.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <PackageReference Include="morelinq" Version="3.3.2" />
-    </ItemGroup>
-
 </Project>
