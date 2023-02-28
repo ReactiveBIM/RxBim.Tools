@@ -6,12 +6,6 @@
 
     <ItemGroup>
       <PackageReference Include="RxBim.Di.SimpleInjector" Version="1.1.0" />
-    </ItemGroup>    
-
-    <ItemGroup>
-      <None Update="ApartmentsDduReport.xlsx">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
     </ItemGroup>
 
 </Project>
