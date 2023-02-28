@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Reflection;
 
 /// <summary>
@@ -48,7 +47,6 @@ public static class CloneableExtensions
     {
         if (originalObject is null)
             return null;
-        Debug.Print($"{originalObject.GetType()} {originalObject} [{(originalObject as Cell)?.GetRowIndex()} {(originalObject as Cell)?.GetColumnIndex()}]");
         var typeToReflect = originalObject.GetType();
         if (IsPrimitive(typeToReflect))
             return originalObject;
