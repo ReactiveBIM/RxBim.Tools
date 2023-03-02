@@ -270,5 +270,5 @@ out/
 
 projectfiles.tar
 
-global.json
+# global.json
 .nuke/temp
