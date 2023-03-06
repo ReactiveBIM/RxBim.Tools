@@ -11,7 +11,7 @@ public interface ILogMessage
     /// <summary>
     /// Indicates that message if for 'DEBUG' mode
     /// </summary>
-    public bool IsDebugMessage { get; }
+    public bool IsDebugMessage { get; set; }
 
     /// <summary>
     /// Log time

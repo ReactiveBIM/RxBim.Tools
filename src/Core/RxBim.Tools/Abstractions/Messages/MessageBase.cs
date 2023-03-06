@@ -20,7 +20,7 @@
         }
 
         /// <inheritdoc />
-        public bool IsDebugMessage { get; }
+        public bool IsDebugMessage { get; set; }
 
         /// <inheritdoc />
         public DateTime? MessageLogTime { get; }
