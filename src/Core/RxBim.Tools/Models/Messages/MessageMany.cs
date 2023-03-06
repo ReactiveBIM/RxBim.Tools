@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Base class for list of messages witch common title
@@ -16,7 +17,8 @@
         /// <param name="messages">Messages</param>
         /// <param name="isDebug">Indicates that message if for 'DEBUG' mode</param>
         /// <param name="showMessageLogTime">Indicates that the time should be recorded</param>
-        protected MessageMany(
+        [UsedImplicitly]
+        public MessageMany(
             IReadOnlyList<ILogMessage> messages,
             bool isDebug = false,
             bool showMessageLogTime = false)
