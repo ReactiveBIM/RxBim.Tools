@@ -1,7 +1,7 @@
 ﻿namespace RxBim.Tools
 {
     /// <summary>
-    /// Базовый класс для элемента с кликабельных айди
+    /// Base class for text messages with element ids
     /// </summary>
     public abstract class TextIdMessageBase : MessageBase
     {
@@ -15,17 +15,17 @@
         }
 
         /// <summary>
-        /// Текст.
+        /// Text
         /// </summary>
         public string Text { get; }
 
         /// <summary>
-        /// Id элемента.
+        /// Element Id
         /// </summary>
         public IMessageData ElementId { get; }
 
         /// <summary>
-        /// Имя элемента.
+        /// Element name
         /// </summary>
         public string Element { get; }
 

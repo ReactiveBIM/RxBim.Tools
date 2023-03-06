@@ -4,18 +4,18 @@
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Представляет базовый тип для объекта сообщения журнала.
+    /// Represents base type for objects in log storage.
     /// </summary>
     public interface IMessageData : IComparable
     {
         /// <summary>
-        /// Объект, используемый для описания.
+        /// The object used for the description.
         /// </summary>
         [UsedImplicitly]
         object DescriptionObject { get; }
 
         /// <summary>
-        /// Возвращает идентификатор объекта.
+        /// Returns the ID of the object.
         /// </summary>
         [UsedImplicitly]
         IObjectIdWrapper GetId();

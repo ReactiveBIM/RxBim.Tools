@@ -6,16 +6,16 @@
     using System.Text;
 
     /// <summary>
-    /// Базовый класс для набора сообщений с общим заголовком
+    /// Base class for list of messages witch common title
     /// </summary>
     public class MessageMany : ILogMessage, ICanBeUnion<MessageMany>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageMany"/> class.
         /// </summary>
-        /// <param name="messages">сообщения</param>
-        /// <param name="isDebug">является ли сообщение отладочным</param>
-        /// <param name="showMessageLogTime">показывать ли время записи сообщения</param>
+        /// <param name="messages">Messages</param>
+        /// <param name="isDebug">Indicates that message if for 'DEBUG' mode</param>
+        /// <param name="showMessageLogTime">Indicates that the time should be recorded</param>
         protected MessageMany(
             IReadOnlyList<ILogMessage> messages,
             bool isDebug = false,
@@ -34,12 +34,12 @@
         public DateTime? MessageLogTime { get; }
 
         /// <summary>
-        /// Заголовок
+        /// Title
         /// </summary>
         public string? Title { get; set; }
 
         /// <summary>
-        /// Сообщения
+        /// Messages
         /// </summary>
         public List<ILogMessage> Messages { get; }
 

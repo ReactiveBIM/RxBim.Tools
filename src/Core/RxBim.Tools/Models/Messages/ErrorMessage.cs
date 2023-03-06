@@ -16,7 +16,7 @@
         {
             if (!CanUnionWith(message))
             {
-                throw new ArgumentException("Невозможно объединить сообщения");
+                throw new ArgumentException("Unable to merge messages");
             }
 
             return new ErrorMessageMany(new[] { this, message });

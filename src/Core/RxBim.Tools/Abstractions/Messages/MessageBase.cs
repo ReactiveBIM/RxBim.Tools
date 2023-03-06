@@ -3,15 +3,15 @@
     using System;
 
     /// <summary>
-    /// Базовый класс для всех сообщений
+    /// Base class for log messages
     /// </summary>
     public abstract class MessageBase : ILogMessage
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageBase"/> class.
         /// </summary>
-        /// <param name="isDebugMessage">является ли сообщение отладочным</param>
-        /// <param name="showMessageLogTime">показывать ли время записи сообщения</param>
+        /// <param name="isDebugMessage">Indicates that message if for 'DEBUG' mode</param>
+        /// <param name="showMessageLogTime">Indicates that the time should be recorded</param>
         protected MessageBase(bool isDebugMessage, bool showMessageLogTime = false)
         {
             IsDebugMessage = isDebugMessage;
@@ -20,7 +20,7 @@
         }
 
         /// <inheritdoc />
-        public bool IsDebugMessage { get; set; }
+        public bool IsDebugMessage { get; }
 
         /// <inheritdoc />
         public DateTime? MessageLogTime { get; }

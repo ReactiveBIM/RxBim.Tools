@@ -3,7 +3,7 @@
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Базовый класс для информационного сообщения
+    /// Base class for text message
     /// </summary>
     [UsedImplicitly]
     public abstract class TextMessageBase : MessageBase

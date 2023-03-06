@@ -5,24 +5,24 @@
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Представляет тип, который используется для ведения журнала ошибок.
+    /// Represents a type that is used for error logging.
     /// </summary>
     public interface ILogStorage
     {
         /// <summary>
-        /// Событие, возникающие при изменении коллекции элементов хранилища.
+        /// An event that is raised when a collection of storage items changes.
         /// </summary>
         [UsedImplicitly]
         event EventHandler ElementStorageChanged;
 
         /// <summary>
-        /// Уровень логирования
+        /// Indicates that <see cref="GetMessages"/> will return 'DEBUG' messages
         /// </summary>
         [UsedImplicitly]
         public bool ShouldShowDebugMessages { get; set; }
 
         /// <summary>
-        /// Добавить сообщение.
+        /// Adds message to storage
         /// </summary>
         /// <param name="message">Сообщение</param>
         /// <typeparam name="T">Тип сообщения</typeparam>
@@ -31,19 +31,19 @@
             where T : ILogMessage;
 
         /// <summary>
-        /// Получить коллекцию ошибок.
+        /// Returns message collection
         /// </summary>
         [UsedImplicitly]
         IEnumerable<ILogMessage> GetMessages();
 
         /// <summary>
-        /// Указывает если ли ошибки в хранилище.
+        /// Indicates that storage has messages
         /// </summary>
         [UsedImplicitly]
         bool HasMessages();
 
         /// <summary>
-        /// Очищает хранилище.
+        /// Clears message storage
         /// </summary>
         [UsedImplicitly]
         void Clear();

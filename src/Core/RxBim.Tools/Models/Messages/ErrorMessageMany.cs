@@ -2,9 +2,10 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using JetBrains.Annotations;
 
     /// <summary>
-    /// Набор ошибочных сообщений с общим заголовком и списком кликабельных айди
+    /// List of <see cref="ErrorMessage"/> with common title
     /// </summary>
     internal class ErrorMessageMany : MessageMany, ICanBeUnion<ErrorMessage>
     {
@@ -16,8 +17,9 @@
         }
 
         /// <summary>
-        /// Элементы
+        /// Elements
         /// </summary>
+        [UsedImplicitly]
         public List<UnionElements> ElementsList => Messages
             .Cast<ErrorMessage>()
             .GroupBy(m => m.Element)
