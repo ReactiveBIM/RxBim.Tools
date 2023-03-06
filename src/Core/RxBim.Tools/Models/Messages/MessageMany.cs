@@ -16,7 +16,7 @@
         /// <param name="messages">сообщения</param>
         /// <param name="isDebug">является ли сообщение отладочным</param>
         /// <param name="showMessageLogTime">показывать ли время записи сообщения</param>
-        public MessageMany(
+        protected MessageMany(
             IReadOnlyList<ILogMessage> messages,
             bool isDebug = false,
             bool showMessageLogTime = false)

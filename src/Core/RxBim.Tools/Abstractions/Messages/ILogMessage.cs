@@ -11,7 +11,7 @@ public interface ILogMessage
     /// <summary>
     /// Указывает, является ли сообщение отладочным
     /// </summary>
-    public bool IsDebugMessage { get; set; }
+    public bool IsDebugMessage { get; }
 
     /// <summary>
     /// Время записи сообщения

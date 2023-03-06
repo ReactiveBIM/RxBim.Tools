@@ -1,8 +1,10 @@
 ﻿namespace RxBim.Tools
 {
     using System;
+    using JetBrains.Annotations;
 
     /// <inheritdoc />
+    [UsedImplicitly]
     public class MessageData : IMessageData
     {
         private readonly IObjectIdWrapper _id;

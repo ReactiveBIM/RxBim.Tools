@@ -2,8 +2,8 @@
 {
     using System;
 
-    /// <inheritdoc cref="ClickableItemMessageBase" />
-    public class ErrorMessage : ClickableItemMessageBase, ICanBeUnion<ErrorMessage>
+    /// <inheritdoc cref="TextIdMessageBase" />
+    public class ErrorMessage : TextIdMessageBase, ICanBeUnion<ErrorMessage>
     {
         /// <inheritdoc />
         public ErrorMessage(string text, string element, IMessageData elementId, bool isDebug = false)

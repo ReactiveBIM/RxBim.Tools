@@ -6,12 +6,12 @@
     /// Базовый класс для информационного сообщения
     /// </summary>
     [UsedImplicitly]
-    public abstract class InfoMessageBase : MessageBase
+    public abstract class TextMessageBase : MessageBase
     {
         private readonly string _message;
 
         /// <inheritdoc />
-        protected InfoMessageBase(string message, bool isDebug, bool showMessageLogTime = false)
+        protected TextMessageBase(string message, bool isDebug, bool showMessageLogTime = false)
             : base(isDebug, showMessageLogTime)
         {
             _message = message;
@@ -26,7 +26,7 @@
                 return true;
             if (obj.GetType() != GetType())
                 return false;
-            return Equals((InfoMessageBase)obj);
+            return Equals((TextMessageBase)obj);
         }
 
         /// <inheritdoc />
@@ -41,7 +41,7 @@
             return _message;
         }
 
-        private bool Equals(InfoMessageBase other)
+        private bool Equals(TextMessageBase other)
         {
             return _message == other._message;
         }
