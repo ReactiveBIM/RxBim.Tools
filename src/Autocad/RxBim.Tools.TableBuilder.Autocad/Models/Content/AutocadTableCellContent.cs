@@ -1,7 +1,5 @@
 ﻿namespace RxBim.Tools.TableBuilder
 {
-    using Content;
-
     /// <summary>
     /// Cell content for AutoCAD table.
     /// </summary>

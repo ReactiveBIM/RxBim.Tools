@@ -5,7 +5,6 @@
     using System.Text;
     using ClosedXML.Excel;
     using JetBrains.Annotations;
-    using Styles;
 
     /// <summary>
     /// Defines a <see cref="Table"/> converter to an Excle workbook.

@@ -3,16 +3,14 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Builders;
-    using Styles;
 
     /// <summary>
     /// The builder of a single <see cref="Row"/> of a <see cref="Table"/>.
     /// </summary>
-    public class RowBuilder : CellsSetBuilder<Row, RowBuilder>, IRowBuilder<Cell>
+    internal class RowEditor : CellsSetEditor<Row, RowEditor>, IRowEditor
     {
         /// <inheritdoc />
-        public RowBuilder(Row row)
+        public RowEditor(Row row)
             : base(row)
         {
         }
@@ -21,7 +19,7 @@
         /// Sets the height of the row.
         /// </summary>
         /// <param name="height">Row height value.</param>
-        public IRowBuilder<Cell> SetHeight(double height)
+        public IRowEditor SetHeight(double height)
         {
             if (height <= 0)
                 throw new ArgumentException("Must be a positive number.", nameof(height));
@@ -31,31 +29,37 @@
         }
 
         /// <inheritdoc />
-        public IRowBuilder<Cell> MergeRow(Action<ICellBuilder<Cell>, ICellBuilder<Cell>>? action = null)
+        public IRowEditor MergeRow(Action<ICellEditor, ICellEditor>? action = null)
         {
-            ((CellBuilder)ObjectForBuild.Cells.First()).MergeNext(ObjectForBuild.Cells.Count() - 1, action);
+            new CellEditor(ObjectForBuild.Cells.First()).MergeNext(ObjectForBuild.Cells.Count() - 1, action);
             return this;
         }
 
         /// <inheritdoc />
-        IRowBuilder<Cell> IRowBuilder<Cell>.SetFormat(CellFormatStyle format)
+        IRowEditor IRowEditor.SetFormat(CellFormatStyle format)
         {
             SetFormat(format);
             return this;
         }
 
         /// <inheritdoc />
-        IRowBuilder<Cell> IRowBuilder<Cell>.SetFormat(Action<ICellFormatStyleBuilder> action)
+        IRowEditor IRowEditor.SetFormat(Action<ICellFormatStyleBuilder> action)
         {
             SetFormat(action);
             return this;
         }
 
         /// <inheritdoc />
-        IRowBuilder<Cell> IRowBuilder<Cell>.FromList<TSource>(IList<TSource> source, Action<ICellBuilder<Cell>>? cellsAction)
+        IRowEditor IRowEditor.FromList<TSource>(IList<TSource> source, Action<ICellEditor>? cellsAction)
         {
             FromList(source, cellsAction);
             return this;
+        }
+
+        /// <inheritdoc />
+        public int GetRowIndex()
+        {
+            return ObjectForBuild.GetIndex();
         }
     }
 }

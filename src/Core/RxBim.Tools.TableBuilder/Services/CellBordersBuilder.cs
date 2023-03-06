@@ -1,12 +1,9 @@
 ﻿namespace RxBim.Tools.TableBuilder;
 
-using Builders;
-using Styles;
-
 /// <summary>
 /// Builder for <see cref="CellBorders"/>.
 /// </summary>
-internal class CellBordersBuilder : ICellBordersBuilder
+public class CellBordersBuilder : ICellBordersBuilder
 {
     private readonly CellBorders _cellBorders;
 
@@ -14,36 +11,42 @@ internal class CellBordersBuilder : ICellBordersBuilder
     /// Initializes a new instance of the <see cref="CellBordersBuilder"/> class.
     /// </summary>
     /// <param name="cellBorders"><see cref="CellBorders"/></param>
-    public CellBordersBuilder(CellBorders cellBorders)
+    public CellBordersBuilder(CellBorders? cellBorders = null)
     {
-        _cellBorders = cellBorders;
+        _cellBorders = cellBorders?.Copy() ?? new CellBorders();
     }
 
     /// <inheritdoc/>
-    public ICellBordersBuilder SetTopBorder(CellBorderType? cellBorderType)
+    public ICellBordersBuilder SetTop(CellBorderType? cellBorderType)
     {
         _cellBorders.Top = cellBorderType;
         return this;
     }
 
     /// <inheritdoc/>
-    public ICellBordersBuilder SetRightBorder(CellBorderType? cellBorderType)
+    public ICellBordersBuilder SetRight(CellBorderType? cellBorderType)
     {
         _cellBorders.Right = cellBorderType;
         return this;
     }
 
     /// <inheritdoc/>
-    public ICellBordersBuilder SetBottomBorder(CellBorderType? cellBorderType)
+    public ICellBordersBuilder SetBottom(CellBorderType? cellBorderType)
     {
         _cellBorders.Bottom = cellBorderType;
         return this;
     }
 
     /// <inheritdoc/>
-    public ICellBordersBuilder SetLeftBorder(CellBorderType? cellBorderType)
+    public ICellBordersBuilder SetLeft(CellBorderType? cellBorderType)
     {
         _cellBorders.Left = cellBorderType;
         return this;
+    }
+
+    /// <inheritdoc/>
+    public CellBorders Build()
+    {
+        return _cellBorders.Copy();
     }
 }

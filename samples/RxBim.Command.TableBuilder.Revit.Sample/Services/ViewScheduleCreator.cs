@@ -10,7 +10,6 @@
     using Tools.Revit.Abstractions;
     using Tools.Revit.Extensions;
     using Tools.TableBuilder;
-    using Tools.TableBuilder.Styles;
     using Color = System.Drawing.Color;
 
     /// <inheritdoc />
@@ -62,19 +61,23 @@
                     .SetFormat(baseFormat)
                     .SetCellsFormat(
                         new CellFormatStyleBuilder()
-                            .SetBorders(builder => builder
                             .SetBorders(
                                 bottom: CellBorderType.Bold,
                                 left: CellBorderType.Bold,
                                 right: CellBorderType.Bold,
-                                top: CellBorderType.Bold))
+                                top: CellBorderType.Bold)
                             .Build(),
                         0,
                         0,
                         columnsCount,
                         1);
-                tableBuilder.ToRows().Skip(1).ToList().ForEach(row => row.SetHeight(10));
-                tableBuilder.GetColumns().ToList().ForEach(col => col.SetWidth(30));
+                tableBuilder.Rows
+                    .Skip(1)
+                    .ToList()
+                    .ForEach(row => row.SetHeight(10));
+                tableBuilder.Columns
+                    .ToList()
+                    .ForEach(col => col.SetWidth(30));
 
                 var table = tableBuilder.Build();
                 var parameters = new ViewScheduleTableConverterParameters

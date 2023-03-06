@@ -2,19 +2,16 @@
 {
     using System;
     using System.Linq;
-    using Builders;
-    using Content;
     using JetBrains.Annotations;
-    using Styles;
 
     /// <summary>
     /// The builder of a single <see cref="Cell"/> of a <see cref="Table"/>.
     /// </summary>
     [PublicAPI]
-    public class CellBuilder : TableItemBuilderBase<Cell, CellBuilder>, ICellBuilder<Cell>
+    internal class CellEditor : TableItemEditorBase<Cell, CellEditor>, ICellEditor
     {
         /// <inheritdoc />
-        public CellBuilder(Cell cell)
+        public CellEditor(Cell cell)
             : base(cell)
         {
         }
@@ -26,109 +23,131 @@
         }
 
         /// <inheritdoc />
-        public IRowBuilder<Cell> ToRow()
+        public IRowEditor ToRow()
         {
-            return new RowBuilder(ObjectForBuild.Row);
+            return new RowEditor(ObjectForBuild.Row);
         }
 
         /// <inheritdoc />
-        public IColumnBuilder<Cell> ToColumn()
+        public IColumnEditor ToColumn()
         {
-            return new ColumnBuilder(ObjectForBuild.Column);
+            return new ColumnEditor(ObjectForBuild.Column);
         }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> SetContent(ICellContent data)
+        public ICellEditor SetContent(ICellContent data)
         {
             SetToMergedArea(cell => cell.Content = data);
             return this;
         }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> SetWidth(double width)
+        public ICellEditor SetWidth(double width)
         {
             ObjectForBuild.Column.Width = width;
             return this;
         }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> SetHeight(double height)
+        public ICellEditor SetHeight(double height)
         {
             ObjectForBuild.Row.Height = height;
             return this;
         }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> SetText(string text)
+        public ICellEditor SetText(string text)
         {
             SetContent(new TextCellContent(text));
             return this;
         }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> SetValue(object value)
+        public ICellEditor SetValue(object value)
         {
             SetContent(new ObjectCellContent(value));
             return this;
         }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> Next(int step = 1)
+        public ICellEditor Next(int step = 1)
         {
             return GetNextCellBuilder(Direction.Next, step);
         }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> Down(int step = 1)
+        public ICellEditor Down(int step = 1)
         {
             return GetNextCellBuilder(Direction.Down, step);
         }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> Previous(int step = 1)
+        public ICellEditor Previous(int step = 1)
         {
             return GetPreviousCellBuilder(ObjectForBuild.Row, step);
         }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> Up(int step = 1)
+        public ICellEditor Up(int step = 1)
         {
             return GetPreviousCellBuilder(ObjectForBuild.Column, step);
         }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> MergeNext(int count = 1, Action<ICellBuilder<Cell>, ICellBuilder<Cell>>? action = null)
+        public ICellEditor MergeNext(int count = 1, Action<ICellEditor, ICellEditor>? action = null)
         {
             return MergeInternal(count, Direction.Next, action);
         }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> MergeDown(int count = 1, Action<ICellBuilder<Cell>, ICellBuilder<Cell>>? action = null)
+        public ICellEditor MergeDown(int count = 1, Action<ICellEditor, ICellEditor>? action = null)
         {
             return MergeInternal(count, Direction.Down, action);
         }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> MergeLeft(int count = 1)
+        public ICellEditor MergeLeft(int count = 1)
         {
             return Previous(count).MergeNext(count).Previous(count);
         }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> SetFormat(CellFormatStyle format)
+        public ICellEditor SetFormat(CellFormatStyle format)
         {
-            SetToMergedArea(cell => new CellFormatStyleBuilder(cell.Format).SetFromFormat(format));
+            SetToMergedArea(cell =>
+            {
+                var builder = new CellFormatStyleBuilder(cell.Format);
+                builder.SetFromFormat(format);
+                cell.Format = builder.Build();
+            });
             return this;
         }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> SetFormat(Action<ICellFormatStyleBuilder> action)
+        public ICellEditor SetFormat(Action<ICellFormatStyleBuilder> action)
         {
-            SetToMergedArea(cell => action(new CellFormatStyleBuilder(cell.Format)));
+            SetToMergedArea(cell =>
+            {
+                var builder = new CellFormatStyleBuilder(cell.Format);
+                action(builder);
+                cell.Format = builder.Build();
+            });
             return this;
         }
 
-        private CellBuilder GetNextCellBuilder(Direction direction, int step)
+        /// <inheritdoc />
+        public int GetColumnIndex()
+        {
+            return ObjectForBuild.GetColumnIndex();
+        }
+
+        /// <inheritdoc />
+        public int GetRowIndex()
+        {
+            return ObjectForBuild.GetRowIndex();
+        }
+
+        private CellEditor GetNextCellBuilder(Direction direction, int step)
         {
             var cellsSet = direction == Direction.Next ? (CellsSet)ObjectForBuild.Row : ObjectForBuild.Column;
             var cellIndex = cellsSet.Cells.IndexOf(ObjectForBuild);
@@ -136,20 +155,20 @@
             if (cellsSet.Cells.Count() <= cellIndex + step)
                 throw new ArgumentOutOfRangeException(nameof(step));
 
-            return new CellBuilder(cellsSet.Cells[cellIndex + step]);
+            return new CellEditor(cellsSet.Cells[cellIndex + step]);
         }
 
-        private CellBuilder GetPreviousCellBuilder(CellsSet cellsSet, int step)
+        private CellEditor GetPreviousCellBuilder(CellsSet cellsSet, int step)
         {
             var cellIndex = cellsSet.Cells.IndexOf(ObjectForBuild);
 
             if (cellIndex - step < 0)
                 throw new ArgumentOutOfRangeException(nameof(step));
 
-            return new CellBuilder(cellsSet.Cells[cellIndex - step]);
+            return new CellEditor(cellsSet.Cells[cellIndex - step]);
         }
 
-        private CellBuilder MergeInternal(int count, Direction direction, Action<CellBuilder, CellBuilder>? action)
+        private CellEditor MergeInternal(int count, Direction direction, Action<CellEditor, CellEditor>? action)
         {
             var area = CreateMergeArea(count, direction);
 
@@ -162,7 +181,7 @@
                     if (cell.Equals(ObjectForBuild))
                         continue;
 
-                    var cellBuilder = (CellBuilder)cell;
+                    var cellBuilder = new CellEditor(cell);
                     action?.Invoke(this, cellBuilder);
                     cellBuilder.SetContent(ObjectForBuild.Content);
                 }

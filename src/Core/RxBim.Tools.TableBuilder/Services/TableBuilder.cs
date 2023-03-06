@@ -3,14 +3,11 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Builders;
-    using Content;
-    using Styles;
 
     /// <summary>
     /// The builder of a <see cref="Table"/>.
     /// </summary>
-    public class TableBuilder : ITableBuilder<Cell>
+    public class TableBuilder : ITableBuilder
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TableBuilder"/> class.
@@ -18,8 +15,24 @@
         /// <param name="table">The <see cref="Table"/> to be built.</param>
         public TableBuilder(Table? table = null)
         {
-            Table = table ?? new Table();
+            Table = table?.Copy() ?? new Table();
         }
+
+        /// <inheritdoc />
+        public IEnumerable<IRowEditor> Rows
+            => Table.Rows.Select(row => new RowEditor(row));
+
+        /// <inheritdoc />
+        public int RowsCount
+            => Table.Rows.Count;
+
+        /// <inheritdoc />
+        public IEnumerable<IColumnEditor> Columns
+            => Table.Columns.Select(column => new ColumnEditor(column));
+
+        /// <inheritdoc />
+        public int ColumnsCount
+            => Table.Columns.Count;
 
         /// <summary>
         /// The table to be built.
@@ -27,7 +40,8 @@
         private Table Table { get; }
 
         /// <inheritdoc />
-        public ICellBuilder<Cell> this[int row, int column] => new CellBuilder(Table[row, column]);
+        public ICellEditor this[int row, int column]
+            => new CellEditor(Table[row, column]);
 
         /// <summary>
         /// Returns the built <see cref="Table"/>.
@@ -39,33 +53,23 @@
         }
 
         /// <inheritdoc />
-        public IEnumerable<IRowBuilder<Cell>> ToRows()
+        public ITableBuilder SetFormat(CellFormatStyle formatStyle)
         {
-            return Table.Rows.Select(row => new RowBuilder(row));
-        }
-
-        /// <inheritdoc />
-        public IEnumerable<IColumnBuilder<Cell>> GetColumns()
-        {
-            return Table.Columns.Select(column => new ColumnBuilder(column));
-        }
-
-        /// <inheritdoc />
-        public ITableBuilder<Cell> SetFormat(CellFormatStyle formatStyle)
-        {
-            Table.DefaultFormat = formatStyle;
+            Table.DefaultFormat = formatStyle.Copy();
             return this;
         }
 
         /// <inheritdoc />
-        public ITableBuilder<Cell> SetFormat(Action<ICellFormatStyleBuilder> action)
+        public ITableBuilder SetFormat(Action<ICellFormatStyleBuilder> action)
         {
-            action(new CellFormatStyleBuilder(Table.DefaultFormat));
+            var builder = new CellFormatStyleBuilder(Table.DefaultFormat);
+            action(builder);
+            Table.DefaultFormat = builder.Build();
             return this;
         }
 
         /// <inheritdoc />
-        public ITableBuilder<Cell> SetCellsFormat(
+        public ITableBuilder SetCellsFormat(
             CellFormatStyle formatStyle,
             int startRow,
             int startColumn,
@@ -76,7 +80,9 @@
             {
                 foreach (var cell in column.Cells.Skip(startRow).Take(rangeHeight))
                 {
-                    new CellFormatStyleBuilder(cell.Format).SetFromFormat(formatStyle);
+                    var builder = new CellFormatStyleBuilder(cell.Format);
+                    builder.SetFromFormat(formatStyle);
+                    cell.Format = builder.Build();
                 }
             }
 
@@ -84,43 +90,42 @@
         }
 
         /// <inheritdoc />
-        public ITableBuilder<Cell> SetTableStateStandardFormat(int headerRowsCount)
+        public ITableBuilder SetTableStateStandardFormat(int headerRowsCount)
         {
             var boldFormat = new CellFormatStyleBuilder()
                 .SetContentVerticalAlignment(CellContentVerticalAlignment.Middle)
-                .SetBorders(builder => builder.SetAllBorders(CellBorderType.Bold))
+                .SetAllBorders(CellBorderType.Bold)
                 .Build();
 
             var rowFormat = new CellFormatStyleBuilder()
                 .SetContentVerticalAlignment(CellContentVerticalAlignment.Middle)
-                .SetBorders(builder =>
-                    builder.SetBorders(CellBorderType.Thin, CellBorderType.Thin, CellBorderType.Bold, CellBorderType.Bold))
+                .SetBorders(CellBorderType.Thin, CellBorderType.Thin, CellBorderType.Bold, CellBorderType.Bold)
                 .Build();
 
             var lastRowFormat = new CellFormatStyleBuilder()
                 .SetContentVerticalAlignment(CellContentVerticalAlignment.Middle)
-                .SetBorders(builder =>
-                    builder.SetBorders(CellBorderType.Thin, CellBorderType.Bold, CellBorderType.Bold, CellBorderType.Bold))
+                .SetBorders(CellBorderType.Thin, CellBorderType.Bold, CellBorderType.Bold, CellBorderType.Bold)
                 .Build();
 
             SetFormat(boldFormat);
 
-            if (Table.Rows.Count() > headerRowsCount + 1)
-            {
-                SetCellsFormat(rowFormat,
-                    headerRowsCount + 1,
-                    0,
-                    Table.Columns.Count(),
-                    Table.Rows.Count() - headerRowsCount);
-                foreach (var cell in Table.Rows.Last().Cells)
-                    ((CellBuilder)cell).SetFormat(lastRowFormat);
-            }
+            if (RowsCount <= headerRowsCount + 1)
+                return this;
+            
+            SetCellsFormat(rowFormat,
+                headerRowsCount + 1,
+                0,
+                ColumnsCount,
+                RowsCount - headerRowsCount);
+            
+            foreach (var cell in Table.Rows.Last().Cells)
+                new CellEditor(cell).SetFormat(lastRowFormat);
 
             return this;
         }
 
         /// <inheritdoc />
-        public ITableBuilder<Cell> SetWidth(double width)
+        public ITableBuilder SetWidth(double width)
         {
             if (width <= 0)
                 throw new ArgumentException("Must be a positive number.", nameof(width));
@@ -129,7 +134,7 @@
         }
 
         /// <inheritdoc />
-        public ITableBuilder<Cell> SetHeight(double height)
+        public ITableBuilder SetHeight(double height)
         {
             if (height <= 0)
                 throw new ArgumentException("Must be a positive number.", nameof(height));
@@ -138,19 +143,19 @@
         }
 
         /// <inheritdoc />
-        public ITableBuilder<Cell> AddRow(Action<IRowBuilder<Cell>>? action = null, int count = 1)
+        public ITableBuilder AddRow(Action<IRowEditor>? action = null, int count = 1)
         {
             for (; count > 0; count--)
             {
                 var newRow = Table.AddRow();
-                action?.Invoke(new RowBuilder(newRow));
+                action?.Invoke(new RowEditor(newRow));
             }
 
             return this;
         }
 
         /// <inheritdoc />
-        public ITableBuilder<Cell> AddRowsFromList<TSource>(
+        public ITableBuilder AddRowsFromList<TSource>(
             IEnumerable<TSource> source,
             int rowIndex,
             int columnIndex,
@@ -171,9 +176,7 @@
                 for (var r = 0; r < list.Count; r++)
                 {
                     var value = prop.Invoke(list[r]);
-                    matrix[r, c] = prop is ICellContent propContent
-                        ? propContent
-                        : new TextCellContent(value.ToString());
+                    matrix[r, c] = prop as ICellContent ?? new TextCellContent(value.ToString());
                 }
             }
 
@@ -183,19 +186,19 @@
         }
 
         /// <inheritdoc />
-        public ITableBuilder<Cell> AddColumn(Action<IColumnBuilder<Cell>>? action = null, int count = 1)
+        public ITableBuilder AddColumn(Action<IColumnEditor>? action = null, int count = 1)
         {
             for (; count > 0; count--)
             {
                 var newColumn = Table.AddColumn();
-                action?.Invoke(new ColumnBuilder(newColumn));
+                action?.Invoke(new ColumnEditor(newColumn));
             }
 
             return this;
         }
 
         /// <inheritdoc />
-        public ITableBuilder<Cell> AddColumnsFromList<TSource>(
+        public ITableBuilder AddColumnsFromList<TSource>(
             IEnumerable<TSource> source,
             int rowIndex,
             int columnIndex,
@@ -215,9 +218,7 @@
                 for (var c = 0; c < list.Count; c++)
                 {
                     var value = prop.Invoke(list[c]);
-                    matrix[r, c] = prop is ICellContent propContent
-                        ? propContent
-                        : new TextCellContent(value.ToString());
+                    matrix[r, c] = prop as ICellContent ?? new TextCellContent(value.ToString());
                 }
             }
 
@@ -229,7 +230,7 @@
         /// <inheritdoc />
         public Table Build()
         {
-            return Table;
+            return Table.Copy();
         }
 
         private void FromMatrix(
@@ -237,8 +238,8 @@
             int column,
             ICellContent[,] matrix)
         {
-            var diffRows = row + matrix.GetLength(0) - Table.Rows.Count();
-            var diffCols = column + matrix.GetLength(1) - Table.Columns.Count();
+            var diffRows = row + matrix.GetLength(0) - RowsCount;
+            var diffCols = column + matrix.GetLength(1) - ColumnsCount;
 
             AddRow(count: diffRows);
             AddColumn(count: diffCols);

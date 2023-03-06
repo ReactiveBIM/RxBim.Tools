@@ -2,9 +2,7 @@
 {
     using System;
     using System.Drawing;
-    using Builders;
     using JetBrains.Annotations;
-    using Styles;
 
     /// <summary>
     /// Builder for <see cref="CellTextFormatStyle"/>
@@ -20,7 +18,7 @@
         /// <param name="textFormat">Format for build.</param>
         public CellTextFormatStyleBuilder(CellTextFormatStyle? textFormat = null)
         {
-            _textFormat = textFormat ?? new CellTextFormatStyle();
+            _textFormat = textFormat?.Copy() ?? new CellTextFormatStyle();
         }
 
         /// <inheritdoc />
@@ -83,7 +81,7 @@
         /// <inheritdoc />
         public CellTextFormatStyle Build()
         {
-            return _textFormat;
+            return _textFormat.Copy();
         }
 
         private static void SetValue<T>(T? main, T? alternative, bool useNullValue, Action<T?> setValueAction)

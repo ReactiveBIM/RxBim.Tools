@@ -5,7 +5,6 @@
     using Autodesk.Revit.DB;
     using JetBrains.Annotations;
     using Revit.Extensions;
-    using Styles;
 
     /// <summary>
     /// Represents a converter that renders a <see cref="Table"/> object to a Revit ViewSchedule.
