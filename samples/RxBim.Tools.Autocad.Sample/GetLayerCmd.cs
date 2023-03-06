@@ -6,6 +6,7 @@
     using Command.Autocad;
     using JetBrains.Annotations;
     using Shared;
+    using Shared.Autocad;
 
     /// <summary>
     /// Command.

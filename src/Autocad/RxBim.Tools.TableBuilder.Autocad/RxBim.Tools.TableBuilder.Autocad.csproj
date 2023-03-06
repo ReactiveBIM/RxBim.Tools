@@ -12,6 +12,10 @@
         <ProjectReference Include="..\..\Core\RxBim.Tools.TableBuilder\RxBim.Tools.TableBuilder.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Update="RxBim.Di" Version="1.2.0" />
+    </ItemGroup>
+
     <PropertyGroup>
         <Description>RxBim AutoCAD Table </Description>
         <PackageId>RxBim.Tools.TableBuilder.Autocad</PackageId>
