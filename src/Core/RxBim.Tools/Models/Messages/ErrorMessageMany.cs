@@ -7,7 +7,7 @@
     /// <summary>
     /// List of <see cref="ErrorMessage"/> with common title
     /// </summary>
-    internal class ErrorMessageMany : MessageMany, ICanBeUnion<ErrorMessage>
+    public class ErrorMessageMany : MessageMany, ICanBeUnion<ErrorMessage>
     {
         /// <inheritdoc />
         public ErrorMessageMany(IReadOnlyList<ErrorMessage> messages, bool isDebug = false)
