@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Styles;
 
     /// <summary>
     /// Table data.
@@ -39,17 +38,17 @@
         /// <summary>
         /// The width of the table.
         /// </summary>
-        public double Width => Math.Max(_columns.Sum(x => x.OwnWidth ?? 0), OwnWidth);
+        public double Width => Math.Max(_columns.Sum(x => x.Width ?? 0), OwnWidth);
 
         /// <summary>
         /// The height of the table.
         /// </summary>
-        public double Height => Math.Max(_rows.Sum(x => x.OwnHeight ?? 0), OwnHeight);
+        public double Height => Math.Max(_rows.Sum(x => x.Height ?? 0), OwnHeight);
 
         /// <summary>
         /// The default format for cells.
         /// </summary>
-        public CellFormatStyle DefaultFormat { get; set; } = new();
+        public CellFormatStyle DefaultFormat { get; internal set; } = new();
 
         /// <summary>
         /// Own width.

@@ -1,12 +1,12 @@
 ﻿namespace RxBim.Tools.TableBuilder
 {
-    using System.Linq;
-
     /// <summary>
     /// Table row data.
     /// </summary>
     public class Row : CellsSet
     {
+        private double? _height;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Row"/> class.
         /// </summary>
@@ -19,31 +19,14 @@
         /// <summary>
         /// The height of the row.
         /// </summary>
-        public double Height
+        public double? Height
         {
-            get
+            get => _height;
+            internal set
             {
-                if (OwnHeight.HasValue)
-                    return OwnHeight.Value;
-
-                var rowsWithValues =
-                    Table.Rows.Where(x => x.OwnHeight.HasValue).Select(x => x.OwnHeight!.Value).ToList();
-                return (Table.Height - rowsWithValues.Sum()) / (Table.Rows.Count() - rowsWithValues.Count);
+                IsAdjustedToContent = false;
+                _height = value;
             }
-        }
-
-        /// <summary>
-        /// The height of the row.
-        /// </summary>
-        internal double? OwnHeight { get; set; }
-
-        /// <summary>
-        /// Returns new <see cref="RowBuilder"/> for the row.
-        /// </summary>
-        /// <param name="row"><see cref="Row"/> object.</param>
-        public static implicit operator RowBuilder(Row row)
-        {
-            return new RowBuilder(row);
         }
     }
 }

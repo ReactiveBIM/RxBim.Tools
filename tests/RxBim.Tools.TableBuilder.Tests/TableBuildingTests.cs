@@ -3,10 +3,9 @@
     using System.Collections.Generic;
     using System.Drawing;
     using System.Linq;
-    using Content;
     using FluentAssertions;
-    using Styles;
     using Xunit;
+    using RxBim.Tools.TableBuilder;
 
     /// <summary>
     /// Tests for <see cref="TableBuilder"/>
@@ -21,8 +20,9 @@
 
             var data = GetTestData(assert);
 
-            Table result = new TableBuilder().SetWidth(100)
-                .AddRowsFromList(data, 0, 0, p => p.Prop1, p => p.Prop2);
+            var result = new TableBuilder().SetWidth(100)
+                .AddRowsFromList(data, 0, 0, p => p.Prop1, p => p.Prop2)
+                .Build();
 
             result.Rows.Count().Should().Be(assert);
             result.Columns.Count().Should().Be(2);
@@ -34,8 +34,9 @@
         {
             const int assert = 10;
             var data = GetTestData(assert);
-            Table result = new TableBuilder().SetWidth(100)
-                .AddColumnsFromList(data, 0, 0, p => p.Prop1, p => p.Prop2);
+            var result = new TableBuilder().SetWidth(100)
+                .AddColumnsFromList(data, 0, 0, p => p.Prop1, p => p.Prop2)
+                .Build();
             result.Rows.Count().Should().Be(2);
             result.Columns.Count().Should().Be(assert);
         }
@@ -46,8 +47,9 @@
         {
             const int assert = 10;
             var data = GetTestData(assert);
-            Table table = new TableBuilder().SetWidth(100)
-                .AddRowsFromList(data, 1, 1, p => p.Prop1, p => p.Prop2);
+            var table = new TableBuilder().SetWidth(100)
+                .AddRowsFromList(data, 1, 1, p => p.Prop1, p => p.Prop2)
+                .Build();
             table[0, 0].Content.ValueObject?.ToString().Should().BeEquivalentTo(string.Empty);
             table[0, 1].Content.ValueObject?.ToString().Should().BeEquivalentTo(string.Empty);
             table[1, 0].Content.ValueObject?.ToString().Should().BeEquivalentTo(string.Empty);
@@ -67,7 +69,7 @@
                 var cellData = cell.Content.ValueObject?.ToString();
                 var srcData = data[r - 1];
                 cellData.Should().BeEquivalentTo(srcData.Prop1.ToString());
-                var rightCell = ((CellBuilder)cell).Next().ObjectForBuild;
+                var rightCell = table[r, 2];
                 cellData = rightCell.Content.ValueObject?.ToString();
                 cellData.Should().BeEquivalentTo(srcData.Prop2);
             }
@@ -82,10 +84,12 @@
             const int rowHeight = 95;
             var data = GetTestData(assert);
             var format = GetTestCellFormat();
-            Table table = new TableBuilder().SetWidth(100)
+            var table = new TableBuilder()
+                .SetWidth(100)
                 .AddColumn(x => x.SetFormat(format).SetWidth(columnWidth))
                 .AddColumn(count: data.Count)
-                .AddRow(x => x.FromList(data).SetHeight(rowHeight));
+                .AddRow(x => x.FromList(data).SetHeight(rowHeight))
+                .Build();
             table.Columns.First().GetComposedFormat().Should().BeEquivalentTo(format);
             table.Columns.First().Width.Should().Be(columnWidth);
             foreach (var x in table.Columns.First().Cells)
@@ -102,11 +106,12 @@
             const int rowHeight = 95;
             var data = GetTestData(assert);
             var format = GetTestCellFormat();
-            Table table = new TableBuilder()
+            var table = new TableBuilder()
                 .SetFormat(format)
                 .AddColumn(x => x.SetWidth(columnWidth))
                 .AddColumn(x => x.SetWidth(columnWidth), count: data.Count)
-                .AddRow(x => x.FromList(data).SetHeight(rowHeight));
+                .AddRow(x => x.FromList(data).SetHeight(rowHeight))
+                .Build();
             table.Columns.Select(e => e.GetComposedFormat()).Should().AllBeEquivalentTo(format);
             table.Columns.Select(e => e.Width).Should().AllBeEquivalentTo(columnWidth);
             table.Columns.SelectMany(e => e.Cells.Select(x => x.GetComposedFormat()))
@@ -126,11 +131,12 @@
             const int rowHeight = 95;
             var data = GetTestData(assert);
             var format = GetTestCellFormat();
-            Table table = new TableBuilder()
+            var table = new TableBuilder()
                 .AddColumn(x => x.SetWidth(columnWidth))
                 .AddColumn(x => x.SetWidth(columnWidth), count: data.Count)
                 .AddRow(x => x.FromList(data).SetHeight(rowHeight))
-                .SetCellsFormat(format, 0, 1, 2, 1);
+                .SetCellsFormat(format, 0, 1, 2, 1)
+                .Build();
             table.Columns.Skip(1)
                 .Take(2)
                 .SelectMany(x => x.Cells.Select(e => e.GetComposedFormat()))
@@ -152,16 +158,16 @@
         {
             var data = GetTestData(10);
 
-            var table = new TableBuilder()
+            var tableBuilder = new TableBuilder();
+            tableBuilder
                 .SetWidth(100)
                 .AddColumnsFromList(data, 0, 0, p => p.Prop1, p => p.Prop2)
                 .AddColumnsFromList(data, 2, 0, p => p.Prop1, p => p.Prop2)
                 .AddColumnsFromList(data, 4, 0, p => p.Prop1, p => p.Prop2)[1, 3]
-                .MergeNext(1, (_, _) => { })
-                .ToTable()[1, 3]
-                .MergeDown(1, (_, _) => { })
-                .ToTable()
-                .Build();
+                .MergeNext(1, (_, _) => { });
+            tableBuilder[1, 3]
+                .MergeDown(1, (_, _) => { });
+            var table = tableBuilder.Build();
 
             table[1, 3].Merged.Should().BeTrue();
             table[1, 4].Merged.Should().BeTrue();
@@ -188,23 +194,23 @@
             const int rowCount = 4;
             var cellValue = new TextCellContent("test");
 
-            var table = new TableBuilder()
+            var tableBuilder = new TableBuilder();
+            tableBuilder
                 .AddColumn(count: colCount)
                 .AddRow(count: rowCount)
-                .ToRows()
+                .Rows
                 .First()
-                .ToCells()
+                .Cells
                 .First()
                 .MergeNext(colCount - 1)
                 .MergeDown(rowCount - 1)
-                .SetContent(cellValue)
-                .ToTable()
-                .Build();
+                .SetContent(cellValue);
+            var table = tableBuilder.Build();
 
             for (var i = 0; i < colCount; i++)
             {
                 for (var j = 0; j < rowCount; j++)
-                    table[j, i].Content.Should().Be(cellValue);
+                    table[j, i].Content.Should().BeEquivalentTo(cellValue);
             }
         }
 
@@ -216,17 +222,18 @@
             const int rowCount = 4;
             var format = GetTestCellFormat();
 
-            Table table = new TableBuilder()
+            var tableBuilder = new TableBuilder();
+            tableBuilder
                 .AddColumn(count: colCount)
                 .AddRow(count: rowCount)
-                .ToRows()
+                .Rows
                 .First()
-                .ToCells()
+                .Cells
                 .First()
                 .MergeNext(colCount - 1)
                 .MergeDown(rowCount - 1)
-                .SetFormat(format)
-                .ToTable();
+                .SetFormat(format);
+            var table = tableBuilder.Build();
 
             for (var i = 0; i < colCount - 1; i++)
             {
@@ -242,17 +249,18 @@
             const int colCount = 4;
             const int rowCount = 4;
 
-            Table table = new TableBuilder()
+            var table = new TableBuilder()
                 .AddColumn(count: colCount)
-                .AddRow(count: rowCount);
+                .AddRow(count: rowCount)
+                .Build();
 
-            var nextMergedCell = ((CellBuilder)table.Rows.First().Cells.First()).MergeNext().ObjectForBuild;
+            var nextMergedCell = new CellEditor(table.Rows.First().Cells.First()).MergeNext();
             nextMergedCell.GetColumnIndex().Should().Be(1);
 
-            var downMergedCell = ((CellBuilder)table.Columns.Last().Cells.First()).MergeDown().ObjectForBuild;
-            downMergedCell.Row.GetIndex().Should().Be(1);
+            var downMergedCell = new CellEditor(table.Columns.Last().Cells.First()).MergeDown();
+            downMergedCell.GetRowIndex().Should().Be(1);
 
-            var leftMergedCell = ((CellBuilder)table.Rows.Last().Cells[1]).MergeLeft().ObjectForBuild;
+            var leftMergedCell = new CellEditor(table.Rows.Last().Cells[1]).MergeLeft();
             leftMergedCell.GetColumnIndex().Should().Be(0);
         }
 

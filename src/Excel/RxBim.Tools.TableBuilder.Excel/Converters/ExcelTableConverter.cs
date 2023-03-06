@@ -5,7 +5,6 @@
     using System.Text;
     using ClosedXML.Excel;
     using JetBrains.Annotations;
-    using Styles;
 
     /// <summary>
     /// Defines a <see cref="Table"/> converter to an Excle workbook.
@@ -27,12 +26,17 @@
                  currentColumnIndex++, sheetColumnIndex++)
             {
                 var column = worksheet.Column(sheetColumnIndex);
-                column.Width = table.Columns[currentColumnIndex].Width;
+                if (table.Columns[currentColumnIndex].IsAdjustedToContent)
+                {
+                    column.AdjustToContents();
+                }
+                else
+                {
+                    column.Width = table.Columns[currentColumnIndex].Width ?? table.GetAverageColumnWidth();
+                }
 
                 FillRow(table, worksheet, currentColumnIndex, sheetColumnIndex, mergedCells);
             }
-
-            AdjustToContents(ref worksheet);
 
             if (parameters.FreezeRows > 0)
                 worksheet.SheetView.Freeze(parameters.FreezeRows, table.Columns.Count);
@@ -56,8 +60,6 @@
             for (var currentRowIndex = 0; currentRowIndex < table.Rows.Count; currentRowIndex++, sheetRowIndex++)
             {
                 var row = worksheet.Row(sheetRowIndex);
-                row.Height = table.Rows[currentRowIndex].Height;
-
                 var cell = table[currentRowIndex, currentColumnIndex];
                 var sheetCell = worksheet.Cell(sheetRowIndex, sheetColumnIndex);
 
@@ -75,6 +77,15 @@
                     cell.MergeArea.Value.LeftColumn + 1,
                     cell.MergeArea.Value.BottomRow + 1,
                     cell.MergeArea.Value.RightColumn + 1).Merge();
+
+                if (table.Rows[currentRowIndex].IsAdjustedToContent)
+                {
+                    row.AdjustToContents();
+                }
+                else
+                {
+                    row.Height = table.Rows[currentRowIndex].Height ?? table.GetAverageRowHeight();
+                }
             }
         }
 
@@ -193,28 +204,22 @@
             };
         }
 
-        private XLAlignmentHorizontalValues GetExcelHorizontalAlignment(
-            CellContentHorizontalAlignment horizontalAlignment) => horizontalAlignment switch
-        {
-            CellContentHorizontalAlignment.Center => XLAlignmentHorizontalValues.Center,
-            CellContentHorizontalAlignment.Left => XLAlignmentHorizontalValues.Left,
-            CellContentHorizontalAlignment.Right => XLAlignmentHorizontalValues.Right,
-            _ => throw new NotImplementedException(horizontalAlignment.ToString())
-        };
+        private XLAlignmentHorizontalValues GetExcelHorizontalAlignment(CellContentHorizontalAlignment horizontalAlignment) =>
+            horizontalAlignment switch
+            {
+                CellContentHorizontalAlignment.Center => XLAlignmentHorizontalValues.Center,
+                CellContentHorizontalAlignment.Left => XLAlignmentHorizontalValues.Left,
+                CellContentHorizontalAlignment.Right => XLAlignmentHorizontalValues.Right,
+                _ => throw new NotImplementedException(horizontalAlignment.ToString())
+            };
 
-        private XLBorderStyleValues GetExcelBorderStyle(
-            CellBorderType borderType) => borderType switch
-        {
-            CellBorderType.Hidden => XLBorderStyleValues.None,
-            CellBorderType.Bold => XLBorderStyleValues.Medium,
-            CellBorderType.Thin => XLBorderStyleValues.Thin,
-            _ => throw new NotImplementedException(borderType.ToString())
-        };
-
-        private void AdjustToContents(ref IXLWorksheet worksheet)
-        {
-            worksheet.Columns().AdjustToContents();
-            worksheet.Rows().AdjustToContents();
-        }
+        private XLBorderStyleValues GetExcelBorderStyle(CellBorderType borderType) =>
+            borderType switch
+            {
+                CellBorderType.Hidden => XLBorderStyleValues.None,
+                CellBorderType.Bold => XLBorderStyleValues.Medium,
+                CellBorderType.Thin => XLBorderStyleValues.Thin,
+                _ => throw new NotImplementedException(borderType.ToString())
+            };
     }
 }
