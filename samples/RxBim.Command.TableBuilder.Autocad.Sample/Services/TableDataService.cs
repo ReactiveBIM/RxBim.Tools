@@ -31,7 +31,7 @@
                         .SetContentVerticalHorizontalMargins(horizontalMargins: 1)
                         .SetContentHorizontalAlignment(CellContentHorizontalAlignment.Left)))
                 .AddColumn(x => x.SetWidth(50))
-                .AddColumn(x => x.SetWidth(40))
+                .AddColumn(x => x.SetWidth(60))
 
                 // Title
                 .AddRow(r => r
@@ -80,6 +80,9 @@
                         .Next()
                         .SetContent(entity is BlockReference blRef
                             ? new BlockCellContent(blRef.DynamicBlockTableRecord)
+                            {
+                                Text = blRef.Name
+                            }
                             : new AutocadTextCellContent("Not block"));
                 });
             }
