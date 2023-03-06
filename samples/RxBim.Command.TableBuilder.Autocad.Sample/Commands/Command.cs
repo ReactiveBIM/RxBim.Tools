@@ -10,6 +10,7 @@
     using JetBrains.Annotations;
     using RxBim.Command.Autocad;
     using Shared;
+    using Shared.Autocad;
     using Tools.Autocad;
     using Tools.TableBuilder;
     using Result = CSharpFunctionalExtensions.Result;

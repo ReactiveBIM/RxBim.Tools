@@ -9,6 +9,7 @@
     <ItemGroup>
         <PackageReference Include="CSharpFunctionalExtensions" Version="2.34.3" />
         <PackageReference Include="RevitTask" Version="3.0.0" />
+        <PackageReference Update="RxBim.Di" Version="1.2.0" />
     </ItemGroup>
 
     <PropertyGroup>
@@ -29,7 +30,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Core\RxBim.Tools\RxBim.Tools.csproj" />
-      <ProjectReference Include="..\..\Core\RxBim.Tools.TableBuilder\RxBim.Tools.TableBuilder.csproj" />
     </ItemGroup>
 
     <ItemGroup>

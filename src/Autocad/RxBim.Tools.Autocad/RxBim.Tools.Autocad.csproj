@@ -22,4 +22,8 @@
         </AssemblyAttribute>
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Update="RxBim.Di" Version="1.2.0" />
+    </ItemGroup>
+
 </Project>
