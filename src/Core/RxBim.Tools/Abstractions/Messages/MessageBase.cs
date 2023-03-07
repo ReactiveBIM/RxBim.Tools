@@ -1,5 +1,7 @@
 ﻿namespace RxBim.Tools
 {
+    using System;
+
     /// <summary>
     /// Base class for log messages
     /// </summary>
@@ -9,12 +11,27 @@
         /// Initializes a new instance of the <see cref="MessageBase"/> class.
         /// </summary>
         /// <param name="message">Message text</param>
-        protected MessageBase(string message)
+        /// <param name="isDebugMessage">Indicates that message only exist in 'DEBUG' mode</param>
+        /// <param name="showMessageLogTime">Indicates if its need to show log time</param>
+        protected MessageBase(string message, bool isDebugMessage = false, bool showMessageLogTime = false)
         {
+            IsDebugMessage = isDebugMessage;
+            if (showMessageLogTime)
+                MessageLogTime = DateTime.Now;
             Message = message;
         }
 
         /// <inheritdoc />
         public string Message { get; }
+
+        /// <summary>
+        /// Indicates that message only exist in 'DEBUG' mode
+        /// </summary>
+        public bool IsDebugMessage { get; set; }
+
+        /// <summary>
+        /// Message log time
+        /// </summary>
+        public DateTime? MessageLogTime { get; }
     }
 }

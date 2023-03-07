@@ -17,21 +17,6 @@
         event EventHandler ElementStorageChanged;
 
         /// <summary>
-        /// Adds <see cref="TextMessage"/>
-        /// </summary>
-        /// <param name="text">Message text</param>
-        [UsedImplicitly]
-        public void AddTextMessage(string text);
-
-        /// <summary>
-        /// Adds <see cref="TextIdMessage"/>
-        /// </summary>
-        /// <param name="text">Message text</param>
-        /// <param name="id">Object Id</param>
-        [UsedImplicitly]
-        public void AddTextIdMessage(string text, IObjectIdWrapper id);
-
-        /// <summary>
         /// Adds message to storage
         /// </summary>
         /// <param name="message">Message</param>

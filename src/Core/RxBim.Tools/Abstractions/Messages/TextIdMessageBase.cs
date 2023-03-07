@@ -6,8 +6,12 @@
     public abstract class TextIdMessageBase : MessageBase
     {
         /// <inheritdoc />
-        protected TextIdMessageBase(string text, IMessageData elementId)
-            : base(text)
+        protected TextIdMessageBase(
+            string text,
+            IMessageData elementId,
+            bool isDebugMessage = false,
+            bool showMessageLogTime = false)
+            : base(text, isDebugMessage, showMessageLogTime)
         {
             ElementId = elementId;
         }
