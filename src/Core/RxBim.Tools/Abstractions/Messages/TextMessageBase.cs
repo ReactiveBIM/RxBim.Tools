@@ -8,13 +8,10 @@
     [UsedImplicitly]
     public abstract class TextMessageBase : MessageBase
     {
-        private readonly string _message;
-
         /// <inheritdoc />
-        protected TextMessageBase(string message, bool isDebug, bool showMessageLogTime = false)
-            : base(isDebug, showMessageLogTime)
+        protected TextMessageBase(string message)
+            : base(message)
         {
-            _message = message;
         }
 
         /// <inheritdoc />
@@ -32,18 +29,18 @@
         /// <inheritdoc />
         public override int GetHashCode()
         {
-            return string.IsNullOrEmpty(_message) ? 0 : _message.GetHashCode();
+            return string.IsNullOrEmpty(Message) ? 0 : Message.GetHashCode();
         }
 
         /// <inheritdoc />
         public override string ToString()
         {
-            return _message;
+            return Message;
         }
 
         private bool Equals(TextMessageBase other)
         {
-            return _message == other._message;
+            return Message == other.Message;
         }
     }
 }

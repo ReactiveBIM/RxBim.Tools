@@ -1,6 +1,5 @@
 ﻿namespace RxBim.Tools;
 
-using System;
 using JetBrains.Annotations;
 
 /// <summary>
@@ -9,13 +8,8 @@ using JetBrains.Annotations;
 public interface ILogMessage
 {
     /// <summary>
-    /// Indicates that message if for 'DEBUG' mode
-    /// </summary>
-    public bool IsDebugMessage { get; set; }
-
-    /// <summary>
-    /// Log time
+    /// Message text
     /// </summary>
     [UsedImplicitly]
-    public DateTime? MessageLogTime { get; }
+    public string Message { get; }
 }

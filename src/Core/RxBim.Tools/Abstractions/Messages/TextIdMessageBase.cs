@@ -6,33 +6,21 @@
     public abstract class TextIdMessageBase : MessageBase
     {
         /// <inheritdoc />
-        protected TextIdMessageBase(string text, IMessageData elementId, string element, bool isDebug)
-            : base(isDebug, true)
+        protected TextIdMessageBase(string text, IMessageData elementId)
+            : base(text)
         {
-            Text = text;
             ElementId = elementId;
-            Element = element;
         }
-
-        /// <summary>
-        /// Text
-        /// </summary>
-        public string Text { get; }
 
         /// <summary>
         /// Element Id
         /// </summary>
         public IMessageData ElementId { get; }
 
-        /// <summary>
-        /// Element name
-        /// </summary>
-        public string Element { get; }
-
         /// <inheritdoc />
         public override string ToString()
         {
-            return $"{Text} {Element} {"Id = " + ElementId}";
+            return $"{Message} {"Id = " + ElementId}";
         }
 
         /// <inheritdoc />
@@ -55,7 +43,7 @@
 
         private bool Equals(TextIdMessageBase other)
         {
-            return Text == other.Text && Equals(ElementId, other.ElementId) && Element == other.Element;
+            return Message == other.Message && Equals(ElementId, other.ElementId);
         }
     }
 }

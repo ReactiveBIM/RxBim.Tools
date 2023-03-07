@@ -28,24 +28,21 @@
         /// <param name="id">Id of element.</param>
         public static void AddTextIdMessage(this ILogStorage logStorage, string text, IObjectIdWrapper id)
         {
-            logStorage.AddMessage(new ErrorMessage(text, string.Empty, new MessageData(id)));
+            logStorage.AddMessage(new TextIdMessage(text, new MessageData(id)));
         }
 
         /// <summary>
         /// Returns elements IDs combined by problem description.
         /// </summary>
         /// <param name="logStorage"><see cref="ILogStorage"/> object.</param>
-        public static IDictionary<string, IEnumerable<IObjectIdWrapper>> GetCombinedProblems(this ILogStorage logStorage)
+        public static IEnumerable<KeyValuePair<IObjectIdWrapper, string>> GetProblems(this ILogStorage logStorage)
         {
             var messages = logStorage.GetMessages();
             return messages
-                .OfType<ErrorMessageMany>()
-                .Select(mm => new KeyValuePair<string, IEnumerable<IObjectIdWrapper>>(
-                    mm.Title ?? string.Empty,
-                    mm.Messages
-                        .OfType<ErrorMessage>()
-                        .Select(em => em.ElementId.GetId())))
-                .ToDictionary(p => p.Key, p => p.Value);
+                .OfType<TextIdMessage>()
+                .Select(mm => new KeyValuePair<IObjectIdWrapper, string>(
+                    mm.ElementId.GetId(),
+                    mm.Message));
         }
     }
 }

@@ -7,6 +7,7 @@
     /// <summary>
     /// Represents a type that is used for error logging.
     /// </summary>
+    [PublicAPI]
     public interface ILogStorage
     {
         /// <summary>
@@ -16,16 +17,25 @@
         event EventHandler ElementStorageChanged;
 
         /// <summary>
-        /// Indicates that <see cref="GetMessages"/> will return 'DEBUG' messages
+        /// Adds <see cref="TextMessage"/>
         /// </summary>
+        /// <param name="text">Message text</param>
         [UsedImplicitly]
-        public bool ShouldShowDebugMessages { get; set; }
+        public void AddTextMessage(string text);
+
+        /// <summary>
+        /// Adds <see cref="TextIdMessage"/>
+        /// </summary>
+        /// <param name="text">Message text</param>
+        /// <param name="id">Object Id</param>
+        [UsedImplicitly]
+        public void AddTextIdMessage(string text, IObjectIdWrapper id);
 
         /// <summary>
         /// Adds message to storage
         /// </summary>
-        /// <param name="message">Сообщение</param>
-        /// <typeparam name="T">Тип сообщения</typeparam>
+        /// <param name="message">Message</param>
+        /// <typeparam name="T">Message type</typeparam>
         [UsedImplicitly]
         public void AddMessage<T>(in T message)
             where T : ILogMessage;

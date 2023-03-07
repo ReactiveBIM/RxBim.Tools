@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>        
+    <PropertyGroup>
+        <TargetFramework>net472</TargetFramework>
         <UseDi>true</UseDi>
     </PropertyGroup>
 
