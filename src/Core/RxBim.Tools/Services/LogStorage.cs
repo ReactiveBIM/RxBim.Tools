@@ -58,15 +58,12 @@
         private bool TryGetMessageToUnion<T>(T message, out ICanBeUnion<T>? outMessage)
             where T : ILogMessage
         {
-            var interfaceType = typeof(ICanBeUnion<>).MakeGenericType(message.GetType());
-            var canUnionWithMethod = interfaceType.GetMethod(nameof(ICanBeUnion<ILogMessage>.CanUnionWith))!;
             foreach (var baseMessage in _sourceItems)
             {
-                if (interfaceType.IsInstanceOfType(baseMessage)
-                    && canUnionWithMethod.Invoke(baseMessage, new object[] { message }) is true)
+                if (baseMessage is ICanBeUnion<T> parent && parent.CanUnionWith(message))
                 {
                     _sourceItems.Remove(baseMessage);
-                    outMessage = (ICanBeUnion<T>)baseMessage;
+                    outMessage = parent;
                     return true;
                 }
             }
