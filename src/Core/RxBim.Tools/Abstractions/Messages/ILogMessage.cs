@@ -24,5 +24,5 @@ public interface ILogMessage
     /// Message log time
     /// </summary>
     [UsedImplicitly]
-    public DateTime? MessageLogTime { get; }
+    public DateTime MessageLogTime { get; }
 }

@@ -6,12 +6,8 @@
     public abstract class TextIdMessageBase : MessageBase
     {
         /// <inheritdoc />
-        protected TextIdMessageBase(
-            string text,
-            IMessageData elementId,
-            bool isDebugMessage = false,
-            bool showMessageLogTime = false)
-            : base(text, isDebugMessage, showMessageLogTime)
+        protected TextIdMessageBase(string text, IObjectIdWrapper elementId, bool isDebugMessage = false)
+            : base(text, isDebugMessage)
         {
             ElementId = elementId;
         }
@@ -19,7 +15,7 @@
         /// <summary>
         /// Element Id
         /// </summary>
-        public IMessageData ElementId { get; }
+        public IObjectIdWrapper ElementId { get; }
 
         /// <inheritdoc />
         public override string ToString()

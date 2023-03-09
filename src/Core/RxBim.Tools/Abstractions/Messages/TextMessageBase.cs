@@ -9,11 +9,8 @@
     public abstract class TextMessageBase : MessageBase
     {
         /// <inheritdoc />
-        protected TextMessageBase(
-            string text,
-            bool isDebugMessage = false,
-            bool showMessageLogTime = false)
-            : base(text, isDebugMessage, showMessageLogTime)
+        protected TextMessageBase(string text, bool isDebugMessage = false)
+            : base(text, isDebugMessage)
         {
         }
 

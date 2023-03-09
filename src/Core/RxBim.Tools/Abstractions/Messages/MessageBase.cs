@@ -12,12 +12,10 @@
         /// </summary>
         /// <param name="message">Message text</param>
         /// <param name="isDebugMessage">Indicates that message only exist in 'DEBUG' mode</param>
-        /// <param name="showMessageLogTime">Indicates if its need to show log time</param>
-        protected MessageBase(string message, bool isDebugMessage = false, bool showMessageLogTime = false)
+        protected MessageBase(string message, bool isDebugMessage = false)
         {
             IsDebugMessage = isDebugMessage;
-            if (showMessageLogTime)
-                MessageLogTime = DateTime.Now;
+            MessageLogTime = DateTime.Now;
             Message = message;
         }
 
@@ -32,6 +30,6 @@
         /// <summary>
         /// Message log time
         /// </summary>
-        public DateTime? MessageLogTime { get; }
+        public DateTime MessageLogTime { get; }
     }
 }

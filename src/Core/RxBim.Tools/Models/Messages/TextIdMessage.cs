@@ -7,7 +7,7 @@
     public class TextIdMessage : TextIdMessageBase
     {
         /// <inheritdoc />
-        public TextIdMessage(string text, IMessageData elementId)
+        public TextIdMessage(string text, IObjectIdWrapper elementId)
             : base(text, elementId)
         {
         }

@@ -28,7 +28,7 @@
         /// <param name="id">Id of element.</param>
         public static void AddTextIdMessage(this ILogStorage logStorage, string text, IObjectIdWrapper id)
         {
-            logStorage.AddMessage(new TextIdMessage(text, new MessageData(id)));
+            logStorage.AddMessage(new TextIdMessage(text, id));
         }
 
         /// <summary>
@@ -41,7 +41,7 @@
             return messages
                 .OfType<TextIdMessage>()
                 .Select(mm => new KeyValuePair<IObjectIdWrapper, string>(
-                    mm.ElementId.GetId(),
+                    mm.ElementId,
                     mm.Message));
         }
     }

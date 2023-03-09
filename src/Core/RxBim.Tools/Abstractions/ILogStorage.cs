@@ -1,7 +1,7 @@
 ﻿namespace RxBim.Tools
 {
-    using System;
     using System.Collections.Generic;
+    using Helpers;
     using JetBrains.Annotations;
 
     /// <summary>
@@ -14,7 +14,7 @@
         /// An event that is raised when a collection of storage items changes.
         /// </summary>
         [UsedImplicitly]
-        event EventHandler ElementStorageChanged;
+        event Handlers.LogStorageChangedHandler ElementStorageChanged;
 
         /// <summary>
         /// Adds message to storage
