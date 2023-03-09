@@ -29,18 +29,18 @@
         /// <inheritdoc />
         public override int GetHashCode()
         {
-            return string.IsNullOrEmpty(Message) ? 0 : Message.GetHashCode();
+            return string.IsNullOrEmpty(Text) ? 0 : Text.GetHashCode();
         }
 
         /// <inheritdoc />
         public override string ToString()
         {
-            return Message;
+            return Text;
         }
 
         private bool Equals(TextMessageBase other)
         {
-            return Message == other.Message;
+            return Text == other.Text;
         }
     }
 }

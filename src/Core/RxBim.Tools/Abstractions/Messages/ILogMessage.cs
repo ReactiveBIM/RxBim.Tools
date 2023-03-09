@@ -12,7 +12,7 @@ public interface ILogMessage
     /// Message text
     /// </summary>
     [UsedImplicitly]
-    public string Message { get; }
+    public string Text { get; }
 
     /// <summary>
     /// Indicates that message only exist in 'DEBUG' mode
@@ -24,5 +24,5 @@ public interface ILogMessage
     /// Message log time
     /// </summary>
     [UsedImplicitly]
-    public DateTime MessageLogTime { get; }
+    public DateTime? MessageLogTime { get; }
 }

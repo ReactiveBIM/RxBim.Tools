@@ -20,7 +20,7 @@
         /// <inheritdoc />
         public override string ToString()
         {
-            return $"{Message} {"Id = " + ElementId}";
+            return $"{Text} {"Id = " + ElementId}";
         }
 
         /// <inheritdoc />
@@ -43,7 +43,7 @@
 
         private bool Equals(TextIdMessageBase other)
         {
-            return Message == other.Message && Equals(ElementId, other.ElementId);
+            return Text == other.Text && Equals(ElementId, other.ElementId);
         }
     }
 }

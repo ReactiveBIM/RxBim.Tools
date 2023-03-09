@@ -42,7 +42,7 @@
                 .OfType<TextIdMessage>()
                 .Select(mm => new KeyValuePair<IObjectIdWrapper, string>(
                     mm.ElementId,
-                    mm.Message));
+                    mm.Text));
         }
     }
 }

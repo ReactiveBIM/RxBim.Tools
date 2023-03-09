@@ -16,11 +16,11 @@
         {
             IsDebugMessage = isDebugMessage;
             MessageLogTime = DateTime.Now;
-            Message = message;
+            Text = message;
         }
 
         /// <inheritdoc />
-        public string Message { get; }
+        public string Text { get; }
 
         /// <summary>
         /// Indicates that message only exist in 'DEBUG' mode
@@ -30,6 +30,6 @@
         /// <summary>
         /// Message log time
         /// </summary>
-        public DateTime MessageLogTime { get; }
+        public DateTime? MessageLogTime { get; }
     }
 }
