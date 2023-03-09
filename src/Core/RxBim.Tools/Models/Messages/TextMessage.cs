@@ -7,8 +7,8 @@
     public class TextMessage : TextMessageBase
     {
         /// <inheritdoc />
-        public TextMessage(string message)
-            : base(message)
+        public TextMessage(string message, bool isDebugMessage = false)
+            : base(message, isDebugMessage)
         {
         }
     }
