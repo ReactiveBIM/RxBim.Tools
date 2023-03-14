@@ -11,7 +11,7 @@
     public static class LogStorageExtensions
     {
         /// <summary>
-        /// Returns a value indicating whether a specified character occurs within this string, using the specified comparison rules.
+        /// Adds text message to <see cref="ILogStorage"/>
         /// </summary>
         /// <param name="logStorage"><see cref="ILogStorage"/> object.</param>
         /// <param name="text">Message text.</param>
@@ -21,7 +21,7 @@
         }
 
         /// <summary>
-        /// Returns a value indicating whether a specified character occurs within this string, using the specified comparison rules.
+        /// Adds text message with object Id to <see cref="ILogStorage"/>
         /// </summary>
         /// <param name="logStorage"><see cref="ILogStorage"/> object.</param>
         /// <param name="text">Message text.</param>
@@ -32,7 +32,7 @@
         }
 
         /// <summary>
-        /// Returns elements IDs combined by problem description.
+        /// Returns elements IDs combined by problem description
         /// </summary>
         /// <param name="logStorage"><see cref="ILogStorage"/> object.</param>
         public static IEnumerable<KeyValuePair<IObjectIdWrapper, string>> GetProblems(this ILogStorage logStorage)
