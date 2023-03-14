@@ -5,7 +5,7 @@
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Extensions for <see cref="string"/>.
+    /// Extensions for <see cref="ILogStorage"/>.
     /// </summary>
     [PublicAPI]
     public static class LogStorageExtensions
