@@ -1,19 +1,17 @@
 ﻿namespace RxBim.Tools
 {
     using System.Collections.Generic;
-    using Helpers;
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Represents a type that is used for error logging.
+    /// Service for storing different types of messages
     /// </summary>
     [PublicAPI]
     public interface ILogStorage
     {
         /// <summary>
-        /// An event that is raised when a collection of storage items changes.
+        /// An event that is raised when a collection of storage items changes
         /// </summary>
-        [UsedImplicitly]
         event Handlers.LogStorageChangedHandler ElementStorageChanged;
 
         /// <summary>
@@ -21,26 +19,27 @@
         /// </summary>
         /// <param name="message">Message</param>
         /// <typeparam name="T">Message type</typeparam>
-        [UsedImplicitly]
         public void AddMessage<T>(in T message)
             where T : ILogMessage;
 
         /// <summary>
         /// Returns message collection
         /// </summary>
-        [UsedImplicitly]
         IEnumerable<ILogMessage> GetMessages();
+
+        /// <summary>
+        /// Return messages count
+        /// </summary>
+        int Count();
 
         /// <summary>
         /// Indicates that storage has messages
         /// </summary>
-        [UsedImplicitly]
         bool HasMessages();
 
         /// <summary>
         /// Clears message storage
         /// </summary>
-        [UsedImplicitly]
         void Clear();
     }
 }

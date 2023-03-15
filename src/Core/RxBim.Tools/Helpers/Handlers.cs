@@ -1,4 +1,4 @@
-﻿namespace RxBim.Tools.Helpers;
+﻿namespace RxBim.Tools;
 
 /// <summary>
 /// Shared handlers
@@ -6,10 +6,9 @@
 public static class Handlers
 {
     /// <summary>
-    /// Handler for <see cref="ILogStorage"/> ElementStorageChanged event
+    /// Handler for <see cref="ILogStorage.ElementStorageChanged"/> event
     /// </summary>
-    /// <param name="logMessage"><see cref="ILogMessage"/></param>
-    /// <remarks>logMessage null value means that <see cref="ILogStorage"/> has
-    /// no messages</remarks>
-    public delegate void LogStorageChangedHandler(ILogMessage? logMessage);
+    /// <param name="sender">Event sender</param>
+    /// <param name="args"><see cref="LogStorageChangedEventArgs"/></param>
+    public delegate void LogStorageChangedHandler(object sender, LogStorageChangedEventArgs args);
 }

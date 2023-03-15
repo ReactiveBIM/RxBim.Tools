@@ -2,9 +2,7 @@
 {
     using System;
 
-    /// <summary>
-    /// Base class for log messages
-    /// </summary>
+    /// <inheritdoc />
     public abstract class MessageBase : ILogMessage
     {
         /// <summary>
@@ -22,14 +20,10 @@
         /// <inheritdoc />
         public string Text { get; }
 
-        /// <summary>
-        /// Indicates that message only exist in 'DEBUG' mode
-        /// </summary>
+        /// <inheritdoc />
         public bool IsDebugMessage { get; set; }
 
-        /// <summary>
-        /// Message log time
-        /// </summary>
+        /// <inheritdoc />
         public DateTime? MessageLogTime { get; }
     }
 }

@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Helpers;
     using JetBrains.Annotations;
 
     /// <inheritdoc />
@@ -20,7 +19,7 @@
         {
             if (_sourceItems.Add(message))
             {
-                EventChanged(message);
+                ElementStorageChanged?.Invoke(this, new LogStorageChangedEventArgs(message));
             }
         }
 
@@ -31,15 +30,16 @@
         }
 
         /// <inheritdoc />
+        public int Count() => _sourceItems.Count;
+
+        /// <inheritdoc />
         public bool HasMessages() => _sourceItems.Any();
 
         /// <inheritdoc />
         public void Clear()
         {
             _sourceItems.Clear();
-            EventChanged(null);
+            ElementStorageChanged?.Invoke(this, new LogStorageChangedEventArgs(true));
         }
-
-        private void EventChanged(ILogMessage? lastMessage) => ElementStorageChanged?.Invoke(lastMessage);
     }
 }

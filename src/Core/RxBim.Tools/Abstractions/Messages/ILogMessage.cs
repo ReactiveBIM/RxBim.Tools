@@ -6,23 +6,21 @@ using JetBrains.Annotations;
 /// <summary>
 /// Common interface of log messages
 /// </summary>
+[PublicAPI]
 public interface ILogMessage
 {
     /// <summary>
     /// Message text
     /// </summary>
-    [UsedImplicitly]
     public string Text { get; }
 
     /// <summary>
     /// Indicates that message only exist in 'DEBUG' mode
     /// </summary>
-    [UsedImplicitly]
     public bool IsDebugMessage { get; set; }
 
     /// <summary>
     /// Message log time
     /// </summary>
-    [UsedImplicitly]
     public DateTime? MessageLogTime { get; }
 }

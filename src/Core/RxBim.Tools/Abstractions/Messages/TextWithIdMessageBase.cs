@@ -1,26 +1,29 @@
 ﻿namespace RxBim.Tools
 {
+    using JetBrains.Annotations;
+
     /// <summary>
-    /// Base class for text messages with element ids
+    /// Base class for text messages with <see cref="IObjectIdWrapper"/>
     /// </summary>
-    public abstract class TextIdMessageBase : MessageBase
+    [PublicAPI]
+    public abstract class TextWithIdMessageBase : MessageBase
     {
         /// <inheritdoc />
-        protected TextIdMessageBase(string text, IObjectIdWrapper elementId, bool isDebugMessage = false)
+        protected TextWithIdMessageBase(string text, IObjectIdWrapper objectId, bool isDebugMessage = false)
             : base(text, isDebugMessage)
         {
-            ElementId = elementId;
+            ObjectId = objectId;
         }
 
         /// <summary>
-        /// Element Id
+        /// Object Id
         /// </summary>
-        public IObjectIdWrapper ElementId { get; }
+        public IObjectIdWrapper ObjectId { get; }
 
         /// <inheritdoc />
         public override string ToString()
         {
-            return $"{Text} {"Id = " + ElementId}";
+            return $"{Text} {ObjectId}";
         }
 
         /// <inheritdoc />
@@ -38,12 +41,12 @@
                 return true;
             if (obj.GetType() != GetType())
                 return false;
-            return Equals((TextIdMessageBase)obj);
+            return Equals((TextWithIdMessageBase)obj);
         }
 
-        private bool Equals(TextIdMessageBase other)
+        private bool Equals(TextWithIdMessageBase other)
         {
-            return Text == other.Text && Equals(ElementId, other.ElementId);
+            return Text == other.Text && Equals(ObjectId, other.ObjectId);
         }
     }
 }
