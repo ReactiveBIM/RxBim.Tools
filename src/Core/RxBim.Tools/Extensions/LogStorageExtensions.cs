@@ -9,7 +9,7 @@
     public static class LogStorageExtensions
     {
         /// <summary>
-        /// Adds text message to <see cref="ILogStorage"/>
+        /// Adds text message to <see cref="ILogStorage"/>.
         /// </summary>
         /// <param name="logStorage"><see cref="ILogStorage"/> object.</param>
         /// <param name="text">Message text.</param>
@@ -19,7 +19,7 @@
         }
 
         /// <summary>
-        /// Adds text message with object Id to <see cref="ILogStorage"/>
+        /// Adds text message with object Id to <see cref="ILogStorage"/>.
         /// </summary>
         /// <param name="logStorage"><see cref="ILogStorage"/> object.</param>
         /// <param name="text">Message text.</param>

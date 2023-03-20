@@ -4,23 +4,23 @@ using System;
 using JetBrains.Annotations;
 
 /// <summary>
-/// Common interface of log messages
+/// Common interface of log messages.
 /// </summary>
 [PublicAPI]
 public interface ILogMessage
 {
     /// <summary>
-    /// Message text
+    /// Message text.
     /// </summary>
     public string Text { get; }
 
     /// <summary>
-    /// Indicates that message only exist in 'DEBUG' mode
+    /// Indicates that message only exist in 'DEBUG' mode.
     /// </summary>
-    public bool IsDebugMessage { get; set; }
+    public bool IsDebug { get; }
 
     /// <summary>
-    /// Message log time
+    /// Message log time.
     /// </summary>
-    public DateTime? MessageLogTime { get; }
+    public DateTime? LogTime { get; }
 }

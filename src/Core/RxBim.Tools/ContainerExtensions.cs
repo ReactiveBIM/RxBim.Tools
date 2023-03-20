@@ -1,7 +1,6 @@
 ﻿namespace RxBim.Tools
 {
     using System;
-    using System.Linq;
     using Di;
     using JetBrains.Annotations;
     using Microsoft.Extensions.Configuration;
@@ -18,7 +17,7 @@
         /// <param name="container">The instance of <see cref="IContainer"/>.</param>
         public static IContainer AddToolsServices(this IContainer container)
         {
-            return container.AddSingletonIfNotRegistered<ILogStorage, LogStorage>();
+            return container.AddSingleton<ILogStorage, LogStorage>();
         }
 
         /// <summary>
@@ -95,16 +94,6 @@
                 Lifetime.Scoped => container.AddScoped(implementationFactory),
                 _ => throw new ArgumentOutOfRangeException(nameof(lifetime), lifetime, "Unsupported lifetime!")
             };
-        }
-
-        private static IContainer AddSingletonIfNotRegistered<TService, TImplementation>(
-            this IContainer container)
-            where TService : class
-            where TImplementation : class, TService
-        {
-            if (!container.GetCurrentRegistrations().Select(x => x.ServiceType).Contains(typeof(TService)))
-                container.AddSingleton<TService, TImplementation>();
-            return container;
         }
     }
 }

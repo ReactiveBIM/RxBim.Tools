@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Tools
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using JetBrains.Annotations;
@@ -11,7 +12,10 @@
         private readonly HashSet<ILogMessage> _sourceItems = new();
 
         /// <inheritdoc />
-        public event Handlers.LogStorageChangedHandler? ElementStorageChanged;
+        public event LogStorageMessageAddedEventHandler? MessageAdded;
+
+        /// <inheritdoc />
+        public event EventHandler? StorageCleared;
 
         /// <inheritdoc />
         public void AddMessage<T>(in T message)
@@ -19,7 +23,7 @@
         {
             if (_sourceItems.Add(message))
             {
-                ElementStorageChanged?.Invoke(this, new LogStorageChangedEventArgs(message));
+                MessageAdded?.Invoke(this, new MessageAddedEventArgs(message));
             }
         }
 
@@ -39,7 +43,7 @@
         public void Clear()
         {
             _sourceItems.Clear();
-            ElementStorageChanged?.Invoke(this, new LogStorageChangedEventArgs(true));
+            StorageCleared?.Invoke(this, EventArgs.Empty);
         }
     }
 }
