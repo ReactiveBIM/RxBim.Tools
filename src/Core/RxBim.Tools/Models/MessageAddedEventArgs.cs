@@ -21,5 +21,5 @@ public class MessageAddedEventArgs : EventArgs
     /// <summary>
     /// <see cref="ILogMessage"/>.
     /// </summary>
-    public ILogMessage? NewMessage { get; set; }
+    public ILogMessage NewMessage { get; set; }
 }
