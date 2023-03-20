@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>        
+    <PropertyGroup>
         <UseDi>true</UseDi>
     </PropertyGroup>
 
@@ -11,7 +11,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Update="RxBim.Di" Version="1.2.0" />
+      <PackageReference Update="RxBim.Di" Version="1.2.1-rc001" />
     </ItemGroup>
 
 </Project>
