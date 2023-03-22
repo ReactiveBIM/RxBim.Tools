@@ -86,6 +86,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.TableBuilder.Go
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.TableBuilder.GoogleSheet.Sample", "samples\RxBim.Tools.TableBuilder.GoogleSheet.Sample\RxBim.Tools.TableBuilder.GoogleSheet.Sample.csproj", "{502788B1-BD7A-46F4-BEA9-78B56B0E1784}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.Tests", "tests\RxBim.Tools.Tests\RxBim.Tools.Tests.csproj", "{869FD8AE-3CBC-4970-840D-AC7B7D9DCE31}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -166,6 +168,10 @@ Global
 		{502788B1-BD7A-46F4-BEA9-78B56B0E1784}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{502788B1-BD7A-46F4-BEA9-78B56B0E1784}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{502788B1-BD7A-46F4-BEA9-78B56B0E1784}.Release|Any CPU.Build.0 = Release|Any CPU
+		{869FD8AE-3CBC-4970-840D-AC7B7D9DCE31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{869FD8AE-3CBC-4970-840D-AC7B7D9DCE31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{869FD8AE-3CBC-4970-840D-AC7B7D9DCE31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{869FD8AE-3CBC-4970-840D-AC7B7D9DCE31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -194,6 +200,7 @@ Global
 		{64EF0FBD-52EC-4CC9-869D-48BED3874F25} = {5339A0F1-1884-4682-BFD2-DE050B2E5D69}
 		{746EDD26-1025-431E-8695-CFCACABDAD81} = {64EF0FBD-52EC-4CC9-869D-48BED3874F25}
 		{502788B1-BD7A-46F4-BEA9-78B56B0E1784} = {EA1ADE6F-F986-4CF3-A953-5B3C25A5C3F0}
+		{869FD8AE-3CBC-4970-840D-AC7B7D9DCE31} = {1B8A8578-7C3C-425C-B769-9E097411094F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EA2C589E-5222-413E-AEDF-F8B9DA1ABC2F}
