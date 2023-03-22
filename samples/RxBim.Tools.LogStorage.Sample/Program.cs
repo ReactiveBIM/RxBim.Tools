@@ -23,7 +23,7 @@ public class Program
         logStorage.AddMessage(new TextMessage("Test message"));
 
         // For add text with id message you will need to create
-        // your own object inherited from IObjectIdWrapper interface
+        // your own object inherited from IObjectIdWrapper interface and override ToString() method
         logStorage.AddMessage(new TextWithIdMessage("Test message", new ObjectIdWrapper(1)));
 
         // Get messages count

@@ -43,9 +43,9 @@
         {
             Action act = () =>
             {
-                _logStorage.AddMessage(_testTextMessage);
+                _logStorage.AddMessage(new TextMessage("Test message"));
                 Thread.Sleep(1000);
-                _logStorage.AddMessage(_testTextMessage);
+                _logStorage.AddMessage(new TextMessage("Test message"));
             };
 
             act.Should().NotThrow();
@@ -58,9 +58,9 @@
         {
             Action act = () =>
             {
-                _logStorage.AddMessage(_testTextWithIdMessage);
+                _logStorage.AddMessage(new TextWithIdMessage("Test message", new ObjectIdWrapper(1)));
                 Thread.Sleep(1000);
-                _logStorage.AddMessage(_testTextWithIdMessage);
+                _logStorage.AddMessage(new TextWithIdMessage("Test message", new ObjectIdWrapper(1)));
             };
 
             act.Should().NotThrow();
