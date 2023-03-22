@@ -5,7 +5,7 @@
     /// <summary>
     /// Class for text messages.
     /// </summary>
-    [UsedImplicitly]
+    [PublicAPI]
     public class TextMessage : MessageBase
     {
         /// <inheritdoc />
@@ -21,26 +21,23 @@
                 return false;
             if (ReferenceEquals(this, obj))
                 return true;
-            if (obj.GetType() != GetType())
+            if (obj is not TextMessage otherMessage)
                 return false;
-            return Equals((TextMessage)obj);
+            return Text == otherMessage.Text && LogTime.ToString() == otherMessage.LogTime.ToString();
         }
 
         /// <inheritdoc />
         public override int GetHashCode()
         {
-            return string.IsNullOrEmpty(Text) ? 0 : Text.GetHashCode();
+            return string.IsNullOrEmpty(Text)
+                ? LogTime.ToString().GetHashCode()
+                : Text.GetHashCode() ^ LogTime.ToString().GetHashCode();
         }
 
         /// <inheritdoc />
         public override string ToString()
         {
             return Text;
-        }
-
-        private bool Equals(TextMessage other)
-        {
-            return Text == other.Text;
         }
     }
 }

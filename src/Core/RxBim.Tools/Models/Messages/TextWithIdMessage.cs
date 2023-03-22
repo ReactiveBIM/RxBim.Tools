@@ -5,7 +5,7 @@
     /// <summary>
     /// Class for text messages with <see cref="IObjectIdWrapper"/>.
     /// </summary>
-    [UsedImplicitly]
+    [PublicAPI]
     public class TextWithIdMessage : MessageBase
     {
         /// <inheritdoc />
@@ -29,7 +29,7 @@
         /// <inheritdoc />
         public override int GetHashCode()
         {
-            return ToString().GetHashCode();
+            return ToString().GetHashCode() ^ LogTime.ToString().GetHashCode();
         }
 
         /// <inheritdoc />
@@ -39,14 +39,10 @@
                 return false;
             if (ReferenceEquals(this, obj))
                 return true;
-            if (obj.GetType() != GetType())
+            if (obj is not TextWithIdMessage otherMessage)
                 return false;
-            return Equals((TextWithIdMessage)obj);
-        }
-
-        private bool Equals(TextWithIdMessage other)
-        {
-            return Text == other.Text && Equals(ObjectId, other.ObjectId);
+            return Text == otherMessage.Text && Equals(ObjectId, otherMessage.ObjectId) &&
+                   LogTime.ToString() == otherMessage.LogTime.ToString();
         }
     }
 }
