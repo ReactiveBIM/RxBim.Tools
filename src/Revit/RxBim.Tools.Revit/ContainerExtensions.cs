@@ -28,6 +28,7 @@
                 .AddSingleton<ITransactionContextService<ITransactionContextWrapper>, DocumentContextService>()
                 .AddTransactionServices<RevitTransactionFactory>()
                 .AddInstance(new RevitTask())
+                .AddSingleton<IRevitTask, RevitTaskAdapter>()
                 .AddToolsServices();
         }
     }
