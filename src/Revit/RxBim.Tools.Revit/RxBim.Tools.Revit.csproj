@@ -9,7 +9,7 @@
     <ItemGroup>
         <PackageReference Include="CSharpFunctionalExtensions" Version="2.34.3" />
         <PackageReference Include="RevitTask" Version="3.0.0" />
-        <PackageReference Update="RxBim.Di" Version="1.2.0" />
+        <PackageReference Update="RxBim.Di" Version="1.2.1" />
     </ItemGroup>
 
     <PropertyGroup>

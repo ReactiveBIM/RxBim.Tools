@@ -25,7 +25,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 [GitHubActions("Publish",
     GitHubActionsImage.WindowsLatest,
     FetchDepth = 0,
-    OnPushBranches = new[] { MasterBranch, "release/**" },
+    OnPushBranches = new[] { MasterBranch, "release/**", "hotfix/**" },
     InvokedTargets = new[] { nameof(Test), nameof(IPublish.Publish) },
     ImportSecrets = new[] { "NUGET_API_KEY", "ALL_PACKAGES" })]
 class Build : NukeBuild, IPublish
