@@ -90,6 +90,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.Tests", "tests\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.LogStorage.Sample", "samples\RxBim.Tools.LogStorage.Sample\RxBim.Tools.LogStorage.Sample.csproj", "{AF55F7EC-20CA-4BB2-8DC7-0B39FC32E2DE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.LogStorage.Revit.Sample", "samples\RxBim.Tools.LogStorage.Revit.Sample\RxBim.Tools.LogStorage.Revit.Sample.csproj", "{FC16E1AF-4CE2-4DA9-9D93-02C62726AC98}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -178,6 +180,10 @@ Global
 		{AF55F7EC-20CA-4BB2-8DC7-0B39FC32E2DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF55F7EC-20CA-4BB2-8DC7-0B39FC32E2DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF55F7EC-20CA-4BB2-8DC7-0B39FC32E2DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC16E1AF-4CE2-4DA9-9D93-02C62726AC98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC16E1AF-4CE2-4DA9-9D93-02C62726AC98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC16E1AF-4CE2-4DA9-9D93-02C62726AC98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC16E1AF-4CE2-4DA9-9D93-02C62726AC98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -208,6 +214,7 @@ Global
 		{502788B1-BD7A-46F4-BEA9-78B56B0E1784} = {EA1ADE6F-F986-4CF3-A953-5B3C25A5C3F0}
 		{869FD8AE-3CBC-4970-840D-AC7B7D9DCE31} = {1B8A8578-7C3C-425C-B769-9E097411094F}
 		{AF55F7EC-20CA-4BB2-8DC7-0B39FC32E2DE} = {EA1ADE6F-F986-4CF3-A953-5B3C25A5C3F0}
+		{FC16E1AF-4CE2-4DA9-9D93-02C62726AC98} = {EA1ADE6F-F986-4CF3-A953-5B3C25A5C3F0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EA2C589E-5222-413E-AEDF-F8B9DA1ABC2F}

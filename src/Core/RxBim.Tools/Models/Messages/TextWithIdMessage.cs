@@ -25,24 +25,5 @@
         {
             return $"{Text} ({ObjectId})";
         }
-
-        /// <inheritdoc />
-        public override int GetHashCode()
-        {
-            return ToString().GetHashCode() ^ LogTime.ToString().GetHashCode();
-        }
-
-        /// <inheritdoc />
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj))
-                return false;
-            if (ReferenceEquals(this, obj))
-                return true;
-            if (obj is not TextWithIdMessage otherMessage)
-                return false;
-            return Text == otherMessage.Text && Equals(ObjectId, otherMessage.ObjectId) &&
-                   LogTime.ToString() == otherMessage.LogTime.ToString();
-        }
     }
 }

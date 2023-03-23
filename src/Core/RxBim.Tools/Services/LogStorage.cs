@@ -9,7 +9,7 @@
     [UsedImplicitly]
     public class LogStorage : ILogStorage
     {
-        private readonly HashSet<ILogMessage> _sourceItems = new();
+        private readonly List<ILogMessage> _sourceItems = new();
 
         /// <inheritdoc />
         public event LogStorageMessageAddedEventHandler? MessageAdded;
@@ -21,10 +21,8 @@
         public void AddMessage<T>(in T message)
             where T : ILogMessage
         {
-            if (_sourceItems.Add(message))
-            {
-                MessageAdded?.Invoke(this, new MessageAddedEventArgs(message));
-            }
+            _sourceItems.Add(message);
+            MessageAdded?.Invoke(this, new MessageAddedEventArgs(message));
         }
 
         /// <inheritdoc />
