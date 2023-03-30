@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <PackageReference Include="RxBim.Di.SimpleInjector" Version="1.1.2" />
+        <PackageReference Include="RxBim.Command.Revit" Version="2019.1.9" />
+        <PackageReference Update="StyleCop.Analyzers" Version="1.2.0-beta.435">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\Revit\RxBim.Tools.Revit\RxBim.Tools.Revit.csproj" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <None Update="appsettings.RxBim.Sample.Command.Revit.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="appsettings.RxBim.Sample.Command.Revit.Production.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="appsettings.RxBim.Sample.Command.Revit.Testing.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+</Project>
