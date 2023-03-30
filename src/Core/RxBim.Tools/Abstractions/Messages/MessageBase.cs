@@ -9,10 +9,10 @@
         /// Initializes a new instance of the <see cref="MessageBase"/> class.
         /// </summary>
         /// <param name="message">Message text.</param>
-        /// <param name="isDebugMessage">Indicates that message only exist in 'DEBUG' mode.</param>
-        protected MessageBase(string message, bool isDebugMessage = false)
+        /// <param name="debugMessage">Indicates that message only exist in 'DEBUG' mode.</param>
+        protected MessageBase(string message, bool debugMessage = false)
         {
-            IsDebug = isDebugMessage;
+            IsDebug = debugMessage;
             LogTime = DateTime.Now;
             Text = message;
         }
