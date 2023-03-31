@@ -30,7 +30,11 @@
                 .AddTransactionServices<RevitTransactionFactory>()
                 .AddInstance(new RevitTask())
                 .AddToolsServices();
-            if (!isTesting)
+            if (isTesting)
+            {
+                container.AddSingleton<IRevitTask, RevitTaskMock>();
+            }
+            else
             {
                 container.AddSingleton<IRevitTask, RevitTaskAdapter>();
             }

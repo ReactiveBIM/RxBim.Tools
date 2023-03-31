@@ -1,4 +1,4 @@
-namespace RxBim.Tools.Revit.Tests
+namespace RxBim.Tools.Revit.Services
 {
     using System;
     using System.Threading.Tasks;
@@ -12,6 +12,10 @@ namespace RxBim.Tools.Revit.Tests
     {
         private readonly UIApplication _uiApplication;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RevitTaskMock"/> class.
+        /// </summary>
+        /// <param name="uiApplication">The UI app.</param>
         public RevitTaskMock(UIApplication uiApplication)
         {
             _uiApplication = uiApplication;
