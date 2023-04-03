@@ -15,7 +15,7 @@
         /// <summary>
         /// Adds Revit services to the container.
         /// </summary>
-        /// <param name="container"><see cref="IContainer"/> object.</param>
+        /// <param name="container"><see cref="IContainer"/><see cref="IContainer"/></param>
         /// <param name="isTesting">Indicates that this is a test configuration.</param>
         public static IContainer AddRevitHelpers(this IContainer container, bool isTesting = false)
         {
