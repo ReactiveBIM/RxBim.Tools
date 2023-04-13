@@ -17,7 +17,7 @@
         /// <param name="container">The instance of <see cref="IContainer"/>.</param>
         public static IContainer AddToolsServices(this IContainer container)
         {
-            return container.AddSingleton<IProblemElementsStorage, ProblemElementsStorage>();
+            return container.AddSingleton<ILogStorage, LogStorage>();
         }
 
         /// <summary>
