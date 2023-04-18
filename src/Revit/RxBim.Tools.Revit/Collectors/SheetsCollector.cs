@@ -74,12 +74,12 @@
                 .OfClass(typeof(RevitLinkType))
                 .Cast<RevitLinkType>()
                 .Select(lt => Path.GetFileNameWithoutExtension(lt.Name))
-                .ToList();
+                .ToHashSet();
 
             // Получение листов из связанных документов
             foreach (Document d in doc.Application.Documents)
             {
-                if (!linkTypeNames.Contains(d.Title))
+                if (!sheets.ContainsKey(d.Title) && linkTypeNames.Contains(d.Title))
                     sheets.Add(d.Title, GetGroupedViewSheets(d, groupSheetParam));
             }
 
