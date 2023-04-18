@@ -79,7 +79,7 @@
             // Получение листов из связанных документов
             foreach (Document d in doc.Application.Documents)
             {
-                if (linkTypeNames.Contains(d.Title))
+                if (!linkTypeNames.Contains(d.Title))
                     sheets.Add(d.Title, GetGroupedViewSheets(d, groupSheetParam));
             }
 
