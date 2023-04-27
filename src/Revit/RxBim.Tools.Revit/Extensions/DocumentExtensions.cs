@@ -8,7 +8,7 @@
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Расширения для документа Revit
+    /// Revit document extensions.
     /// </summary>
     [PublicAPI]
     public static class DocumentExtensions
@@ -154,9 +154,9 @@
         }
 
         /// <summary>
-        /// Возвращает путь к документу.
+        /// Returns the path to the document.
         /// </summary>
-        /// <param name="doc">Документ.</param>
+        /// <param name="doc">Document.</param>
         public static string GetProjectPath(this Document doc)
         {
             ModelPath? modelPath = null;
