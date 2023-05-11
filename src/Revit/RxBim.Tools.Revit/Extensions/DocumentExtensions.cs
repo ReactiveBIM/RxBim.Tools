@@ -5,10 +5,12 @@
     using System.Linq;
     using Autodesk.Revit.DB;
     using Helpers;
+    using JetBrains.Annotations;
 
     /// <summary>
-    /// Расширения для документа Revit
+    /// Revit document extensions.
     /// </summary>
+    [PublicAPI]
     public static class DocumentExtensions
     {
         /// <summary>
@@ -104,9 +106,10 @@
         public static RevitLinkType? GetLinkType(this Document rootDoc, string linkedDocTitle)
         {
             return new FilteredElementCollector(rootDoc)
-                .OfCategory(BuiltInCategory.OST_RvtLinks)
-                .OfClass(typeof(RevitLinkType))
-                .FirstOrDefault(lt => linkedDocTitle.Equals(Path.GetFileNameWithoutExtension(lt.Name))) as RevitLinkType;
+                    .OfCategory(BuiltInCategory.OST_RvtLinks)
+                    .OfClass(typeof(RevitLinkType))
+                    .FirstOrDefault(lt => linkedDocTitle.Equals(Path.GetFileNameWithoutExtension(lt.Name))) as
+                RevitLinkType;
         }
 
         /// <summary>
@@ -148,6 +151,22 @@
                 views = views.OrderBy(view => view.SheetNumber, new SemiNumericComparer());
 
             return views;
+        }
+
+        /// <summary>
+        /// Returns the path to the document.
+        /// </summary>
+        /// <param name="doc">Document.</param>
+        public static string GetProjectPath(this Document doc)
+        {
+            ModelPath? modelPath = null;
+
+            if (doc.IsWorkshared)
+                modelPath = doc.GetWorksharingCentralModelPath();
+
+            return modelPath == null || modelPath.Empty
+                ? doc.PathName
+                : ModelPathUtils.ConvertModelPathToUserVisiblePath(modelPath);
         }
 
         /// <summary>
