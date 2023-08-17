@@ -66,6 +66,6 @@
         /// </summary>
         /// <param name="filterElement">фильтр</param>
         /// <returns></returns>
-        IEnumerable<Element> GetSelectedElementsByFilter(Func<Element, bool>? filterElement = null);
+        List<Element> GetSelectedElementsByFilter(Func<Element, bool>? filterElement = null);
     }
 }

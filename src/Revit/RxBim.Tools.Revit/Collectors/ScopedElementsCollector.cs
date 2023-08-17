@@ -175,21 +175,33 @@
         }
 
         /// <inheritdoc/>
-        public IEnumerable<Element> GetSelectedElementsByFilter(Func<Element, bool>? filterElement = null)
+        public List<Element> GetSelectedElementsByFilter(Func<Element, bool>? filterElement = null)
         {
             var uiDoc = _uiApplication.ActiveUIDocument;
+
+            var pickElements = new List<Element>();
 
             var selectedElementIds = uiDoc.Selection.GetElementIds();
             if (selectedElementIds.Any() && filterElement != null)
             {
                 foreach (var elementId in selectedElementIds)
                 {
-                    if (filterElement.Invoke(uiDoc.Document.GetElement(elementId)))
+                    var element = uiDoc.Document.GetElement(elementId);
+                    if (filterElement.Invoke(element))
                     {
-                        yield return uiDoc.Document.GetElement(elementId);
+                        pickElements.Add(element);
+                        ////yield return uiDoc.Document.GetElement(elementId);
                     }
                 }
             }
+
+            // Обновляем сохраненные элементы для выбора
+            if (_selectedElementsIds.ContainsKey(uiDoc.Document.Title))
+                _selectedElementsIds[uiDoc.Document.Title] = pickElements.Select(e => e.Id).ToList();
+            else
+                _selectedElementsIds.Add(uiDoc.Document.Title, pickElements.Select(e => e.Id).ToList());
+
+            return pickElements;
         }
 
         /// <inheritdoc />
