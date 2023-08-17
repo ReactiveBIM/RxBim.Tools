@@ -174,6 +174,24 @@
             }
         }
 
+        /// <inheritdoc/>
+        public IEnumerable<Element> GetSelectedElementsByFilter(Func<Element, bool>? filterElement = null)
+        {
+            var uiDoc = _uiApplication.ActiveUIDocument;
+
+            var selectedElementIds = uiDoc.Selection.GetElementIds();
+            if (selectedElementIds.Any() && filterElement != null)
+            {
+                foreach (var elementId in selectedElementIds)
+                {
+                    if (filterElement.Invoke(uiDoc.Document.GetElement(elementId)))
+                    {
+                        yield return uiDoc.Document.GetElement(elementId);
+                    }
+                }
+            }
+        }
+
         /// <inheritdoc />
         public LinkedElement? PickLinkedElement(Func<Element, bool>? filterElement = null, string statusPrompt = "")
         {

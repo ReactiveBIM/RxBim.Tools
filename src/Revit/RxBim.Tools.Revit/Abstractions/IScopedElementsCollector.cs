@@ -1,5 +1,7 @@
 ﻿namespace RxBim.Tools.Revit.Abstractions
 {
+    using System;
+    using System.Collections.Generic;
     using Autodesk.Revit.DB;
 
     /// <summary>
@@ -58,5 +60,12 @@
         /// Вернуть выделение сохраненным ранее элементам
         /// </summary>
         void SetBackSelectedElements();
+
+        /// <summary>
+        /// Получить выделенный элемент по фильтру
+        /// </summary>
+        /// <param name="filterElement">фильтр</param>
+        /// <returns></returns>
+        IEnumerable<Element> GetSelectedElementsByFilter(Func<Element, bool>? filterElement = null);
     }
 }
