@@ -62,10 +62,10 @@
         void SetBackSelectedElements();
 
         /// <summary>
-        /// Получить выделенный элемент по фильтру
+        /// Получить выделенные элементы по фильтру
         /// </summary>
         /// <param name="filterElement">фильтр</param>
         /// <returns></returns>
-        List<Element> GetSelectedElementsByFilter(Func<Element, bool>? filterElement = null);
+        List<Element> GetSelectedElements(Func<Element, bool>? filterElement = null);
     }
 }

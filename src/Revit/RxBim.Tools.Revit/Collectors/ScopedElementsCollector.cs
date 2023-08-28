@@ -96,7 +96,7 @@
             var uiDoc = _uiApplication.ActiveUIDocument;
             if (uiDoc is null)
                 return;
-            
+
             var selectedIds = uiDoc.Selection.GetElementIds().ToList();
             if (!selectedIds.Any())
                 return;
@@ -135,13 +135,11 @@
                 var pickRef = uiDoc.Selection.PickObject(
                     ObjectType.Element, new ElementSelectionFilter(filterElement), statusPrompt);
 
-                // Обновляем сохраненные элементы для выбора
-                if (_selectedElementsIds.ContainsKey(uiDoc.Document.Title))
-                    _selectedElementsIds[uiDoc.Document.Title] = new List<ElementId> { pickRef.ElementId };
-                else
-                    _selectedElementsIds.Add(uiDoc.Document.Title, new List<ElementId> { pickRef.ElementId });
+                var pickElement = uiDoc.Document.GetElement(pickRef.ElementId);
 
-                return uiDoc.Document.GetElement(pickRef.ElementId);
+                UpdateSavedElementsForSelection(uiDoc.Document.Title, new[] { pickElement });
+
+                return pickElement;
             }
             catch (OperationCanceledException)
             {
@@ -160,11 +158,7 @@
                     .Select(r => uiDoc.Document.GetElement(r))
                     .ToList();
 
-                // Обновляем сохраненные элементы для выбора
-                if (_selectedElementsIds.ContainsKey(uiDoc.Document.Title))
-                    _selectedElementsIds[uiDoc.Document.Title] = pickElements.Select(e => e.Id).ToList();
-                else
-                    _selectedElementsIds.Add(uiDoc.Document.Title, pickElements.Select(e => e.Id).ToList());
+                UpdateSavedElementsForSelection(uiDoc.Document.Title, pickElements);
 
                 return pickElements;
             }
@@ -175,31 +169,24 @@
         }
 
         /// <inheritdoc/>
-        public List<Element> GetSelectedElementsByFilter(Func<Element, bool>? filterElement = null)
+        public List<Element> GetSelectedElements(Func<Element, bool>? filterElement = null)
         {
             var uiDoc = _uiApplication.ActiveUIDocument;
+            var selectedElementIds = uiDoc.Selection.GetElementIds();
 
             var pickElements = new List<Element>();
 
-            var selectedElementIds = uiDoc.Selection.GetElementIds();
-            if (selectedElementIds.Any() && filterElement != null)
+            if (filterElement == null)
             {
-                foreach (var elementId in selectedElementIds)
-                {
-                    var element = uiDoc.Document.GetElement(elementId);
-                    if (filterElement.Invoke(element))
-                    {
-                        pickElements.Add(element);
-                        ////yield return uiDoc.Document.GetElement(elementId);
-                    }
-                }
+                pickElements = selectedElementIds.Select(elementId => uiDoc.Document.GetElement(elementId)).ToList();
+            }
+            else
+            {
+                pickElements = selectedElementIds.Select(elementId => uiDoc.Document.GetElement(elementId))
+                    .Where(element => filterElement.Invoke(element)).ToList();
             }
 
-            // Обновляем сохраненные элементы для выбора
-            if (_selectedElementsIds.ContainsKey(uiDoc.Document.Title))
-                _selectedElementsIds[uiDoc.Document.Title] = pickElements.Select(e => e.Id).ToList();
-            else
-                _selectedElementsIds.Add(uiDoc.Document.Title, pickElements.Select(e => e.Id).ToList());
+            UpdateSavedElementsForSelection(uiDoc.Document.Title, pickElements);
 
             return pickElements;
         }
@@ -281,6 +268,17 @@
                     yield return family;
                 }
             }
+        }
+
+        /// <summary>
+        /// Обновляем сохраненные элементы для выбора
+        /// </summary>
+        private void UpdateSavedElementsForSelection(string documentTitle, IEnumerable<Element> pickElements)
+        {
+            if (_selectedElementsIds.ContainsKey(documentTitle))
+                _selectedElementsIds[documentTitle] = pickElements.Select(e => e.Id).ToList();
+            else
+                _selectedElementsIds.Add(documentTitle, pickElements.Select(e => e.Id).ToList());
         }
     }
 }
