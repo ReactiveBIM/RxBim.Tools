@@ -174,7 +174,7 @@
             var uiDoc = _uiApplication.ActiveUIDocument;
             var selectedElementIds = uiDoc.Selection.GetElementIds();
 
-            var pickElements = new List<Element>();
+            List<Element> pickElements;
 
             if (filterElement == null)
             {
