@@ -169,22 +169,16 @@
         }
 
         /// <inheritdoc/>
-        public List<Element> GetSelectedElements(Func<Element, bool>? filterElement = null)
+        public List<Element> GetSelectedElements(Predicate<Element>? filterElement = null)
         {
             var uiDoc = _uiApplication.ActiveUIDocument;
             var selectedElementIds = uiDoc.Selection.GetElementIds();
 
             List<Element> pickElements;
 
-            if (filterElement == null)
-            {
-                pickElements = selectedElementIds.Select(elementId => uiDoc.Document.GetElement(elementId)).ToList();
-            }
-            else
-            {
-                pickElements = selectedElementIds.Select(elementId => uiDoc.Document.GetElement(elementId))
-                    .Where(element => filterElement.Invoke(element)).ToList();
-            }
+            filterElement ??= _ => true;
+            pickElements = selectedElementIds.Select(elementId => uiDoc.Document.GetElement(elementId))
+                .Where(element => filterElement(element)).ToList();
 
             UpdateSavedElementsForSelection(uiDoc.Document.Title, pickElements);
 

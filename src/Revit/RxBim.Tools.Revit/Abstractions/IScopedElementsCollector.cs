@@ -66,6 +66,6 @@
         /// </summary>
         /// <param name="filterElement">фильтр</param>
         /// <returns></returns>
-        List<Element> GetSelectedElements(Func<Element, bool>? filterElement = null);
+        List<Element> GetSelectedElements(Predicate<Element>? filterElement = null);
     }
 }
