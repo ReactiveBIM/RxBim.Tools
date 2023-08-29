@@ -64,8 +64,8 @@
         /// <summary>
         /// Получить выделенные элементы по фильтру
         /// </summary>
-        /// <param name="filterElement">фильтр</param>
+        /// <param name="predicate">предикат</param>
         /// <returns></returns>
-        List<Element> GetSelectedElements(Predicate<Element>? filterElement = null);
+        List<Element> GetSelectedElements(Predicate<Element>? predicate = null);
     }
 }

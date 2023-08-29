@@ -169,16 +169,16 @@
         }
 
         /// <inheritdoc/>
-        public List<Element> GetSelectedElements(Predicate<Element>? filterElement = null)
+        public List<Element> GetSelectedElements(Predicate<Element>? predicate = null)
         {
             var uiDoc = _uiApplication.ActiveUIDocument;
             var selectedElementIds = uiDoc.Selection.GetElementIds();
 
             List<Element> pickElements;
 
-            filterElement ??= _ => true;
+            predicate ??= _ => true;
             pickElements = selectedElementIds.Select(elementId => uiDoc.Document.GetElement(elementId))
-                .Where(element => filterElement(element)).ToList();
+                .Where(element => predicate(element)).ToList();
 
             UpdateSavedElementsForSelection(uiDoc.Document.Title, pickElements);
 
