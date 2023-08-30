@@ -62,10 +62,9 @@
         void SetBackSelectedElements();
 
         /// <summary>
-        /// Получить выделенные элементы по фильтру
+        /// Возвращает выделенные элементы по фильтру
         /// </summary>
         /// <param name="predicate">предикат</param>
-        /// <returns></returns>
         List<Element> GetSelectedElements(Predicate<Element>? predicate = null);
     }
 }
