@@ -18,6 +18,11 @@
         <Description>RxBim Revit Table</Description>
         <PackageId>RxBim.Tools.TableBuilder.Revit</PackageId>
         <PackageReleaseNotes>$(ReleaseNotes)</PackageReleaseNotes>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="README.md" Pack="true" PackagePath="" />
+    </ItemGroup>
 
 </Project>
