@@ -1,11 +1,13 @@
 ﻿namespace RxBim.Tools.TableBuilder
 {
+    using System;
     using JetBrains.Annotations;
 
     /// <summary>
     /// The formula content of a cell
     /// </summary>
     [PublicAPI]
+    [Obsolete($"Use {nameof(StringFormulaCellContent)} instead.")]
     public class FormulaCellContent : ICellContent
     {
         /// <summary>

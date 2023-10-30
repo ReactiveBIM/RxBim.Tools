@@ -13,5 +13,13 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Excel\RxBim.Tools.TableBuilder.Excel\RxBim.Tools.TableBuilder.Excel.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="excel" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="excel\*.xlsx" >
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>  
 </Project>

@@ -4,6 +4,7 @@
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
     using ClosedXML.Excel;
     using Di;
 
@@ -18,22 +19,57 @@
         /// <param name="args">Arguments</param>
         public static void Main(string[] args)
         {
+            var isCreateTable = args.Contains("create");
+
             // Create a simple container and register the table converter.
             var container = CreateContainer();
 
             // Getting a converter service
-            var converter = container.GetRequiredService<IExcelTableConverter>();
+            var converterFrom = container.GetRequiredService<IFromExcelTableConverter>();
+            var converterTo = container.GetRequiredService<IExcelTableConverter>();
+
+            // Create or convert from an example table
+            var table = isCreateTable
+                ? CreateTable()
+                : ConvertFromExcel(converterFrom);
+
+            var excelFile = ConvertToExcel(converterTo, table);
+
+            // Open Excel file
+            Process.Start(excelFile);
+        }
+
+        private static IContainer CreateContainer()
+        {
+            var container = new SimpleInjectorContainer();
+            container.AddExcelTableBuilder();
+            return container;
+        }
+
+        private static string ConvertToExcel(IExcelTableConverter converterTo, Table table)
+        {
             var parameters = new ExcelTableConverterParameters();
 
-            // Create an example table
-            var table = CreateTable();
-
             // Convert the table to an Excel workbook
-            var workbook = converter.Convert(table, parameters);
+            var workbook = converterTo.Convert(table, parameters);
 
-            // Save Excel file and open
+            // Save Excel file
             var excelFile = Save(workbook);
-            Process.Start(excelFile);
+
+            return excelFile;
+        }
+
+        private static Table ConvertFromExcel(IFromExcelTableConverter converterFrom)
+        {
+            var parameters = new FromExcelConverterParameters();
+
+            // Load Excel workbook
+            using var workbook = Load("sample1.xlsx");
+
+            // Convert the Excel workbook to an table 
+            var table = converterFrom.Convert(workbook, parameters);
+
+            return table;
         }
 
         private static string Save(IXLWorkbook workbook)
@@ -55,11 +91,15 @@
             return table;
         }
 
-        private static IContainer CreateContainer()
+        private static IXLWorkbook Load(string fileName)
         {
-            var container = new SimpleInjectorContainer();
-            container.AddExcelTableBuilder();
-            return container;
+            var standardIfcFilePath = Path.Combine(
+                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
+                "excel",
+                fileName);
+            using var stream = File.OpenRead(standardIfcFilePath);
+            var workbook = new XLWorkbook(stream);
+            return workbook;
         }
     }
 }

@@ -7,7 +7,7 @@
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Defines a <see cref="Table"/> converter to an Excle workbook.
+    /// Defines a <see cref="Table"/> converter to an Excel workbook.
     /// </summary>
     [UsedImplicitly]
     internal class ExcelTableConverter : IExcelTableConverter
@@ -93,8 +93,14 @@
         {
             switch (content)
             {
+#pragma warning disable CS0618
                 case FormulaCellContent formula:
+#pragma warning restore CS0618
                     cell.FormulaA1 = GetFormula(cell.Worksheet, formula);
+                    break;
+
+                case StringFormulaCellContent formula:
+                    cell.FormulaA1 = formula.Formula;
                     break;
 
                 case NumericCellContent numeric:
@@ -108,7 +114,9 @@
             }
         }
 
+#pragma warning disable CS0618
         private string GetFormula(IXLWorksheet ws, FormulaCellContent formula)
+#pragma warning restore CS0618
         {
             var sFormula = new StringBuilder();
 
