@@ -39,7 +39,7 @@ class Build : NukeBuild, IPublish, IVersions
         Console.OutputEncoding = Encoding.UTF8;
     }
 
-    public static int Main() => Execute<Build>(x => x.From<IPublish>().PackagesList);
+    public static int Main() => Execute<Build>(x => x.From<IVersions>().IncreaseToDevVersions);
 
     public Target Test => _ => _
         .Before<IRestore>()

@@ -3,7 +3,8 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <AssemblyName>$(MSBuildProjectName).$(Version)</AssemblyName>
+        <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
+        <Version>$(ApiVersion)</Version>
     </PropertyGroup>
 
 </Project>
