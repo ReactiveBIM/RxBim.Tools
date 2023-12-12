@@ -6,7 +6,7 @@ public abstract class TestsBase
 {
     public TestsBase()
     {
-        Container = new SimpleInjectorContainer();
+        Container = new DiContainer();
         Container.AddExcelTableBuilder();
     }
 

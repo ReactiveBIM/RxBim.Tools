@@ -15,7 +15,6 @@
 
     <ItemGroup>
         <PackageReference Include="Google.Apis.Sheets.v4" Version="1.30.0.1064" />
-        <PackageReference Update="RxBim.Di" Version="1.2.2" />
     </ItemGroup>
 
     <ItemGroup>

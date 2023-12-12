@@ -12,8 +12,8 @@
     <ProjectReference Include="..\..\src\Revit\RxBim.Tools.Revit\RxBim.Tools.Revit.csproj" />
   </ItemGroup>
 
-  <ItemGroup>        
-    <PackageReference Include="RxBim.Di.SimpleInjector" Version="1.1.3" />
+  <ItemGroup>
+    <PackageReference Include="RxBim.Di" Version="2.0.0-rc001" />
   </ItemGroup>    
 
 </Project>
