@@ -57,7 +57,7 @@
 
         private static IContainer CreateContainer()
         {
-            var container = new SimpleInjectorContainer();
+            var container = new DiContainer();
             container.AddExcelTableBuilder();
             return container;
         }

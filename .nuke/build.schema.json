@@ -1,14 +1,14 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "Build Schema",
   "$ref": "#/definitions/build",
+  "title": "Build Schema",
   "definitions": {
     "build": {
       "type": "object",
       "properties": {
         "AllPackages": {
           "type": "boolean",
-          "description": "All projects"
+          "description": "If true, selects all packages to build. Otherwise, you will be prompted to select packages to build"
         },
         "Configuration": {
           "type": "string",
@@ -50,6 +50,10 @@
           "type": "boolean",
           "description": "Ignore unreachable sources during Restore"
         },
+        "MainSolutionFolderName": {
+          "type": "string",
+          "description": "Main solution folder name"
+        },
         "NoLogo": {
           "type": "boolean",
           "description": "Disables displaying the NUKE logo"
@@ -65,7 +69,7 @@
         },
         "Packages": {
           "type": "array",
-          "description": "Project name list",
+          "description": "Package names list",
           "items": {
             "type": "string"
           }
@@ -85,6 +89,13 @@
             "type": "string"
           }
         },
+        "ProjectsForIncreaseVersion": {
+          "type": "array",
+          "description": "Projects for increase version",
+          "items": {
+            "type": "string"
+          }
+        },
         "Root": {
           "type": "string",
           "description": "Root directory during build execution"
@@ -95,10 +106,18 @@
           "items": {
             "type": "string",
             "enum": [
+              "AddPublishTags",
               "Clean",
               "Compile",
-              "List",
+              "DeleteLocalPacks",
+              "Develop",
+              "IncreaseProjectsVersion",
+              "IncreaseToDevVersions",
+              "IncreaseToRcVersions",
+              "IncreaseToReleaseVersions",
               "Pack",
+              "PackagesList",
+              "PackLocal",
               "Prerelease",
               "Publish",
               "Release",
@@ -117,10 +136,18 @@
           "items": {
             "type": "string",
             "enum": [
+              "AddPublishTags",
               "Clean",
               "Compile",
-              "List",
+              "DeleteLocalPacks",
+              "Develop",
+              "IncreaseProjectsVersion",
+              "IncreaseToDevVersions",
+              "IncreaseToRcVersions",
+              "IncreaseToReleaseVersions",
               "Pack",
+              "PackagesList",
+              "PackLocal",
               "Prerelease",
               "Publish",
               "Release",
@@ -138,6 +165,10 @@
             "Quiet",
             "Verbose"
           ]
+        },
+        "VersionPrefix": {
+          "type": "string",
+          "description": "Project second version prefix"
         }
       }
     }

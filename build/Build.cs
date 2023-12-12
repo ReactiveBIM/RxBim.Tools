@@ -28,7 +28,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
     OnPushBranches = new[] { MasterBranch, "release/**", "hotfix/**" },
     InvokedTargets = new[] { nameof(Test), nameof(IPublish.Publish) },
     ImportSecrets = new[] { "NUGET_API_KEY", "ALL_PACKAGES" })]
-class Build : NukeBuild, IPublish
+class Build : NukeBuild, IPublish, IVersions
 {
     const string MasterBranch = "master";
     const string DevelopBranch = "develop";
@@ -39,15 +39,15 @@ class Build : NukeBuild, IPublish
         Console.OutputEncoding = Encoding.UTF8;
     }
 
-    public static int Main() => Execute<Build>(x => x.From<IPublish>().List);
+    public static int Main() => Execute<Build>(x => x.From<IPublish>().PackagesList);
 
     public Target Test => _ => _
         .Before<IRestore>()
         .Executes(() =>
         {
             DotNetTest(settings => settings
-                .SetProjectFile(From<IHazSolution>().Solution.Path)
-                .SetConfiguration(From<IHazConfiguration>().Configuration));
+                .SetProjectFile(From<IHasSolution>().Solution.Path)
+                .SetConfiguration(From<IHasConfiguration>().Configuration));
         });
 
     T From<T>()

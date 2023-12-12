@@ -9,10 +9,6 @@
         <ProjectReference Include="..\RxBim.Tools.Revit\RxBim.Tools.Revit.csproj" />
         <ProjectReference Include="..\..\Core\RxBim.Tools.TableBuilder\RxBim.Tools.TableBuilder.csproj" />
     </ItemGroup>
-    
-    <ItemGroup>
-      <PackageReference Update="RxBim.Di" Version="1.2.2" />
-    </ItemGroup>
 
     <PropertyGroup>
         <Description>RxBim Revit Table</Description>

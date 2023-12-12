@@ -6,8 +6,8 @@
 
     <ItemGroup>
       <PackageReference Remove="JetBrains.Annotations" />
-      <PackageReference Include="RxBim.Command.Autocad.2019" Version="1.3.2" />
-      <PackageReference Include="RxBim.Di.SimpleInjector" Version="1.1.3" />
+      <PackageReference Include="RxBim.Command.Autocad.2019" Version="1.3.3-dev002" />
+      <PackageReference Include="RxBim.Di" Version="2.0.0-dev002" />
     </ItemGroup>
 
     <ItemGroup>
