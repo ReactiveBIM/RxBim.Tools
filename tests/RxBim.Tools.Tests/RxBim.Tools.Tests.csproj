@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="RxBim.Di" Version="2.0.0-rc001" />
+        <PackageReference Include="RxBim.Di" Version="2.0.0" />
     </ItemGroup>
 
 </Project>
