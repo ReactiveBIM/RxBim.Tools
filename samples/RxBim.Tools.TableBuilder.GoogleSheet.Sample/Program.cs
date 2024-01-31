@@ -53,7 +53,7 @@ public class Program
 
     private static IContainer CreateContainer()
     {
-        var container = new SimpleInjectorContainer();
+        var container = new DiContainer();
         container.AddGoogleSheetTableBuilder();
         container.AddExcelTableBuilder();
         return container;
