@@ -23,8 +23,11 @@
                 .AddSingleton<ISheetsCollector, SheetsCollector>()
                 .AddSingleton<IElementsDisplay, ElementsDisplayService>()
                 .AddSingleton<ISharedParameterService, SharedParameterService>()
-                .AddSingleton<IElementsCollector, ScopedElementsCollector>()
-                .AddSingleton<IScopedElementsCollector, ScopedElementsCollector>()
+                //// for single instance of ScopedElementsCollector from IServiceProvider
+                //// for IScopedElementsCollector and IElementsCollector.
+                .AddSingleton<ScopedElementsCollector>()
+                .AddSingleton<IElementsCollector>(container.GetService<ScopedElementsCollector>)
+                .AddSingleton<IScopedElementsCollector>(container.GetService<ScopedElementsCollector>)
                 .AddSingleton<ITransactionContextService<IDocumentWrapper>, DocumentContextService>()
                 .AddSingleton<ITransactionContextService<ITransactionContextWrapper>, DocumentContextService>()
                 .AddTransactionServices<RevitTransactionFactory>()
