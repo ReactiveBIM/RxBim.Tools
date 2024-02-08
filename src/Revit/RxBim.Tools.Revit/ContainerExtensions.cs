@@ -23,8 +23,6 @@
                 .AddSingleton<ISheetsCollector, SheetsCollector>()
                 .AddSingleton<IElementsDisplay, ElementsDisplayService>()
                 .AddSingleton<ISharedParameterService, SharedParameterService>()
-                //// for single instance of ScopedElementsCollector from IServiceProvider
-                //// for IScopedElementsCollector and IElementsCollector.
                 .AddSingleton<ScopedElementsCollector>()
                 .AddSingleton<IElementsCollector>(container.GetService<ScopedElementsCollector>)
                 .AddSingleton<IScopedElementsCollector>(container.GetService<ScopedElementsCollector>)
