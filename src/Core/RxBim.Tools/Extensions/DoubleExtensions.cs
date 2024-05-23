@@ -84,14 +84,22 @@
         /// </summary>
         /// <param name="value">A double-precision floating-point number to be rounded.</param>
         /// <param name="digits">The number of fractional digits in the return value.</param>
+        /// <param name="useMidpointRounding">Whether to use <see cref="MidpointRounding"/></param>
+        /// <param name="midpointRounding"><see cref="MidpointRounding"/></param>
         /// <returns>
         /// The number nearest to value that has a number of fractional digits equal to digits.
         /// If value has fewer fractional digits than digits, value is returned unchanged.
         /// </returns>
         /// <remarks>Internally, the System.Math.Round method is used with Mode=MidpointRounding.AwayFromZero.</remarks>
-        public static double Round(this double value, int digits = DefaultDigits)
+        public static double Round(
+            this double value,
+            int digits = DefaultDigits,
+            bool useMidpointRounding = true,
+            MidpointRounding midpointRounding = MidpointRounding.AwayFromZero)
         {
-            return Math.Round(value, digits, MidpointRounding.AwayFromZero);
+            return useMidpointRounding
+                ? Math.Round(value, digits, MidpointRounding.AwayFromZero)
+                : Math.Round(value, digits);
         }
     }
 }

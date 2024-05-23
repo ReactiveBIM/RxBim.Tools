@@ -1,6 +1,7 @@
 ﻿namespace RxBim.Tools.Revit.Extensions
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
     using Autodesk.Revit.DB;
@@ -13,6 +14,8 @@
     [PublicAPI]
     public static class ParameterExtensions
     {
+        private static List<string> _parameterNames = new() { "Рабочий набор", "Workset" };
+
         /// <summary>
         /// Получает параметр из экземпляра или типа элемента
         /// </summary>
@@ -40,67 +43,46 @@
         }
 
         /// <summary>
-        /// Возвращает значение параметра
+        /// Возвращает значение параметра c округлением для double
         /// </summary>
-        /// <param name="param">Параметр</param>
+        /// <param name="parameter">Параметр</param>
         /// <param name="digits">Количество цифр дробной части в возвращаемом значении</param>
         /// <param name="getFeet">Получить значение во внутренних единицах измерения Revit</param>
         /// <returns>Значение параметра</returns>
-        public static object? GetParameterValue(
-            this Parameter? param,
-            int digits = 4,
-            bool getFeet = false)
+        public static object? GetParameterValue(this Parameter? parameter, int digits = 4, bool getFeet = false)
         {
-            if (param == null)
+            var value = parameter.GetParameterValueWithoutRound(getFeet);
+
+            return parameter is { StorageType: StorageType.Double }
+                ? (value as double? ?? 0).Round(digits, false)
+                : value;
+        }
+
+        /// <summary>
+        /// Возвращает значение параметра без округления
+        /// </summary>
+        /// <param name="parameter">Параметр</param>
+        /// <param name="getFeet">Получить значение во внутренних единицах измерения Revit</param>
+        /// <returns>Значение параметра</returns>
+        public static object? GetParameterValueWithoutRound(this Parameter? parameter, bool getFeet = false)
+        {
+            if (parameter == null)
                 return default;
 
-            var paramName = param.Definition.Name;
-            var storageType = param.StorageType;
-            if (paramName == "Рабочий набор"
-                || paramName == "Workset")
+            var storageType = parameter.StorageType;
+
+            if (_parameterNames.Any(name => name == parameter.Definition.Name))
                 storageType = StorageType.None;
 
-            object? value = null;
-            switch (storageType)
+            var value = storageType switch
             {
-                case StorageType.String:
-                    value = param.AsString() ?? string.Empty;
-                    break;
-
-                case StorageType.Double:
-                    try
-                    {
-                        value = getFeet
-                            ? Math.Round(param.AsDouble(), digits)
-                            : Math.Round(
-                                UnitUtils.ConvertFromInternalUnits(
-                                    param.AsDouble(),
-                                    param.DisplayUnitType),
-                                digits);
-                    }
-                    catch (InvalidOperationException)
-                    {
-                        value = Math.Round(
-                            UnitUtils.ConvertFromInternalUnits(
-                                param.AsDouble(),
-                                DisplayUnitType.DUT_GENERAL),
-                            digits);
-                    }
-
-                    break;
-
-                case StorageType.Integer:
-                    value = param.HasValue ? param.AsInteger() : 0;
-                    break;
-
-                case StorageType.ElementId:
-                    value = param.HasValue ? param.AsElementId() : ElementId.InvalidElementId;
-                    break;
-
-                case StorageType.None:
-                    value = param.AsValueString() ?? string.Empty;
-                    break;
-            }
+                StorageType.String => parameter.AsString() ?? string.Empty,
+                StorageType.Double => GetDoubleParameterValue(parameter, getFeet),
+                StorageType.Integer => parameter.HasValue ? parameter.AsInteger() : 0,
+                StorageType.ElementId => parameter.HasValue ? parameter.AsElementId() : ElementId.InvalidElementId,
+                StorageType.None => parameter.AsValueString() ?? string.Empty,
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
             return value;
         }
@@ -239,6 +221,25 @@
                 case StorageType.None:
                     toParameter.SetValueString(fromParameter.AsValueString());
                     break;
+            }
+        }
+
+        /// <summary>
+        /// Возвращает значение для параметров со StorageType.Double
+        /// </summary>
+        /// <param name="parameter">Параметр</param>
+        /// <param name="getFeet">Получить значение во внутренних единицах измерения Revit</param>
+        private static object GetDoubleParameterValue(Parameter parameter, bool getFeet)
+        {
+            try
+            {
+                return getFeet
+                    ? parameter.AsDouble()
+                    : UnitUtils.ConvertFromInternalUnits(parameter.AsDouble(), parameter.DisplayUnitType);
+            }
+            catch (InvalidOperationException)
+            {
+                return UnitUtils.ConvertFromInternalUnits(parameter.AsDouble(), DisplayUnitType.DUT_GENERAL);
             }
         }
     }
