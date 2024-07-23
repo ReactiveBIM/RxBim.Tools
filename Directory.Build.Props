@@ -22,14 +22,14 @@
     </ItemGroup>
     
     <ItemGroup>
-        <PackageReference Condition=" '$(UseDi)' == 'true' " Include="RxBim.Di" Version="2.0.0"/>
+        <PackageReference Condition=" '$(UseDi)' == 'true' " Include="RxBim.Di" Version="2.0.1-rc001"/>
     </ItemGroup>
 
     <PropertyGroup>
         <Company>pik-group.com</Company>
         <Authors>Reactive BIM</Authors>
         <Product>RxBim</Product>
-        <Copyright>Copyright ©2022 Reactive BIM</Copyright>
+        <Copyright>Copyright ©2024 Reactive BIM</Copyright>
         <PackageTags>BIM Plugin Framework</PackageTags>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
         <PackageProjectUrl>https://github.com/ReactiveBIM/RxBim</PackageProjectUrl>
