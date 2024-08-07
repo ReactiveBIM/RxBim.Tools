@@ -1,8 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+    <PropertyGroup>
+        <UseDi>true</UseDi>
+    </PropertyGroup>
+    
     <ItemGroup>
-        <PackageReference Include="RxBim.Command.Revit.2019" Version="1.9.2" />
-        <PackageReference Include="RxBim.Di.SimpleInjector" Version="1.1.3" />
+        <PackageReference Include="RxBim.Command.Revit.2019" Version="1.9.4" />
         <PackageReference Update="StyleCop.Analyzers" Version="1.2.0-beta.435">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

@@ -10,8 +10,4 @@
         <PackageReleaseNotes>$(ReleaseNotes)</PackageReleaseNotes>
     </PropertyGroup>
 
-    <ItemGroup>
-      <PackageReference Update="RxBim.Di" Version="1.2.2" />
-    </ItemGroup>
-
 </Project>

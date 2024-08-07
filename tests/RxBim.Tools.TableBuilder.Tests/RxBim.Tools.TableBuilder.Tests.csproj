@@ -1,5 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+    <PropertyGroup>
+        <UseDi>true</UseDi>
+    </PropertyGroup>
+    
     <ItemGroup>
       <ProjectReference Include="..\..\src\Core\RxBim.Tools.TableBuilder\RxBim.Tools.TableBuilder.csproj" />
     </ItemGroup>

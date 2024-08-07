@@ -1,11 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">    
 
+    <PropertyGroup>
+        <UseDi>true</UseDi>
+    </PropertyGroup>
+    
     <ItemGroup>
       <ProjectReference Include="..\..\src\Excel\RxBim.Tools.TableBuilder.Excel\RxBim.Tools.TableBuilder.Excel.csproj" />
-    </ItemGroup>    
-
-    <ItemGroup>
-      <PackageReference Include="RxBim.Di.SimpleInjector" Version="1.1.3" />
     </ItemGroup>
 
 </Project>

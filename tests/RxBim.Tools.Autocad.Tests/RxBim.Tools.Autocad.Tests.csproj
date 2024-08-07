@@ -5,15 +5,12 @@
         <NoWarn>CS1591,NU1701</NoWarn>
         <MSBuildWarningsAsMessages>NU1702</MSBuildWarningsAsMessages>
         <Configurations>Debug;Release</Configurations>
+        <UseDi>true</UseDi>
     </PropertyGroup>
     
     <ItemGroup>
       <ProjectReference Include="..\..\src\Autocad\RxBim.Tools.Autocad\RxBim.Tools.Autocad.csproj" />
       <ProjectReference Include="..\..\src\Core\RxBim.Tools\RxBim.Tools.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="RxBim.Di.SimpleInjector" Version="1.1.3" />
     </ItemGroup>
 
 </Project>
