@@ -23,7 +23,6 @@
             _container.AddSingleton(mockDocumentContext.Object);
             _container.AddSingleton(mockDatabaseContext.Object);
             _container.AddSingleton<ITransactionContextService<ITransactionContextWrapper>>(mockDocumentContext.Object);
-            _container.AddSingleton<IDocumentService, DocumentService>();
         }
 
         [Fact]
