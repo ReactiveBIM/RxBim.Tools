@@ -105,7 +105,7 @@
             TContext? context = null)
             where TContext : class, ITransactionContextWrapper
         {
-            var transactionContext = _transactionFactory.GetDefaultContext<TContext>();
+            var transactionContext = context ?? _transactionFactory.GetDefaultContext<TContext>();
             using var transactionGroup =
                 _transactionFactory.CreateTransactionGroup(transactionContext, name);
             try
