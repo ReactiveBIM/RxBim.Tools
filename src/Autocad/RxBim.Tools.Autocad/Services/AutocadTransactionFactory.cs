@@ -12,9 +12,8 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="AutocadTransactionFactory"/> class.
         /// </summary>
-        /// <param name="documentService"><see cref="IDocumentService"/> instance.</param>
         /// <param name="locator"><see cref="IServiceLocator"/> instance.</param>
-        public AutocadTransactionFactory(IDocumentService documentService, IServiceLocator locator)
+        public AutocadTransactionFactory(IServiceLocator locator)
         {
             _locator = locator;
         }
