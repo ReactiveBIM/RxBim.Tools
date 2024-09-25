@@ -11,7 +11,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 [GitHubActions("CI",
     GitHubActionsImage.WindowsLatest,
     FetchDepth = 0,
-    OnPushBranches = new[] { DevelopBranch, FeatureBranches },
+    OnPushBranches = new[] { DevelopBranch, FeatureBranches, BugFixBranches },
     InvokedTargets = new[] { nameof(Test), nameof(IPublish.Publish) },
     ImportSecrets = new[] { "NUGET_API_KEY", "ALL_PACKAGES" })]
 /*[GitHubActions("PullRequest",
@@ -29,6 +29,7 @@ class Build : NukeBuild, IPublish, IVersions
     const string MasterBranch = "master";
     const string DevelopBranch = "develop";
     const string FeatureBranches = "feature/**";
+    const string BugFixBranches = "bugfix/**";
 
     public Build()
     {

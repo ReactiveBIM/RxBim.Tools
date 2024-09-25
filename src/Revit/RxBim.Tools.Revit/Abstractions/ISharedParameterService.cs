@@ -3,11 +3,13 @@
     using System.Collections.Generic;
     using Autodesk.Revit.DB;
     using CSharpFunctionalExtensions;
+    using JetBrains.Annotations;
     using Models;
 
     /// <summary>
     /// Сервис по работе с общими параметрами
     /// </summary>
+    [PublicAPI]
     public interface ISharedParameterService
     {
         /// <summary>

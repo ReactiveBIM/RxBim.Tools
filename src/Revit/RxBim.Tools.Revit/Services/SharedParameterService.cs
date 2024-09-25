@@ -292,7 +292,7 @@
                     $"Не удалось добавить параметр '{sharedParameterInfo.Definition.ParameterName}'")
                 .TapIf(
                     sharedParameterInfo.CreateData.AllowVaryBetweenGroups,
-                    () => SetAllowVaryBetweenGroups(sharedParameterInfo.Definition.ParameterName));
+                    () => SetAllowVaryBetweenGroups(sharedParameterInfo.Definition.ParameterName, document));
 
             return result;
         }
