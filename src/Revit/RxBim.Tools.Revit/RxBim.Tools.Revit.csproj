@@ -12,8 +12,7 @@
     </ItemGroup>
 
     <PropertyGroup>
-         <Description>RxBim Revit extensions Library</Description>
-        <PackageId>RxBim.Tools.Revit</PackageId>
+        <Description>RxBim Revit extensions Library</Description>
     </PropertyGroup>
 
     <ItemGroup>
@@ -26,7 +25,7 @@
              <_Parameter2>RxBim.Tools.Revit.Abstractions</_Parameter2>
         </AssemblyAttribute>
     </ItemGroup>
-
+    
     <ItemGroup>
       <ProjectReference Include="..\..\Core\RxBim.Tools\RxBim.Tools.csproj" />
     </ItemGroup>
