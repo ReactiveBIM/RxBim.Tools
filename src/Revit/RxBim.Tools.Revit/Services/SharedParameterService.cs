@@ -234,12 +234,17 @@
             if (externalDefinition is null)
                 return Result.Failure($"Параметр {definition.ParameterName} не является актуальным (не соответствует ФОП)");
 
+#if RVT2019 || RVT2020 || RVT2021
+            var dataType = definition.DataType ?? externalDefinition.ParameterType;
+#else
+            var dataType = definition.DataType ?? externalDefinition.GetDataType();   
+#endif
             var actualParameterInfo = new SharedParameterInfo(
                 new SharedParameterDefinition()
                 {
                     ParameterName = definition.ParameterName,
                     Guid = definition.Guid ?? externalDefinition.GUID,
-                    DataType = definition.DataType ?? externalDefinition.ParameterType
+                    DataType = dataType
                 },
                 parameterInfo.CreateData);
 
@@ -494,9 +499,17 @@
             if (sharedParameterDefinition.Guid.HasValue
                 && externalDefinition.GUID != sharedParameterDefinition.Guid.Value)
                 return false;
+
+#if RVT2019 || RVT2020 || RVT2021
             if (sharedParameterDefinition.DataType.HasValue
                 && externalDefinition.ParameterType != sharedParameterDefinition.DataType.Value)
                 return false;
+#else
+            if (sharedParameterDefinition.DataType != null
+                && externalDefinition.GetDataType() != sharedParameterDefinition.DataType)
+                return false;
+#endif
+
             if (!string.IsNullOrEmpty(sharedParameterDefinition.OwnerGroupName)
                 && !externalDefinition.OwnerGroup.Name.Equals(sharedParameterDefinition.OwnerGroupName, StringComparison.OrdinalIgnoreCase))
                 return false;
@@ -523,10 +536,15 @@
             if (sharedParameterDefinition.Guid.HasValue
                 && sharedParameterElement.GuidValue != sharedParameterDefinition.Guid.Value)
                 return false;
+#if RVT2019 || RVT2020 || RVT2021
             if (sharedParameterDefinition.DataType.HasValue
                 && internalDefinition.ParameterType != sharedParameterDefinition.DataType.Value)
                 return false;
-
+#else
+            if (sharedParameterDefinition.DataType != null
+                && internalDefinition.GetDataType() != sharedParameterDefinition.DataType)
+                return false;
+#endif
             return true;
         }
     }

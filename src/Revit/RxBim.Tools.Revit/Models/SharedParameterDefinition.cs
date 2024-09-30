@@ -20,10 +20,17 @@
         /// </summary>
         public Guid? Guid { get; set; }
 
+#if RVT2019 || RVT2020 || RVT2021
         /// <summary>
         /// Тип данных <see cref="ParameterType"/>
         /// </summary>
         public ParameterType? DataType { get; set; }
+#else
+        /// <summary>
+        /// Тип данных <see cref="ParameterType"/>
+        /// </summary>
+        public ForgeTypeId? DataType { get; set; }
+#endif
 
         /// <summary>
         /// Имя группы в которую должен входить параметр

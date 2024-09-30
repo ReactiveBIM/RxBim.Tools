@@ -40,7 +40,11 @@
         public static bool AddProjectParameter(
             this Document doc,
             string name,
+#if RVT2019 || RVT2020 || RVT2021
             ParameterType type,
+#else
+            ForgeTypeId type,
+#endif
             bool visible,
             CategorySet cats,
             BuiltInParameterGroup group,
