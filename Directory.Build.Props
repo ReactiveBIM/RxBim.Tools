@@ -5,21 +5,26 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <PropertyGroup Condition="!'$(ProjectName.EndsWith(`Tests`))'">
-        <CodeAnalysisRuleSet>..\..\stylecop.ruleset</CodeAnalysisRuleSet>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    </PropertyGroup>
+    <Choose>
+        <When Condition="!$(MSBuildProjectName.Contains('Tests')) AND !$(MSBuildProjectName.Contains('build'))">
+            <PropertyGroup>
+                <CodeAnalysisRuleSet>..\..\stylecop.ruleset</CodeAnalysisRuleSet>
+                <GenerateDocumentationFile>true</GenerateDocumentationFile>
+            </PropertyGroup>
 
-    <ItemGroup Condition="!'$(ProjectName.EndsWith(`Tests`))'">
-        <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.406">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="JetBrains.Annotations" Version="2022.1.0">
-            <ExcludeAssets>runtime</ExcludeAssets>
-            <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>        
-    </ItemGroup>
+            <ItemGroup>
+                <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
+                    <PrivateAssets>all</PrivateAssets>
+                    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+                </PackageReference>
+
+                <PackageReference Include="JetBrains.Annotations" Version="2023.3.0">
+                    <ExcludeAssets>runtime</ExcludeAssets>
+                    <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+                </PackageReference>
+            </ItemGroup>
+        </When>
+    </Choose>
     
     <ItemGroup>
         <PackageReference Condition=" '$(UseDi)' == 'true' " Include="RxBim.Di" Version="2.0.2"/>
