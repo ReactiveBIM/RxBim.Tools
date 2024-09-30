@@ -47,7 +47,11 @@
 #endif
             bool visible,
             CategorySet cats,
+#if RVT2019 || RVT2020 || RVT2021 || RVT2022 || RVT2023
             BuiltInParameterGroup group,
+#else
+            ForgeTypeId group,
+#endif
             bool inst)
         {
             var app = doc.Application;

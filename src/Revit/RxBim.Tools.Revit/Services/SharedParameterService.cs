@@ -464,7 +464,7 @@
             if (builtInCategories is not null)
             {
                 var categoriesForBind = doc.Settings.Categories.OfType<Category>()
-                    .Where(c => builtInCategories.Contains((BuiltInCategory)c.Id.IntegerValue)).ToHashSet(new CategoryIdComparer());
+                    .Where(c => builtInCategories.Contains((BuiltInCategory)c.Id.GetIdValue())).ToHashSet(new CategoryIdComparer());
 
                 var existingCategoriesInDoc = ((ElementBinding)binding).Categories.OfType<Category>().ToHashSet();
                 categoriesForBind.ExceptWith(existingCategoriesInDoc);
