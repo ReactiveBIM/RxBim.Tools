@@ -235,7 +235,7 @@
 #else
                     if (fromParameter.Definition.GetDataType() == SpecTypeId.Number
                         && toParameter.StorageType == StorageType.String)
-                        toParameter.Set(fromParameter.AsValueString());Gj
+                        toParameter.Set(fromParameter.AsValueString());
 #endif
                     else
                         toParameter.Set(fromParameter.AsInteger());
