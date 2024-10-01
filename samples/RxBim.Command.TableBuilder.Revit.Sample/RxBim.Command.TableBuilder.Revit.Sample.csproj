@@ -5,7 +5,7 @@
     </PropertyGroup>
     
     <ItemGroup>
-        <PackageReference Include="RxBim.Command.Revit.2019" Version="1.9.5-dev001" />
+        <PackageReference Include="RxBim.Command.Revit.$(ApplicationVersion)" Version="1.9.5" />
     </ItemGroup>
 
     <ItemGroup>

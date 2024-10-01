@@ -48,7 +48,7 @@
             window.Activated += WindowActivated;
         }
 
-        private static void WindowActivated(object sender, EventArgs e)
+        private static void WindowActivated(object? sender, EventArgs e)
         {
             var window = (Window)sender;
             window.Activated -= WindowActivated;

@@ -133,7 +133,7 @@
 
                 var value = foundParameter.GetParameterValue(digits, getFeet);
 
-                return (T)Convert.ChangeType(value, typeof(T), CultureInfo.InvariantCulture);
+                return (T)Convert.ChangeType(value, typeof(T), CultureInfo.InvariantCulture)!;
             }
             catch (Exception)
             {

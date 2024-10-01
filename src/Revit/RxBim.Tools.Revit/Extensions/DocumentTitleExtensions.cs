@@ -50,7 +50,7 @@
 
             return titleValues.Length < 6
                 ? string.Empty
-                : titleValues[5].Split(DocTitleEndSeparator).FirstOrDefault();
+                : titleValues[5].Split(DocTitleEndSeparator).FirstOrDefault()!;
         }
     }
 }

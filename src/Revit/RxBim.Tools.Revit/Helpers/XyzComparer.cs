@@ -12,7 +12,11 @@
         private const double Tolerance = 0.0001;
 
         /// <inheritdoc />
+#if NET8_0
+        public bool Equals(XYZ? x, XYZ? y)
+#else
         public bool Equals(XYZ x, XYZ y)
+#endif
         {
             if (ReferenceEquals(x, y))
                 return true;
@@ -36,7 +40,11 @@
         }
 
         /// <inheritdoc />
-        public int Compare(XYZ x, XYZ y)
+#if NET8_0
+        public int Compare(XYZ? x, XYZ? y)
+#else
+        public bool Compare(XYZ x, XYZ y)
+#endif
         {
             if (ReferenceEquals(x, y))
                 return 0;
