@@ -107,11 +107,10 @@
 
     <Import Project="$([MSBuild]::GetPathOfFileAbove(RxBim.Build.Props, $(MSBuildProjectDirectory)))"
             Condition=" '$([MSBuild]::GetPathOfFileAbove(RxBim.Build.Props, $(MSBuildProjectDirectory)))' != '' AND $(NotRefenceApi) != true "/>
-
+    
     <PropertyGroup Condition="$(IsPackable) != false">
         <PackageId Condition="$(NotRefenceApi) == true">$(MSBuildProjectName)</PackageId>
         <PackageId Condition="$(NotRefenceApi) != true">$(MSBuildProjectName).$(ApplicationVersion)</PackageId>
         <AssemblyName>$(PackageId).$(Version)</AssemblyName>
     </PropertyGroup>
-    
 </Project>

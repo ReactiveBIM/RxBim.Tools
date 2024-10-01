@@ -50,7 +50,7 @@
 
         private static void WindowActivated(object? sender, EventArgs e)
         {
-            var window = (Window)sender;
+            var window = (Window)sender!;
             window.Activated -= WindowActivated;
             var loc = Application.MainWindow.DeviceIndependentLocation;
             var size = Application.MainWindow.DeviceIndependentSize;

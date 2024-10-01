@@ -43,7 +43,7 @@
 #if NET8_0
         public int Compare(XYZ? x, XYZ? y)
 #else
-        public bool Compare(XYZ x, XYZ y)
+        public int Compare(XYZ x, XYZ y)
 #endif
         {
             if (ReferenceEquals(x, y))
