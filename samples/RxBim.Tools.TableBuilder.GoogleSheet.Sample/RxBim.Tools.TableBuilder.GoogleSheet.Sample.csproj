@@ -1,16 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
         <OutputType>Exe</OutputType>
         <Nullable>enable</Nullable>
         <UseDi>true</UseDi>
     </PropertyGroup>
-    <ItemGroup>
-        <PackageReference Update="JetBrains.Annotations" Version="2022.1.0" />
-        <PackageReference Update="StyleCop.Analyzers" Version="1.2.0-beta.435">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-    </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\src\GoogleSheet\RxBim.Tools.TableBuilder.GoogleSheet\RxBim.Tools.TableBuilder.GoogleSheet.csproj" />
         <ProjectReference Include="..\..\src\Excel\RxBim.Tools.TableBuilder.Excel\RxBim.Tools.TableBuilder.Excel.csproj" />

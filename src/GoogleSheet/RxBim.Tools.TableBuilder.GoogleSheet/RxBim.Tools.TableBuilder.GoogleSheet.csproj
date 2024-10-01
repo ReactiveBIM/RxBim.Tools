@@ -2,16 +2,12 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <PlatformTarget>x64</PlatformTarget>
-        <AssemblyName>$(MSBuildProjectName).$(ApiVersion)</AssemblyName>
         <RootNamespace>RxBim.Tools.TableBuilder</RootNamespace>
         <UseDi>true</UseDi>
-        <Version>$(ApiVersion)</Version>
     </PropertyGroup>
 
     <PropertyGroup>
         <Description>Contains RxBim.TableBuilder converters from an Google Sheet workbook.</Description>
-        <PackageId>$(MSBuildProjectName)</PackageId>
     </PropertyGroup>
 
     <ItemGroup>

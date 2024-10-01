@@ -40,10 +40,18 @@
         public static bool AddProjectParameter(
             this Document doc,
             string name,
+#if RVT2019 || RVT2020 || RVT2021
             ParameterType type,
+#else
+            ForgeTypeId type,
+#endif
             bool visible,
             CategorySet cats,
+#if RVT2019 || RVT2020 || RVT2021 || RVT2022 || RVT2023
             BuiltInParameterGroup group,
+#else
+            ForgeTypeId group,
+#endif
             bool inst)
         {
             var app = doc.Application;

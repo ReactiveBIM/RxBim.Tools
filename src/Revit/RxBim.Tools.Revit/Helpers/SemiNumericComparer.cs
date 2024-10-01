@@ -22,10 +22,14 @@
         }
 
         /// <inheritdoc/>
+#if NET8_0
+        public int Compare(string? s1, string? s2)
+#else
         public int Compare(string s1, string s2)
+#endif
         {
-            var num1 = Regex.Match(s1, _numericPattern);
-            var num2 = Regex.Match(s2, _numericPattern);
+            var num1 = Regex.Match(s1!, _numericPattern);
+            var num2 = Regex.Match(s2!, _numericPattern);
 
             if (num1.Success && num2.Success)
             {
@@ -35,7 +39,7 @@
                 // If two numbers are the same, then check the length
                 // of the original text (for case: "000" and "0000").
                 if (dNum1.Equals(dNum2))
-                    return s1.Length - s2.Length;
+                    return s1!.Length - s2!.Length;
 
                 return dNum1.CompareTo(dNum2);
             }

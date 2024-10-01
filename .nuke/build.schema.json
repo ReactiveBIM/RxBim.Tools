@@ -10,6 +10,33 @@
           "type": "boolean",
           "description": "If true, selects all packages to build. Otherwise, you will be prompted to select packages to build"
         },
+        "AppVersion": {
+          "type": "string",
+          "description": "Version for one type of CAD application: 'Autocad2023', 'Revit2022' etc",
+          "enum": [
+            "Autocad2019",
+            "Autocad2020",
+            "Autocad2021",
+            "Autocad2022",
+            "Autocad2023",
+            "Autocad2024",
+            "Autocad2025",
+            "Civil2019",
+            "Civil2020",
+            "Civil2021",
+            "Civil2022",
+            "Civil2023",
+            "Civil2024",
+            "Civil2025",
+            "Revit2019",
+            "Revit2020",
+            "Revit2021",
+            "Revit2022",
+            "Revit2023",
+            "Revit2024",
+            "Revit2025"
+          ]
+        },
         "Configuration": {
           "type": "string",
           "enum": [
@@ -121,7 +148,17 @@
               "Prerelease",
               "Publish",
               "Release",
+              "ResetVersion",
               "Restore",
+              "SetVersion",
+              "SetVersion2019",
+              "SetVersion2020",
+              "SetVersion2021",
+              "SetVersion2022",
+              "SetVersion2023",
+              "SetVersion2024",
+              "SetVersion2025",
+              "SetVersionForApp",
               "Test"
             ]
           }
@@ -151,7 +188,17 @@
               "Prerelease",
               "Publish",
               "Release",
+              "ResetVersion",
               "Restore",
+              "SetVersion",
+              "SetVersion2019",
+              "SetVersion2020",
+              "SetVersion2021",
+              "SetVersion2022",
+              "SetVersion2023",
+              "SetVersion2024",
+              "SetVersion2025",
+              "SetVersionForApp",
               "Test"
             ]
           }
@@ -164,6 +211,19 @@
             "Normal",
             "Quiet",
             "Verbose"
+          ]
+        },
+        "VersionNumber": {
+          "type": "string",
+          "description": "Version number for all types of CAD applications: '2022', '2023' etc",
+          "enum": [
+            "Version2019",
+            "Version2020",
+            "Version2021",
+            "Version2022",
+            "Version2023",
+            "Version2024",
+            "Version2025"
           ]
         },
         "VersionPrefix": {

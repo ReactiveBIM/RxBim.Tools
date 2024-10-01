@@ -45,9 +45,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.Autocad.Sample", "samples\RxBim.Tools.Autocad.Sample\RxBim.Tools.Autocad.Sample.csproj", "{C97FD9AF-9958-4235-BDB7-E9990295A822}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Autocad", "Autocad", "{52908352-0197-4C36-B128-0F2B31295257}"
-	ProjectSection(SolutionItems) = preProject
-		src\Autocad\Directory.Build.Props = src\Autocad\Directory.Build.Props
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.Autocad", "src\Autocad\RxBim.Tools.Autocad\RxBim.Tools.Autocad.csproj", "{8896AF9F-FDD6-4F2C-BEBF-6B871DDEF857}"
 EndProject
@@ -60,18 +57,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.TableBuilder.Excel", "src\Excel\RxBim.Tools.TableBuilder.Excel\RxBim.Tools.TableBuilder.Excel.csproj", "{D2C09CFF-9495-48E7-B7F4-9C7A1173EE64}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Revit", "Revit", "{25749E1A-2F5D-426C-8195-3AD7E649362B}"
-	ProjectSection(SolutionItems) = preProject
-		src\Revit\Directory.Build.Props = src\Revit\Directory.Build.Props
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.Revit", "src\Revit\RxBim.Tools.Revit\RxBim.Tools.Revit.csproj", "{899EF790-00C9-4B3F-B4D7-713E4C5339C2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools.TableBuilder.Revit", "src\Revit\RxBim.Tools.TableBuilder.Revit\RxBim.Tools.TableBuilder.Revit.csproj", "{F1303651-BD79-4949-94A2-2AD9ACF532F3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{5FDD1C3F-41CC-488C-886A-22D5FEBBA1CD}"
-	ProjectSection(SolutionItems) = preProject
-		src\Core\Directory.Build.Props = src\Core\Directory.Build.Props
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBim.Tools", "src\Core\RxBim.Tools\RxBim.Tools.csproj", "{49AF6550-45C6-4CE6-9D0B-799A9A79FEC6}"
 EndProject

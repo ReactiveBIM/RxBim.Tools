@@ -272,3 +272,5 @@ projectfiles.tar
 
 global.json
 .nuke/temp
+
+RxBim.Build.Props

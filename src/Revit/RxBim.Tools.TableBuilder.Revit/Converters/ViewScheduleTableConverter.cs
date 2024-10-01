@@ -38,7 +38,12 @@
                 (context, _) =>
                 {
                     var document = context.GetDocument();
-                    var id = new ElementId((int)BuiltInCategory.OST_NurseCallDevices);
+#if RVT2019 || RVT2020 || RVT2021 || RVT2022 || RVT2023
+                    var idValue = (int)BuiltInCategory.OST_NurseCallDevices;
+#else
+                    var idValue = (long)BuiltInCategory.OST_NurseCallDevices;
+#endif
+                    var id = new ElementId(idValue);
 
                     var schedule = ViewSchedule.CreateSchedule(document, id);
                     schedule.Name = parameters.Name;
@@ -159,7 +164,11 @@
             return style;
         }
 
+#if RVT2019 || RVT2020 || RVT2021 || RVT2022 || RVT2023
         private ElementId GetLineId(CellBorderType cellBorderType, int boldLineId = -1)
+#else
+        private ElementId GetLineId(CellBorderType cellBorderType, long boldLineId = -1)
+#endif
         {
             return cellBorderType switch
             {

@@ -118,10 +118,15 @@
         /// <param name="doc">Документ</param>
         /// <param name="excludeCategories">Список идентификаторов категорий, которые требуется пропустить</param>
         /// <param name="includeSubCategories">Включая подкатегории</param>
-        /// <returns></returns>
+#if RVT2019 || RVT2020 || RVT2021 || RVT2022 || RVT2023
         public static IEnumerable<int> GetCategoriesIds(
             this Document doc,
             IEnumerable<int> excludeCategories,
+#else
+        public static IEnumerable<long> GetCategoriesIds(
+            this Document doc,
+            IEnumerable<long> excludeCategories,
+#endif
             bool includeSubCategories = true)
         {
             return doc.GetCategoriesIdsIEnumerable(includeSubCategories)
@@ -175,8 +180,11 @@
         /// <param name="doc">Документ</param>
         /// <param name="onlyAllowsBoundParameters">Только категории, к которым можно привязать общие параметры</param>
         /// <param name="includeSubCategories">Включая подкатегории</param>
-        /// <returns></returns>
+#if RVT2019 || RVT2020 || RVT2021 || RVT2022 || RVT2023
         private static IEnumerable<int> GetCategoriesIdsIEnumerable(
+#else
+        private static IEnumerable<long> GetCategoriesIdsIEnumerable(
+#endif
             this Document doc,
             bool onlyAllowsBoundParameters = false,
             bool includeSubCategories = true)
@@ -186,11 +194,11 @@
                 if (onlyAllowsBoundParameters)
                 {
                     if (category.AllowsBoundParameters)
-                        yield return category.Id.IntegerValue;
+                        yield return category.Id.GetIdValue();
                 }
                 else
                 {
-                    yield return category.Id.IntegerValue;
+                    yield return category.Id.GetIdValue();
                 }
 
                 if (!includeSubCategories)
@@ -201,11 +209,11 @@
                     if (onlyAllowsBoundParameters)
                     {
                         if (subCategory.AllowsBoundParameters)
-                            yield return subCategory.Id.IntegerValue;
+                            yield return subCategory.Id.GetIdValue();
                     }
                     else
                     {
-                        yield return subCategory.Id.IntegerValue;
+                        yield return subCategory.Id.GetIdValue();
                     }
                 }
             }

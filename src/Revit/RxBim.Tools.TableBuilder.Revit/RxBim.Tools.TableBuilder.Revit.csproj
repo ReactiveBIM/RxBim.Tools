@@ -12,8 +12,6 @@
 
     <PropertyGroup>
         <Description>RxBim Revit Table</Description>
-        <PackageId>RxBim.Tools.TableBuilder.Revit</PackageId>
-        <PackageReleaseNotes>$(ReleaseNotes)</PackageReleaseNotes>
     </PropertyGroup>
 
 </Project>

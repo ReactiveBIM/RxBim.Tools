@@ -1,6 +1,7 @@
 ﻿namespace RxBim.Tools.Revit.Models
 {
     using Autodesk.Revit.DB;
+    using Extensions;
 
     /// <summary>
     /// Revit element identifier.
@@ -15,6 +16,6 @@
 
         /// <inheritdoc />
         public override string ToString()
-            => Object.IntegerValue.ToString();
+            => Object.GetIdValue().ToString();
     }
 }
