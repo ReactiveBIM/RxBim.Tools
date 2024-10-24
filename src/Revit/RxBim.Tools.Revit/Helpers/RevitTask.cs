@@ -28,7 +28,7 @@ public class RevitTask
     /// и вызывает связанный с ним <see cref="Autodesk.Revit.UI.ExternalEvent"/>.
     /// </summary>
     /// <param name="func">Делегат, зависящий от <see cref="Autodesk.Revit.UI.UIApplication"/>
-    /// и возвращающий объект типа <see cref="TResult"/>.</param>
+    /// и возвращающий объект типа <typeparamref name="TResult"/>.</param>
     public Task<TResult> Run<TResult>(Func<UIApplication, TResult> func)
     {
         _tcs = new TaskCompletionSource<object>();
