@@ -14,7 +14,7 @@ internal class DefaultEventHandler : IExternalEventHandler
     public event EventHandler<object> ExternalEventCompleted;
 
     /// <summary>
-    /// Исключенире, возникшее в результате выполнения задачи.
+    /// Исключение, возникшее в результате выполнения задачи.
     /// </summary>
     public Exception? Exception { get; private set; }
 

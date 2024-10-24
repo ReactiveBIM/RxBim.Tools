@@ -68,11 +68,11 @@ public class RevitTask
     /// </summary>
     /// <param name="sender">Источник события.</param>
     /// <param name="result">Результат.</param>
-    private void OnExternalEventCompleted(object sender, object result)
+    private void OnExternalEventCompleted(object? sender, object? result)
     {
         if (_handler.Exception == null)
         {
-            _tcs?.TrySetResult(result);
+            _tcs?.TrySetResult(result ?? new object());
         }
         else
         {
