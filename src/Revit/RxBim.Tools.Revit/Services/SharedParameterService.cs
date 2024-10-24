@@ -237,7 +237,7 @@
 #if RVT2019 || RVT2020 || RVT2021
             var dataType = definition.DataType ?? externalDefinition.ParameterType;
 #else
-            var dataType = definition.DataType ?? externalDefinition.GetDataType();   
+            var dataType = definition.DataType ?? externalDefinition.GetDataType();
 #endif
             var actualParameterInfo = new SharedParameterInfo(
                 new SharedParameterDefinition()
