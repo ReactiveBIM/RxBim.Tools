@@ -22,11 +22,7 @@
         }
 
         /// <inheritdoc/>
-#if NET8_0
         public int Compare(string? s1, string? s2)
-#else
-        public int Compare(string s1, string s2)
-#endif
         {
             var num1 = Regex.Match(s1!, _numericPattern);
             var num2 = Regex.Match(s2!, _numericPattern);
