@@ -72,19 +72,23 @@
                     {
                         value = getFeet
                             ? Math.Round(param.AsDouble(), digits)
-                            : Math.Round(
-                                UnitUtils.ConvertFromInternalUnits(
-                                    param.AsDouble(),
-                                    param.DisplayUnitType),
-                                digits);
+                            : Math.Round(ConvertFromInternalUnits(param.AsDouble(), param), digits);
                     }
                     catch (InvalidOperationException)
                     {
+#if RVT2019 || RVT2020
                         value = Math.Round(
                             UnitUtils.ConvertFromInternalUnits(
                                 param.AsDouble(),
                                 DisplayUnitType.DUT_GENERAL),
                             digits);
+#else
+                        value = Math.Round(
+                            UnitUtils.ConvertFromInternalUnits(
+                                param.AsDouble(),
+                                UnitTypeId.General),
+                            digits);
+#endif
                     }
 
                     break;
@@ -129,7 +133,7 @@
 
                 var value = foundParameter.GetParameterValue(digits, getFeet);
 
-                return (T)Convert.ChangeType(value, typeof(T), CultureInfo.InvariantCulture);
+                return (T)Convert.ChangeType(value, typeof(T), CultureInfo.InvariantCulture)!;
             }
             catch (Exception)
             {
@@ -184,7 +188,7 @@
                 case StorageType.Double:
                     if (value is not double dValue && !double.TryParse(value.ToString(), out dValue))
                         return false;
-                    return parameter.Set(UnitUtils.ConvertToInternalUnits(dValue, parameter.DisplayUnitType));
+                    return parameter.Set(ConvertToInternalUnits(dValue, parameter));
 
                 case StorageType.ElementId:
                     if (value is not ElementId idValue)
@@ -202,9 +206,7 @@
         /// <param name="toParameter">В параметр</param>
         public static void CopyParameterValue(this Parameter? fromParameter, Parameter? toParameter)
         {
-            if (fromParameter == null
-                || toParameter == null
-                || toParameter.IsReadOnly)
+            if (fromParameter == null || toParameter == null || toParameter.IsReadOnly)
                 return;
 
             switch (fromParameter.StorageType)
@@ -212,7 +214,7 @@
                 case StorageType.Double:
                     if (toParameter.StorageType == StorageType.Double)
                     {
-                        toParameter.Set(UnitUtils.ConvertFromInternalUnits(fromParameter.AsDouble(), fromParameter.DisplayUnitType));
+                        toParameter.Set(ConvertFromInternalUnits(fromParameter.AsDouble(), fromParameter));
                     }
                     else
                     {
@@ -226,9 +228,15 @@
                     toParameter.Set(fromParameter.AsElementId());
                     break;
                 case StorageType.Integer:
+#if RVT2019 || RVT2020 || RVT2021
                     if (fromParameter.Definition.ParameterType == ParameterType.YesNo
                         && toParameter.StorageType == StorageType.String)
                         toParameter.Set(fromParameter.AsValueString());
+#else
+                    if (fromParameter.Definition.GetDataType() == SpecTypeId.Number
+                        && toParameter.StorageType == StorageType.String)
+                        toParameter.Set(fromParameter.AsValueString());
+#endif
                     else
                         toParameter.Set(fromParameter.AsInteger());
 
@@ -240,6 +248,24 @@
                     toParameter.SetValueString(fromParameter.AsValueString());
                     break;
             }
+        }
+
+        private static double ConvertFromInternalUnits(double value, Parameter parameter)
+        {
+#if RVT2019 || RVT2020
+            return UnitUtils.ConvertFromInternalUnits(value, parameter.DisplayUnitType);
+#else
+            return UnitUtils.ConvertFromInternalUnits(value, parameter.GetUnitTypeId());
+#endif
+        }
+
+        private static double ConvertToInternalUnits(double value, Parameter parameter)
+        {
+#if RVT2019 || RVT2020
+            return UnitUtils.ConvertToInternalUnits(value, parameter.DisplayUnitType);
+#else
+            return UnitUtils.ConvertToInternalUnits(value, parameter.GetUnitTypeId());
+#endif
         }
     }
 }

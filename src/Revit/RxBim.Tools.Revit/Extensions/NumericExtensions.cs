@@ -15,7 +15,11 @@
         /// <param name="mm">Значение в миллиметрах</param>
         public static double MmToFt(this double mm)
         {
+#if RVT2019 || RVT2020
             return UnitUtils.ConvertToInternalUnits(mm, DisplayUnitType.DUT_MILLIMETERS);
+#else
+            return UnitUtils.ConvertToInternalUnits(mm, UnitTypeId.Millimeters);
+#endif
         }
 
         /// <summary>
@@ -24,7 +28,11 @@
         /// <param name="ft">Значение в футах</param>
         public static double FtToMm(this double ft)
         {
+#if RVT2019 || RVT2020
             return UnitUtils.ConvertFromInternalUnits(ft, DisplayUnitType.DUT_MILLIMETERS);
+#else
+            return UnitUtils.ConvertFromInternalUnits(ft, UnitTypeId.Millimeters);
+#endif
         }
 
         /// <summary>
@@ -33,7 +41,11 @@
         /// <param name="mm">Значение в миллиметрах</param>
         public static double MmToFt(this int mm)
         {
+#if RVT2019 || RVT2020
             return UnitUtils.ConvertToInternalUnits(mm, DisplayUnitType.DUT_MILLIMETERS);
+#else
+            return UnitUtils.ConvertToInternalUnits(mm, UnitTypeId.Millimeters);
+#endif
         }
 
         /// <summary>
@@ -42,7 +54,11 @@
         /// <param name="ft">Значение в футах</param>
         public static double FtToMm(this int ft)
         {
+#if RVT2019 || RVT2020
             return UnitUtils.ConvertFromInternalUnits(ft, DisplayUnitType.DUT_MILLIMETERS);
+#else
+            return UnitUtils.ConvertFromInternalUnits(ft, UnitTypeId.Millimeters);
+#endif
         }
 
         /// <summary>
@@ -70,17 +86,6 @@
         public static double RadianToDegree(this double radian)
         {
             return radian * 180.0 / Math.PI;
-        }
-
-        /// <summary>
-        /// Возвращает диаметр арматуры, полученный из <see cref="RebarBarType"/>, в миллиметрах с округлением
-        /// до одного знака после запятой в сторону четного числа
-        /// </summary>
-        /// <param name="rbt">Instance of <see cref="RebarBarType"/></param>
-        public static double GetDiameterInMm(this RebarBarType rbt)
-        {
-            var d = rbt.BarDiameter.FtToMm();
-            return Math.Round(d, 1, MidpointRounding.ToEven);
         }
     }
 }

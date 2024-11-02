@@ -14,7 +14,7 @@
         /// Коллекция категорий, представленных типом <see cref="BuiltInCategory"/>, для привязки параметра
         /// </summary>
         public List<BuiltInCategory>? CategoriesForBind { get; set; }
-        
+
         /// <summary>
         /// Установить для параметров свойство "Значения могут меняться по экземплярам групп"
         /// </summary>
@@ -25,9 +25,16 @@
         /// </summary>
         public bool IsCreateForInstance { get; set; } = true;
 
+#if RVT2019 || RVT2020 || RVT2021 || RVT2022 || RVT2023
         /// <summary>
         /// Группа, в которую требуется добавить общие параметры
         /// </summary>
         public BuiltInParameterGroup ParameterGroup { get; set; } = BuiltInParameterGroup.INVALID;
+#else
+        /// <summary>
+        /// Группа, в которую требуется добавить общие параметры
+        /// </summary>
+        public ForgeTypeId ParameterGroup { get; set; } = new();
+#endif
     }
 }

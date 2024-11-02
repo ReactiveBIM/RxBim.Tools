@@ -9,6 +9,7 @@
     using RxBim.Command.Revit;
     using RxBim.Shared;
     using Tools.Revit.Abstractions;
+    using Tools.Revit.Extensions;
 
     /// <inheritdoc />
     [Regeneration(RegenerationOption.Manual)]
@@ -30,7 +31,7 @@
                     "Data of element:",
                     element.Name,
                     element.Category?.Name ?? "No category",
-                    element.Id.IntegerValue);
+                    element.Id.GetIdValue());
                 logStorage.AddMessage(message);
             }
 

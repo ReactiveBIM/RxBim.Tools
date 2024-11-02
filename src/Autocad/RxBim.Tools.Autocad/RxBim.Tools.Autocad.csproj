@@ -12,8 +12,6 @@
 
     <PropertyGroup>
         <Description>RxBim AutoCAD Extensions Library</Description>
-        <PackageId>RxBim.Tools.Autocad</PackageId>
-        <PackageReleaseNotes>$(ReleaseNotes)</PackageReleaseNotes>
     </PropertyGroup>
 
     <ItemGroup>
