@@ -1,11 +1,13 @@
 ﻿namespace RxBim.Tools.TableBuilder.Excel.Sample
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using ClosedXML.Excel;
     using Di;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// Console program
@@ -55,11 +57,11 @@
             return table;
         }
 
-        private static IContainer CreateContainer()
+        private static IServiceProvider CreateContainer()
         {
-            var container = new DiContainer();
+            var container = new ServiceCollection();
             container.AddExcelTableBuilder();
-            return container;
+            return container.BuildServiceProvider();
         }
     }
 }

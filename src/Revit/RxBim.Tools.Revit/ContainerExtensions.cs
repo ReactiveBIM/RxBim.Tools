@@ -5,10 +5,11 @@
     using Di;
     using Helpers;
     using JetBrains.Annotations;
+    using Microsoft.Extensions.DependencyInjection;
     using Services;
 
     /// <summary>
-    /// Extensions for <see cref="IContainer"/>.
+    /// Extensions for <see cref="IServiceCollection"/>.
     /// </summary>
     [PublicAPI]
     public static class ContainerExtensions
@@ -16,21 +17,21 @@
         /// <summary>
         /// Adds Revit services to the container.
         /// </summary>
-        /// <param name="container"><see cref="IContainer"/><see cref="IContainer"/></param>
+        /// <param name="container"><see cref="IServiceCollection"/><see cref="IServiceCollection"/></param>
         /// <param name="isTesting">Indicates that this is a test configuration.</param>
-        public static IContainer AddRevitHelpers(this IContainer container, bool isTesting = false)
+        public static IServiceCollection AddRevitHelpers(this IServiceCollection container, bool isTesting = false)
         {
             container.AddSingleton<IDocumentsCollector, DocumentsCollector>()
                 .AddSingleton<ISheetsCollector, SheetsCollector>()
                 .AddSingleton<IElementsDisplay, ElementsDisplayService>()
                 .AddSingleton<ISharedParameterService, SharedParameterService>()
                 .AddSingleton<ScopedElementsCollector>()
-                .AddSingleton<IElementsCollector>(container.GetService<ScopedElementsCollector>)
-                .AddSingleton<IScopedElementsCollector>(container.GetService<ScopedElementsCollector>)
+                .AddSingleton<IElementsCollector>(sp => sp.GetService<ScopedElementsCollector>())
+                .AddSingleton<IScopedElementsCollector>(sp => sp.GetService<ScopedElementsCollector>())
                 .AddSingleton<ITransactionContextService<IDocumentWrapper>, DocumentContextService>()
                 .AddSingleton<ITransactionContextService<ITransactionContextWrapper>, DocumentContextService>()
                 .AddTransactionServices<RevitTransactionFactory>()
-                .AddInstance(new RevitTask())
+                .AddSingleton(new RevitTask())
                 .AddToolsServices();
             if (isTesting)
             {

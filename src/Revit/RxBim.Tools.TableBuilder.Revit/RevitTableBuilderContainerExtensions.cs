@@ -1,6 +1,7 @@
 ﻿namespace RxBim.Tools.TableBuilder
 {
     using Di;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// Container extensions
@@ -10,8 +11,8 @@
         /// <summary>
         /// Register table converters.
         /// </summary>
-        /// <param name="container"><see cref="IContainer"/></param>
-        public static IContainer AddRevitTableBuilder(this IContainer container)
+        /// <param name="container"><see cref="IServiceCollection"/></param>
+        public static IServiceCollection AddRevitTableBuilder(this IServiceCollection container)
         {
             return container
                 .AddSingleton<IViewScheduleTableConverter, ViewScheduleTableConverter>();

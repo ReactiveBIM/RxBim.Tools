@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Tools.LogStorage.Revit.Sample
 {
+    using Microsoft.Extensions.DependencyInjection;
     using RxBim.Di;
     using RxBim.Tools.Revit;
 
@@ -7,7 +8,7 @@
     public class Config : ICommandConfiguration
     {
         /// <inheritdoc />
-        public void Configure(IContainer container)
+        public void Configure(IServiceCollection container)
         {
             container.AddRevitHelpers();
         }

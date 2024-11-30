@@ -1,5 +1,6 @@
 ﻿namespace RxBim.Tools.Tests
 {
+    using Microsoft.Extensions.DependencyInjection;
     using RxBim.Di;
 
     public class TestDiConfigurator : DiConfigurator<IPluginConfiguration>
@@ -7,7 +8,7 @@
         /// <inheritdoc />
         protected override void ConfigureBaseDependencies()
         {
-            Container.AddTransient<ILogStorage, LogStorage>();
+            Services.AddTransient<ILogStorage, LogStorage>();
         }
     }
 }

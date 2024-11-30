@@ -1,21 +1,23 @@
 ﻿namespace RxBim.Tools.Autocad
 {
+    using System;
     using Di;
     using JetBrains.Annotations;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <inheritdoc />
     [UsedImplicitly]
     internal class AutocadTransactionFactory : ITransactionFactory
     {
-        private readonly IServiceLocator _locator;
+        private readonly IServiceProvider _serviceProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutocadTransactionFactory"/> class.
         /// </summary>
-        /// <param name="locator"><see cref="IServiceLocator"/> instance.</param>
-        public AutocadTransactionFactory(IServiceLocator locator)
+        /// <param name="serviceProvider"><see cref="IServiceProvider"/> instance.</param>
+        public AutocadTransactionFactory(IServiceProvider serviceProvider)
         {
-            _locator = locator;
+            _serviceProvider = serviceProvider;
         }
 
         /// <inheritdoc />
@@ -38,7 +40,7 @@
         public T GetDefaultContext<T>()
             where T : class, ITransactionContextWrapper
         {
-            var contextService = _locator.GetService<ITransactionContextService<T>>();
+            var contextService = _serviceProvider.GetService<ITransactionContextService<T>>();
             return contextService.GetDefaultContext();
         }
     }

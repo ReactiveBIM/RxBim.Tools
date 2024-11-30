@@ -1,12 +1,14 @@
 ﻿namespace RxBim.Tools
 {
     using System;
+    using System.ComponentModel;
     using Di;
     using JetBrains.Annotations;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
-    /// Extensions for <see cref="IContainer"/>.
+    /// Extensions for <see cref="IServiceCollection"/>.
     /// </summary>
     [PublicAPI]
     public static class ContainerExtensions
@@ -14,8 +16,8 @@
         /// <summary>
         /// Adds tools services.
         /// </summary>
-        /// <param name="container">The instance of <see cref="IContainer"/>.</param>
-        public static IContainer AddToolsServices(this IContainer container)
+        /// <param name="container">The instance of <see cref="IServiceCollection"/>.</param>
+        public static IServiceCollection AddToolsServices(this IServiceCollection container)
         {
             return container.AddSingleton<ILogStorage, LogStorage>();
         }
@@ -27,7 +29,7 @@
         /// <typeparam name="TTransactionFactory">
         /// The type of <see cref="ITransactionFactory"/> implementation.
         /// </typeparam>
-        public static IContainer AddTransactionServices<TTransactionFactory>(this IContainer container)
+        public static IServiceCollection AddTransactionServices<TTransactionFactory>(this IServiceCollection container)
             where TTransactionFactory : class, ITransactionFactory
         {
             return container
@@ -46,13 +48,13 @@
         /// If null, the name of the type specified in <typeparamref name="T"/> is used.
         /// </param>
         /// <typeparam name="T">The type of the requested object.</typeparam>
-        public static IContainer AddTransientFromConfig<T>(
-            this IContainer container,
+        public static IServiceCollection AddTransientFromConfig<T>(
+            this IServiceCollection container,
             IConfiguration? config = null,
             string? sectionName = null)
             where T : class
         {
-            return container.AddFromConfig<T>(Lifetime.Transient, config, sectionName);
+            return container.AddFromConfig<T>(ServiceLifetime.Transient, config, sectionName);
         }
 
         /// <summary>
@@ -66,32 +68,32 @@
         /// If null, the name of the type specified in <typeparamref name="T"/> is used.
         /// </param>
         /// <typeparam name="T">The type of the requested object.</typeparam>
-        public static IContainer AddSingletonFromConfig<T>(
-            this IContainer container,
+        public static IServiceCollection AddSingletonFromConfig<T>(
+            this IServiceCollection container,
             IConfiguration? config = null,
             string? sectionName = null)
             where T : class
         {
-            return container.AddFromConfig<T>(Lifetime.Singleton, config, sectionName);
+            return container.AddFromConfig<T>(ServiceLifetime.Singleton, config, sectionName);
         }
 
-        private static IContainer AddFromConfig<T>(
-            this IContainer container,
-            Lifetime lifetime,
+        private static IServiceCollection AddFromConfig<T>(
+            this IServiceCollection container,
+            ServiceLifetime lifetime,
             IConfiguration? config,
             string? sectionName)
             where T : class
         {
             var section = sectionName ?? typeof(T).Name;
             var implementationFactory = config is null
-                ? (Func<T>)(() => container.GetService<IConfiguration>().GetSection(section).Get<T>())
-                : () => config.GetSection(section).Get<T>();
+                ? (Func<IServiceProvider, T>)(sp => sp.GetService<IConfiguration>().GetSection(section).Get<T>())
+                : _ => config.GetSection(section).Get<T>();
 
             return lifetime switch
             {
-                Lifetime.Singleton => container.AddSingleton(implementationFactory),
-                Lifetime.Transient => container.AddTransient(implementationFactory),
-                Lifetime.Scoped => container.AddScoped(implementationFactory),
+                ServiceLifetime.Singleton => container.AddSingleton(implementationFactory),
+                ServiceLifetime.Transient => container.AddTransient(implementationFactory),
+                ServiceLifetime.Scoped => container.AddScoped(implementationFactory),
                 _ => throw new ArgumentOutOfRangeException(nameof(lifetime), lifetime, "Unsupported lifetime!")
             };
         }
