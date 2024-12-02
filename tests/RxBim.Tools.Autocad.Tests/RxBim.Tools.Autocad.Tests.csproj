@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <NoWarn>CS1591,NU1701</NoWarn>
         <MSBuildWarningsAsMessages>NU1702</MSBuildWarningsAsMessages>
         <Configurations>Debug;Release</Configurations>
         <UseDi>true</UseDi>
