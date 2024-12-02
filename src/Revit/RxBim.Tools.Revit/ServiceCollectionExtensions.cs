@@ -2,7 +2,6 @@
 {
     using Abstractions;
     using Collectors;
-    using Di;
     using Helpers;
     using JetBrains.Annotations;
     using Microsoft.Extensions.DependencyInjection;
@@ -12,16 +11,16 @@
     /// Extensions for <see cref="IServiceCollection"/>.
     /// </summary>
     [PublicAPI]
-    public static class ContainerExtensions
+    public static class ServiceCollectionExtensions
     {
         /// <summary>
         /// Adds Revit services to the container.
         /// </summary>
-        /// <param name="container"><see cref="IServiceCollection"/><see cref="IServiceCollection"/></param>
+        /// <param name="services"><see cref="IServiceCollection"/><see cref="IServiceCollection"/></param>
         /// <param name="isTesting">Indicates that this is a test configuration.</param>
-        public static IServiceCollection AddRevitHelpers(this IServiceCollection container, bool isTesting = false)
+        public static IServiceCollection AddRevitHelpers(this IServiceCollection services, bool isTesting = false)
         {
-            container.AddSingleton<IDocumentsCollector, DocumentsCollector>()
+            services.AddSingleton<IDocumentsCollector, DocumentsCollector>()
                 .AddSingleton<ISheetsCollector, SheetsCollector>()
                 .AddSingleton<IElementsDisplay, ElementsDisplayService>()
                 .AddSingleton<ISharedParameterService, SharedParameterService>()
@@ -35,14 +34,14 @@
                 .AddToolsServices();
             if (isTesting)
             {
-                container.AddSingleton<IRevitTask, RevitTaskMock>();
+                services.AddSingleton<IRevitTask, RevitTaskMock>();
             }
             else
             {
-                container.AddSingleton<IRevitTask, RevitTaskAdapter>();
+                services.AddSingleton<IRevitTask, RevitTaskAdapter>();
             }
 
-            return container;
+            return services;
         }
     }
 }

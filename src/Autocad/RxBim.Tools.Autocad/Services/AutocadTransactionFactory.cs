@@ -1,7 +1,6 @@
 ﻿namespace RxBim.Tools.Autocad
 {
     using System;
-    using Di;
     using JetBrains.Annotations;
     using Microsoft.Extensions.DependencyInjection;
 

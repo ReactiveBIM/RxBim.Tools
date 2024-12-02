@@ -2,7 +2,6 @@
 {
     using System.Linq;
     using ClosedXML.Excel;
-    using Di;
     using FluentAssertions;
     using Microsoft.Extensions.DependencyInjection;
     using Xunit;

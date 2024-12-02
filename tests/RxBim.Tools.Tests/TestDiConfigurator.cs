@@ -1,7 +1,7 @@
 ﻿namespace RxBim.Tools.Tests
 {
+    using Di;
     using Microsoft.Extensions.DependencyInjection;
-    using RxBim.Di;
 
     public class TestDiConfigurator : DiConfigurator<IPluginConfiguration>
     {

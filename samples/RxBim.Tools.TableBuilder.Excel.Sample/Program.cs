@@ -6,7 +6,6 @@
     using System.IO;
     using System.Linq;
     using ClosedXML.Excel;
-    using Di;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>

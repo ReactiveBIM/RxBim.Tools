@@ -2,7 +2,6 @@
 {
     using System;
     using Autodesk.Revit.DB;
-    using Di;
     using Extensions;
     using JetBrains.Annotations;
     using Microsoft.Extensions.DependencyInjection;

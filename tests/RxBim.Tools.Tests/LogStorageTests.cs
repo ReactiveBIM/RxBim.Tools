@@ -2,7 +2,6 @@
 {
     using System;
     using System.Threading;
-    using Di;
     using FluentAssertions;
     using Microsoft.Extensions.DependencyInjection;
     using Models;

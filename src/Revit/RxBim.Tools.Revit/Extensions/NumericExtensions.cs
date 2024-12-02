@@ -2,7 +2,6 @@
 {
     using System;
     using Autodesk.Revit.DB;
-    using Autodesk.Revit.DB.Structure;
 
     /// <summary>
     /// Утилиты конвертирования числовых значений

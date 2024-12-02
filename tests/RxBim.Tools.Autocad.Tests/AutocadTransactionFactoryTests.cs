@@ -1,10 +1,8 @@
 ﻿namespace RxBim.Tools.Autocad.Tests
 {
     using System;
-    using Di;
     using FluentAssertions;
     using Microsoft.Extensions.DependencyInjection;
-    using Moq;
     using Xunit;
 
     public class AutocadTransactionFactoryTests

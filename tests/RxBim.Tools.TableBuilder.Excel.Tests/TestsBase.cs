@@ -1,7 +1,6 @@
 ﻿namespace RxBim.Tools.TableBuilder.Excel.Tests;
 
 using System;
-using Di;
 using Microsoft.Extensions.DependencyInjection;
 
 public abstract class TestsBase
