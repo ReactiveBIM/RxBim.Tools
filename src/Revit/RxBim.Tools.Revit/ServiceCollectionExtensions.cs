@@ -16,7 +16,7 @@
         /// <summary>
         /// Adds Revit services to the container.
         /// </summary>
-        /// <param name="services"><see cref="IServiceCollection"/><see cref="IServiceCollection"/></param>
+        /// <param name="services"><see cref="IServiceCollection"/><see cref="IServiceCollection"/>.</param>
         /// <param name="isTesting">Indicates that this is a test configuration.</param>
         public static IServiceCollection AddRevitHelpers(this IServiceCollection services, bool isTesting = false)
         {
