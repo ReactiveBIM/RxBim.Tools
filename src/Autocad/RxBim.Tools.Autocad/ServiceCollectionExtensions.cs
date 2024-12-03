@@ -1,19 +1,19 @@
 ﻿namespace RxBim.Tools.Autocad
 {
-    using Di;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
-    /// Extensions for <see cref="IContainer"/>.
+    /// Extensions for <see cref="IServiceCollection"/>.
     /// </summary>
-    public static class ContainerExtensions
+    public static class ServiceCollectionExtensions
     {
         /// <summary>
         /// Adds AutoCAD services to the container.
         /// </summary>
-        /// <param name="container"><see cref="IContainer"/> object.</param>
-        public static IContainer AddAutocadHelpers(this IContainer container)
+        /// <param name="services"><see cref="IServiceCollection"/> object.</param>
+        public static IServiceCollection AddAutocadHelpers(this IServiceCollection services)
         {
-            return container
+            return services
                 .AddSingleton<IDocumentService, DocumentService>()
                 .AddSingleton<IObjectsSelectionService, ObjectsSelectionService>()
                 .AddSingleton<ICommandLineService, CommandLineService>()

@@ -2,7 +2,6 @@
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
-        <NoWarn>CS1591,NU1701</NoWarn>
         <MSBuildWarningsAsMessages>NU1702</MSBuildWarningsAsMessages>
         <Configurations>Debug;Release</Configurations>
         <UseDi>true</UseDi>

@@ -1,14 +1,15 @@
 ﻿namespace RxBim.Tools.TableBuilder.GoogleSheet.Sample;
 
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using ClosedXML.Excel;
-using Di;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
+using Microsoft.Extensions.DependencyInjection;
 
 /// <summary>
 /// Console application.
@@ -51,12 +52,12 @@ public class Program
         return excelFile;
     }
 
-    private static IContainer CreateContainer()
+    private static IServiceProvider CreateContainer()
     {
-        var container = new DiContainer();
+        var container = new ServiceCollection();
         container.AddGoogleSheetTableBuilder();
         container.AddExcelTableBuilder();
-        return container;
+        return container.BuildServiceProvider();
     }
 
     private static SheetsService GetSheetService()
