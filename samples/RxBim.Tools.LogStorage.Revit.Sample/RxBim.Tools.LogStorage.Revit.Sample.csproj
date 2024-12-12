@@ -5,7 +5,7 @@
     </PropertyGroup>
     
     <ItemGroup>
-        <PackageReference Include="RxBim.Command.Revit.$(ApplicationVersion)" Version="1.9.5" />
+        <PackageReference Include="RxBim.Command.Revit.$(ApplicationVersion)" Version="3.0.0" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\src\Revit\RxBim.Tools.Revit\RxBim.Tools.Revit.csproj" />
