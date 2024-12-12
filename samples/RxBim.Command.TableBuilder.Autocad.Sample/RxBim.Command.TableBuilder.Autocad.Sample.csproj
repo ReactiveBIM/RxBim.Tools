@@ -11,7 +11,7 @@
 
     <ItemGroup>
         <PackageReference Include="CSharpFunctionalExtensions" Version="2.34.3" />
-        <PackageReference Include="RxBim.Command.Autocad.$(ApplicationVersion)" Version="1.3.5" />
+        <PackageReference Include="RxBim.Command.Autocad.$(ApplicationVersion)" Version="3.0.0" />
     </ItemGroup>
 
 </Project>
