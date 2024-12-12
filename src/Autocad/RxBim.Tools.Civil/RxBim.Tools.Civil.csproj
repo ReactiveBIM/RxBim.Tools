@@ -1,12 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <ItemGroup>
-        <PackageReference Include="Civil3D2019.Base" Version="1.0.0" ExcludeAssets="build; runtime"/>
-    </ItemGroup>
-
     <PropertyGroup>
         <Description>RxBim Civil 3D Extensions Library</Description>
-        <PackageId>RxBim.Tools.Civil</PackageId>
     </PropertyGroup>
 
 </Project>

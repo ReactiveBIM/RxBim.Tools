@@ -1,14 +1,16 @@
 ﻿namespace RxBim.Tools.TableBuilder.Excel.Tests;
 
-using Di;
+using System;
+using Microsoft.Extensions.DependencyInjection;
 
 public abstract class TestsBase
 {
     public TestsBase()
     {
-        Container = new DiContainer();
-        Container.AddExcelTableBuilder();
+        var services = new ServiceCollection();
+        services.AddExcelTableBuilder();
+        Container = services.BuildServiceProvider();
     }
 
-    public IContainer Container { get; }
+    public IServiceProvider Container { get; }
 }

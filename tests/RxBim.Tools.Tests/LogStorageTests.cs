@@ -2,8 +2,8 @@
 {
     using System;
     using System.Threading;
-    using Di;
     using FluentAssertions;
+    using Microsoft.Extensions.DependencyInjection;
     using Models;
     using Xunit;
 
@@ -17,7 +17,7 @@
         {
             var di = new TestDiConfigurator();
             di.Configure(GetType().Assembly);
-            var container = di.Container;
+            var container = di.Build();
 
             _logStorage = container.GetService<ILogStorage>();
         }

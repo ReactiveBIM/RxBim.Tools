@@ -2,13 +2,14 @@
 {
     using Abstractions;
     using Di;
+    using Microsoft.Extensions.DependencyInjection;
     using Services;
 
     /// <inheritdoc />
     public class Config : ICommandConfiguration
     {
         /// <inheritdoc />
-        public void Configure(IContainer container)
+        public void Configure(IServiceCollection container)
         {
             container.AddAutocadHelpers();
             container.AddSingleton<ICircleService, CircleService>();

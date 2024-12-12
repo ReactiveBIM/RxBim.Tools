@@ -5,7 +5,6 @@
     using System.Linq;
     using FluentAssertions;
     using Xunit;
-    using RxBim.Tools.TableBuilder;
 
     /// <summary>
     /// Tests for <see cref="TableBuilder"/>

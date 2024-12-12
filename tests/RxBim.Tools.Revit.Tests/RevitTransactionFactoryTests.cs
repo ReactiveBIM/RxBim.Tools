@@ -2,27 +2,19 @@
 {
     using System;
     using Abstractions;
-    using Di;
     using FluentAssertions;
-    using Moq;
-    using Services;
+    using Microsoft.Extensions.DependencyInjection;
     using Xunit;
 
     public class RevitTransactionFactoryTests
     {
-        private readonly IContainer _container;
+        private readonly IServiceProvider _container;
 
         public RevitTransactionFactoryTests()
         {
-            var mockContextService = new Mock<ITransactionContextService<IDocumentWrapper>>();
-
             var di = new TestDiConfigurator();
             di.Configure(GetType().Assembly);
-            _container = di.Container;
-
-            _container.AddTransactionServices<RevitTransactionFactory>();
-            _container.AddSingleton(mockContextService.Object);
-            _container.AddSingleton<ITransactionContextService<ITransactionContextWrapper>>(mockContextService.Object);
+            _container = di.Build();
         }
 
         [Fact]

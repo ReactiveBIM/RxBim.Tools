@@ -2,6 +2,7 @@
 {
     using Abstractions;
     using Di;
+    using Microsoft.Extensions.DependencyInjection;
     using Services;
     using Tools.Autocad;
     using Tools.TableBuilder;
@@ -10,7 +11,7 @@
     public class Config : ICommandConfiguration
     {
         /// <inheritdoc />
-        public void Configure(IContainer container)
+        public void Configure(IServiceCollection container)
         {
             container
                 .AddAutocadHelpers()

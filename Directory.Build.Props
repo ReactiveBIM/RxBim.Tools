@@ -1,29 +1,79 @@
 ﻿<Project>
     <PropertyGroup>
-        <LangVersion>10</LangVersion>
-        <TreatWarningsAsErrors Condition="'$(Configuration)' == 'Release'">true</TreatWarningsAsErrors>
+        <Version>4.0.0</Version>
+        <TargetFramework>net472</TargetFramework>
+        <PlatformTarget>x64</PlatformTarget>
+        <LangVersion>12</LangVersion>
         <Nullable>enable</Nullable>
+        <NoWarn>NU1901;NU1902;NU1903;NU1904</NoWarn>
     </PropertyGroup>
 
-    <PropertyGroup Condition="!'$(ProjectName.EndsWith(`Tests`))'">
-        <CodeAnalysisRuleSet>..\..\stylecop.ruleset</CodeAnalysisRuleSet>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PropertyGroup>
+        <SolutionDir>$(MSBuildThisFileDirectory)</SolutionDir>
     </PropertyGroup>
+    
+    <Choose>
+        <When Condition="!$(MSBuildProjectName.Contains('Tests')) AND !$(MSBuildProjectName.Contains('build'))">
+            <PropertyGroup>
+                <CodeAnalysisRuleSet>$(SolutionDir)stylecop.ruleset</CodeAnalysisRuleSet>
+                <GenerateDocumentationFile>true</GenerateDocumentationFile>
+            </PropertyGroup>
 
-    <ItemGroup Condition="!'$(ProjectName.EndsWith(`Tests`))'">
-        <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.406">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="JetBrains.Annotations" Version="2022.1.0">
-            <ExcludeAssets>runtime</ExcludeAssets>
-            <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>        
-    </ItemGroup>
+            <ItemGroup>
+                <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
+                    <PrivateAssets>all</PrivateAssets>
+                    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+                </PackageReference>
+
+                <PackageReference Include="JetBrains.Annotations" Version="2023.3.0">
+                    <ExcludeAssets>runtime</ExcludeAssets>
+                    <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+                </PackageReference>
+            </ItemGroup>
+        </When>
+    </Choose>
     
     <ItemGroup>
-        <PackageReference Condition=" '$(UseDi)' == 'true' " Include="RxBim.Di" Version="2.0.2"/>
+        <PackageReference Condition=" '$(UseDi)' == 'true' " Include="RxBim.Di" Version="3.0.0"/>
     </ItemGroup>
+
+    <Choose>
+        <When Condition="'$([MSBuild]::GetPathOfFileAbove(RxBim.Build.Props, $(MSBuildProjectDirectory)))' == '' And '$(NotRefenceApi)' != 'true'">
+            <Choose>
+                <When Condition="$(MSBuildProjectName.Contains('Revit'))">
+                    <PropertyGroup>
+                        <DefineConstants>RVT2019</DefineConstants>
+                        <ApplicationVersion>2019</ApplicationVersion>
+                    </PropertyGroup>
+
+                    <ItemGroup>
+                        <PackageReference Include="Revit_All_Main_Versions_API_x64" Version="2019.0.1" ExcludeAssets="runtime"/>
+                    </ItemGroup>
+                </When>
+                <When Condition="$(MSBuildProjectName.Contains('Autocad'))">
+                    <PropertyGroup>
+                        <DefineConstants>ACAD2019</DefineConstants>
+                        <ApplicationVersion>2019</ApplicationVersion>
+                    </PropertyGroup>
+
+                    <ItemGroup>
+                        <PackageReference Include="AutoCAD.NET" Version="23.0.0" ExcludeAssets="build; runtime"/>
+                    </ItemGroup>
+                </When>
+                <When Condition="$(MSBuildProjectName.Contains('Civil'))">
+                    <PropertyGroup>
+                        <DefineConstants>ACAD2019;CIVIL2019</DefineConstants>
+                        <ApplicationVersion>2019</ApplicationVersion>
+                    </PropertyGroup>
+
+                    <ItemGroup>
+                        <PackageReference Include="AutoCAD.NET" Version="23.0.0" ExcludeAssets="build; runtime"/>
+                        <PackageReference Include="Civil3D2019.Base" Version="1.0.0" ExcludeAssets="build; runtime"/>
+                    </ItemGroup>
+                </When>
+            </Choose>
+        </When>
+    </Choose>
 
     <PropertyGroup>
         <Company>pik-group.com</Company>
@@ -38,4 +88,12 @@
         <NoPackageAnalysis>true</NoPackageAnalysis>
     </PropertyGroup>
 
+    <Import Project="$([MSBuild]::GetPathOfFileAbove(RxBim.Build.Props, $(MSBuildProjectDirectory)))"
+            Condition=" '$([MSBuild]::GetPathOfFileAbove(RxBim.Build.Props, $(MSBuildProjectDirectory)))' != '' AND $(NotRefenceApi) != true "/>
+    
+    <PropertyGroup Condition="$(IsPackable) != false">
+        <PackageId Condition="$(NotRefenceApi) == true">$(MSBuildProjectName)</PackageId>
+        <PackageId Condition="$(NotRefenceApi) != true">$(MSBuildProjectName).$(ApplicationVersion)</PackageId>
+        <AssemblyName>$(PackageId).$(Version)</AssemblyName>
+    </PropertyGroup>
 </Project>

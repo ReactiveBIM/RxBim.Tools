@@ -5,6 +5,7 @@ using Nuke.Common;
 using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Execution;
 using Nuke.Common.Tools.DotNet;
+using RxBim.Nuke.Versions;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 [UnsetVisualStudioEnvironmentVariables]
@@ -14,17 +15,13 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
     OnPushBranches = new[] { DevelopBranch, FeatureBranches, BugFixBranches },
     InvokedTargets = new[] { nameof(Test), nameof(IPublish.Publish) },
     ImportSecrets = new[] { "NUGET_API_KEY", "ALL_PACKAGES" })]
-/*[GitHubActions("PullRequest",
-    GitHubActionsImage.WindowsLatest,
-    OnPullRequestBranches = new[] { DevelopBranch, "feature/**" },
-    InvokedTargets = new[] { nameof(Test) })]*/
 [GitHubActions("Publish",
     GitHubActionsImage.WindowsLatest,
     FetchDepth = 0,
     OnPushBranches = new[] { MasterBranch, "release/**", "hotfix/**" },
     InvokedTargets = new[] { nameof(Test), nameof(IPublish.Publish) },
     ImportSecrets = new[] { "NUGET_API_KEY", "ALL_PACKAGES" })]
-class Build : NukeBuild, IPublish, IVersions
+partial class Build : NukeBuild, IVersions
 {
     const string MasterBranch = "master";
     const string DevelopBranch = "develop";
@@ -46,6 +43,8 @@ class Build : NukeBuild, IPublish, IVersions
                 .SetProjectFile(From<IHasSolution>().Solution.Path)
                 .SetConfiguration(From<IHasConfiguration>().Configuration));
         });
+    
+    string IVersionBuild.ProjectNamePrefix => "RxBim.";
 
     T From<T>()
         where T : INukeBuild =>

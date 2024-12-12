@@ -1,11 +1,8 @@
 ﻿<Project>
 
-    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
-
     <PropertyGroup>
         <TargetFramework>net472</TargetFramework>
         <PlatformTarget>x64</PlatformTarget>
-        <NoWarn>CS1591</NoWarn>
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
         <LangVersion>default</LangVersion>
@@ -25,5 +22,7 @@
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
     </ItemGroup>
+
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
 </Project>

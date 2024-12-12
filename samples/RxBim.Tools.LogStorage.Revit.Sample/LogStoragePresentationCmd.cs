@@ -4,11 +4,12 @@
     using System.Text;
     using Autodesk.Revit.Attributes;
     using Autodesk.Windows;
+    using Command.Revit;
     using JetBrains.Annotations;
     using Models;
-    using RxBim.Command.Revit;
-    using RxBim.Shared;
+    using Shared;
     using Tools.Revit.Abstractions;
+    using Tools.Revit.Extensions;
 
     /// <inheritdoc />
     [Regeneration(RegenerationOption.Manual)]
@@ -30,7 +31,7 @@
                     "Data of element:",
                     element.Name,
                     element.Category?.Name ?? "No category",
-                    element.Id.IntegerValue);
+                    element.Id.GetIdValue());
                 logStorage.AddMessage(message);
             }
 
