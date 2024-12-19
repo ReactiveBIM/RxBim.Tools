@@ -17,7 +17,7 @@
         /// <param name="id"><see cref="ElementId"/> object.</param>
         public static IObjectIdWrapper Wrap(this ElementId id)
         {
-            return new ElementIdWrapper(id);
+            return new RevitElementIdWrapper(id);
         }
 
         /// <summary>
