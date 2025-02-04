@@ -13,22 +13,22 @@ using JetBrains.Annotations;
 internal class ExcelTableConverter : IExcelTableConverter
 {
     /// <summary>
-    /// Стандартное разрешение экрана.
+    /// Standard DPI.
     /// </summary>
     private const double StandardDpi = 96;
 
     /// <summary>
-    /// Разрешение экрана определено.
+    /// Is DPI calculated.
     /// </summary>
     private static bool _isDpiCalculated;
 
     /// <summary>
-    /// Разрешение экрана по X.
+    /// DPI by X.
     /// </summary>
     private static uint _dpiX;
 
     /// <summary>
-    /// Разрешение экрана по Y.
+    /// DPI by Y.
     /// </summary>
     private static uint _dpiY;
 
@@ -79,10 +79,10 @@ internal class ExcelTableConverter : IExcelTableConverter
     /// <inheritdoc/>
     public double ConvertWidthToPixels(double width)
     {
-        // DPI (разрешение экрана) нужно для определения ширины и высоты Excel в пикселях.
+        // DPI (screen resolution) is used to determine the width and height of Excel in pixels.
         CalculateDpi();
 
-        // Магические константы определения ширины столбца и высоты строки в пикселях (из гугла).
+        // Magic constants for determining column width and row height in pixels (from Google).
         return (width * 7 + 5) / (StandardDpi / _dpiX);
     }
 
@@ -341,7 +341,7 @@ internal class ExcelTableConverter : IExcelTableConverter
         if (_isDpiCalculated)
             return;
 
-        // Определение dpi через Graphics не рабатает (не находит сборку System.Drawing.Common).
+        // Determining dpi via Graphics does not work (does not find the System.Drawing.Common assembly).
         var hwnd = GetDesktopWindow();
         var hMonitor = MonitorFromWindow(hwnd, 0);
         GetDpiForMonitor(hMonitor, 0, out _dpiX, out _dpiY);

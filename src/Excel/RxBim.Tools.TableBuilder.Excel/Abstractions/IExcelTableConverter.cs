@@ -11,14 +11,14 @@ public interface IExcelTableConverter
     : ITableConverter<Table, ExcelTableConverterParameters, IXLWorkbook>
 {
     /// <summary>
-    /// Возвращает ширину в пикселях.
+    /// Returns the width in pixels.
     /// </summary>
-    /// <param name="width">Ширина в поинтах Excel.</param>
+    /// <param name="width">Width in Excel points.</param>
     double ConvertWidthToPixels(double width);
 
     /// <summary>
-    /// Возвращает высоту в пикселях.
+    /// Returns the height in pixels.
     /// </summary>
-    /// <param name="height">Высота в поинтах Excel.</param>
+    /// <param name="height">Height in Excel points.</param>
     double ConvertHeightToPixels(double height);
 }
