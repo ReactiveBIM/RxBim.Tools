@@ -15,7 +15,7 @@ internal class ExcelTableConverter : IExcelTableConverter
     /// <summary>
     /// Standard DPI.
     /// </summary>
-    private const double StandardDpi = 96;
+    private const int StandardDpi = 96;
 
     /// <summary>
     /// Is DPI calculated.
@@ -83,14 +83,17 @@ internal class ExcelTableConverter : IExcelTableConverter
         CalculateDpi();
 
         // Magic constants for determining column width and row height in pixels (from Google).
-        return (width * 7 + 5) / (StandardDpi / _dpiX);
+        // https://github.com/ClosedXML/ClosedXML/issues/846
+        return (width * 7 + 12) / ((double)StandardDpi / _dpiX);
     }
 
     /// <inheritdoc/>
     public double ConvertHeightToPixels(double height)
     {
         CalculateDpi();
-        return height / 0.75 / (StandardDpi / _dpiY);
+
+        // https://learn.microsoft.com/en-us/answers/questions/257675/excel-row-height-logic-calculation
+        return height / 0.75 / ((double)StandardDpi / _dpiY);
     }
 
     [DllImport("shcore.dll")]
@@ -345,6 +348,13 @@ internal class ExcelTableConverter : IExcelTableConverter
         var hwnd = GetDesktopWindow();
         var hMonitor = MonitorFromWindow(hwnd, 0);
         GetDpiForMonitor(hMonitor, 0, out _dpiX, out _dpiY);
+
+        if (_dpiX == 0)
+            _dpiX = StandardDpi;
+
+        if (_dpiY == 0)
+            _dpiY = StandardDpi;
+
         _isDpiCalculated = true;
     }
 }
