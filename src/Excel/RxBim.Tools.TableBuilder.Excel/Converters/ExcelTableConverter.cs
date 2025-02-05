@@ -189,7 +189,7 @@ internal class ExcelTableConverter : IExcelTableConverter
     private void SetImage(IXLCell cell, ImageCellContent image)
     {
         var pictureCell = cell.Worksheet
-            .AddPicture(image.ImageStream)
+            .AddPicture(image.ImageFile)
             .MoveTo(cell)
             .Scale(image.Scale, true);
 

@@ -1,6 +1,5 @@
 ﻿namespace RxBim.Tools.TableBuilder;
 
-using System.IO;
 using JetBrains.Annotations;
 
 /// <summary>
@@ -12,13 +11,13 @@ public class ImageCellContent : ICellContent
     /// <summary>
     /// Initializes a new instance of the <see cref="ImageCellContent"/> class.
     /// </summary>
-    /// <param name="imageStream">Stream of image.</param>
+    /// <param name="imageFile">Image file path.</param>
     /// <param name="scale">Scale.</param>
     public ImageCellContent(
-        Stream imageStream,
+        string imageFile,
         double scale = 1)
     {
-        ImageStream = imageStream;
+        ImageFile = imageFile;
         Scale = scale;
     }
 
@@ -26,9 +25,9 @@ public class ImageCellContent : ICellContent
     public object? ValueObject => null;
 
     /// <summary>
-    /// Stream of image.
+    /// Image file.
     /// </summary>
-    public Stream ImageStream { get; }
+    public string ImageFile { get; }
 
     /// <summary>
     /// Scale.

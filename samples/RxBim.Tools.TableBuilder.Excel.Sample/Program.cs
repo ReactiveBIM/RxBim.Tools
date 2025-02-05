@@ -59,16 +59,12 @@ public class Program
 
     private static void AddExampleImage(TableBuilder table)
     {
-        var imageFile = Path.GetFullPath(@".\images\Example.jpg");
-        var imageStream = new MemoryStream(File.ReadAllBytes(imageFile));
-        var imageContent = new ImageCellContent(imageStream);
-
         foreach (var column in table.Columns)
             column.SetWidth(20);
 
         table.AddRow(r => r
             .SetHeight(300)
-            .Cells.First().SetContent(imageContent)
+            .Cells.First().SetContent(new ImageCellContent(@".\images\Example.jpg"))
             .MergeNext()
             .SetFormat(f => f
                 .SetContentVerticalAlignment(CellContentVerticalAlignment.Middle)
