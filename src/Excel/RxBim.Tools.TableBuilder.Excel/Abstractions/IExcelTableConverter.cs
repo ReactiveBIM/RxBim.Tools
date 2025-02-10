@@ -8,17 +8,4 @@ using JetBrains.Annotations;
 /// </summary>
 [PublicAPI]
 public interface IExcelTableConverter
-    : ITableConverter<Table, ExcelTableConverterParameters, IXLWorkbook>
-{
-    /// <summary>
-    /// Returns the width in pixels.
-    /// </summary>
-    /// <param name="width">Width in Excel points.</param>
-    double ConvertWidthToPixels(double width);
-
-    /// <summary>
-    /// Returns the height in pixels.
-    /// </summary>
-    /// <param name="height">Height in Excel points.</param>
-    double ConvertHeightToPixels(double height);
-}
+    : ITableConverter<Table, ExcelTableConverterParameters, IXLWorkbook>;

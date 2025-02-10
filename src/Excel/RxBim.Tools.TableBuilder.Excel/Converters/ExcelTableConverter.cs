@@ -2,36 +2,17 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using ClosedXML.Excel;
+using ClosedXML.Excel.Drawings;
 using JetBrains.Annotations;
 
 /// <inheritdoc />
 [UsedImplicitly]
 internal class ExcelTableConverter : IExcelTableConverter
 {
-    /// <summary>
-    /// Standard DPI.
-    /// </summary>
-    private const int StandardDpi = 96;
-
-    /// <summary>
-    /// Is DPI calculated.
-    /// </summary>
-    private static bool _isDpiCalculated;
-
-    /// <summary>
-    /// DPI by X.
-    /// </summary>
-    private static uint _dpiX;
-
-    /// <summary>
-    /// DPI by Y.
-    /// </summary>
-    private static uint _dpiY;
-
     /// <inheritdoc />
     public IXLWorkbook Convert(Table table, ExcelTableConverterParameters parameters)
     {
@@ -75,35 +56,6 @@ internal class ExcelTableConverter : IExcelTableConverter
 
         return workbook;
     }
-
-    /// <inheritdoc/>
-    public double ConvertWidthToPixels(double width)
-    {
-        // DPI (screen resolution) is used to determine the width and height of Excel in pixels.
-        CalculateDpi();
-
-        // Magic constants for determining column width and row height in pixels (from Google).
-        // https://github.com/ClosedXML/ClosedXML/issues/846
-        return (width * 7 + 12) / ((double)StandardDpi / _dpiX);
-    }
-
-    /// <inheritdoc/>
-    public double ConvertHeightToPixels(double height)
-    {
-        CalculateDpi();
-
-        // https://learn.microsoft.com/en-us/answers/questions/257675/excel-row-height-logic-calculation
-        return height / 0.75 / ((double)StandardDpi / _dpiY);
-    }
-
-    [DllImport("shcore.dll")]
-    private static extern int GetDpiForMonitor(IntPtr hmonitor, int dpiType, out uint dpiX, out uint dpiY);
-
-    [DllImport("user32.dll")]
-    private static extern IntPtr MonitorFromWindow(IntPtr hwnd, uint dwFlags);
-
-    [DllImport("user32.dll")]
-    private static extern IntPtr GetDesktopWindow();
 
     private void ApplyToColumns(Table table, IXLWorksheet worksheet, Action<IXLColumn, int> action)
     {
@@ -191,30 +143,40 @@ internal class ExcelTableConverter : IExcelTableConverter
 
     private void SetImage(IXLCell cell, ImageCellContent image)
     {
+        using var imageStream = new MemoryStream(image.Image);
         var pictureCell = cell.Worksheet
-            .AddPicture(image.ImageFile)
-            .MoveTo(cell)
-            .Scale(image.Scale, true);
+            .AddPicture(imageStream)
+            .MoveTo(cell);
+
+        SetImageScale(pictureCell, cell);
 
         var left = cell.Style.Alignment.Horizontal switch
         {
             XLAlignmentHorizontalValues.Center =>
-                (ConvertWidthToPixels(GetCellWidth(cell)) - pictureCell.Width) / 2,
+                (GetCellWidth(cell).ExcelWidthToPixels() - pictureCell.Width) / 2,
             XLAlignmentHorizontalValues.Right =>
-                ConvertWidthToPixels(GetCellWidth(cell)) - pictureCell.Width,
+                GetCellWidth(cell).ExcelWidthToPixels() - pictureCell.Width,
             _ => 0
         };
 
         var top = cell.Style.Alignment.Vertical switch
         {
             XLAlignmentVerticalValues.Center =>
-                (ConvertHeightToPixels(GetCellHeight(cell)) - pictureCell.Height) / 2,
+                (GetCellHeight(cell).ExcelHeightToPixels() - pictureCell.Height) / 2,
             XLAlignmentVerticalValues.Bottom =>
-                ConvertHeightToPixels(GetCellHeight(cell)) - pictureCell.Height,
+                GetCellHeight(cell).ExcelHeightToPixels() - pictureCell.Height,
             _ => 0
         };
 
         pictureCell.MoveTo(cell, (int)left, (int)top);
+    }
+
+    private void SetImageScale(IXLPicture pictureCell, IXLCell cell)
+    {
+        const double imageOffset = 0.1;
+        var rowHeight = GetCellHeight(cell);
+        var scale = (rowHeight - rowHeight * imageOffset) / pictureCell.Height;
+        pictureCell.Scale(scale);
     }
 
     private double GetCellWidth(IXLCell cell) =>
@@ -338,23 +300,4 @@ internal class ExcelTableConverter : IExcelTableConverter
             CellBorderType.Thin => XLBorderStyleValues.Thin,
             _ => throw new NotImplementedException(borderType.ToString())
         };
-
-    private void CalculateDpi()
-    {
-        if (_isDpiCalculated)
-            return;
-
-        // Determining dpi via Graphics does not work (does not find the System.Drawing.Common assembly).
-        var hwnd = GetDesktopWindow();
-        var hMonitor = MonitorFromWindow(hwnd, 0);
-        GetDpiForMonitor(hMonitor, 0, out _dpiX, out _dpiY);
-
-        if (_dpiX == 0)
-            _dpiX = StandardDpi;
-
-        if (_dpiY == 0)
-            _dpiY = StandardDpi;
-
-        _isDpiCalculated = true;
-    }
 }
