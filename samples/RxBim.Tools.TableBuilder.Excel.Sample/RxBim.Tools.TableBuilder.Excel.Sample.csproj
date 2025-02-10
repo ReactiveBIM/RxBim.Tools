@@ -1,11 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <OutputType>Exe</OutputType>
-    <Nullable>enable</Nullable>
-    <UseDi>true</UseDi>
-  </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Excel\RxBim.Tools.TableBuilder.Excel\RxBim.Tools.TableBuilder.Excel.csproj" />
-  </ItemGroup>  
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <OutputType>Exe</OutputType>
+        <Nullable>enable</Nullable>
+        <UseDi>true</UseDi>                
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\Excel\RxBim.Tools.TableBuilder.Excel\RxBim.Tools.TableBuilder.Excel.csproj"/>
+    </ItemGroup>
+    
+    <ItemGroup>
+        <None Include="images\Example.jpg" CopyToOutputDirectory="Always"/>
+    </ItemGroup>
 </Project>
