@@ -64,7 +64,7 @@ public class Program
 
         table.AddRow(r => r
             .SetHeight(300)
-            .Cells.First().SetContent(new ImageCellContent(@".\images\Example.jpg"))
+            .Cells.First().SetContent(new ImageCellContent(File.ReadAllBytes(@".\images\Example.jpg")))
             .MergeNext()
             .SetFormat(f => f
                 .SetContentVerticalAlignment(CellContentVerticalAlignment.Middle)

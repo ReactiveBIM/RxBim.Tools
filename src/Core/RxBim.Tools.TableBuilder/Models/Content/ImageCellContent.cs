@@ -23,7 +23,7 @@ public class ImageCellContent : ICellContent
     public object? ValueObject { get; }
 
     /// <summary>
-    /// Image file.
+    /// Image data.
     /// </summary>
     public byte[] Image { get; }
 }
