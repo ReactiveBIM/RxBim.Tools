@@ -43,7 +43,7 @@ internal class FromExcelTableConverter : IFromExcelTableConverter
                 if (xlPictures.TryGetValue(xlCell, out var xlPicture))
                     cellBuilder.SetContent(new ImageCellContent(xlPicture.ImageStream.ToArray(), xlCell.Value));
                 else
-                    xlCell.SetValue(xlCell.Value);
+                    cellBuilder.SetValue(xlCell.Value);
 
                 tableColumnIndex++;
             }
