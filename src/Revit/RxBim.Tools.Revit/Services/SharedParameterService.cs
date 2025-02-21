@@ -459,6 +459,9 @@
         {
             var binding = doc.ParameterBindings.get_Item(sharedParameter.GetDefinition());
 
+            if (binding is null)
+                return Result.Failure($"Параметр {sharedParameter.Name} не привязан ни к одной категории");
+
             var missingCategories = new List<string>();
             var builtInCategories = sharedParameterInfo.CreateData.CategoriesForBind;
             if (builtInCategories is not null)
