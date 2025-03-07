@@ -1,49 +1,48 @@
-﻿namespace RxBim.Tools.TableBuilder
+﻿namespace RxBim.Tools.TableBuilder;
+
+using System;
+
+/// <summary>
+/// The builder of a single <see cref="Column"/> of a <see cref="Table"/>.
+/// </summary>
+internal class ColumnEditor : CellsSetEditor<Column, ColumnEditor>, IColumnEditor
 {
-    using System;
+    /// <inheritdoc />
+    public ColumnEditor(Column column)
+        : base(column)
+    {
+    }
 
     /// <summary>
-    /// The builder of a single <see cref="Column"/> of a <see cref="Table"/>.
+    /// Sets the width of the column.
     /// </summary>
-    internal class ColumnEditor : CellsSetEditor<Column, ColumnEditor>, IColumnEditor
+    /// <param name="width">Column width.</param>
+    public IColumnEditor SetWidth(double width)
     {
-        /// <inheritdoc />
-        public ColumnEditor(Column column)
-            : base(column)
-        {
-        }
+        if (width <= 0)
+            throw new ArgumentException("Must be a positive number.", nameof(width));
 
-        /// <summary>
-        /// Sets the width of the column.
-        /// </summary>
-        /// <param name="width">Column width.</param>
-        public IColumnEditor SetWidth(double width)
-        {
-            if (width <= 0)
-                throw new ArgumentException("Must be a positive number.", nameof(width));
+        ObjectForBuild.Width = width;
+        return this;
+    }
 
-            ObjectForBuild.Width = width;
-            return this;
-        }
+    /// <inheritdoc />
+    IColumnEditor IColumnEditor.SetFormat(CellFormatStyle format)
+    {
+        SetFormat(format);
+        return this;
+    }
 
-        /// <inheritdoc />
-        IColumnEditor IColumnEditor.SetFormat(CellFormatStyle format)
-        {
-            SetFormat(format);
-            return this;
-        }
+    /// <inheritdoc />
+    IColumnEditor IColumnEditor.SetFormat(Action<ICellFormatStyleBuilder> action)
+    {
+        SetFormat(action);
+        return this;
+    }
 
-        /// <inheritdoc />
-        IColumnEditor IColumnEditor.SetFormat(Action<ICellFormatStyleBuilder> action)
-        {
-            SetFormat(action);
-            return this;
-        }
-
-        /// <inheritdoc />
-        public int GetColumnIndex()
-        {
-            return ObjectForBuild.GetIndex();
-        }
+    /// <inheritdoc />
+    public int GetColumnIndex()
+    {
+        return ObjectForBuild.GetIndex();
     }
 }

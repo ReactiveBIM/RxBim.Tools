@@ -1,11 +1,10 @@
-﻿namespace RxBim.Tools.Revit.Abstractions
-{
-    using Autodesk.Revit.DB;
+﻿namespace RxBim.Tools.Revit.Abstractions;
 
-    /// <summary>
-    /// Wrapper for <see cref="Document"/>.
-    /// </summary>
-    public interface IDocumentWrapper : ITransactionContextWrapper
-    {
-    }
+using Autodesk.Revit.DB;
+
+/// <summary>
+/// Wrapper for <see cref="Document"/>.
+/// </summary>
+public interface IDocumentWrapper : ITransactionContextWrapper
+{
 }

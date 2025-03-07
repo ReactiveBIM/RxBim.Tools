@@ -1,32 +1,31 @@
-﻿namespace RxBim.Tools.TableBuilder
+﻿namespace RxBim.Tools.TableBuilder;
+
+/// <summary>
+/// The content of a cell.
+/// </summary>
+/// <typeparam name="T">Value type.</typeparam>
+public abstract class CellContent<T> : ICellContent
 {
     /// <summary>
-    /// The content of a cell.
+    /// Initializes a new instance of the <see cref="CellContent{T}"/> class.
     /// </summary>
-    /// <typeparam name="T">Value type.</typeparam>
-    public abstract class CellContent<T> : ICellContent
+    /// <param name="value">Value.</param>
+    protected CellContent(T value)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CellContent{T}"/> class.
-        /// </summary>
-        /// <param name="value">Value.</param>
-        protected CellContent(T value)
-        {
-            Value = value;
-        }
+        Value = value;
+    }
 
-        /// <summary>
-        /// Cell content value.
-        /// </summary>
-        public T Value { get; }
+    /// <summary>
+    /// Cell content value.
+    /// </summary>
+    public T Value { get; }
 
-        /// <inheritdoc />
-        public object? ValueObject => Value;
+    /// <inheritdoc />
+    public object? ValueObject => Value;
 
-        /// <inheritdoc />
-        public override string ToString()
-        {
-            return Value?.ToString() ?? base.ToString();
-        }
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return Value?.ToString() ?? base.ToString();
     }
 }

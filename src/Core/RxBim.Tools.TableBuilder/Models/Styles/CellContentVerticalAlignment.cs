@@ -1,23 +1,22 @@
-﻿namespace RxBim.Tools.TableBuilder
+﻿namespace RxBim.Tools.TableBuilder;
+
+/// <summary>
+/// Vertical alignment type.
+/// </summary>
+public enum CellContentVerticalAlignment
 {
     /// <summary>
-    /// Vertical alignment type.
+    /// Top alignment.
     /// </summary>
-    public enum CellContentVerticalAlignment
-    {
-        /// <summary>
-        /// Top alignment.
-        /// </summary>
-        Top,
+    Top,
 
-        /// <summary>
-        /// Middle alignment.
-        /// </summary>
-        Middle,
+    /// <summary>
+    /// Middle alignment.
+    /// </summary>
+    Middle,
 
-        /// <summary>
-        /// Bottom alignment.
-        /// </summary>
-        Bottom
-    }
+    /// <summary>
+    /// Bottom alignment.
+    /// </summary>
+    Bottom
 }

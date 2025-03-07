@@ -1,28 +1,27 @@
-﻿namespace RxBim.Tools.Autocad
+﻿namespace RxBim.Tools.Autocad;
+
+/// <summary>
+/// AutoCAD coordinate systems enumeration.
+/// </summary>
+public enum CoordinateSystemType
 {
     /// <summary>
-    /// AutoCAD coordinate systems enumeration.
+    /// World Coordinate System.
     /// </summary>
-    public enum CoordinateSystemType
-    {
-        /// <summary>
-        /// World Coordinate System.
-        /// </summary>
-        WCS = 0,
+    WCS = 0,
 
-        /// <summary>
-        /// Current User Coordinate System.
-        /// </summary>
-        UCS,
+    /// <summary>
+    /// Current User Coordinate System.
+    /// </summary>
+    UCS,
 
-        /// <summary>
-        /// Display Coordinate System of the current viewport.
-        /// </summary>
-        DCS,
+    /// <summary>
+    /// Display Coordinate System of the current viewport.
+    /// </summary>
+    DCS,
 
-        /// <summary>
-        /// Paper Space Display Coordinate System.
-        /// </summary>
-        PSDCS
-    }
+    /// <summary>
+    /// Paper Space Display Coordinate System.
+    /// </summary>
+    PSDCS
 }

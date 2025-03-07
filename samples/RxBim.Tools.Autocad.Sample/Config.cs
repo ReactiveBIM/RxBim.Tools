@@ -1,19 +1,18 @@
-﻿namespace RxBim.Tools.Autocad.Sample
-{
-    using Abstractions;
-    using Di;
-    using Microsoft.Extensions.DependencyInjection;
-    using Services;
+﻿namespace RxBim.Tools.Autocad.Sample;
 
+using Abstractions;
+using Di;
+using Microsoft.Extensions.DependencyInjection;
+using Services;
+
+/// <inheritdoc />
+public class Config : ICommandConfiguration
+{
     /// <inheritdoc />
-    public class Config : ICommandConfiguration
+    public void Configure(IServiceCollection container)
     {
-        /// <inheritdoc />
-        public void Configure(IServiceCollection container)
-        {
-            container.AddAutocadHelpers();
-            container.AddSingleton<ICircleService, CircleService>();
-            container.AddSingleton<IEntityService, EntityService>();
-        }
+        container.AddAutocadHelpers();
+        container.AddSingleton<ICircleService, CircleService>();
+        container.AddSingleton<IEntityService, EntityService>();
     }
 }

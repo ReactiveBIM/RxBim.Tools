@@ -1,29 +1,28 @@
-﻿namespace RxBim.Tools
+﻿namespace RxBim.Tools;
+
+using JetBrains.Annotations;
+
+/// <summary>
+/// Class for text messages with <see cref="IObjectIdWrapper"/>.
+/// </summary>
+[PublicAPI]
+public class TextWithIdMessage : MessageBase
 {
-    using JetBrains.Annotations;
+    /// <inheritdoc />
+    public TextWithIdMessage(string text, IObjectIdWrapper objectId, bool isDebugMessage = false)
+        : base(text, isDebugMessage)
+    {
+        ObjectId = objectId;
+    }
 
     /// <summary>
-    /// Class for text messages with <see cref="IObjectIdWrapper"/>.
+    /// Object Id.
     /// </summary>
-    [PublicAPI]
-    public class TextWithIdMessage : MessageBase
+    public IObjectIdWrapper ObjectId { get; }
+
+    /// <inheritdoc />
+    public override string ToString()
     {
-        /// <inheritdoc />
-        public TextWithIdMessage(string text, IObjectIdWrapper objectId, bool isDebugMessage = false)
-            : base(text, isDebugMessage)
-        {
-            ObjectId = objectId;
-        }
-
-        /// <summary>
-        /// Object Id.
-        /// </summary>
-        public IObjectIdWrapper ObjectId { get; }
-
-        /// <inheritdoc />
-        public override string ToString()
-        {
-            return $"{Text} ({ObjectId})";
-        }
+        return $"{Text} ({ObjectId})";
     }
 }

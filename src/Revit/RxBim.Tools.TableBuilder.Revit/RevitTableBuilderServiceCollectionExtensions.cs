@@ -1,22 +1,21 @@
-﻿namespace RxBim.Tools.TableBuilder
-{
-    using JetBrains.Annotations;
-    using Microsoft.Extensions.DependencyInjection;
+﻿namespace RxBim.Tools.TableBuilder;
 
+using JetBrains.Annotations;
+using Microsoft.Extensions.DependencyInjection;
+
+/// <summary>
+/// Container extensions
+/// </summary>
+public static class RevitTableBuilderServiceCollectionExtensions
+{
     /// <summary>
-    /// Container extensions
+    /// Register table converters.
     /// </summary>
-    public static class RevitTableBuilderServiceCollectionExtensions
+    /// <param name="container"><see cref="IServiceCollection"/>.</param>
+    [UsedImplicitly]
+    public static IServiceCollection AddRevitTableBuilder(this IServiceCollection container)
     {
-        /// <summary>
-        /// Register table converters.
-        /// </summary>
-        /// <param name="container"><see cref="IServiceCollection"/>.</param>
-        [UsedImplicitly]
-        public static IServiceCollection AddRevitTableBuilder(this IServiceCollection container)
-        {
-            return container
-                .AddSingleton<IViewScheduleTableConverter, ViewScheduleTableConverter>();
-        }
+        return container
+            .AddSingleton<IViewScheduleTableConverter, ViewScheduleTableConverter>();
     }
 }

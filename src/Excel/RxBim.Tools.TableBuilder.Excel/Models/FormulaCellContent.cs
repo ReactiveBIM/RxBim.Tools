@@ -1,37 +1,36 @@
-﻿namespace RxBim.Tools.TableBuilder
+﻿namespace RxBim.Tools.TableBuilder;
+
+using JetBrains.Annotations;
+
+/// <summary>
+/// The formula content of a cell
+/// </summary>
+[PublicAPI]
+public class FormulaCellContent : ICellContent
 {
-    using JetBrains.Annotations;
+    /// <summary>
+    /// ctor
+    /// </summary>
+    /// <param name="formula">Formulas</param>
+    /// <param name="cellRange">Cell range for formula</param>
+    public FormulaCellContent(
+        Formulas formula,
+        (int FromRow, int FromColumn, int ToRow, int ToColumn) cellRange)
+    {
+        Formula = formula;
+        CellRange = cellRange;
+    }
 
     /// <summary>
-    /// The formula content of a cell
+    /// Formulas
     /// </summary>
-    [PublicAPI]
-    public class FormulaCellContent : ICellContent
-    {
-        /// <summary>
-        /// ctor
-        /// </summary>
-        /// <param name="formula">Formulas</param>
-        /// <param name="cellRange">Cell range for formula</param>
-        public FormulaCellContent(
-            Formulas formula,
-            (int FromRow, int FromColumn, int ToRow, int ToColumn) cellRange)
-        {
-            Formula = formula;
-            CellRange = cellRange;
-        }
+    public Formulas Formula { get; set; }
 
-        /// <summary>
-        /// Formulas
-        /// </summary>
-        public Formulas Formula { get; set; }
+    /// <summary>
+    /// Cell range for formula
+    /// </summary>
+    public (int FromRow, int FromColumn, int ToRow, int ToColumn) CellRange { get; set; }
 
-        /// <summary>
-        /// Cell range for formula
-        /// </summary>
-        public (int FromRow, int FromColumn, int ToRow, int ToColumn) CellRange { get; set; }
-
-        /// <inheritdoc />
-        public object? ValueObject => null;
-    }
+    /// <inheritdoc />
+    public object? ValueObject => null;
 }

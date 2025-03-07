@@ -1,83 +1,82 @@
-﻿namespace RxBim.Tools.Autocad
+﻿namespace RxBim.Tools.Autocad;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Autodesk.AutoCAD.DatabaseServices;
+using Autodesk.AutoCAD.EditorInput;
+using Autodesk.AutoCAD.Runtime;
+using JetBrains.Annotations;
+using AcRtException = Autodesk.AutoCAD.Runtime.Exception;
+
+/// <inheritdoc />
+[UsedImplicitly]
+internal class ObjectsSelectionService : IObjectsSelectionService
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Autodesk.AutoCAD.DatabaseServices;
-    using Autodesk.AutoCAD.EditorInput;
-    using Autodesk.AutoCAD.Runtime;
-    using JetBrains.Annotations;
-    using AcRtException = Autodesk.AutoCAD.Runtime.Exception;
+    private readonly Editor _editor;
+    private readonly PromptSelectionOptions _options;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ObjectsSelectionService"/> class.
+    /// </summary>
+    /// <param name="editor">Editor</param>
+    public ObjectsSelectionService(Editor editor)
+    {
+        _editor = editor;
+        _options = new PromptSelectionOptions();
+        _options.KeywordInput += (_, e) => throw new AcRtException(ErrorStatus.OK, e.Input);
+    }
 
     /// <inheritdoc />
-    [UsedImplicitly]
-    internal class ObjectsSelectionService : IObjectsSelectionService
+    public Func<ObjectId, bool> CanBeSelected { get; set; } = _ => true;
+
+    /// <inheritdoc />
+    public IObjectsSelectionResult RunSelection()
     {
-        private readonly Editor _editor;
-        private readonly PromptSelectionOptions _options;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ObjectsSelectionService"/> class.
-        /// </summary>
-        /// <param name="editor">Editor</param>
-        public ObjectsSelectionService(Editor editor)
+        var selectionResult = _editor.SelectImplied();
+        if (selectionResult.Status == PromptStatus.OK)
         {
-            _editor = editor;
-            _options = new PromptSelectionOptions();
-            _options.KeywordInput += (_, e) => throw new AcRtException(ErrorStatus.OK, e.Input);
+            var trueObjIds = selectionResult.Value.GetObjectIds().Where(CanBeSelected).ToArray();
+            _editor.SetImpliedSelection(trueObjIds);
         }
 
-        /// <inheritdoc />
-        public Func<ObjectId, bool> CanBeSelected { get; set; } = _ => true;
-
-        /// <inheritdoc />
-        public IObjectsSelectionResult RunSelection()
+        using (new SelectionAddedFilter(_editor, CanBeSelected))
         {
-            var selectionResult = _editor.SelectImplied();
-            if (selectionResult.Status == PromptStatus.OK)
+            try
             {
-                var trueObjIds = selectionResult.Value.GetObjectIds().Where(CanBeSelected).ToArray();
-                _editor.SetImpliedSelection(trueObjIds);
+                selectionResult = _editor.GetSelection(_options);
             }
-
-            using (new SelectionAddedFilter(_editor, CanBeSelected))
+            catch (AcRtException e)
             {
-                try
-                {
-                    selectionResult = _editor.GetSelection(_options);
-                }
-                catch (AcRtException e)
-                {
-                    if (e.ErrorStatus == ErrorStatus.OK)
-                        return new ObjectsSelectionResult { IsKeyword = true, Keyword = e.Message };
-                }
+                if (e.ErrorStatus == ErrorStatus.OK)
+                    return new ObjectsSelectionResult { IsKeyword = true, Keyword = e.Message };
             }
-
-            if (selectionResult.Status == PromptStatus.OK && selectionResult.Value.Count > 0)
-            {
-                return new ObjectsSelectionResult
-                {
-                    IsKeyword = false,
-                    SelectedObjects = selectionResult.Value.GetObjectIds()
-                };
-            }
-
-            return ObjectsSelectionResult.Empty;
         }
 
-        /// <inheritdoc />
-        public void SetMessageAndKeywords(string message, Dictionary<string, string>? keywordGlobalAndLocalNames = null)
+        if (selectionResult.Status == PromptStatus.OK && selectionResult.Value.Count > 0)
         {
-            _options.Keywords.Clear();
-            _options.MessageForAdding = message;
-
-            if (keywordGlobalAndLocalNames is not { Count: > 0 })
-                return;
-
-            foreach (var globalAndLocalName in keywordGlobalAndLocalNames)
-                _options.Keywords.Add(globalAndLocalName.Key, globalAndLocalName.Value);
-
-            _options.MessageForAdding += _options.Keywords.GetDisplayString(true);
+            return new ObjectsSelectionResult
+            {
+                IsKeyword = false,
+                SelectedObjects = selectionResult.Value.GetObjectIds()
+            };
         }
+
+        return ObjectsSelectionResult.Empty;
+    }
+
+    /// <inheritdoc />
+    public void SetMessageAndKeywords(string message, Dictionary<string, string>? keywordGlobalAndLocalNames = null)
+    {
+        _options.Keywords.Clear();
+        _options.MessageForAdding = message;
+
+        if (keywordGlobalAndLocalNames is not { Count: > 0 })
+            return;
+
+        foreach (var globalAndLocalName in keywordGlobalAndLocalNames)
+            _options.Keywords.Add(globalAndLocalName.Key, globalAndLocalName.Value);
+
+        _options.MessageForAdding += _options.Keywords.GetDisplayString(true);
     }
 }

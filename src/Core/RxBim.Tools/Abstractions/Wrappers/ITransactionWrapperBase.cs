@@ -1,31 +1,30 @@
-﻿namespace RxBim.Tools
+﻿namespace RxBim.Tools;
+
+using System;
+
+/// <summary>
+/// Base transaction wrapper.
+/// </summary>
+public interface ITransactionWrapperBase : IDisposable, IWrapper
 {
-    using System;
+    /// <summary>
+    /// Transaction status.
+    /// </summary>
+    TransactionStatusEnum Status { get; }
 
     /// <summary>
-    /// Base transaction wrapper.
+    /// Starts.
     /// </summary>
-    public interface ITransactionWrapperBase : IDisposable, IWrapper
-    {
-        /// <summary>
-        /// Transaction status.
-        /// </summary>
-        TransactionStatusEnum Status { get; }
+    void Start();
 
-        /// <summary>
-        /// Starts.
-        /// </summary>
-        void Start();
+    /// <summary>
+    /// Rolls back all changes.
+    /// </summary>
+    void RollBack();
 
-        /// <summary>
-        /// Rolls back all changes.
-        /// </summary>
-        void RollBack();
-
-        /// <summary>
-        /// Returns true if all changes have been rolled back. Otherwise, returns false.
-        /// </summary>
-        [Obsolete]
-        bool IsRolledBack();
-    }
+    /// <summary>
+    /// Returns true if all changes have been rolled back. Otherwise, returns false.
+    /// </summary>
+    [Obsolete]
+    bool IsRolledBack();
 }
