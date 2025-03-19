@@ -1,52 +1,51 @@
-﻿namespace RxBim.Tools.Civil.Extensions
+﻿namespace RxBim.Tools.Civil.Extensions;
+
+using System;
+using Autodesk.Civil.DatabaseServices;
+
+/// <summary>
+/// Расширения для примитивов Civil 3D
+/// </summary>
+public static class CivilEntityExtensions
 {
-    using System;
-    using Autodesk.Civil.DatabaseServices;
+    /// <summary>
+    /// Возвращает истину, если примитив является ссылкой
+    /// </summary>
+    /// <param name="entity">Примитив</param>
+    public static bool IsShortcutReference(this Entity entity)
+    {
+        return entity.IsReferenceObject || entity.IsReferenceSubObject;
+    }
 
     /// <summary>
-    /// Расширения для примитивов Civil 3D
+    /// Редактирование объекта Civil
     /// </summary>
-    public static class CivilEntityExtensions
+    /// <param name="ent">Объект Civil</param>
+    /// <param name="edit">Действие с объектом</param>
+    /// <typeparam name="T">Тип объекта Civil</typeparam>
+    public static void Edit<T>(this T? ent, Action<T> edit)
+        where T : Entity
     {
-        /// <summary>
-        /// Возвращает истину, если примитив является ссылкой
-        /// </summary>
-        /// <param name="entity">Примитив</param>
-        public static bool IsShortcutReference(this Entity entity)
+        if (ent == null || ent.IsShortcutReference())
         {
-            return entity.IsReferenceObject || entity.IsReferenceSubObject;
+            return;
         }
 
-        /// <summary>
-        /// Редактирование объекта Civil
-        /// </summary>
-        /// <param name="ent">Объект Civil</param>
-        /// <param name="edit">Действие с объектом</param>
-        /// <typeparam name="T">Тип объекта Civil</typeparam>
-        public static void Edit<T>(this T? ent, Action<T> edit)
-            where T : Entity
-        {
-            if (ent == null || ent.IsShortcutReference())
-            {
-                return;
-            }
+        edit(ent);
+    }
 
-            edit(ent);
+    /// <summary>
+    /// Редактирование объекта Civil
+    /// </summary>
+    /// <param name="ent">Объект Civil</param>
+    /// <param name="edit">Действие с объектом</param>
+    public static void Edit(this Entity? ent, Action edit)
+    {
+        if (ent == null || ent.IsShortcutReference())
+        {
+            return;
         }
 
-        /// <summary>
-        /// Редактирование объекта Civil
-        /// </summary>
-        /// <param name="ent">Объект Civil</param>
-        /// <param name="edit">Действие с объектом</param>
-        public static void Edit(this Entity? ent, Action edit)
-        {
-            if (ent == null || ent.IsShortcutReference())
-            {
-                return;
-            }
-
-            edit();
-        }
+        edit();
     }
 }

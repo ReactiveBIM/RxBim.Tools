@@ -1,38 +1,37 @@
-namespace RxBim.Tools.Revit.Services
+namespace RxBim.Tools.Revit.Services;
+
+using System;
+using System.Threading.Tasks;
+using Abstractions;
+using Autodesk.Revit.UI;
+using JetBrains.Annotations;
+
+/// <inheritdoc />
+[PublicAPI]
+public class RevitTaskMock : IRevitTask
 {
-    using System;
-    using System.Threading.Tasks;
-    using Abstractions;
-    using Autodesk.Revit.UI;
-    using JetBrains.Annotations;
+    private readonly UIApplication _uiApplication;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RevitTaskMock"/> class.
+    /// </summary>
+    /// <param name="uiApplication">The UI app.</param>
+    public RevitTaskMock(UIApplication uiApplication)
+    {
+        _uiApplication = uiApplication;
+    }
 
     /// <inheritdoc />
-    [PublicAPI]
-    public class RevitTaskMock : IRevitTask
+    public Task Run(Action<UIApplication> action)
     {
-        private readonly UIApplication _uiApplication;
+        action.Invoke(_uiApplication);
+        return Task.CompletedTask;
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RevitTaskMock"/> class.
-        /// </summary>
-        /// <param name="uiApplication">The UI app.</param>
-        public RevitTaskMock(UIApplication uiApplication)
-        {
-            _uiApplication = uiApplication;
-        }
-
-        /// <inheritdoc />
-        public Task Run(Action<UIApplication> action)
-        {
-            action.Invoke(_uiApplication);
-            return Task.CompletedTask;
-        }
-
-        /// <inheritdoc />
-        public Task<TResult> Run<TResult>(Func<UIApplication, TResult> func)
-        {
-            var result = func.Invoke(_uiApplication);
-            return Task.FromResult(result);
-        }
+    /// <inheritdoc />
+    public Task<TResult> Run<TResult>(Func<UIApplication, TResult> func)
+    {
+        var result = func.Invoke(_uiApplication);
+        return Task.FromResult(result);
     }
 }

@@ -1,23 +1,22 @@
-﻿namespace RxBim.Tools.TableBuilder
+﻿namespace RxBim.Tools.TableBuilder;
+
+/// <summary>
+/// The line type of a table cell border.
+/// </summary>
+public enum CellBorderType
 {
     /// <summary>
-    /// The line type of a table cell border.
+    /// Hidden border line.
     /// </summary>
-    public enum CellBorderType
-    {
-        /// <summary>
-        /// Hidden border line.
-        /// </summary>
-        Hidden,
+    Hidden,
 
-        /// <summary>
-        /// Thin border line.
-        /// </summary>
-        Thin,
+    /// <summary>
+    /// Thin border line.
+    /// </summary>
+    Thin,
 
-        /// <summary>
-        /// Bold border line.
-        /// </summary>
-        Bold
-    }
+    /// <summary>
+    /// Bold border line.
+    /// </summary>
+    Bold
 }

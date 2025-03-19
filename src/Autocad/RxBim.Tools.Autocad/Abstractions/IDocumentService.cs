@@ -1,15 +1,14 @@
-﻿namespace RxBim.Tools.Autocad
-{
-    using Autodesk.AutoCAD.ApplicationServices;
+﻿namespace RxBim.Tools.Autocad;
 
+using Autodesk.AutoCAD.ApplicationServices;
+
+/// <summary>
+/// AutoCAD documents service
+/// </summary>
+public interface IDocumentService
+{
     /// <summary>
-    /// AutoCAD documents service
+    /// Gets the current document
     /// </summary>
-    public interface IDocumentService
-    {
-        /// <summary>
-        /// Gets the current document
-        /// </summary>
-        Document GetActiveDocument();
-    }
+    Document GetActiveDocument();
 }

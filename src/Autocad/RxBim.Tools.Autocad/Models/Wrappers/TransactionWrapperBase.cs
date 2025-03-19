@@ -1,58 +1,49 @@
-﻿namespace RxBim.Tools.Autocad
+﻿namespace RxBim.Tools.Autocad;
+
+using System;
+using Autodesk.AutoCAD.DatabaseServices;
+
+/// <summary>
+/// Autocad transaction base.
+/// </summary>
+internal abstract class TransactionWrapperBase(Transaction transaction)
+    : Wrapper<Transaction>(transaction), ITransactionWrapper
 {
-    using System;
-    using Autodesk.AutoCAD.DatabaseServices;
+    /// <inheritdoc />
+    public TransactionStatusEnum Status { get; private set; }
 
-    /// <summary>
-    /// Autocad transaction base.
-    /// </summary>
-    internal abstract class TransactionWrapperBase : Wrapper<Transaction>, ITransactionWrapper
+    /// <inheritdoc/>
+    public void Dispose() => Object.Dispose();
+
+    /// <inheritdoc />
+    public void Start()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TransactionWrapperBase"/> class.
-        /// </summary>
-        /// <param name="transaction"><see cref="Transaction"/> instance.</param>
-        protected TransactionWrapperBase(Transaction transaction)
-            : base(transaction)
-        {
-        }
+        // Started on creation.
+        if (Status == TransactionStatusEnum.Uninitialized)
+            Status = TransactionStatusEnum.Started;
+    }
 
-        /// <inheritdoc />
-        public TransactionStatusEnum Status { get; private set; }
+    /// <inheritdoc />
+    public void RollBack()
+    {
+        if (Status == TransactionStatusEnum.RolledBack)
+            return;
 
-        /// <inheritdoc/>
-        public void Dispose() => Object.Dispose();
+        Object.Abort();
+        Status = TransactionStatusEnum.RolledBack;
+    }
 
-        /// <inheritdoc />
-        public void Start()
-        {
-            // Started on creation.
-            if (Status == TransactionStatusEnum.Uninitialized)
-                Status = TransactionStatusEnum.Started;
-        }
+    /// <inheritdoc />
+    [Obsolete]
+    public bool IsRolledBack() => Status == TransactionStatusEnum.RolledBack;
 
-        /// <inheritdoc />
-        public void RollBack()
-        {
-            if (Status == TransactionStatusEnum.RolledBack)
-                return;
+    /// <inheritdoc />
+    public void Commit()
+    {
+        if (Status == TransactionStatusEnum.Committed)
+            return;
 
-            Object.Abort();
-            Status = TransactionStatusEnum.RolledBack;
-        }
-
-        /// <inheritdoc />
-        [Obsolete]
-        public bool IsRolledBack() => Status == TransactionStatusEnum.RolledBack;
-
-        /// <inheritdoc />
-        public void Commit()
-        {
-            if (Status == TransactionStatusEnum.Committed)
-                return;
-
-            Object.Commit();
-            Status = TransactionStatusEnum.Committed;
-        }
+        Object.Commit();
+        Status = TransactionStatusEnum.Committed;
     }
 }

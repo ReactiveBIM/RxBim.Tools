@@ -1,35 +1,34 @@
-﻿namespace RxBim.Tools.Autocad.Sample.Services
+﻿namespace RxBim.Tools.Autocad.Sample.Services;
+
+using Abstractions;
+using Autodesk.AutoCAD.DatabaseServices;
+using Autodesk.AutoCAD.EditorInput;
+
+/// <inheritdoc />
+public class EntityService : IEntityService
 {
-    using Abstractions;
-    using Autodesk.AutoCAD.DatabaseServices;
-    using Autodesk.AutoCAD.EditorInput;
+    private readonly Editor _editor;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="EntityService"/> class.
+    /// </summary>
+    /// <param name="editor"><see cref="Editor"/> instance.</param>
+    public EntityService(Editor editor)
+    {
+        _editor = editor;
+    }
 
     /// <inheritdoc />
-    public class EntityService : IEntityService
+    public bool GetEntity(out ObjectId entityId)
     {
-        private readonly Editor _editor;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EntityService"/> class.
-        /// </summary>
-        /// <param name="editor"><see cref="Editor"/> instance.</param>
-        public EntityService(Editor editor)
+        var entityResult = _editor.GetEntity("\nSelect an entity: ");
+        if (entityResult.Status == PromptStatus.OK)
         {
-            _editor = editor;
+            entityId = entityResult.ObjectId;
+            return true;
         }
 
-        /// <inheritdoc />
-        public bool GetEntity(out ObjectId entityId)
-        {
-            var entityResult = _editor.GetEntity("\nSelect an entity: ");
-            if (entityResult.Status == PromptStatus.OK)
-            {
-                entityId = entityResult.ObjectId;
-                return true;
-            }
-
-            entityId = ObjectId.Null;
-            return false;
-        }
+        entityId = ObjectId.Null;
+        return false;
     }
 }

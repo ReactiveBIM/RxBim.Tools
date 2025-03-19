@@ -1,17 +1,16 @@
-﻿namespace RxBim.Tools.TableBuilder
+﻿namespace RxBim.Tools.TableBuilder;
+
+/// <summary>
+/// Extensions for <see cref="Row"/>
+/// </summary>
+public static class RowExtensions
 {
     /// <summary>
-    /// Extensions for <see cref="Row"/>
+    /// Returns the index of this row in the table.
     /// </summary>
-    public static class RowExtensions
+    /// <param name="row">Row object.</param>
+    public static int GetIndex(this Row row)
     {
-        /// <summary>
-        /// Returns the index of this row in the table.
-        /// </summary>
-        /// <param name="row">Row object.</param>
-        public static int GetIndex(this Row row)
-        {
-            return row.Table.Rows.IndexOf(row);
-        }
+        return row.Table.Rows.IndexOf(row);
     }
 }

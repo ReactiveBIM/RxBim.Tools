@@ -1,26 +1,25 @@
-﻿namespace RxBim.Tools.TableBuilder
+﻿namespace RxBim.Tools.TableBuilder;
+
+/// <summary>
+/// Extensions for <see cref="CellFormatStyle"/>
+/// </summary>
+public static class CellFormatStyleExtensions
 {
     /// <summary>
-    /// Extensions for <see cref="CellFormatStyle"/>
+    /// Returns horizontal margins value.
     /// </summary>
-    public static class CellFormatStyleExtensions
+    /// <param name="format"><see cref="CellFormatStyle"/> object.</param>
+    public static double? GetContentHorizontalMargins(this CellFormatStyle format)
     {
-        /// <summary>
-        /// Returns horizontal margins value.
-        /// </summary>
-        /// <param name="format"><see cref="CellFormatStyle"/> object.</param>
-        public static double? GetContentHorizontalMargins(this CellFormatStyle format)
-        {
-            return format.ContentMargins.Left ?? format.ContentMargins.Right ?? 0;
-        }
+        return format.ContentMargins.Left ?? format.ContentMargins.Right ?? 0;
+    }
 
-        /// <summary>
-        /// Returns vertical margins value.
-        /// </summary>
-        /// <param name="format"><see cref="CellFormatStyle"/> object.</param>
-        public static double? GetContentVerticalMargins(this CellFormatStyle format)
-        {
-            return format.ContentMargins.Top ?? format.ContentMargins.Bottom ?? 0;
-        }
+    /// <summary>
+    /// Returns vertical margins value.
+    /// </summary>
+    /// <param name="format"><see cref="CellFormatStyle"/> object.</param>
+    public static double? GetContentVerticalMargins(this CellFormatStyle format)
+    {
+        return format.ContentMargins.Top ?? format.ContentMargins.Bottom ?? 0;
     }
 }
