@@ -1,6 +1,6 @@
 ﻿<Project>
     <PropertyGroup>
-        <Version>4.0.1-dev007</Version>
+        <Version>4.0.1-rc001</Version>
         <TargetFramework>net472</TargetFramework>
         <PlatformTarget>x64</PlatformTarget>
         <LangVersion>12</LangVersion>
@@ -34,7 +34,7 @@
     </Choose>
 
     <ItemGroup>
-        <PackageReference Condition=" '$(UseDi)' == 'true' " Include="RxBim.Di" Version="3.0.1-dev002"/>
+        <PackageReference Condition=" '$(UseDi)' == 'true' " Include="RxBim.Di" Version="3.0.1-rc001"/>
     </ItemGroup>
 
     <Choose>
