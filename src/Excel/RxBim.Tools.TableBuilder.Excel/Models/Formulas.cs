@@ -1,13 +1,12 @@
-﻿namespace RxBim.Tools.TableBuilder
+﻿namespace RxBim.Tools.TableBuilder;
+
+/// <summary>
+/// Formulas
+/// </summary>
+public enum Formulas
 {
     /// <summary>
-    /// Formulas
+    /// Sum
     /// </summary>
-    public enum Formulas
-    {
-        /// <summary>
-        /// Sum
-        /// </summary>
-        Sum
-    }
+    Sum
 }

@@ -1,23 +1,22 @@
-﻿namespace RxBim.Tools.TableBuilder
+﻿namespace RxBim.Tools.TableBuilder;
+
+/// <summary>
+/// Horizontal alignment type.
+/// </summary>
+public enum CellContentHorizontalAlignment
 {
     /// <summary>
-    /// Horizontal alignment type.
+    /// Left alignment.
     /// </summary>
-    public enum CellContentHorizontalAlignment
-    {
-        /// <summary>
-        /// Left alignment.
-        /// </summary>
-        Left,
+    Left,
 
-        /// <summary>
-        /// Center alignment.
-        /// </summary>
-        Center,
+    /// <summary>
+    /// Center alignment.
+    /// </summary>
+    Center,
 
-        /// <summary>
-        /// Right alignment.
-        /// </summary>
-        Right
-    }
+    /// <summary>
+    /// Right alignment.
+    /// </summary>
+    Right
 }

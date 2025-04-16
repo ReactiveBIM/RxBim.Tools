@@ -1,12 +1,11 @@
-﻿namespace RxBim.Tools.TableBuilder
+﻿namespace RxBim.Tools.TableBuilder;
+
+/// <inheritdoc />
+public class ObjectCellContent : CellContent<object>
 {
     /// <inheritdoc />
-    public class ObjectCellContent : CellContent<object>
+    public ObjectCellContent(object value)
+        : base(value)
     {
-        /// <inheritdoc />
-        public ObjectCellContent(object value)
-            : base(value)
-        {
-        }
     }
 }

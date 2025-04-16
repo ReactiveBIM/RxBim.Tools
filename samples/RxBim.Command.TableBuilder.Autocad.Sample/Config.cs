@@ -1,22 +1,21 @@
-﻿namespace RxBim.Command.TableBuilder.Autocad.Sample
-{
-    using Abstractions;
-    using Di;
-    using Microsoft.Extensions.DependencyInjection;
-    using Services;
-    using Tools.Autocad;
-    using Tools.TableBuilder;
+﻿namespace RxBim.Command.TableBuilder.Autocad.Sample;
 
+using Abstractions;
+using Di;
+using Microsoft.Extensions.DependencyInjection;
+using Services;
+using Tools.Autocad;
+using Tools.TableBuilder;
+
+/// <inheritdoc />
+public class Config : ICommandConfiguration
+{
     /// <inheritdoc />
-    public class Config : ICommandConfiguration
+    public void Configure(IServiceCollection container)
     {
-        /// <inheritdoc />
-        public void Configure(IServiceCollection container)
-        {
-            container
-                .AddAutocadHelpers()
-                .AddAutocadTableBuilder()
-                .AddSingleton<ITableDataService, TableDataService>();
-        }
+        container
+            .AddAutocadHelpers()
+            .AddAutocadTableBuilder()
+            .AddSingleton<ITableDataService, TableDataService>();
     }
 }

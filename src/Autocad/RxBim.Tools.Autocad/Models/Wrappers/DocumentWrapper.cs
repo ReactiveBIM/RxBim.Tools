@@ -1,14 +1,7 @@
-﻿namespace RxBim.Tools.Autocad
-{
-    using Autodesk.AutoCAD.ApplicationServices;
+﻿namespace RxBim.Tools.Autocad;
 
-    /// <inheritdoc cref="RxBim.Tools.Autocad.IDocumentWrapper" />
-    public class DocumentWrapper : Wrapper<Document>, IDocumentWrapper
-    {
-        /// <inheritdoc />
-        public DocumentWrapper(Document contextObject)
-            : base(contextObject)
-        {
-        }
-    }
-}
+using Autodesk.AutoCAD.ApplicationServices;
+
+/// <inheritdoc cref="RxBim.Tools.Autocad.IDocumentWrapper" />
+public class DocumentWrapper(Document contextObject)
+    : Wrapper<Document>(contextObject), IDocumentWrapper;

@@ -1,13 +1,12 @@
-﻿namespace RxBim.Tools.TableBuilder
+﻿namespace RxBim.Tools.TableBuilder;
+
+/// <summary>
+/// The content of a cell.
+/// </summary>
+public interface ICellContent
 {
     /// <summary>
-    /// The content of a cell.
+    /// Cell content value.
     /// </summary>
-    public interface ICellContent
-    {
-        /// <summary>
-        /// Cell content value.
-        /// </summary>
-        object? ValueObject { get; }
-    }
+    object? ValueObject { get; }
 }

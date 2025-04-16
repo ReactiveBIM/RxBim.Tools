@@ -1,9 +1,8 @@
-﻿namespace RxBim.Tools
+﻿namespace RxBim.Tools;
+
+/// <summary>
+/// Transaction context wrapper.
+/// </summary>
+public interface ITransactionContextWrapper : IWrapper
 {
-    /// <summary>
-    /// Transaction context wrapper.
-    /// </summary>
-    public interface ITransactionContextWrapper : IWrapper
-    {
-    }
 }

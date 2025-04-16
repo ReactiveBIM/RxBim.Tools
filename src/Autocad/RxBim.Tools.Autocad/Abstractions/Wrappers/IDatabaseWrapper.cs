@@ -1,11 +1,8 @@
-﻿namespace RxBim.Tools.Autocad
-{
-    using Autodesk.AutoCAD.DatabaseServices;
+﻿namespace RxBim.Tools.Autocad;
 
-    /// <summary>
-    /// Wrapper for <see cref="Database"/>.
-    /// </summary>
-    public interface IDatabaseWrapper : ITransactionContextWrapper
-    {
-    }
-}
+using Autodesk.AutoCAD.DatabaseServices;
+
+/// <summary>
+/// Wrapper for <see cref="Database"/>.
+/// </summary>
+public interface IDatabaseWrapper : ITransactionContextWrapper;

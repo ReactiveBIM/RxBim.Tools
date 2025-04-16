@@ -1,16 +1,15 @@
-﻿namespace RxBim.Tools.Revit.Models
-{
-    using JetBrains.Annotations;
+﻿namespace RxBim.Tools.Revit.Models;
 
+using JetBrains.Annotations;
+
+/// <summary>
+/// Информация об источниках для файлов общих параметров
+/// </summary>
+[PublicAPI]
+public class SharedParameterFileSource
+{
     /// <summary>
-    /// Информация об источниках для файлов общих параметров
+    /// Список путей к файлам общих параметров
     /// </summary>
-    [PublicAPI]
-    public class SharedParameterFileSource
-    {
-        /// <summary>
-        /// Список путей к файлам общих параметров
-        /// </summary>
-        public string[]? FilePaths { get; set; }
-    }
+    public string[]? FilePaths { get; set; }
 }

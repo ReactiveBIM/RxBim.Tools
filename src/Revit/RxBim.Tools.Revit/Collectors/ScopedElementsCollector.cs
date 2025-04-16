@@ -1,255 +1,254 @@
-﻿namespace RxBim.Tools.Revit.Collectors
+﻿namespace RxBim.Tools.Revit.Collectors;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Abstractions;
+using Autodesk.Revit.DB;
+using Autodesk.Revit.UI;
+using Autodesk.Revit.UI.Selection;
+using Extensions;
+using Helpers;
+using JetBrains.Annotations;
+using Models;
+using OperationCanceledException = Autodesk.Revit.Exceptions.OperationCanceledException;
+
+/// <summary>
+/// Коллектор части элементов
+/// </summary>
+[UsedImplicitly]
+internal class ScopedElementsCollector : IScopedElementsCollector
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Abstractions;
-    using Autodesk.Revit.DB;
-    using Autodesk.Revit.UI;
-    using Autodesk.Revit.UI.Selection;
-    using Extensions;
-    using Helpers;
-    using JetBrains.Annotations;
-    using Models;
-    using OperationCanceledException = Autodesk.Revit.Exceptions.OperationCanceledException;
+    private readonly UIApplication _uiApplication;
+    private readonly IElementsDisplay _elementsDisplay;
+
+    private readonly Dictionary<string, List<ElementId>> _selectedElementsIds
+        = new Dictionary<string, List<ElementId>>();
 
     /// <summary>
-    /// Коллектор части элементов
+    /// Конструктор
     /// </summary>
-    [UsedImplicitly]
-    internal class ScopedElementsCollector : IScopedElementsCollector
+    /// <param name="uiApplication">Current <see cref="UIApplication"/></param>
+    /// <param name="elementsDisplay">Сервис показа элементов в модели</param>
+    public ScopedElementsCollector(UIApplication uiApplication, IElementsDisplay elementsDisplay)
     {
-        private readonly UIApplication _uiApplication;
-        private readonly IElementsDisplay _elementsDisplay;
+        _uiApplication = uiApplication;
+        _elementsDisplay = elementsDisplay;
+    }
 
-        private readonly Dictionary<string, List<ElementId>> _selectedElementsIds
-            = new Dictionary<string, List<ElementId>>();
+    /// <inheritdoc/>
+    public ScopeType Scope { get; private set; } = ScopeType.AllModel;
 
-        /// <summary>
-        /// Конструктор
-        /// </summary>
-        /// <param name="uiApplication">Current <see cref="UIApplication"/></param>
-        /// <param name="elementsDisplay">Сервис показа элементов в модели</param>
-        public ScopedElementsCollector(UIApplication uiApplication, IElementsDisplay elementsDisplay)
+    /// <inheritdoc/>
+    public FilteredElementCollector GetFilteredElementCollector(
+        Document? doc = null,
+        bool ignoreScope = false,
+        bool includeSubFamilies = true)
+    {
+        doc ??= _uiApplication.ActiveUIDocument.Document;
+
+        // Снимаем выделение, чтобы избежать блокировки контекста Revit
+        SaveAndResetSelectedElements();
+
+        if (ignoreScope)
+            return new FilteredElementCollector(doc);
+
+        switch (Scope)
         {
-            _uiApplication = uiApplication;
-            _elementsDisplay = elementsDisplay;
-        }
+            case ScopeType.SelectedElements:
+                if (!_selectedElementsIds.ContainsKey(doc.Title))
+                    return new FilteredElementCollector(doc, new List<ElementId> { ElementId.InvalidElementId });
 
-        /// <inheritdoc/>
-        public ScopeType Scope { get; private set; } = ScopeType.AllModel;
+                var selectedIds = _selectedElementsIds[doc.Title];
 
-        /// <inheritdoc/>
-        public FilteredElementCollector GetFilteredElementCollector(
-            Document? doc = null,
-            bool ignoreScope = false,
-            bool includeSubFamilies = true)
-        {
-            doc ??= _uiApplication.ActiveUIDocument.Document;
+                // Вытаскиваем вложенные элементы
+                var nestedSelectedIds = new List<ElementId>();
+                foreach (var selectedId in selectedIds)
+                {
+                    if (includeSubFamilies)
+                        nestedSelectedIds.AddRange(GetSubFamilies(selectedId));
+                }
 
-            // Снимаем выделение, чтобы избежать блокировки контекста Revit
-            SaveAndResetSelectedElements();
+                selectedIds.AddRange(nestedSelectedIds);
+                return selectedIds.Any()
+                    ? new FilteredElementCollector(doc, selectedIds)
+                    : new FilteredElementCollector(doc, new List<ElementId> { ElementId.InvalidElementId });
 
-            if (ignoreScope)
+            case ScopeType.ActiveView:
+                return new FilteredElementCollector(doc, _uiApplication.ActiveUIDocument.ActiveGraphicalView.Id);
+
+            default:
                 return new FilteredElementCollector(doc);
-
-            switch (Scope)
-            {
-                case ScopeType.SelectedElements:
-                    if (!_selectedElementsIds.ContainsKey(doc.Title))
-                        return new FilteredElementCollector(doc, new List<ElementId> { ElementId.InvalidElementId });
-
-                    var selectedIds = _selectedElementsIds[doc.Title];
-
-                    // Вытаскиваем вложенные элементы
-                    var nestedSelectedIds = new List<ElementId>();
-                    foreach (var selectedId in selectedIds)
-                    {
-                        if (includeSubFamilies)
-                            nestedSelectedIds.AddRange(GetSubFamilies(selectedId));
-                    }
-
-                    selectedIds.AddRange(nestedSelectedIds);
-                    return selectedIds.Any()
-                        ? new FilteredElementCollector(doc, selectedIds)
-                        : new FilteredElementCollector(doc, new List<ElementId> { ElementId.InvalidElementId });
-
-                case ScopeType.ActiveView:
-                    return new FilteredElementCollector(doc, _uiApplication.ActiveUIDocument.ActiveGraphicalView.Id);
-
-                default:
-                    return new FilteredElementCollector(doc);
-            }
         }
+    }
 
-        /// <inheritdoc/>
-        public bool HasElements(Document? doc)
+    /// <inheritdoc/>
+    public bool HasElements(Document? doc)
+    {
+        return GetFilteredElementCollector(doc)
+            .WhereElementIsNotElementType()
+            .Any();
+    }
+
+    /// <inheritdoc/>
+    public void SaveAndResetSelectedElements()
+    {
+        var uiDoc = _uiApplication.ActiveUIDocument;
+        if (uiDoc is null)
+            return;
+
+        var selectedIds = uiDoc.Selection.GetElementIds().ToList();
+        if (!selectedIds.Any())
+            return;
+
+        if (_selectedElementsIds.ContainsKey(uiDoc.Document.Title))
+            _selectedElementsIds[uiDoc.Document.Title] = selectedIds;
+        else
+            _selectedElementsIds.Add(uiDoc.Document.Title, selectedIds);
+
+        _elementsDisplay.ResetSelection();
+    }
+
+    /// <inheritdoc/>
+    public void SetBackSelectedElements()
+    {
+        var uiDoc = _uiApplication.ActiveUIDocument;
+        if (_selectedElementsIds.ContainsKey(uiDoc.Document.Title))
         {
-            return GetFilteredElementCollector(doc)
-                .WhereElementIsNotElementType()
-                .Any();
+            _elementsDisplay.SetSelectedElements(
+                _selectedElementsIds[uiDoc.Document.Title].Select(e => e.Wrap()).ToList());
         }
+    }
 
-        /// <inheritdoc/>
-        public void SaveAndResetSelectedElements()
+    /// <inheritdoc/>
+    public void SetScope(ScopeType scope)
+    {
+        Scope = scope;
+    }
+
+    /// <inheritdoc/>
+    public Element? PickElement(Func<Element, bool>? filterElement = null, string statusPrompt = "")
+    {
+        try
         {
             var uiDoc = _uiApplication.ActiveUIDocument;
-            if (uiDoc is null)
-                return;
-            
-            var selectedIds = uiDoc.Selection.GetElementIds().ToList();
-            if (!selectedIds.Any())
-                return;
+            var pickRef = uiDoc.Selection.PickObject(
+                ObjectType.Element, new ElementSelectionFilter(filterElement), statusPrompt);
 
+            // Обновляем сохраненные элементы для выбора
             if (_selectedElementsIds.ContainsKey(uiDoc.Document.Title))
-                _selectedElementsIds[uiDoc.Document.Title] = selectedIds;
+                _selectedElementsIds[uiDoc.Document.Title] = new List<ElementId> { pickRef.ElementId };
             else
-                _selectedElementsIds.Add(uiDoc.Document.Title, selectedIds);
+                _selectedElementsIds.Add(uiDoc.Document.Title, new List<ElementId> { pickRef.ElementId });
 
-            _elementsDisplay.ResetSelection();
+            return uiDoc.Document.GetElement(pickRef.ElementId);
         }
+        catch (OperationCanceledException)
+        {
+            return null;
+        }
+    }
 
-        /// <inheritdoc/>
-        public void SetBackSelectedElements()
+    /// <inheritdoc />
+    public List<Element> PickElements(Func<Element, bool>? filterElement = null, string statusPrompt = "")
+    {
+        try
         {
             var uiDoc = _uiApplication.ActiveUIDocument;
-            if (_selectedElementsIds.ContainsKey(uiDoc.Document.Title))
-            {
-                _elementsDisplay.SetSelectedElements(
-                    _selectedElementsIds[uiDoc.Document.Title].Select(e => e.Wrap()).ToList());
-            }
-        }
-
-        /// <inheritdoc/>
-        public void SetScope(ScopeType scope)
-        {
-            Scope = scope;
-        }
-
-        /// <inheritdoc/>
-        public Element? PickElement(Func<Element, bool>? filterElement = null, string statusPrompt = "")
-        {
-            try
-            {
-                var uiDoc = _uiApplication.ActiveUIDocument;
-                var pickRef = uiDoc.Selection.PickObject(
-                    ObjectType.Element, new ElementSelectionFilter(filterElement), statusPrompt);
-
-                // Обновляем сохраненные элементы для выбора
-                if (_selectedElementsIds.ContainsKey(uiDoc.Document.Title))
-                    _selectedElementsIds[uiDoc.Document.Title] = new List<ElementId> { pickRef.ElementId };
-                else
-                    _selectedElementsIds.Add(uiDoc.Document.Title, new List<ElementId> { pickRef.ElementId });
-
-                return uiDoc.Document.GetElement(pickRef.ElementId);
-            }
-            catch (OperationCanceledException)
-            {
-                return null;
-            }
-        }
-
-        /// <inheritdoc />
-        public List<Element> PickElements(Func<Element, bool>? filterElement = null, string statusPrompt = "")
-        {
-            try
-            {
-                var uiDoc = _uiApplication.ActiveUIDocument;
-                var pickElements = uiDoc.Selection.PickObjects(
+            var pickElements = uiDoc.Selection.PickObjects(
                     ObjectType.Element, new ElementSelectionFilter(filterElement), statusPrompt)
-                    .Select(r => uiDoc.Document.GetElement(r))
-                    .ToList();
+                .Select(r => uiDoc.Document.GetElement(r))
+                .ToList();
 
-                // Обновляем сохраненные элементы для выбора
-                if (_selectedElementsIds.ContainsKey(uiDoc.Document.Title))
-                    _selectedElementsIds[uiDoc.Document.Title] = pickElements.Select(e => e.Id).ToList();
-                else
-                    _selectedElementsIds.Add(uiDoc.Document.Title, pickElements.Select(e => e.Id).ToList());
+            // Обновляем сохраненные элементы для выбора
+            if (_selectedElementsIds.ContainsKey(uiDoc.Document.Title))
+                _selectedElementsIds[uiDoc.Document.Title] = pickElements.Select(e => e.Id).ToList();
+            else
+                _selectedElementsIds.Add(uiDoc.Document.Title, pickElements.Select(e => e.Id).ToList());
 
-                return pickElements;
-            }
-            catch (OperationCanceledException)
-            {
-                return new List<Element>();
-            }
+            return pickElements;
         }
-
-        /// <inheritdoc />
-        public LinkedElement? PickLinkedElement(Func<Element, bool>? filterElement = null, string statusPrompt = "")
+        catch (OperationCanceledException)
         {
-            try
+            return new List<Element>();
+        }
+    }
+
+    /// <inheritdoc />
+    public LinkedElement? PickLinkedElement(Func<Element, bool>? filterElement = null, string statusPrompt = "")
+    {
+        try
+        {
+            var uiDoc = _uiApplication.ActiveUIDocument;
+            var doc = uiDoc.Document;
+            var pickRef = uiDoc.Selection.PickObject(
+                ObjectType.LinkedElement,
+                new LinkedElementSelectionFilter(uiDoc.Document, filterElement),
+                statusPrompt);
+
+            //// Сохранять этот элемент в _selectedElementsIds нельзя, так как RevitAPI не позволяет его добавить
+            //// в UiDocument.Selection
+            _elementsDisplay.ResetSelection();
+
+            if (doc.GetElement(pickRef) is RevitLinkInstance linkInstance)
             {
-                var uiDoc = _uiApplication.ActiveUIDocument;
-                var doc = uiDoc.Document;
-                var pickRef = uiDoc.Selection.PickObject(
+                return new LinkedElement(pickRef.LinkedElementId, linkInstance);
+            }
+
+            return null;
+        }
+        catch (OperationCanceledException)
+        {
+            return null;
+        }
+    }
+
+    /// <inheritdoc />
+    public List<LinkedElement> PickLinkedElements(Func<Element, bool>? filterElement = null, string statusPrompt = "")
+    {
+        try
+        {
+            var uiDoc = _uiApplication.ActiveUIDocument;
+            var doc = uiDoc.Document;
+            var pickElements = uiDoc.Selection.PickObjects(
                     ObjectType.LinkedElement,
                     new LinkedElementSelectionFilter(uiDoc.Document, filterElement),
-                    statusPrompt);
+                    statusPrompt)
+                .Select(r => new LinkedElement(r.LinkedElementId, (RevitLinkInstance)doc.GetElement(r)))
+                .ToList();
 
-                //// Сохранять этот элемент в _selectedElementsIds нельзя, так как RevitAPI не позволяет его добавить
-                //// в UiDocument.Selection
-                _elementsDisplay.ResetSelection();
+            //// Сохранять эти элементы в _selectedElementsIds нельзя, так как RevitAPI не позволяет их добавить
+            //// в UiDocument.Selection
+            _elementsDisplay.ResetSelection();
 
-                if (doc.GetElement(pickRef) is RevitLinkInstance linkInstance)
-                {
-                    return new LinkedElement(pickRef.LinkedElementId, linkInstance);
-                }
-
-                return null;
-            }
-            catch (OperationCanceledException)
-            {
-                return null;
-            }
+            return pickElements;
         }
-
-        /// <inheritdoc />
-        public List<LinkedElement> PickLinkedElements(Func<Element, bool>? filterElement = null, string statusPrompt = "")
+        catch (OperationCanceledException)
         {
-            try
-            {
-                var uiDoc = _uiApplication.ActiveUIDocument;
-                var doc = uiDoc.Document;
-                var pickElements = uiDoc.Selection.PickObjects(
-                        ObjectType.LinkedElement,
-                        new LinkedElementSelectionFilter(uiDoc.Document, filterElement),
-                        statusPrompt)
-                    .Select(r => new LinkedElement(r.LinkedElementId, (RevitLinkInstance)doc.GetElement(r)))
-                    .ToList();
-
-                //// Сохранять эти элементы в _selectedElementsIds нельзя, так как RevitAPI не позволяет их добавить
-                //// в UiDocument.Selection
-                _elementsDisplay.ResetSelection();
-
-                return pickElements;
-            }
-            catch (OperationCanceledException)
-            {
-                return new List<LinkedElement>();
-            }
+            return new List<LinkedElement>();
         }
+    }
 
-        private IEnumerable<ElementId> GetSubFamilies(ElementId familyId)
+    private IEnumerable<ElementId> GetSubFamilies(ElementId familyId)
+    {
+        var uiDoc = _uiApplication.ActiveUIDocument;
+        if (!(uiDoc.Document.GetElement(familyId) is FamilyInstance familyInstance))
+            yield break;
+
+        var subFamilyIds = familyInstance.GetSubComponentIds();
+        if (subFamilyIds == null)
+            yield break;
+
+        foreach (var subFamilyId in subFamilyIds)
         {
-            var uiDoc = _uiApplication.ActiveUIDocument;
-            if (!(uiDoc.Document.GetElement(familyId) is FamilyInstance familyInstance))
-                yield break;
+            if (!(uiDoc.Document.GetElement(subFamilyId) is FamilyInstance))
+                continue;
 
-            var subFamilyIds = familyInstance.GetSubComponentIds();
-            if (subFamilyIds == null)
-                yield break;
+            yield return subFamilyId;
 
-            foreach (var subFamilyId in subFamilyIds)
+            foreach (var family in GetSubFamilies(subFamilyId))
             {
-                if (!(uiDoc.Document.GetElement(subFamilyId) is FamilyInstance))
-                    continue;
-
-                yield return subFamilyId;
-
-                foreach (var family in GetSubFamilies(subFamilyId))
-                {
-                    yield return family;
-                }
+                yield return family;
             }
         }
     }

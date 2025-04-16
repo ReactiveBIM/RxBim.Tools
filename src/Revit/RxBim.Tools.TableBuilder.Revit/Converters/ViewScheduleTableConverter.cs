@@ -1,201 +1,200 @@
-﻿namespace RxBim.Tools.TableBuilder
+﻿namespace RxBim.Tools.TableBuilder;
+
+using System;
+using System.Linq;
+using Autodesk.Revit.DB;
+using JetBrains.Annotations;
+using Revit.Extensions;
+
+/// <summary>
+/// Represents a converter that renders a <see cref="Table"/> object to a Revit ViewSchedule.
+/// </summary>
+[UsedImplicitly]
+internal class ViewScheduleTableConverter : IViewScheduleTableConverter
 {
-    using System;
-    using System.Linq;
-    using Autodesk.Revit.DB;
-    using JetBrains.Annotations;
-    using Revit.Extensions;
+    private const double FontRatio = 3.77951502;
+    private readonly ITransactionService _transactionService;
 
     /// <summary>
-    /// Represents a converter that renders a <see cref="Table"/> object to a Revit ViewSchedule.
+    /// ctor.
     /// </summary>
-    [UsedImplicitly]
-    internal class ViewScheduleTableConverter : IViewScheduleTableConverter
+    /// <param name="transactionService"> <see cref="ITransactionService"/>. </param>
+    public ViewScheduleTableConverter(ITransactionService transactionService)
     {
-        private const double FontRatio = 3.77951502;
-        private readonly ITransactionService _transactionService;
+        _transactionService = transactionService;
+    }
 
-        /// <summary>
-        /// ctor.
-        /// </summary>
-        /// <param name="transactionService"> <see cref="ITransactionService"/>. </param>
-        public ViewScheduleTableConverter(ITransactionService transactionService)
+    /// <inheritdoc />
+    public ViewSchedule Convert(Table table, ViewScheduleTableConverterParameters parameters)
+    {
+        if (string.IsNullOrWhiteSpace(parameters.Name))
         {
-            _transactionService = transactionService;
+            throw new ArgumentException(
+                "ViewSchedule name not defined.",
+                nameof(parameters));
         }
 
-        /// <inheritdoc />
-        public ViewSchedule Convert(Table table, ViewScheduleTableConverterParameters parameters)
-        {
-            if (string.IsNullOrWhiteSpace(parameters.Name))
+        return _transactionService.RunInTransaction(
+            (context, _) =>
             {
-                throw new ArgumentException(
-                    "ViewSchedule name not defined.",
-                    nameof(parameters));
-            }
-
-            return _transactionService.RunInTransaction(
-                (context, _) =>
-                {
-                    var document = context.GetDocument();
+                var document = context.GetDocument();
 #if RVT2019 || RVT2020 || RVT2021 || RVT2022 || RVT2023
-                    var idValue = (int)BuiltInCategory.OST_NurseCallDevices;
+                var idValue = (int)BuiltInCategory.OST_NurseCallDevices;
 #else
                     var idValue = (long)BuiltInCategory.OST_NurseCallDevices;
 #endif
-                    var id = new ElementId(idValue);
+                var id = new ElementId(idValue);
 
-                    var schedule = ViewSchedule.CreateSchedule(document, id);
-                    schedule.Name = parameters.Name;
-                    schedule.Definition.ShowHeaders = false;
+                var schedule = ViewSchedule.CreateSchedule(document, id);
+                schedule.Name = parameters.Name;
+                schedule.Definition.ShowHeaders = false;
 
-                    var field = schedule.Definition
-                        .GetSchedulableFields()
-                        .FirstOrDefault(x =>
-                            x.GetName(document).ToUpper() == "URL");
+                var field = schedule.Definition
+                    .GetSchedulableFields()
+                    .FirstOrDefault(x =>
+                        x.GetName(document).ToUpper() == "URL");
 
-                    if (field != null)
-                    {
-                        schedule.Definition.AddField(field).GridColumnWidth = table.Width.MmToFt();
-                    }
-
-                    var tableData = schedule.GetTableData();
-                    var headerData = tableData.GetSectionData(SectionType.Header);
-
-                    InsertCells(headerData, table.Rows.Count() - 1, table.Columns.Count());
-
-                    var scheduleCol = headerData.FirstColumnNumber;
-
-                    for (var col = 0;
-                         col < table.Columns.Count();
-                         col++, scheduleCol++)
-                    {
-                        var widthInFt = (table.Columns[col].Width ?? table.GetAverageColumnWidth()).MmToFt();
-                        headerData.SetColumnWidth(scheduleCol, widthInFt);
-
-                        var scheduleRow = headerData.FirstRowNumber;
-
-                        for (var row = 0;
-                             row < table.Rows.Count();
-                             row++, scheduleRow++)
-                        {
-                            var cell = table[row, col];
-
-                            const int defaultRowHeightInMm = 8;
-                            var rowHeight = table.Rows[row].Height ?? defaultRowHeightInMm;
-
-                            rowHeight = rowHeight > 0 ? rowHeight.MmToFt() : defaultRowHeightInMm.MmToFt();
-
-                            headerData.SetRowHeight(scheduleRow, rowHeight);
-                            headerData.SetCellText(scheduleRow, scheduleCol, cell.Content.ValueObject?.ToString());
-                            headerData.SetCellStyle(scheduleRow,
-                                scheduleCol,
-                                GetCellStyle(cell.GetComposedFormat(), parameters));
-                        }
-                    }
-
-                    foreach (var mergeArea in table.MergeAreas)
-                    {
-                        var tableMergedCell = new TableMergedCell
-                        {
-                            Bottom = mergeArea.BottomRow,
-                            Top = mergeArea.TopRow,
-                            Left = mergeArea.LeftColumn,
-                            Right = mergeArea.RightColumn
-                        };
-
-                        headerData.MergeCells(tableMergedCell);
-                    }
-
-                    headerData.RemoveColumn(headerData.LastColumnNumber);
-                    return schedule;
-                },
-                nameof(ViewScheduleTableConverter));
-        }
-
-        private TableCellStyle GetCellStyle(
-            CellFormatStyle cellStyle,
-            ViewScheduleTableConverterParameters parameters)
-        {
-            var options = new TableCellStyleOverrideOptions
-            {
-                BorderTopLineStyle = GetCellBorderType(cellStyle.Borders.Top) != CellBorderType.Thin,
-                BorderBottomLineStyle = GetCellBorderType(cellStyle.Borders.Bottom) != CellBorderType.Thin,
-                BorderLeftLineStyle = GetCellBorderType(cellStyle.Borders.Left) != CellBorderType.Thin,
-                BorderRightLineStyle = GetCellBorderType(cellStyle.Borders.Right) != CellBorderType.Thin,
-                FontSize = cellStyle.TextFormat.TextSize is > 0,
-                Bold = true,
-                Italics = true,
-                HorizontalAlignment = true,
-                VerticalAlignment = true,
-                FontColor = true,
-                BackgroundColor = true
-            };
-
-            var boldLineId = parameters.SpecificationBoldLineId ?? -1;
-
-            var style = new TableCellStyle
-            {
-                BorderTopLineStyle = GetLineId(GetCellBorderType(cellStyle.Borders.Top), boldLineId),
-                BorderBottomLineStyle = GetLineId(GetCellBorderType(cellStyle.Borders.Bottom), boldLineId),
-                BorderLeftLineStyle = GetLineId(GetCellBorderType(cellStyle.Borders.Left), boldLineId),
-                BorderRightLineStyle = GetLineId(GetCellBorderType(cellStyle.Borders.Right), boldLineId),
-                TextSize = cellStyle.TextFormat.TextSize ?? 0 * FontRatio,
-                IsFontBold = cellStyle.TextFormat.Bold ?? false,
-                IsFontItalic = cellStyle.TextFormat.Italic ?? false,
-                TextColor = GetRevitColor(cellStyle.TextFormat.TextColor ?? System.Drawing.Color.Black),
-                BackgroundColor = GetRevitColor(cellStyle.BackgroundColor ?? System.Drawing.Color.White),
-                FontVerticalAlignment = cellStyle.ContentVerticalAlignment switch
+                if (field != null)
                 {
-                    CellContentVerticalAlignment.Top => VerticalAlignmentStyle.Top,
-                    CellContentVerticalAlignment.Middle => VerticalAlignmentStyle.Middle,
-                    _ => VerticalAlignmentStyle.Bottom
-                },
-                FontHorizontalAlignment = cellStyle.ContentHorizontalAlignment switch
-                {
-                    CellContentHorizontalAlignment.Right => HorizontalAlignmentStyle.Right,
-                    CellContentHorizontalAlignment.Left => HorizontalAlignmentStyle.Left,
-                    _ => HorizontalAlignmentStyle.Center
+                    schedule.Definition.AddField(field).GridColumnWidth = table.Width.MmToFt();
                 }
-            };
 
-            style.SetCellStyleOverrideOptions(options);
+                var tableData = schedule.GetTableData();
+                var headerData = tableData.GetSectionData(SectionType.Header);
 
-            return style;
-        }
+                InsertCells(headerData, table.Rows.Count() - 1, table.Columns.Count());
+
+                var scheduleCol = headerData.FirstColumnNumber;
+
+                for (var col = 0;
+                     col < table.Columns.Count();
+                     col++, scheduleCol++)
+                {
+                    var widthInFt = (table.Columns[col].Width ?? table.GetAverageColumnWidth()).MmToFt();
+                    headerData.SetColumnWidth(scheduleCol, widthInFt);
+
+                    var scheduleRow = headerData.FirstRowNumber;
+
+                    for (var row = 0;
+                         row < table.Rows.Count();
+                         row++, scheduleRow++)
+                    {
+                        var cell = table[row, col];
+
+                        const int defaultRowHeightInMm = 8;
+                        var rowHeight = table.Rows[row].Height ?? defaultRowHeightInMm;
+
+                        rowHeight = rowHeight > 0 ? rowHeight.MmToFt() : defaultRowHeightInMm.MmToFt();
+
+                        headerData.SetRowHeight(scheduleRow, rowHeight);
+                        headerData.SetCellText(scheduleRow, scheduleCol, cell.Content.ValueObject?.ToString());
+                        headerData.SetCellStyle(scheduleRow,
+                            scheduleCol,
+                            GetCellStyle(cell.GetComposedFormat(), parameters));
+                    }
+                }
+
+                foreach (var mergeArea in table.MergeAreas)
+                {
+                    var tableMergedCell = new TableMergedCell
+                    {
+                        Bottom = mergeArea.BottomRow,
+                        Top = mergeArea.TopRow,
+                        Left = mergeArea.LeftColumn,
+                        Right = mergeArea.RightColumn
+                    };
+
+                    headerData.MergeCells(tableMergedCell);
+                }
+
+                headerData.RemoveColumn(headerData.LastColumnNumber);
+                return schedule;
+            },
+            nameof(ViewScheduleTableConverter));
+    }
+
+    private TableCellStyle GetCellStyle(
+        CellFormatStyle cellStyle,
+        ViewScheduleTableConverterParameters parameters)
+    {
+        var options = new TableCellStyleOverrideOptions
+        {
+            BorderTopLineStyle = GetCellBorderType(cellStyle.Borders.Top) != CellBorderType.Thin,
+            BorderBottomLineStyle = GetCellBorderType(cellStyle.Borders.Bottom) != CellBorderType.Thin,
+            BorderLeftLineStyle = GetCellBorderType(cellStyle.Borders.Left) != CellBorderType.Thin,
+            BorderRightLineStyle = GetCellBorderType(cellStyle.Borders.Right) != CellBorderType.Thin,
+            FontSize = cellStyle.TextFormat.TextSize is > 0,
+            Bold = true,
+            Italics = true,
+            HorizontalAlignment = true,
+            VerticalAlignment = true,
+            FontColor = true,
+            BackgroundColor = true
+        };
+
+        var boldLineId = parameters.SpecificationBoldLineId ?? -1;
+
+        var style = new TableCellStyle
+        {
+            BorderTopLineStyle = GetLineId(GetCellBorderType(cellStyle.Borders.Top), boldLineId),
+            BorderBottomLineStyle = GetLineId(GetCellBorderType(cellStyle.Borders.Bottom), boldLineId),
+            BorderLeftLineStyle = GetLineId(GetCellBorderType(cellStyle.Borders.Left), boldLineId),
+            BorderRightLineStyle = GetLineId(GetCellBorderType(cellStyle.Borders.Right), boldLineId),
+            TextSize = cellStyle.TextFormat.TextSize ?? 0 * FontRatio,
+            IsFontBold = cellStyle.TextFormat.Bold ?? false,
+            IsFontItalic = cellStyle.TextFormat.Italic ?? false,
+            TextColor = GetRevitColor(cellStyle.TextFormat.TextColor ?? System.Drawing.Color.Black),
+            BackgroundColor = GetRevitColor(cellStyle.BackgroundColor ?? System.Drawing.Color.White),
+            FontVerticalAlignment = cellStyle.ContentVerticalAlignment switch
+            {
+                CellContentVerticalAlignment.Top => VerticalAlignmentStyle.Top,
+                CellContentVerticalAlignment.Middle => VerticalAlignmentStyle.Middle,
+                _ => VerticalAlignmentStyle.Bottom
+            },
+            FontHorizontalAlignment = cellStyle.ContentHorizontalAlignment switch
+            {
+                CellContentHorizontalAlignment.Right => HorizontalAlignmentStyle.Right,
+                CellContentHorizontalAlignment.Left => HorizontalAlignmentStyle.Left,
+                _ => HorizontalAlignmentStyle.Center
+            }
+        };
+
+        style.SetCellStyleOverrideOptions(options);
+
+        return style;
+    }
 
 #if RVT2019 || RVT2020 || RVT2021 || RVT2022 || RVT2023
-        private ElementId GetLineId(CellBorderType cellBorderType, int boldLineId = -1)
+    private ElementId GetLineId(CellBorderType cellBorderType, int boldLineId = -1)
 #else
         private ElementId GetLineId(CellBorderType cellBorderType, long boldLineId = -1)
 #endif
+    {
+        return cellBorderType switch
         {
-            return cellBorderType switch
-            {
-                CellBorderType.Thin => ElementId.InvalidElementId, // does not apply
-                CellBorderType.Hidden => ElementId.InvalidElementId,
-                CellBorderType.Bold => new ElementId(boldLineId),
-                _ => throw new Exception($"Line {cellBorderType} is not implemented in the converter."),
-            };
-        }
+            CellBorderType.Thin => ElementId.InvalidElementId, // does not apply
+            CellBorderType.Hidden => ElementId.InvalidElementId,
+            CellBorderType.Bold => new ElementId(boldLineId),
+            _ => throw new Exception($"Line {cellBorderType} is not implemented in the converter."),
+        };
+    }
 
-        private void InsertCells(TableSectionData section, int rows, int cols)
-        {
-            for (var j = 0; j < rows; j++)
-                section.InsertRow(j);
+    private void InsertCells(TableSectionData section, int rows, int cols)
+    {
+        for (var j = 0; j < rows; j++)
+            section.InsertRow(j);
 
-            for (var j = 0; j < cols; j++)
-                section.InsertColumn(j);
-        }
+        for (var j = 0; j < cols; j++)
+            section.InsertColumn(j);
+    }
 
-        private Color GetRevitColor(System.Drawing.Color color)
-        {
-            return new Color(color.R, color.G, color.B);
-        }
+    private Color GetRevitColor(System.Drawing.Color color)
+    {
+        return new Color(color.R, color.G, color.B);
+    }
 
-        private CellBorderType GetCellBorderType(CellBorderType? cellBorderType)
-        {
-            return cellBorderType ?? CellBorderType.Thin;
-        }
+    private CellBorderType GetCellBorderType(CellBorderType? cellBorderType)
+    {
+        return cellBorderType ?? CellBorderType.Thin;
     }
 }
