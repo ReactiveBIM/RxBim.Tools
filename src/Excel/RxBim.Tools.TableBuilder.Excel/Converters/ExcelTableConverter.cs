@@ -127,7 +127,7 @@ internal class ExcelTableConverter : IExcelTableConverter
                 break;
 
             case NumericCellContent numeric:
-                cell.Value = numeric.ValueObject;
+                cell.Value = XLCellValue.FromObject(numeric.ValueObject);
                 cell.Style.NumberFormat.Format = numeric.Format;
                 break;
 
@@ -136,7 +136,7 @@ internal class ExcelTableConverter : IExcelTableConverter
                 break;
 
             default:
-                cell.SetValue(content.ValueObject);
+                cell.SetValue(content.ValueObject?.ToString());
                 break;
         }
     }
