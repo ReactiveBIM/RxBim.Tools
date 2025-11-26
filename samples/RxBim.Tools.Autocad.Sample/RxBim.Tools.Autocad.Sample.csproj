@@ -7,7 +7,7 @@
 
     <ItemGroup>
       <PackageReference Remove="JetBrains.Annotations" />
-      <PackageReference Include="RxBim.Command.Autocad.$(ApplicationVersion)" Version="3.0.0" />
+      <PackageReference Include="RxBim.Command.Autocad.$(ApplicationVersion)" Version="$(RxBimVersion)" />
     </ItemGroup>
 
     <ItemGroup>

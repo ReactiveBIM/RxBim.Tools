@@ -1,11 +1,12 @@
 ﻿<Project>
     <PropertyGroup>
-        <Version>4.0.5-dev002</Version>
+        <Version>4.0.6-lc006</Version>
         <TargetFramework>net472</TargetFramework>
         <PlatformTarget>x64</PlatformTarget>
         <LangVersion>12</LangVersion>
         <Nullable>enable</Nullable>
         <NoWarn>NU1901;NU1902;NU1903;NU1904</NoWarn>
+        <RxBimVersion>3.0.5-dev001</RxBimVersion>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -34,7 +35,7 @@
     </Choose>
 
     <ItemGroup>
-        <PackageReference Condition=" '$(UseDi)' == 'true' " Include="RxBim.Di" Version="3.0.5-dev001"/>
+        <PackageReference Condition=" '$(UseDi)' == 'true' " Include="RxBim.Di" Version="$(RxBimVersion)"/>
     </ItemGroup>
 
     <Choose>

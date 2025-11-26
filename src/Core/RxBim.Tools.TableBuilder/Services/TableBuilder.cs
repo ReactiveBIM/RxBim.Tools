@@ -111,13 +111,13 @@ public class TableBuilder : ITableBuilder
 
         if (RowsCount <= headerRowsCount + 1)
             return this;
-            
+
         SetCellsFormat(rowFormat,
             headerRowsCount + 1,
             0,
             ColumnsCount,
             RowsCount - headerRowsCount);
-            
+
         foreach (var cell in Table.Rows.Last().Cells)
             new CellEditor(cell).SetFormat(lastRowFormat);
 
@@ -176,7 +176,7 @@ public class TableBuilder : ITableBuilder
             for (var r = 0; r < list.Count; r++)
             {
                 var value = prop.Invoke(list[r]);
-                matrix[r, c] = prop as ICellContent ?? new TextCellContent(value.ToString());
+                matrix[r, c] = value as ICellContent ?? new TextCellContent(value.ToString());
             }
         }
 

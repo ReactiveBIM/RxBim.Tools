@@ -3,7 +3,7 @@
     <PropertyGroup>
         <UseDi>true</UseDi>
     </PropertyGroup>
-    
+
     <ItemGroup>
         <ProjectReference Include="..\..\src\Autocad\RxBim.Tools.Autocad\RxBim.Tools.Autocad.csproj" />
         <ProjectReference Include="..\..\src\Autocad\RxBim.Tools.TableBuilder.Autocad\RxBim.Tools.TableBuilder.Autocad.csproj" />
@@ -11,7 +11,7 @@
 
     <ItemGroup>
         <PackageReference Include="CSharpFunctionalExtensions" Version="2.34.3" />
-        <PackageReference Include="RxBim.Command.Autocad.$(ApplicationVersion)" Version="3.0.0" />
+        <PackageReference Include="RxBim.Command.Autocad.$(ApplicationVersion)" Version="$(RxBimVersion)" />
     </ItemGroup>
 
 </Project>
